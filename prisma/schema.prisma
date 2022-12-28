@@ -1,0 +1,53 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator erd {
+  provider = "prisma-erd-generator"
+  theme    = "dark"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Militar {
+  id            String @id @default(uuid())
+  identidade    String @unique
+  nome_completo String
+  nome_guerra   String
+  senha         String
+  permissao     String
+  funcao_local  String
+
+  cautelas Cautela[]
+}
+
+model Material {
+  id         String @id @default(cuid())
+  nome       String
+  condicoes  String
+  quantidade Int
+  local      String
+
+  cautelas Cautela[]
+}
+
+model Cautela {
+  id           String   @id @default(uuid())
+  data_cautela DateTime @default(now())
+  observacao   String
+  local        String
+  validado     Boolean
+  resp_cautela String
+
+  cautelouId String
+  materialId String
+
+  cautelou Militar  @relation(fields: [cautelouId], references: [id])
+  material Material @relation(fields: [materialId], references: [id])
+}
