@@ -1,6 +1,5 @@
 // import { getSession } from 'next-auth/react';
 import { prisma } from '../../../lib/prisma';
-import { MaterialDataProps } from '../../material/cadastro';
 
 export default async function handleMaterial(req, res) {
   if (req.method === 'GET') {
