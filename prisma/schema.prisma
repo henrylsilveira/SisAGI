@@ -28,11 +28,16 @@ model Militar {
 }
 
 model Material {
-  id         String @id @default(cuid())
-  nome       String
+  id         String  @id @default(cuid())
+  nome       String  @unique
   condicoes  String
   quantidade Int
   local      String
+  codigo     String?
+
+  sub_unidade String?
+  dependencia String?
+  categoria   String?
 
   cautelas Cautela[]
 }

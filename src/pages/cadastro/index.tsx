@@ -8,7 +8,7 @@ import {
   Select,
   FormLabel,
   FormControl,
-  useToast,
+  useToast
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { SubmitHandler } from "react-hook-form/dist/types";
@@ -48,7 +48,6 @@ export default function Home() {
   const handleSignIn: SubmitHandler<SignInFormData> = async (values) => {
     try {
       const result = await api.post('/militar', values )
-      console.log(result)
       if(result.status == 201) {
           toast({
           title: 'Militar cadastrado.',
