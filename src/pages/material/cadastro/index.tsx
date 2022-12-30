@@ -15,14 +15,12 @@ import {
   PopoverContent,
   PopoverHeader,
   PopoverTrigger,
-  Select,
   SimpleGrid,
   Spinner,
   Table,
   TableContainer,
   Tbody,
   Td,
-  Text,
   Tfoot,
   Th,
   Thead,
@@ -90,7 +88,7 @@ export default function Cadastro() {
   const handleSignIn: SubmitHandler<MaterialDataProps> = async (values) => {
 
     try {
-      const result = await api.post("/material", values);
+      const result = await api.post('/material', values);
       if (result.status == 201) {
         toast({
           title: "Material cadastrado.",

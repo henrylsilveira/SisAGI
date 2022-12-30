@@ -31,7 +31,7 @@ export default async function handleMaterial(req, res) {
     });
     return res.status(201).send(result);
     } catch(error) {
-      return res.error(error)
+      return res.send(error)
     }   
   }
 }
