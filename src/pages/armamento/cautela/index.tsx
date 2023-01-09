@@ -41,11 +41,6 @@ import { Sidebar } from "../../../components/Sidebar";
 import { useQuery } from "react-query";
 import { api } from "../../../services/api";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { SubmitHandler } from "react-hook-form/dist/types";
-import { AiFillMinusCircle } from "react-icons/ai";
 
 import { SlRefresh } from "react-icons/sl";
 import { TiInfoLarge } from "react-icons/ti";
@@ -53,8 +48,10 @@ import { BsBoxArrowRight, BsBoxArrowUp } from "react-icons/bs";
 import { ModalCautela } from "../../../components/Modal/Material/ModalCautela";
 import Head from "next/head";
 import { Armamento } from "../../../@types/types";
+import { useSession } from "next-auth/react";
 
 export default function CautelaArmamento() {
+  const { data: session } = useSession()
   const [nomeArmamentos, setNomeArmamentos] = useState([]);
   const [militares, setMilitares] = useState({});
   const toast = useToast();
@@ -72,7 +69,7 @@ export default function CautelaArmamento() {
     async () => {
       const result = await api.get("/armamentos");
       var data = [] // CONJUNTO DE INSTRUCAO FILTRA OS NOME DE TODOS ARMAMENTOS NO BANCO E TIRA OS REPETIDOS
-      result.data.map((el) => { return data.push(el.nome) })
+      result.data.map((el: Armamento) => { return data.push( el.local === session.militar.local ? el.nome : null) })
       const filtered = Array.from(new Set(data)).filter(function (res) {
         return res != null;
       });
@@ -84,7 +81,7 @@ export default function CautelaArmamento() {
   return (
     <>
       <Head>
-        <title>Siscau | Armamento</title>
+        <title>SisAGI | Armamento - Cautelar</title>
       </Head>
       <Flex direction="column" h="100vh">
         <Header />
@@ -123,7 +120,7 @@ export default function CautelaArmamento() {
                         </AccordionButton>
                       </h2>
                       <AccordionPanel pb={4}>
-                        {data?.data.filter((elem) => { return elem.nome === arm }).map((arma: Armamento, index) => (
+                        {data?.data.filter((el) => { return el.local === session.militar.local}).filter((elem) => { return elem.nome === arm }).map((arma: Armamento, index) => (
                           <Tag
                           boxShadow='md'
                             size='lg'
@@ -133,7 +130,7 @@ export default function CautelaArmamento() {
                             colorScheme={arma.status === 'disponivel' ? 'green' : 'red'}
                             mr={4}
                           >
-                            <TagLabel pr={2}>{arma.nome} - {arma.nr_serie}</TagLabel>
+                            <TagLabel pr={2}>{arma.nome} - Nr {arma.nr_serie} { arma.cabide ? ' - ' + arma.cabide : ''}</TagLabel>
                             <BsBoxArrowUp />
                           </Tag>
                         ))}
@@ -152,6 +149,7 @@ export default function CautelaArmamento() {
                         <Tr>
                           <Th textAlign="center">Nome</Th>
                           <Th textAlign="center">Nr de série</Th>
+                          <Th textAlign="center">Cabide</Th>
                           <Th textAlign="center">Condições</Th>
                           <Th textAlign="center">Local</Th>
                           <Th textAlign="center">Status</Th>
@@ -159,10 +157,11 @@ export default function CautelaArmamento() {
                         </Tr>
                       </Thead>
                       <Tbody>
-                        {data?.data.map((res) => (
+                        {data?.data.filter((el) => { return el.local === session.militar.local}).map((res: Armamento) => (
                           <Tr key={res.id}>
                             <Td textAlign="center">{res.nome}</Td>
                             <Td textAlign="center">{res.nr_serie}</Td>
+                            <Td textAlign="center">{res.cabide ? res.cabide : ' - '}</Td>
                             <Td textAlign="center">
                               <Popover placement="top-start">
                                 <PopoverTrigger>

@@ -15,8 +15,8 @@ export function NotificationNav() {
       borderRightWidth={1}
       borderColor="gray.700"
     >
-      {/* <Icon as={RiNotificationLine} fontSize={20} />
-      <Icon as={RiUserAddLine} fontSize={20} />
+      <Icon as={RiNotificationLine} fontSize={20} />
+      {/* <Icon as={RiUserAddLine} fontSize={20} /> */}
       <Button
         bg="red.400"
         size="md"
@@ -27,7 +27,7 @@ export function NotificationNav() {
       >
         <Icon boxSize={6} as={BsBoxArrowLeft} pr={2} />
         Sair
-      </Button> */}
+      </Button>
     </HStack>
   );
 }

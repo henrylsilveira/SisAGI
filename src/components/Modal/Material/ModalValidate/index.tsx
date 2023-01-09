@@ -11,11 +11,13 @@ import {
   Circle,
   useToast,
   Tooltip,
+  FormControl,
+  FormHelperText,
 } from "@chakra-ui/react";
 import React, { FormEvent, useState } from "react";
-import { Input } from "../../Form/Input";
+import { Input } from "../../../Form/Input";
 import { BiLock } from "react-icons/bi";
-import { api } from "../../../services/api";
+import { api } from "../../../../services/api";
 
 export function ModalValidate({ data }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -88,13 +90,16 @@ export function ModalValidate({ data }) {
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody bg="gray.800">
-            <Input
-              name="senha"
-              value={senha}
-              label="Senha"
-              type="text"
-              onChange={(e) => setSenha(e.target.value)}
-            />
+            <FormControl>
+              <Input
+                name="senha"
+                value={senha}
+                label="Senha"
+                type="text"
+                onChange={(e) => setSenha(e.target.value)}
+              />
+            <FormHelperText>Senha do militar que realizou a cautela.</FormHelperText>
+            </FormControl>
           </ModalBody>
           <ModalFooter roundedBottom={4} bg="gray.800">
             <Button

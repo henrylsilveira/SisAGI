@@ -35,7 +35,7 @@ import { Cautela } from "../../../@types/types";
 import { ModalEncerrarCautela } from "../../../components/Modal/Material/ModalEncerrarCautela";
 import Head from "next/head";
 
-export default function Busca() {
+export default function BuscaArmamento() {
   const [result, setResult] = useState([]);
 
   const [search, setSearch] = useState(result);
@@ -56,11 +56,12 @@ export default function Busca() {
       return setSearch(result);
     } else {
       return setSearch(
-        result.filter(res => material ? res.material.nome.toLowerCase().includes(material.toLowerCase()) : result).filter(
+        result.filter(
           (res) =>
             res.cautelou.nome_guerra
               .toLowerCase()
               .includes(militar.toLowerCase())
+          // || res.material.nome.toLowerCase().includes(material.toLowerCase())
         )
       );
     }
@@ -75,8 +76,8 @@ export default function Busca() {
   return (
     <>
     <Head>
-        <title>SisAGI | Material - Busca</title>
-      </Head>
+        <title>SisAGI | Armamento - Buscar</title>
+    </Head>
     <Flex direction="column" h="100vh">
       <Header />
 

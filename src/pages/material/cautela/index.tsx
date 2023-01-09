@@ -42,6 +42,7 @@ import {
   import { TiInfoLarge } from 'react-icons/ti'
 import { BsBoxArrowRight } from "react-icons/bs";
 import { ModalCautela } from "../../../components/Modal/Material/ModalCautela";
+import Head from "next/head";
   
   export type MaterialDataProps = {
     id?: string;
@@ -123,6 +124,10 @@ import { ModalCautela } from "../../../components/Modal/Material/ModalCautela";
     };
   
     return (
+      <>
+      <Head>
+        <title>SisAGI | Material - Cautelar</title>
+      </Head>
       <Flex direction="column" h="100vh">
         <Header />
   
@@ -212,15 +217,7 @@ import { ModalCautela } from "../../../components/Modal/Material/ModalCautela";
           </Flex>
         </Flex>
       </Flex>
+      </>
+      
     );
   }
-  function toast(arg0: {
-    title: string;
-    description: string;
-    status: string;
-    duration: number;
-    isClosable: boolean;
-  }) {
-    throw new Error("Function not implemented.");
-  }
-  

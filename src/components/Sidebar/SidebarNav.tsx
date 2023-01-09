@@ -19,12 +19,14 @@ export function SidebarNav() {
         {/* <NavLink href="/users" icon={RiContactsLine}>Usuários</NavLink> */}
       </NavSection>
       <NavSection title="MATERIAL">
+        <NavLink href="/material/geral" icon={RiDashboardLine}>Geral</NavLink>
         <NavLink href="/material/cadastro" icon={RiDraftLine}>Cadastrar</NavLink>
         <NavLink href="/material/cautela" icon={GiTrade}>Cautelar</NavLink>
         <NavLink href="/material/busca" icon={RiSearchLine}>Buscar</NavLink>
       </NavSection>
 
       <NavSection title="ARMAMENTO">
+        <NavLink href="/armamento/geral" icon={RiDashboardLine}>Geral</NavLink>
         <NavLink href="/armamento/cadastro" icon={RiDraftLine}>Cadastrar</NavLink>
         <NavLink href="/armamento/armamentoMilitar" icon={RiDraftLine}>Armamento/Militar</NavLink>
         <NavLink href="/armamento/cautela" icon={GiTrade}>Cautelar</NavLink>

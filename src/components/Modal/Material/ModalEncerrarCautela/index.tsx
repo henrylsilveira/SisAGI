@@ -14,8 +14,9 @@ import {
     FormControl
   } from "@chakra-ui/react";
   import React, { FormEvent, useState } from "react";
-  import { Input } from "../../Form/Input";
-  import { api } from "../../../services/api";
+  import { Input } from "../../../Form/Input";
+  import { api } from "../../../../services/api";
+  import { BiX } from 'react-icons/bi'
 import { useSession } from "next-auth/react";
 
   
@@ -89,7 +90,7 @@ import { useSession } from "next-auth/react";
         onClick={onOpen}
         py="1"
       >
-        <Icon boxSize={4} pr={1} />
+        <Icon as={BiX} boxSize={5} pr={1} />
         Encerrar
       </Button>
         <Modal finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose}>
