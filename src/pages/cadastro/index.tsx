@@ -24,6 +24,7 @@ type SignInFormData = {
   identidade: string;
   senha: string;
   postoGrad: string;
+  local: string;
 };
 
 const signInFormSchema = yup.object().shape({
@@ -32,6 +33,7 @@ const signInFormSchema = yup.object().shape({
   identidade: yup.number().required("Identidade obrigatória.").typeError("Somente números."),
   postoGrad: yup.string().required("Posto e graduação obrigatório."),
   senha: yup.string().required("Senha obrigatória."),
+  local: yup.string()
 });
 
 export default function Home() {
@@ -47,7 +49,7 @@ export default function Home() {
 
   const handleSignIn: SubmitHandler<SignInFormData> = async (values) => {
     try {
-      const result = await api.post('/militar', values )
+      const result = await api.post('/militar/create', values )
       if(result.status == 201) {
           toast({
           title: 'Militar cadastrado.',
@@ -104,7 +106,8 @@ export default function Home() {
             />
             <FormControl>
               <FormLabel htmlFor="postoGrad">P/G</FormLabel>
-              <Select
+              <Input
+                as="select"
                 focusBorderColor="green.500"
                 name="postoGrad"
                 bgColor="gray.900"
@@ -127,12 +130,12 @@ export default function Home() {
                 <option value="MAJ">MAJ</option>
                 <option value="TEN CEL">TEN CEL</option>
                 <option value="CEL">CEL</option>
-              </Select>
+              </Input>
             </FormControl>
             <Input
               name="nomeGuerra"
               label="Nome de Guerra"
-              placeholder="SD FULANO (pg / nome de guerra)"
+              placeholder="Fulano (nome de guerra)"
               type="text"
               error={errors.nomeGuerra}
               {...register("nomeGuerra")}
@@ -143,6 +146,13 @@ export default function Home() {
               type="text"
               error={errors.identidade}
               {...register("identidade")}
+            />
+            <Input
+              name="local"
+              label="Companhia"
+              type="text"
+              error={errors.local}
+              {...register("local")}
             />
             <Input
               name="senha"

@@ -40,6 +40,7 @@ import { Input } from "../../../components/Form/Input";
 
 import { SlRefresh } from 'react-icons/sl'
 import { TiInfoLarge } from 'react-icons/ti'
+import { useSession } from "next-auth/react";
 
 export type MaterialDataProps = {
   id?: string;
@@ -65,6 +66,7 @@ const signInFormSchema = yup.object().shape({
 
 export default function Cadastro() {
   const [result, setResult] = useState({});
+  const { data: session } = useSession()
   const toast = useToast()
 
   const { isLoading, error, data, isFetching, refetch } = useQuery(
@@ -88,7 +90,7 @@ export default function Cadastro() {
   const handleSignIn: SubmitHandler<MaterialDataProps> = async (values) => {
 
     try {
-      const result = await api.post('/material', values);
+      const result = await api.post('/material/create', values);
       if (result.status == 201) {
         toast({
           title: "Material cadastrado.",
@@ -162,7 +164,7 @@ export default function Cadastro() {
                         <Td textAlign="center">
                           <FormControl>
                             <Input
-                            as={"textarea"}
+                              as={"textarea"}
                               size="sm"
                               rounded="lg"
                               name="condicoes"
@@ -188,17 +190,13 @@ export default function Cadastro() {
                         <Td textAlign="center">
                           <FormControl>
                             <Input
-                              as={"select"}
+                              value={session?.militar.local}
+                              isDisabled
                               size="sm"
                               rounded="lg"
                               name="subUnidade"
                               {...register("subUnidade")}
                             >
-                              <option value="1CIA">1CIA</option>
-                              <option value="2CIA">2CIA</option>
-                              <option value="CCAp">CCAp</option>
-                              <option value="PMT">PMT</option>
-                              <option value="EM">EM</option>
                             </Input>
                           </FormControl>
                         </Td>
@@ -211,6 +209,7 @@ export default function Cadastro() {
                               name="dependencia"
                               {...register("dependencia")}
                             >
+                              <option value="">Selecione</option>
                               <option value="1PEL">1PEL</option>
                               <option value="2PEL">2PEL</option>
                               <option value="3PEL">3PEL</option>
@@ -228,6 +227,7 @@ export default function Cadastro() {
                               name="categoria"
                               {...register("categoria")}
                             >
+                              <option value="">Selecione</option>
                               <option value="comum">Comum</option>
                               <option value="controlado">Controlado</option>
                             </Input>
@@ -272,7 +272,7 @@ export default function Cadastro() {
                         <Td textAlign="center">
                           <Popover placement="top-start">
                             <PopoverTrigger>
-                              <Button bg="green.400" _hover={{ bgColor: 'green.600'}} rounded="full">
+                              <Button bg="green.400" size="xs" _hover={{ bgColor: 'green.600'}} py={1}>
                                 <Icon boxSize={6} as={TiInfoLarge} />
                               </Button>
                             </PopoverTrigger>
@@ -297,7 +297,7 @@ export default function Cadastro() {
                           {res.quantidade - res.cautelas?.length}
                         </Td>
                         <Td textAlign="center">
-                          {res.categoria === 'controlado' ? <Badge as='span' variant='solid' colorScheme='red'>{res.categoria}</Badge> : <Badge as='span' variant='solid' colorScheme='green'>{res.categoria}</Badge>}
+                          {res.categoria === 'controlado' ? <Badge as='span' variant='outline' colorScheme='red'>{res.categoria}</Badge> : <Badge as='span' variant='outline' colorScheme='green'>{res.categoria}</Badge>}
                         </Td>
                       </Tr>
                     ))}

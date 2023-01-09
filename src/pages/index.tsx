@@ -3,7 +3,8 @@ import {
   Button,
   Stack,
   Image,
-  Heading
+  Heading,
+  useToast
 } from "@chakra-ui/react";
 import { Input } from "../components/Form/Input";
 import { useForm } from 'react-hook-form';
@@ -11,7 +12,10 @@ import { SubmitHandler } from "react-hook-form/dist/types";
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup';
 import Link from "next/link";
+import { useEffect } from "react";
+import Router from "next/router";
 
+import { signIn, useSession } from "next-auth/react"
 
 type SignInFormData = {
   identidade: string;
@@ -27,11 +31,38 @@ export default function Home() {
   const { register, handleSubmit, formState, formState: {errors} } = useForm({
     resolver: yupResolver(signInFormSchema)
   })
+  const { data:session } = useSession()
+
+  const toast = useToast()
+  useEffect(() => {
+    if(session){
+      Router.push('/dashboard')
+    }else {
+      return
+    }
+  }, [session])
 
   const handleSignIn:SubmitHandler<SignInFormData> = async (values) => {
     await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    console.log(values)
+
+    const res = await signIn("credentials", {
+      redirect: false,
+      identidade: values.identidade,
+      senha: values.senha,
+    });
+
+    if (res.error) {
+      toast({
+        title: 'Login',
+        description: 'Senha ou indentidade incorreta.',
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return Router.push('/')
+    }
+
+    Router.push('/dashboard');
   }
 
 

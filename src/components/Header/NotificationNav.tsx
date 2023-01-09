@@ -1,5 +1,8 @@
-import { HStack, Icon } from "@chakra-ui/react";
+import { Button, HStack, Icon } from "@chakra-ui/react";
+import { signOut } from "next-auth/react";
+import { BsBoxArrowLeft } from "react-icons/bs";
 import { RiNotificationLine, RiUserAddLine } from "react-icons/ri";
+
 
 export function NotificationNav() {
   return (
@@ -12,8 +15,19 @@ export function NotificationNav() {
       borderRightWidth={1}
       borderColor="gray.700"
     >
-      <Icon as={RiNotificationLine} fontSize={20} />
+      {/* <Icon as={RiNotificationLine} fontSize={20} />
       <Icon as={RiUserAddLine} fontSize={20} />
+      <Button
+        bg="red.400"
+        size="md"
+        color="whiteAlpha.900"
+        _hover={{ bgColor: "red.600" }}
+        onClick={() => signOut()}
+        p="4"
+      >
+        <Icon boxSize={6} as={BsBoxArrowLeft} pr={2} />
+        Sair
+      </Button> */}
     </HStack>
   );
 }

@@ -13,12 +13,23 @@ import {
   Tr,
   theme,
   useBreakpointValue,
+  useToast,
 } from "@chakra-ui/react";
 import { Header } from "../components/Header";
 import { Sidebar } from "../components/Sidebar";
 import dynamic from "next/dynamic";
 import { ApexOptions } from "apexcharts";
-
+import { api } from "../services/api";
+import { AuthContext, AuthProvider } from '../contexts/AuthContext';
+import { useContext, useEffect } from "react";
+import Router from "next/router";
+import { parseCookies } from "nookies";
+import { GetServerSideProps } from "next";
+import { convertDate } from "../utils/scripts";
+import { AxiosResponse } from "axios";
+import { useUsers } from "../services/hooks/useUsers";
+import { useSession } from "next-auth/react";
+import { getToken } from "next-auth/jwt";
 //Dynamic permite carregar o componente somente quando for necessario, exemplo quando for clicar em um botao
 const Chart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
@@ -73,10 +84,36 @@ const series = [{
   }];
 
 export default function Dashboard() {
+  const { data: session } = useSession()
+  const toast = useToast()
+    useEffect(() => {
+        if(session) {
+            toast({
+              title: 'Autenticação válida.',
+              description: `Seu token de acesso é válido até dia ${convertDate(session.expires)}. `,
+              status: 'info',
+              duration: 2000,
+              isClosable: true,
+            })
+          }else {
+            Router.push('/')
+            toast({
+              title: 'Autenticação inválida.',
+              description: `Seu token de acesso venceu, realize o login novamente. `,
+              status: 'warning',
+              duration: 3000,
+              isClosable: true,
+            })
+            return
+          }
+    }, [session, toast])
+
   const isWideVersion = useBreakpointValue({
     base: false,
     lg: true,
   })
+
+  
   return (
     <Flex direction="column" h="100vh">
       <Header />
@@ -154,3 +191,12 @@ export default function Dashboard() {
     </Flex>
   );
 }
+
+// export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+ 
+//   return {
+//     props: {
+      
+//     }
+//   }
+// };
