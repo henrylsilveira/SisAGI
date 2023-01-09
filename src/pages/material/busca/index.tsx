@@ -19,7 +19,9 @@ import {
   Th,
   Thead,
   Tr,
-  useBreakpointValue
+  useBreakpointValue,
+  Text,
+  Checkbox
 } from "@chakra-ui/react";
 import { Header } from "../../../components/Header";
 import { Sidebar } from "../../../components/Sidebar";
@@ -39,7 +41,7 @@ export default function Busca() {
   const [result, setResult] = useState([]);
 
   const [search, setSearch] = useState(result);
-
+  const [cautelaFechada, setCautelaFechada] = useState(Boolean);
   let [militar, setMilitar] = useState("");
   let [material, setMaterial] = useState("");
 
@@ -53,7 +55,7 @@ export default function Busca() {
   );
   useEffect(() => {
     if (militar == "" && material == "") {
-      return setSearch(result);
+      return setSearch(result.filter(res => cautelaFechada ? res.status === 'inativo' : result));
     } else {
       return setSearch(
         result.filter(res => material ? res.material.nome.toLowerCase().includes(material.toLowerCase()) : result).filter(
@@ -61,10 +63,10 @@ export default function Busca() {
             res.cautelou.nome_guerra
               .toLowerCase()
               .includes(militar.toLowerCase())
-        )
+        ).filter(res => cautelaFechada ? res.status === 'inativo' : result)
       );
     }
-  }, [militar, material, result]);
+  }, [militar, material, result, cautelaFechada]);
 
   const isWideVersion = useBreakpointValue({
     base: false,
@@ -125,6 +127,12 @@ export default function Busca() {
               <Heading fontSize="2xl" my="4">
                 Cautelas {isLoading ? <Spinner ml={8} /> : ""} <IconButton bg='blue.700' float='right' _hover={{ bgColor: 'blue.900'}} onClick={() => refetch()} aria-label="Atualizar tabela" icon={<SlRefresh />} />
               </Heading>
+              <Flex bg='gray.990' p='2' rounded='2xl' boxShadow='lg'>
+                <Text mr={4}>Filtros:</Text>
+                  <Checkbox size='lg' colorScheme='blue' onChange={(e) => setCautelaFechada(e.target.checked)}>
+                    Fechada?
+                  </Checkbox>
+                  </Flex>
               <TableContainer>
                 <Table size="sm" colorScheme="whiteAlpha">
                   <Thead>

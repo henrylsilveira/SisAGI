@@ -19,7 +19,9 @@ import {
   Th,
   Thead,
   Tr,
-  useBreakpointValue
+  Checkbox,
+  useBreakpointValue,
+  Text
 } from "@chakra-ui/react";
 import { Header } from "../../../components/Header";
 import { Sidebar } from "../../../components/Sidebar";
@@ -29,44 +31,44 @@ import { useEffect, useState } from "react";
 import { convertDate } from "../../../utils/scripts";
 import { BsSearch } from "react-icons/bs";
 import { BiLock } from "react-icons/bi";
-import { ModalValidate } from "../../../components/Modal/Material/ModalValidate";
 import { SlRefresh } from "react-icons/sl";
-import { Cautela } from "../../../@types/types";
-import { ModalEncerrarCautela } from "../../../components/Modal/Material/ModalEncerrarCautela";
+import { Cautela, CautelaArmamento } from "../../../@types/types";
+import { ModalValidate } from "../../../components/Modal/Armamento/ModalValidate";
+import { ModalEncerrarCautela } from "../../../components/Modal/Armamento/ModalEncerrarCautela";
 import Head from "next/head";
 import { useSession } from "next-auth/react";
 
 export default function BuscaArmamento() {
   const { data: session } = useSession()
-  console.log(session)
+
   const [result, setResult] = useState([]);
+  const [cautelaFechada, setCautelaFechada] = useState(Boolean);
   const [search, setSearch] = useState(result);
   let [militar, setMilitar] = useState("");
-  let [material, setMaterial] = useState("");
+  let [armamento, setArmamento] = useState("");
 
   const { isLoading, error, data, isFetching, refetch } = useQuery(
-    ["todasCautelas"],
+    ["todasCautelasArmamento"],
     async () => {
-      const result = await api.get("/cautela");
+      const result = await api.get("/armamento/cautela");
       setResult(result.data as Cautela);
       return result.data;
     }
   );
   useEffect(() => {
-    if (militar == "" && material == "") {
-      return setSearch(result);
+    if (militar == "" && armamento == "") {
+      return setSearch(result.filter(res => cautelaFechada ? res.status === 'inativo' : result));
     } else {
       return setSearch(
-        result.filter(
+        result.filter(res => armamento ? res.armamento.nome.toLowerCase().includes(armamento.toLowerCase()) : result).filter(
           (res) =>
             res.cautelou.nome_guerra
               .toLowerCase()
               .includes(militar.toLowerCase())
-          // || res.material.nome.toLowerCase().includes(material.toLowerCase())
-        )
+        ).filter(res => cautelaFechada ? res.status === 'inativo' : result)
       );
     }
-  }, [militar, material, result]);
+  }, [militar, armamento, result, cautelaFechada]);
 
   const isWideVersion = useBreakpointValue({
     base: false,
@@ -97,7 +99,7 @@ export default function BuscaArmamento() {
                   <Flex alignItems="center">
                     <BsSearch size={25} />
                     <Flex px={4}>
-                    Buscar cautela
+                    Buscar cautela de armamento
                     </Flex>
                   </Flex>
                 </Heading>
@@ -112,10 +114,10 @@ export default function BuscaArmamento() {
                     <FormHelperText>Filtre a busca pelo nome</FormHelperText>
                   </FormControl>
                   <FormControl>
-                    <FormLabel>Material</FormLabel>
+                    <FormLabel>Armamento</FormLabel>
                     <Input
-                      value={material}
-                      onChange={(e) => setMaterial(e.target.value)}
+                      value={armamento}
+                      onChange={(e) => setArmamento(e.target.value)}
                       type="text"
                     />
                     <FormHelperText>
@@ -125,17 +127,25 @@ export default function BuscaArmamento() {
                 </Flex>
               </Flex>
               <Heading fontSize="2xl" my="4">
-                Cautelas {isLoading ? <Spinner ml={8} /> : ""} <IconButton bg='blue.700' float='right' _hover={{ bgColor: 'blue.900'}} onClick={() => refetch()} aria-label="Atualizar tabela" icon={<SlRefresh />} />
+                Cautelas {isLoading ? <Spinner ml={8} /> : ""}
+               
+                 <IconButton bg='blue.700' float='right' _hover={{ bgColor: 'blue.900'}} onClick={() => refetch()} aria-label="Atualizar tabela" icon={<SlRefresh />} />
               </Heading>
+              <Flex bg='gray.990' p='2' rounded='2xl' boxShadow='lg'>
+                <Text mr={4}>Filtros:</Text>
+                  <Checkbox size='lg' colorScheme='blue' onChange={(e) => setCautelaFechada(e.target.checked)}>
+                    Fechada?
+                  </Checkbox>
+                  </Flex>
               <TableContainer>
                 <Table size="sm" colorScheme="whiteAlpha">
                   <Thead>
                     <Tr>
                       {isWideVersion && (
-                        <Th textAlign="center">Data de cadastro</Th>
+                        <Th textAlign="center">Data de cautela</Th>
                       )}
                       <Th textAlign="center">Local</Th>
-                      <Th textAlign="center">Material</Th>
+                      <Th textAlign="center">Armamento</Th>
                       <Th textAlign="center">Resp Cautela</Th>
                       <Th textAlign="center">Cautelou</Th>
                       <Th textAlign="center">Validado</Th>
@@ -143,13 +153,13 @@ export default function BuscaArmamento() {
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {search.map((res) => (
+                    {search.map((res: CautelaArmamento) => (
                       <Tr key={res.id}>
                         <Td textAlign="center">
                           {convertDate(res.data_cautela)}
                         </Td>
                         <Td textAlign="center">{res.local}</Td>
-                        <Td textAlign="center">{res.material?.nome}</Td>
+                        <Td textAlign="center">{res.armamento?.nome}</Td>
                         <Td textAlign="center">{res.resp_cautela}</Td>
                         <Td textAlign="center">{res.cautelou?.nome_guerra}</Td>
                         <Td justifyItems="center">
@@ -158,7 +168,6 @@ export default function BuscaArmamento() {
                               <BiLock size={24} color="#00AA00" />
                             </Circle>
                           ) : (                           
-                            
                               <ModalValidate data={res} />
                           )}
                         </Td>
@@ -178,10 +187,11 @@ export default function BuscaArmamento() {
                         <Th textAlign="center">Data de cadastro</Th>
                       )}
                       <Th textAlign="center">Local</Th>
-                      <Th textAlign="center">Material</Th>
+                      <Th textAlign="center">Armamento</Th>
                       <Th textAlign="center">Resp Cautela</Th>
                       <Th textAlign="center">Cautelou</Th>
                       <Th textAlign="center">Validado</Th>
+                      <Th></Th>
                     </Tr>
                   </Tfoot>
                 </Table>

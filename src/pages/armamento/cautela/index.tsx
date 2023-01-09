@@ -1,5 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import {
+  Checkbox,
   Accordion,
   AccordionButton,
   AccordionIcon,

@@ -1,3 +1,4 @@
+
 export interface Militar {
   result?: Militar,
   token?: string
@@ -59,4 +60,23 @@ export type Cautela = {
 
 interface CautelaProps {
   Cautelas: Cautela[];
+}
+
+export type CautelaArmamento = {
+  id: string;
+  data_cautela: string;
+  observacao?: string;
+  local: string;
+  validado: boolean;
+  resp_cautela: string;
+  status: string;
+  data_fechamento_cautela: string;
+  cautelouId: string;
+  armamentoId: string;
+  cautelou: Militar;
+  armamento: Armamento;
+};
+
+export interface CautelaArmamentoProps {
+  CautelasArmamento: CautelaArmamento[];
 }
