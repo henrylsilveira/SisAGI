@@ -34,12 +34,13 @@ import { SlRefresh } from "react-icons/sl";
 import { Cautela } from "../../../@types/types";
 import { ModalEncerrarCautela } from "../../../components/Modal/Material/ModalEncerrarCautela";
 import Head from "next/head";
+import { useSession } from "next-auth/react";
 
 export default function BuscaArmamento() {
+  const { data: session } = useSession()
+  console.log(session)
   const [result, setResult] = useState([]);
-
   const [search, setSearch] = useState(result);
-
   let [militar, setMilitar] = useState("");
   let [material, setMaterial] = useState("");
 
