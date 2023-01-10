@@ -194,7 +194,7 @@ export default function Cadastro() {
                       label="Local"
                       type="text"
                       name="local"
-                      isDisabled
+                      isReadOnly
                       value={session.militar.local}
                       error={errors.local}
                       {...register("local")}

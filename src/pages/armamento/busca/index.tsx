@@ -21,7 +21,14 @@ import {
   Tr,
   Checkbox,
   useBreakpointValue,
-  Text
+  Text,
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
+  Tag,
+  TagLabel
 } from "@chakra-ui/react";
 import { Header } from "../../../components/Header";
 import { Sidebar } from "../../../components/Sidebar";
@@ -29,10 +36,10 @@ import { useQuery } from "react-query";
 import { api } from "../../../services/api";
 import { useEffect, useState } from "react";
 import { convertDate } from "../../../utils/scripts";
-import { BsSearch } from "react-icons/bs";
+import { BsBoxArrowUp, BsSearch } from "react-icons/bs";
 import { BiLock } from "react-icons/bi";
 import { SlRefresh } from "react-icons/sl";
-import { Cautela, CautelaArmamento } from "../../../@types/types";
+import { Armamento, CautelaArmamento, CautelaArmamentoArray } from "../../../@types/types";
 import { ModalValidate } from "../../../components/Modal/Armamento/ModalValidate";
 import { ModalEncerrarCautela } from "../../../components/Modal/Armamento/ModalEncerrarCautela";
 import Head from "next/head";
@@ -42,6 +49,7 @@ export default function BuscaArmamento() {
   const { data: session } = useSession()
 
   const [result, setResult] = useState([]);
+  const [nomeArmamentos, setNomeArmamentos] = useState([]);
   const [cautelaFechada, setCautelaFechada] = useState(Boolean);
   const [search, setSearch] = useState(result);
   let [militar, setMilitar] = useState("");
@@ -51,13 +59,20 @@ export default function BuscaArmamento() {
     ["todasCautelasArmamento"],
     async () => {
       const result = await api.get("/armamento/cautela");
-      setResult(result.data as Cautela);
+      var data = [] // CONJUNTO DE INSTRUCAO FILTRA OS NOME DE TODOS ARMAMENTOS NO BANCO E TIRA OS REPETIDOS
+      result.data.map((el: CautelaArmamento) => { return data.push( el.local === session.militar.local ? el.armamento.nome : null) })
+      const filtered = Array.from(new Set(data)).filter(function (res) {
+        return res != null;
+      });
+      console.log(filtered)
+      setNomeArmamentos(filtered)
+      setResult(result.data as CautelaArmamentoArray);
       return result.data;
     }
   );
   useEffect(() => {
     if (militar == "" && armamento == "") {
-      return setSearch(result.filter(res => cautelaFechada ? res.status === 'inativo' : result));
+      return setSearch(result.filter(res => cautelaFechada ? res : res.status === 'ativo'));
     } else {
       return setSearch(
         result.filter(res => armamento ? res.armamento.nome.toLowerCase().includes(armamento.toLowerCase()) : result).filter(
@@ -65,7 +80,7 @@ export default function BuscaArmamento() {
             res.cautelou.nome_guerra
               .toLowerCase()
               .includes(militar.toLowerCase())
-        ).filter(res => cautelaFechada ? res.status === 'inativo' : result)
+        ).filter(res => cautelaFechada ? res : res.status === 'ativo')
       );
     }
   }, [militar, armamento, result, cautelaFechada]);
@@ -93,11 +108,54 @@ export default function BuscaArmamento() {
             minChildWidth="320px"
             alignItems="flex-start"
           >
+            
             <Box p={["6", "8"]} bg="gray.800" borderRadius={8} pb="4">
               <Flex direction="column">
-                <Heading fontSize="2xl" mb="4">
+                <Heading size='lg'>
+                  Armamentos Cautelados
+                </Heading>
+              <Accordion bg='gray.800' border='1px' borderColor='gray.600' rounded='2xl' boxShadow='lg' my='5'>
+                  {nomeArmamentos.map((arm, index) => (
+                    <AccordionItem key={index} borderTop='0' borderBottom='0' >
+                      <h2>
+                        <AccordionButton bg='blue.700' _hover={{ bg: 'blue.800'}} rounded='2xl' border='1px' borderColor='blackAlpha.500'>
+                          <Box as="span" flex="1" textAlign="left">
+                            {arm}
+                            <Tag ml='4' fontSize='md' fontWeight='black' color='black'>
+                              {data.filter(arma => arma.armamento.nome === arm && arma.status === 'ativo').length}
+                            </Tag>
+                          </Box>
+                          <AccordionIcon />
+                        </AccordionButton>
+                      </h2>
+                      <AccordionPanel pb={4}>
+                        {data
+                        .filter((el: CautelaArmamento) => { return el.status === 'ativo'})
+                        .filter((el: CautelaArmamento) => { return el.local === session.militar.local})
+                        .filter((elem: CautelaArmamento) => { return elem.armamento.nome === arm })
+                        .map((cautela: CautelaArmamento, index) => (
+                          <Tag
+                          boxShadow='md'
+                            size='lg'
+                            key={index}
+                            borderRadius='full'
+                            variant='solid'
+                            colorScheme={cautela.status === 'ativo' ? 'green' : 'red'}
+                            mr={4}
+                          >
+                            <TagLabel pr={2}>{cautela.armamento.nome} - {cautela.cautelou.nome_guerra} - Nr {cautela.armamento.nr_serie} { cautela.armamento.cabide ? ' - ' + cautela.armamento.cabide : ''}</TagLabel>
+                            <BsBoxArrowUp />
+                          </Tag>
+                        ))}
+
+                      </AccordionPanel>
+                    </AccordionItem>
+                  ))}
+
+                </Accordion>
+                <Heading fontSize="lg" mb="4">
                   <Flex alignItems="center">
-                    <BsSearch size={25} />
+                    <BsSearch size={20} />
                     <Flex px={4}>
                     Buscar cautela de armamento
                     </Flex>
@@ -126,7 +184,7 @@ export default function BuscaArmamento() {
                   </FormControl>
                 </Flex>
               </Flex>
-              <Heading fontSize="2xl" my="4">
+              <Heading size='lg' my="4">
                 Cautelas {isLoading ? <Spinner ml={8} /> : ""}
                
                  <IconButton bg='blue.700' float='right' _hover={{ bgColor: 'blue.900'}} onClick={() => refetch()} aria-label="Atualizar tabela" icon={<SlRefresh />} />

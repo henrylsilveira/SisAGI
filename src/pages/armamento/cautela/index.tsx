@@ -48,7 +48,7 @@ import { TiInfoLarge } from "react-icons/ti";
 import { BsBoxArrowRight, BsBoxArrowUp } from "react-icons/bs";
 import { ModalCautela } from "../../../components/Modal/Material/ModalCautela";
 import Head from "next/head";
-import { Armamento } from "../../../@types/types";
+import { Armamento } from '../../../@types/types';
 import { useSession } from "next-auth/react";
 
 export default function CautelaArmamento() {
@@ -117,6 +117,9 @@ export default function CautelaArmamento() {
                           <Box as="span" flex="1" textAlign="left">
                             {arm}
                           </Box>
+                          <Tag ml='4' fontSize='md' fontWeight='black' color='black'>
+                              {data.data.filter((arma: Armamento) => arma.nome === arm && arma.local === session.militar.local).length}
+                            </Tag>
                           <AccordionIcon />
                         </AccordionButton>
                       </h2>

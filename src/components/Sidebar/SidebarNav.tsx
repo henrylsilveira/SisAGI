@@ -8,6 +8,9 @@ import {
 import {
   GiTrade
 } from "react-icons/gi";
+import {
+  FaPeopleCarry
+} from "react-icons/fa";
 import { NavLink } from "./NavLink";
 import { NavSection } from "./NavSection";
 
@@ -28,7 +31,7 @@ export function SidebarNav() {
       <NavSection title="ARMAMENTO">
         <NavLink href="/armamento/geral" icon={RiDashboardLine}>Geral</NavLink>
         <NavLink href="/armamento/cadastro" icon={RiDraftLine}>Cadastrar</NavLink>
-        <NavLink href="/armamento/armamentoMilitar" icon={RiDraftLine}>Armamento/Militar</NavLink>
+        <NavLink href="/armamento/armamentoMilitar" icon={FaPeopleCarry}>Armamento/Militar</NavLink>
         <NavLink href="/armamento/cautela" icon={GiTrade}>Cautelar</NavLink>
         <NavLink href="/armamento/busca" icon={RiSearchLine}>Buscar</NavLink>
       </NavSection>

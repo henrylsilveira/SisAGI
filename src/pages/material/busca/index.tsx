@@ -55,7 +55,7 @@ export default function Busca() {
   );
   useEffect(() => {
     if (militar == "" && material == "") {
-      return setSearch(result.filter(res => cautelaFechada ? res.status === 'inativo' : result));
+      return setSearch(result.filter(res => cautelaFechada ? res : res.status === 'ativo'));
     } else {
       return setSearch(
         result.filter(res => material ? res.material.nome.toLowerCase().includes(material.toLowerCase()) : result).filter(
@@ -63,7 +63,7 @@ export default function Busca() {
             res.cautelou.nome_guerra
               .toLowerCase()
               .includes(militar.toLowerCase())
-        ).filter(res => cautelaFechada ? res.status === 'inativo' : result)
+        ).filter(res => cautelaFechada ? res : res.status === 'ativo')
       );
     }
   }, [militar, material, result, cautelaFechada]);

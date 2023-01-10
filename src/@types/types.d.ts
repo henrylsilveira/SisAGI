@@ -1,9 +1,3 @@
-
-export interface Militar {
-  result?: Militar,
-  token?: string
-}
-
 export interface Militar {
   id: string;
   identidade: string;
@@ -12,6 +6,7 @@ export interface Militar {
   senha: string;
   permissao: string;
   local?: string;
+  pelotao?: string;
   funcao_local: string;
   status: string;
   cautelas?: [];
@@ -77,6 +72,4 @@ export type CautelaArmamento = {
   armamento: Armamento;
 };
 
-export interface CautelaArmamentoProps {
-  CautelasArmamento: CautelaArmamento[];
-}
+export type CautelaArmamentoArray = CautelaArmamento[]

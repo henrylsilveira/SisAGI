@@ -190,8 +190,8 @@ export default function Cadastro() {
                         <Td textAlign="center">
                           <FormControl>
                             <Input
-                              value={session?.militar.local}
-                              isDisabled
+                              value={session.militar.local}
+                              isReadOnly
                               size="sm"
                               rounded="lg"
                               name="subUnidade"
@@ -321,13 +321,4 @@ export default function Cadastro() {
       </Flex>
     </Flex>
   );
-}
-function toast(arg0: {
-  title: string;
-  description: string;
-  status: string;
-  duration: number;
-  isClosable: boolean;
-}) {
-  throw new Error("Function not implemented.");
 }
