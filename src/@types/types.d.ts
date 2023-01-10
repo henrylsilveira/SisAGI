@@ -3,6 +3,8 @@ export interface Militar {
   identidade: string;
   nome_completo: string;
   nome_guerra: string;
+  longitude?: string;
+  latitude?: string;
   senha: string;
   permissao: string;
   local?: string;
@@ -13,6 +15,8 @@ export interface Militar {
   Session?: [];
   CautelaArmamento?: [];
 }
+
+export type MilitarArray = Militar[]
 
 export interface Material {
   id: string;
@@ -33,6 +37,7 @@ export interface Armamento {
   tipo?: number;
   emprego?: string;
   condicoes?: string;
+  statusCautela: 'disponivel' | 'cautelado';
   status: 'disponivel' | 'indisponivel';
   local: string;
   cabide?: string;
@@ -73,3 +78,13 @@ export type CautelaArmamento = {
 };
 
 export type CautelaArmamentoArray = CautelaArmamento[]
+
+export type Manutencao = {
+  id: string;
+  tipoManutencao: string;
+  dataManutencao: string;
+  armamentoId: string;
+  armamento: Armamento;
+};
+
+export type ManutencaoArray = Manutencao[]

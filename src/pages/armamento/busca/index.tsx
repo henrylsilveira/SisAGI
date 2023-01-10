@@ -64,7 +64,6 @@ export default function BuscaArmamento() {
       const filtered = Array.from(new Set(data)).filter(function (res) {
         return res != null;
       });
-      console.log(filtered)
       setNomeArmamentos(filtered)
       setResult(result.data as CautelaArmamentoArray);
       return result.data;
@@ -166,6 +165,7 @@ export default function BuscaArmamento() {
                     <FormLabel>Militar</FormLabel>
                     <Input
                       value={militar}
+                      borderColor='gray.700'
                       onChange={(e) => setMilitar(e.target.value)}
                       type="text"
                     />
@@ -175,6 +175,7 @@ export default function BuscaArmamento() {
                     <FormLabel>Armamento</FormLabel>
                     <Input
                       value={armamento}
+                      borderColor='gray.700'
                       onChange={(e) => setArmamento(e.target.value)}
                       type="text"
                     />
@@ -190,7 +191,7 @@ export default function BuscaArmamento() {
                  <IconButton bg='blue.700' float='right' _hover={{ bgColor: 'blue.900'}} onClick={() => refetch()} aria-label="Atualizar tabela" icon={<SlRefresh />} />
               </Heading>
               <Flex bg='gray.990' p='2' rounded='2xl' boxShadow='lg'>
-                <Text mr={4}>Filtros:</Text>
+                <Text mr={4}>Filtro:</Text>
                   <Checkbox size='lg' colorScheme='blue' onChange={(e) => setCautelaFechada(e.target.checked)}>
                     Fechada?
                   </Checkbox>

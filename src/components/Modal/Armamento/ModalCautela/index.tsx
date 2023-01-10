@@ -22,16 +22,22 @@ import {
 import React, { FormEvent, useContext, useState } from "react";
 import { Input } from "../../../Form/Input";
 import { api } from "../../../../services/api";
-import { BsBoxArrowRight } from "react-icons/bs";
-import { Militar } from '../../../../@types/types';
+import { BsBoxArrowRight, BsBoxArrowUp } from "react-icons/bs";
+import { Militar, Armamento, MilitarArray } from '../../../../@types/types';
 import { useSession } from 'next-auth/react';
 
-export function ModalCautela({ data: militares,  dataMaterial: material}) {
+interface ModalCautelaProps {
+  data: any;
+  dataArmamento: Armamento;
+  adapter: boolean;
+}
+
+export function ModalCautela({ data: militares,  dataArmamento: armamento, adapter }: ModalCautelaProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { data: session } = useSession()
   const toast = useToast();
-
-  const [senha, setSenha] = useState(" ");
+  const [senha, setSenha] = useState("");
+  const [observacao, setObservacao] = useState("");
   const [militar, setMilitar] = useState("");
   const finalRef = React.useRef(null);
 
@@ -40,15 +46,15 @@ export function ModalCautela({ data: militares,  dataMaterial: material}) {
 
     const values = {
     militarNome: session.militar.nome_guerra, //NOME DO MILITAR COM A SESSÃO
-    materialId: material.id,
-    observacao: 'ALGUMA COISA',
-    local: material.local,
+    armamentoId: armamento.id,
     cautelouId: militar,
+    observacao,
+    local: armamento.local,
     senha
     }
 
     try {
-      const result = await api.post("/cautela/create", values);
+      const result = await api.post("/armamento/cautela/create", values);
       if (result.status === 201) {
         toast({
           title: "Cautela",
@@ -82,16 +88,28 @@ export function ModalCautela({ data: militares,  dataMaterial: material}) {
 
   return (
     <>
-      <Button
+    {adapter ? (<Button
+        bg="green.800"
+        size="xs"
+        rounded='full'
+        _hover={{ bgColor: "green.900" }}
+        boxShadow='base'
+        onClick={onOpen}
+        py="1"
+      >
+        <Icon boxSize={4} as={BsBoxArrowUp} />
+      </Button>) : (<Button
         bg="green.400"
         size="xs"
         _hover={{ bgColor: "green.600" }}
+        boxShadow='base'
         onClick={onOpen}
         py="1"
       >
         <Icon boxSize={4} as={BsBoxArrowRight} pr={1} />
         Cautelar
-      </Button>
+      </Button>)}
+      
       <Modal finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
@@ -105,16 +123,14 @@ export function ModalCautela({ data: militares,  dataMaterial: material}) {
           <ModalBody bg="gray.800">
             <Stack pb={4}>
                 <Flex justifyContent='space-between'>
-                    <Text>Nome: {material.nome}</Text>
-                    <Text>Condição: {material.condicoes}</Text>
-
+                    <Text>Nome: {armamento.nome}</Text>
+                <Text>Nr de Série: {armamento.nr_serie}</Text>
                 </Flex>
-
                 <Flex justifyContent='space-between'>
-                    <Text>Dependência: {material.dependencia}</Text>
-                    <Text>SU: {material.sub_unidade}</Text>
+                    <Text>SU: {armamento.local}</Text>
+                    <Text>Situação: {armamento.status}</Text>
                 </Flex>
-                <Text>Categoria: {material.categoria}</Text>
+                    <Text>Condição: {armamento.condicoes}</Text>
             </Stack>
             <Divider />
             <FormControl py={4}>
@@ -132,10 +148,24 @@ export function ModalCautela({ data: militares,  dataMaterial: material}) {
                 onChange={(e) => setMilitar(e.target.value)}
               >
                 <option value=''>Selecione</option>
-                {militares.data?.map((militar: Militar) => (
+                {militares?.data.map((militar: Militar) => (
                   <option key={militar.id} value={militar.id} >{militar.nome_guerra}</option>
                 ))}
               </Input>
+            </FormControl>
+            <FormControl my={2}>
+              <Input
+              as='textarea'
+                name="observacao"
+                isRequired
+                value={observacao}
+                label="Observacao"
+                type="text"
+                onChange={(e) => setObservacao(e.target.value)}
+              />
+              <FormHelperText>
+                S/A ou descreva a alteração.
+              </FormHelperText>
             </FormControl>
             <FormControl>
               <Input
@@ -146,7 +176,10 @@ export function ModalCautela({ data: militares,  dataMaterial: material}) {
                 onChange={(e) => setSenha(e.target.value)}
               />
               <FormHelperText>
-                Senha do militar que está cautelando
+                Senha do militar que está cautelando.
+              </FormHelperText>
+              <FormHelperText color='yellow.500'>
+                *Deixe em branco a senha para cautelar sem validação.
               </FormHelperText>
             </FormControl>
           </ModalBody>

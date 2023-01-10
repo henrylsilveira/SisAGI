@@ -4,7 +4,8 @@ import {
   Stack,
   Image,
   Heading,
-  useToast
+  useToast,
+  Text
 } from "@chakra-ui/react";
 import { Input } from "../components/Form/Input";
 import { useForm } from 'react-hook-form';
@@ -83,7 +84,8 @@ export default function Home() {
         >
           <Stack spacing={4}>
             <Flex align="center" justify="center" flexDir='column'>
-              <Heading as='h1' size='2xl' pb={4}>SisCau</Heading>
+              <Heading as='h1' size='2xl' pb={4}>SisAGI</Heading>
+              <Text fontSize={['sm','md','lg']}>Sistema de Apoio a Gestão Interna</Text>
               <Heading as='h2' size='md'>Cmdo Fron RN / 5 BIS</Heading>
             </Flex>
 

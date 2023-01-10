@@ -45,8 +45,8 @@ import { useState } from "react";
 
 import { SlRefresh } from "react-icons/sl";
 import { TiInfoLarge } from "react-icons/ti";
-import { BsBoxArrowRight, BsBoxArrowUp } from "react-icons/bs";
-import { ModalCautela } from "../../../components/Modal/Material/ModalCautela";
+import { BsBoxArrowUp } from "react-icons/bs";
+import { ModalCautela } from "../../../components/Modal/Armamento/ModalCautela";
 import Head from "next/head";
 import { Armamento } from '../../../@types/types';
 import { useSession } from "next-auth/react";
@@ -110,7 +110,7 @@ export default function CautelaArmamento() {
                 </Heading>
 
                 <Accordion bg='gray.800' border='1px' borderColor='gray.600' rounded='2xl' boxShadow='lg' >
-                  {nomeArmamentos.map((arm, index) => (
+                  {nomeArmamentos?.map((arm, index) => (
                     <AccordionItem key={index} borderTop='0' borderBottom='0' >
                       <h2>
                         <AccordionButton bg='blue.700' _hover={{ bg: 'blue.800'}} rounded='2xl' border='1px' borderColor='blackAlpha.500'>
@@ -135,7 +135,7 @@ export default function CautelaArmamento() {
                             mr={4}
                           >
                             <TagLabel pr={2}>{arma.nome} - Nr {arma.nr_serie} { arma.cabide ? ' - ' + arma.cabide : ''}</TagLabel>
-                            <BsBoxArrowUp />
+                            <ModalCautela data={militares} dataArmamento={arma} adapter={true} />
                           </Tag>
                         ))}
 
@@ -199,7 +199,7 @@ export default function CautelaArmamento() {
                             <Td textAlign="center">{res.local}</Td>
                             <Td textAlign="center">{res.status !== 'disponivel' ? <Badge variant='outline' colorScheme='red'>{res.status}</Badge> : <Badge variant='outline' colorScheme='green'>{res.status}</Badge>}</Td>
                             <Td>
-                              <ModalCautela data={militares} dataMaterial={res} />
+                              <ModalCautela data={militares} dataArmamento={res} adapter={false} />
                             </Td>
                           </Tr>
                         ))}
