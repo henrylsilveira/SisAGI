@@ -6,7 +6,9 @@ import {
   RiSearchLine,
 } from "react-icons/ri";
 import {
-  GiTrade
+  GiTrade,
+  GiAmmoBox,
+  GiOilDrum
 } from "react-icons/gi";
 import {
   FaTools
@@ -35,13 +37,14 @@ export function SidebarNav() {
         <NavLink href="/armamento/geral" icon={RiDashboardLine}>Geral</NavLink>
         <NavLink href="/armamento/cadastro" icon={RiDraftLine}>Cadastrar</NavLink>
         <NavLink href="/armamento/manutencao" icon={FaTools}>Manutenção</NavLink>
-        <NavLink href="/armamento/armamentoMilitar" icon={FaPeopleCarry}>Armamento/Militar</NavLink>
+        <NavLink href="/armamento/vinculos" icon={FaPeopleCarry}>Vínculos</NavLink>
         <NavLink href="/armamento/cautela" icon={GiTrade}>Cautelar</NavLink>
         <NavLink href="/armamento/busca" icon={RiSearchLine}>Buscar</NavLink>
       </NavSection>
       <NavSection title="MUNIÇÃO / COMBUSTÍVEL">
         <NavLink href="/furriel/geral" icon={RiDashboardLine}>Geral</NavLink>
-        <NavLink href="/furriel/cadastro" icon={RiDraftLine}>Cadastrar</NavLink>
+        <NavLink href="/furriel/municao" icon={GiAmmoBox}>Munição</NavLink>
+        <NavLink href="/furriel/combustivel" icon={GiOilDrum}>Combustível</NavLink>
       </NavSection>
     </Stack>
   );

@@ -55,9 +55,8 @@ export default function CautelaArmamento() {
   const { data: session } = useSession()
   const [nomeArmamentos, setNomeArmamentos] = useState([]);
   const [militares, setMilitares] = useState({});
-  const toast = useToast();
 
-  const { isLoading: militarLoading, data: militarData } = useQuery(
+  useQuery(
     ["todosMilitares"],
     async () => {
       const result = await api.get("/militar");
@@ -70,7 +69,7 @@ export default function CautelaArmamento() {
     async () => {
       const result = await api.get("/armamentos");
       var data = [] // CONJUNTO DE INSTRUCAO FILTRA OS NOME DE TODOS ARMAMENTOS NO BANCO E TIRA OS REPETIDOS
-      result.data.map((el: Armamento) => { return data.push( el.local === session.militar.local ? el.nome : null) })
+      result.data.map((el: Armamento) => { return data.push( el.companhia === session.militar.companhia ? el.nome : null) })
       const filtered = Array.from(new Set(data)).filter(function (res) {
         return res != null;
       });
@@ -118,13 +117,13 @@ export default function CautelaArmamento() {
                             {arm}
                           </Box>
                           <Tag ml='4' fontSize='md' fontWeight='black' color='black'>
-                              {data.data.filter((arma: Armamento) => arma.nome === arm && arma.local === session.militar.local).length}
+                              {data.data.filter((arma: Armamento) => arma.nome === arm && arma.companhia === session.militar.companhia).length}
                             </Tag>
                           <AccordionIcon />
                         </AccordionButton>
                       </h2>
                       <AccordionPanel pb={4}>
-                        {data?.data.filter((el) => { return el.local === session.militar.local}).filter((elem) => { return elem.nome === arm }).map((arma: Armamento, index) => (
+                        {data?.data.filter((el) => { return el.companhia === session.militar.companhia}).filter((elem) => { return elem.nome === arm }).map((arma: Armamento, index) => (
                           <Tag
                           boxShadow='md'
                             size='lg'
@@ -155,13 +154,13 @@ export default function CautelaArmamento() {
                           <Th textAlign="center">Nr de série</Th>
                           <Th textAlign="center">Cabide</Th>
                           <Th textAlign="center">Condições</Th>
-                          <Th textAlign="center">Local</Th>
+                          <Th textAlign="center">Cocal</Th>
                           <Th textAlign="center">Status</Th>
                           <Th></Th>
                         </Tr>
                       </Thead>
                       <Tbody>
-                        {data?.data.filter((el) => { return el.local === session.militar.local}).map((res: Armamento) => (
+                        {data?.data.filter((el) => { return el.companhia === session.militar.companhia}).map((res: Armamento) => (
                           <Tr key={res.id}>
                             <Td textAlign="center">{res.nome}</Td>
                             <Td textAlign="center">{res.nr_serie}</Td>
@@ -196,7 +195,7 @@ export default function CautelaArmamento() {
                                 </PopoverContent>
                               </Popover>
                             </Td>
-                            <Td textAlign="center">{res.local}</Td>
+                            <Td textAlign="center">{res.companhia}</Td>
                             <Td textAlign="center">{res.status !== 'disponivel' ? <Badge variant='outline' colorScheme='red'>{res.status}</Badge> : <Badge variant='outline' colorScheme='green'>{res.status}</Badge>}</Td>
                             <Td>
                               <ModalCautela data={militares} dataArmamento={res} adapter={false} />
@@ -209,7 +208,7 @@ export default function CautelaArmamento() {
                         <Th textAlign="center">Nome</Th>
                           <Th textAlign="center">Nr de série</Th>
                           <Th textAlign="center">Condições</Th>
-                          <Th textAlign="center">Local</Th>
+                          <Th textAlign="center">Companhia</Th>
                           <Th textAlign="center">Status</Th>
                           <Th></Th>
                         </Tr>

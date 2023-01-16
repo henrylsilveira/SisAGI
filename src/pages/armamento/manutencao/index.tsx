@@ -31,10 +31,11 @@ import { useState } from "react";
 import { useQuery } from "react-query";
 import { SlRefresh } from "react-icons/sl";
 import { convertDate } from "../../../utils/scripts";
+import Head from "next/head";
   
   const signInFormSchema = yup.object().shape({
     tipoManutencao: yup.string().required("Obrigatório."),
-    dataManutencao: yup.date().required("Obrigatório."),
+    dataManutencao: yup.string().required("Obrigatório."),
     armamentoId: yup.string().required("Obrigatório."),
   });
   
@@ -49,7 +50,7 @@ import { convertDate } from "../../../utils/scripts";
         async () => {
           const result = await api.get("/armamentos");
           var data = [] // CONJUNTO DE INSTRUCAO FILTRA OS NOME DE TODOS ARMAMENTOS NO BANCO E TIRA OS REPETIDOS
-          result.data.map((el: Armamento) => { return data.push( el.local === session.militar.local ? el.nome : null) })
+          result.data.map((el: Armamento) => { return data.push( el.companhia === session.militar.companhia ? el.nome : null) })
           const filtered = Array.from(new Set(data)).filter(function (res) {
             return res != null;
           });
@@ -86,6 +87,7 @@ import { convertDate } from "../../../utils/scripts";
             duration: 2000,
             isClosable: true,
           });
+          refetch()
         }
       } catch (error) {
         toast({
@@ -99,7 +101,11 @@ import { convertDate } from "../../../utils/scripts";
     };
   
     return (
-      <Flex direction="column" h="100vh">
+        <>
+        <Head>
+            <title>SisAGI | Armamento - Manutenção</title>
+        </Head>
+        <Flex direction="column" h="100vh">
         <Header />
   
         <Flex w="100%" my={6} maxWidth={1480} mx="auto" px="6">
@@ -139,7 +145,7 @@ import { convertDate } from "../../../utils/scripts";
                         rounded="lg"
                         label="Data"
                         isReadOnly
-                        value={convertDate(Date.now())}
+                        value={convertDate( Date.now())}
                         name="dataManutencao"
                         type="text"
                         error={errors.dataManutencao}
@@ -239,6 +245,8 @@ import { convertDate } from "../../../utils/scripts";
           </Flex>
         </Flex>
       </Flex>
+        </>
+      
     );
   }
   

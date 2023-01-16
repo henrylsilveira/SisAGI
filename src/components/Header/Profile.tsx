@@ -7,12 +7,12 @@ interface ProfileProps {
 
 export function Profile({ showProfileData = true }: ProfileProps) {
   const { data: session } = useSession()
-
   return (
     <Flex align="center">
       {showProfileData && (
         <>
-          <Flex mr="4" textAlign="right" flexDirection='column' alignItems='end'>
+          <Flex mr="4" textAlign="right" flexDirection='column' alignItems='end' borderLeftWidth={1} pl={6}
+      borderColor="gray.700">
             <Text>{session?.militar.nome_completo}</Text>
 
 
@@ -24,7 +24,7 @@ export function Profile({ showProfileData = true }: ProfileProps) {
                 my='0.5'
                 alignItems='center'
               >
-                <TagLabel fontWeight='bold'>{session?.militar.nome_guerra}</TagLabel>
+                <TagLabel fontWeight='bold'>{session?.militar.post_grad  + ' ' + session?.militar.nome_guerra}</TagLabel>
                 
               </Tag>
               
@@ -34,7 +34,7 @@ export function Profile({ showProfileData = true }: ProfileProps) {
                 variant='solid'
                 colorScheme='blue'
               >
-                <TagLabel pr='2'> { session?.militar.local } / {session?.militar.pelotao}</TagLabel>
+                <TagLabel pr='2'> { session?.militar.companhia } / {session?.militar.pelotao}</TagLabel>
                 <Badge variant='outline' colorScheme='yellow' >
           {session?.militar.funcao_local}
   </Badge>

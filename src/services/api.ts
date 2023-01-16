@@ -1,18 +1,20 @@
-import axios from "axios";
-import { parseCookies } from "nookies";
-import { useState } from "react";
+// import axios from "axios";
+
+// export const api = axios.create({
+//   baseURL:
+//     process.env.NODE_ENV === "development"
+//       ? "http://localhost:3333/"
+//       : "https://siscau.vercel.app/api",
+//   // headers: {
+//   //     Authorization: `Bearer ${cookies['nextauth.token']}`,
+//   // }
+// });
 
 
 
-export const api = axios.create({
-  baseURL:
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:3333/"
-      : "https://siscau.vercel.app/api",
-  // headers: {
-  //     Authorization: `Bearer ${cookies['nextauth.token']}`,
-  // }
-});
+import { setupAPIClient} from './apiClient'
+
+export const api = setupAPIClient()
 
 
 // api.interceptors.response.use(function (response) {
@@ -25,3 +27,37 @@ export const api = axios.create({
 //   // Faz alguma coisa com o erro da resposta
 //   return Promise.reject(error);
 // });
+
+// import axios from 'axios';
+// import { getSession, useSession } from 'next-auth/react';
+
+// const baseURL = process.env.SOME_API_URL || 'http://localhost:1337';
+
+// const ApiClient = () => {
+//   const defaultOptions = {
+//     baseURL,
+//   };
+
+//   const instance = axios.create(defaultOptions);
+
+//   instance.interceptors.request.use(async (request) => {
+//     const session = await getSession();
+//     if (session) {
+//       request.headers.Authorization = `Bearer ${session.jwt}`;
+//     }
+//     return request;
+//   });
+
+//   instance.interceptors.response.use(
+//     (response) => {
+//       return response;
+//     },
+//     (error) => {
+//       console.log(`error`, error);
+//     },
+//   );
+
+//   return instance;
+// };
+
+// export default ApiClient();

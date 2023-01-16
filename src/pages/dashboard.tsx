@@ -19,17 +19,11 @@ import { Header } from "../components/Header";
 import { Sidebar } from "../components/Sidebar";
 import dynamic from "next/dynamic";
 import { ApexOptions } from "apexcharts";
-import { api } from "../services/api";
-import { AuthContext, AuthProvider } from '../contexts/AuthContext';
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import Router from "next/router";
-import { parseCookies } from "nookies";
-import { GetServerSideProps } from "next";
 import { convertDate } from "../utils/scripts";
-import { AxiosResponse } from "axios";
-import { useUsers } from "../services/hooks/useUsers";
 import { useSession } from "next-auth/react";
-import { getToken } from "next-auth/jwt";
+
 //Dynamic permite carregar o componente somente quando for necessario, exemplo quando for clicar em um botao
 const Chart = dynamic(() => import("react-apexcharts"), {
   ssr: false,

@@ -39,7 +39,7 @@ const signInFormSchema = yup.object().shape({
   tipo: yup.string(),
   emprego: yup.string(),
   condicoes: yup.string(),
-  local: yup.string(),
+  companhia: yup.string(),
   cabide: yup.string(),
   status: yup.string().required("Status obrigatório"),
 });
@@ -78,6 +78,7 @@ export default function Cadastro() {
           duration: 2000,
           isClosable: true,
         });
+        refetch()
       }
     } catch (error) {
       toast({
@@ -191,13 +192,13 @@ export default function Cadastro() {
                       size="sm"
                       htmlSize={2}
                       rounded="lg"
-                      label="Local"
+                      label="Companhia"
                       type="text"
-                      name="local"
+                      name="companhia"
                       isReadOnly
-                      value={session.militar.local}
-                      error={errors.local}
-                      {...register("local")}
+                      value={session.militar.companhia}
+                      error={errors.companhia}
+                      {...register("companhia")}
                     />
                   </FormControl>
                   <FormControl>
@@ -246,7 +247,7 @@ export default function Cadastro() {
                       <Th textAlign="center">Tipo</Th>
                       <Th textAlign="center">Emprego</Th>
                       <Th textAlign="center">Condições</Th>
-                      <Th textAlign="center">Local</Th>
+                      <Th textAlign="center">Companhia</Th>
                       <Th textAlign="center">Status</Th>
                     </Tr>
                   </Thead>
@@ -258,7 +259,7 @@ export default function Cadastro() {
                         <Td textAlign="center">{res.tipo}</Td>
                         <Td textAlign="center">{res.emprego}</Td>
                         <Td textAlign="center">{res.condicoes}</Td>
-                        <Td textAlign="center">{res.local}</Td>
+                        <Td textAlign="center">{res.companhia}</Td>
                         <Td textAlign="center">{res.status}</Td>
                       </Tr>
                     ))}
@@ -268,7 +269,7 @@ export default function Cadastro() {
                       <Th textAlign="center">Nome</Th>
                       <Th textAlign="center">Condições</Th>
                       <Th textAlign="center">Quantidade</Th>
-                      <Th textAlign="center">Local</Th>
+                      <Th textAlign="center">Companhia</Th>
                       <Th textAlign="center">Codigo</Th>
                       <Th textAlign="center">Cauteladas</Th>
                       <Th textAlign="center">Disponíveis</Th>

@@ -24,16 +24,18 @@ type SignInFormData = {
   identidade: string;
   senha: string;
   postoGrad: string;
-  local: string;
+  companhia: string;
+  pelotao: string;
 };
 
 const signInFormSchema = yup.object().shape({
-  nomeCompleto: yup.string().required("Nome completo obrigatório."),
-  nomeGuerra: yup.string().required("Nome de guerra obrigatório."),
-  identidade: yup.number().required("Identidade obrigatória.").typeError("Somente números."),
-  postoGrad: yup.string().required("Posto e graduação obrigatório."),
+  nomeCompleto: yup.string().required("Obrigatório"),
+  nomeGuerra: yup.string().required("Obrigatório"),
+  identidade: yup.string().required("Identidade obrigatória."),
+  postoGrad: yup.string().required("Obrigatório."),
   senha: yup.string().required("Senha obrigatória."),
-  local: yup.string()
+  companhia: yup.string(),
+  pelotao: yup.string(),
 });
 
 export default function Home() {
@@ -59,8 +61,15 @@ export default function Home() {
           isClosable: true,
         })
         Router.push('/')
+      }else {
+        toast({
+        title: 'Militar não cadastrado.',
+        description: "Talvez a identidade já esteja cadastrada.",
+        status: 'error',
+        duration: 2000,
+        isClosable: true,
+      })
       }
-      
     } catch (error) {
       toast({
         title: 'Militar não cadastrado.',
@@ -91,7 +100,7 @@ export default function Home() {
           <Stack spacing={4}>
             <Flex align="center" justify="center" flexDir="column">
               <Heading as="h1" size="2xl" pb={4}>
-                SisCau
+                SisAGI
               </Heading>
               <Heading as="h2" size="md">
                 Cmdo Fron RN / 5 BIS
@@ -105,9 +114,9 @@ export default function Home() {
               {...register("nomeCompleto")}
             />
             <FormControl>
-              <FormLabel htmlFor="postoGrad">P/G</FormLabel>
               <Input
                 as="select"
+                label="P/G"
                 focusBorderColor="green.500"
                 name="postoGrad"
                 bgColor="gray.900"
@@ -151,9 +160,31 @@ export default function Home() {
               name="local"
               label="Companhia"
               type="text"
-              error={errors.local}
-              {...register("local")}
-            />
+              as="select"
+              error={errors.companhia}
+              {...register("companhia")}
+            >
+              <option value="1 CIA">1 CIA</option>
+                <option value="2 CIA">2 CIA</option>
+                <option value="3 CIA">3 CIA</option>
+                <option value="CCAp">CCAp</option>
+                <option value="EM">EM</option>
+              </Input>
+            <Input
+              name="local"
+              label="Pelotão"
+              type="text"
+              as="select"
+              error={errors.pelotao}
+              {...register("pelotao")}
+            >
+            <option value="Nenhum">Nenhum</option>
+            <option value="1 PEL">1 PEL</option>
+                <option value="2 PEL">2 PEL</option>
+                <option value="3 PEL">3 PEL</option>
+                <option value="PEL Ap">PEL Ap</option>
+                <option value="SEC CMDO">SEC CMDO</option>
+              </Input>
             <Input
               name="senha"
               label="Senha"

@@ -45,11 +45,11 @@ export function ModalCautela({ data: militares,  dataArmamento: armamento, adapt
     e.preventDefault();
 
     const values = {
-    militarNome: session.militar.nome_guerra, //NOME DO MILITAR COM A SESSÃO
+    militarNome: session.militar.post_grad+' '+session.militar.nome_guerra, //NOME DO MILITAR COM A SESSÃO
     armamentoId: armamento.id,
     cautelouId: militar,
     observacao,
-    local: armamento.local,
+    companhia: armamento.companhia,
     senha
     }
 
@@ -127,7 +127,7 @@ export function ModalCautela({ data: militares,  dataArmamento: armamento, adapt
                 <Text>Nr de Série: {armamento.nr_serie}</Text>
                 </Flex>
                 <Flex justifyContent='space-between'>
-                    <Text>SU: {armamento.local}</Text>
+                    <Text>SU: {armamento.companhia}</Text>
                     <Text>Situação: {armamento.status}</Text>
                 </Flex>
                     <Text>Condição: {armamento.condicoes}</Text>
@@ -148,9 +148,9 @@ export function ModalCautela({ data: militares,  dataArmamento: armamento, adapt
                 onChange={(e) => setMilitar(e.target.value)}
               >
                 <option value=''>Selecione</option>
-                {militares?.data.map((militar: Militar) => (
-                  <option key={militar.id} value={militar.id} >{militar.nome_guerra}</option>
-                ))}
+                {militares ? militares?.data.map((militar: Militar) => (
+                  <option key={militar.id} value={militar.id} >{militar.post_grad+' '+militar.nome_guerra}</option>
+                )) : null}
               </Input>
             </FormControl>
             <FormControl my={2}>

@@ -60,7 +60,7 @@ export default function BuscaArmamento() {
     async () => {
       const result = await api.get("/armamento/cautela");
       var data = [] // CONJUNTO DE INSTRUCAO FILTRA OS NOME DE TODOS ARMAMENTOS NO BANCO E TIRA OS REPETIDOS
-      result.data.map((el: CautelaArmamento) => { return data.push( el.local === session.militar.local ? el.armamento.nome : null) })
+      result.data.map((el: CautelaArmamento) => { return data.push( el.companhia === session.militar.companhia ? el.armamento.nome : null) })
       const filtered = Array.from(new Set(data)).filter(function (res) {
         return res != null;
       });
@@ -130,7 +130,7 @@ export default function BuscaArmamento() {
                       <AccordionPanel pb={4}>
                         {data
                         .filter((el: CautelaArmamento) => { return el.status === 'ativo'})
-                        .filter((el: CautelaArmamento) => { return el.local === session.militar.local})
+                        .filter((el: CautelaArmamento) => { return el.companhia === session.militar.companhia})
                         .filter((elem: CautelaArmamento) => { return elem.armamento.nome === arm })
                         .map((cautela: CautelaArmamento, index) => (
                           <Tag
@@ -203,7 +203,7 @@ export default function BuscaArmamento() {
                       {isWideVersion && (
                         <Th textAlign="center">Data de cautela</Th>
                       )}
-                      <Th textAlign="center">Local</Th>
+                      <Th textAlign="center">Companhia</Th>
                       <Th textAlign="center">Armamento</Th>
                       <Th textAlign="center">Resp Cautela</Th>
                       <Th textAlign="center">Cautelou</Th>
@@ -217,10 +217,10 @@ export default function BuscaArmamento() {
                         <Td textAlign="center">
                           {convertDate(res.data_cautela)}
                         </Td>
-                        <Td textAlign="center">{res.local}</Td>
+                        <Td textAlign="center">{res.companhia}</Td>
                         <Td textAlign="center">{res.armamento?.nome}</Td>
                         <Td textAlign="center">{res.resp_cautela}</Td>
-                        <Td textAlign="center">{res.cautelou?.nome_guerra}</Td>
+                        <Td textAlign="center">{res.cautelou?.post_grad+' '+res.cautelou?.nome_guerra}</Td>
                         <Td justifyItems="center">
                           {res.validado ? (
                             <Circle mx="auto" size="40px" boxShadow='md' bg="gray.990">
@@ -245,7 +245,7 @@ export default function BuscaArmamento() {
                       {isWideVersion && (
                         <Th textAlign="center">Data de cadastro</Th>
                       )}
-                      <Th textAlign="center">Local</Th>
+                      <Th textAlign="center">Companhia</Th>
                       <Th textAlign="center">Armamento</Th>
                       <Th textAlign="center">Resp Cautela</Th>
                       <Th textAlign="center">Cautelou</Th>
