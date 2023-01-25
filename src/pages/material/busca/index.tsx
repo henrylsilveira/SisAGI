@@ -33,7 +33,7 @@ import { BsSearch } from "react-icons/bs";
 import { BiLock } from "react-icons/bi";
 import { ModalValidate } from "../../../components/Modal/Material/ModalValidate";
 import { SlRefresh } from "react-icons/sl";
-import { Cautela } from "../../../@types/types";
+import { Cautela, CautelaArray } from '../../../@types/types';
 import { ModalEncerrarCautela } from "../../../components/Modal/Material/ModalEncerrarCautela";
 import Head from "next/head";
 
@@ -49,7 +49,7 @@ export default function Busca() {
     ["todasCautelas"],
     async () => {
       const result = await api.get("/cautela");
-      setResult(result.data as Cautela);
+      setResult(result.data as CautelaArray);
       return result.data;
     }
   );
