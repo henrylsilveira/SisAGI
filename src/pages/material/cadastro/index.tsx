@@ -190,7 +190,7 @@ export default function Cadastro() {
                         <Td textAlign="center">
                           <FormControl>
                             <Input
-                              value={session.militar.local}
+                              value={session.militar.companhia}
                               isReadOnly
                               size="sm"
                               rounded="lg"
