@@ -6,7 +6,7 @@ export function setupAPIClient() {
     baseURL:
       process.env.NODE_ENV === "development"
         ? "http://localhost:3333/"
-        : "https://siscau.vercel.app/api",
+        : "https://159.65.228.34:3000",
     // headers: {
     //     Authorization: `Bearer ${cookies['nextauth.token']}`,
     // }
