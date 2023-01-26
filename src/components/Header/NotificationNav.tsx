@@ -1,6 +1,5 @@
 import { Button, HStack, Icon } from "@chakra-ui/react";
 import { signOut } from "next-auth/react";
-import Router from "next/router";
 import { BsBoxArrowLeft } from "react-icons/bs";
 import { RiNotificationLine, RiUserAddLine } from "react-icons/ri";
 
@@ -21,9 +20,10 @@ export function NotificationNav() {
       <Button
         bg="red.400"
         size="md"
+        boxShadow="buttonShadow"
         color="whiteAlpha.900"
         _hover={{ bgColor: "red.600" }}
-        onClick={() => {signOut(); Router.push('/')}}
+        onClick={() => signOut()}
         p="4"
       >
         <Icon boxSize={6} as={BsBoxArrowLeft} pr={2} />

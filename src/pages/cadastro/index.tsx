@@ -214,3 +214,5 @@ export default function Home() {
     </Flex>
   );
 }
+// REGEX PARA NAO USAR SENHAS FÁCEIS
+// const regex = new RegExp("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$");

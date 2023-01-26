@@ -7,6 +7,8 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import { queryClient } from "../services/queryClient";
 import { SessionProvider, useSession } from "next-auth/react";
 import { DotLoader } from "react-spinners";
+import Home from "./cadastro";
+
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (

@@ -85,6 +85,7 @@ import { useSession } from "next-auth/react";
       <>
         <Button
         bg="red.600"
+        boxShadow="buttonShadow"
         size="xs"
         _hover={{ bgColor: "red.800" }}
         onClick={onOpen}
@@ -108,7 +109,7 @@ import { useSession } from "next-auth/react";
               </FormControl>
             </ModalBody>
             <ModalFooter roundedBottom={4} bg="gray.800">
-              <Button boxShadow='md' colorScheme="blue" mr={3} onClick={(e) => handleSubmit(e)}>
+              <Button boxShadow="buttonShadow" colorScheme="yellow" mr={3} onClick={(e) => handleSubmit(e)}>
                 Fechar
               </Button>
             </ModalFooter>

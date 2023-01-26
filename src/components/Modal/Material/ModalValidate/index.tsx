@@ -27,7 +27,6 @@ export function ModalValidate({ data }) {
   const finalRef = React.useRef(null);
 
   async function handleSubmit(e: FormEvent) {
-    console.log(data);
     e.preventDefault();
 
     const values = {
@@ -75,7 +74,7 @@ export function ModalValidate({ data }) {
           onClick={onOpen}
           _hover={{ bg: "#003300" }}
           mx="auto"
-          boxShadow="md"
+          boxShadow="buttonShadow"
           size="40px"
           bg="gray.990"
         >
@@ -86,7 +85,7 @@ export function ModalValidate({ data }) {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader roundedTop={4} bg="gray.800">
-            Validar cautela
+            Validar cautela de material
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody bg="gray.800">
@@ -95,7 +94,7 @@ export function ModalValidate({ data }) {
                 name="senha"
                 value={senha}
                 label="Senha"
-                type="text"
+                type="password"
                 onChange={(e) => setSenha(e.target.value)}
               />
             <FormHelperText>Senha do militar que realizou a cautela.</FormHelperText>
@@ -103,7 +102,7 @@ export function ModalValidate({ data }) {
           </ModalBody>
           <ModalFooter roundedBottom={4} bg="gray.800">
             <Button
-              boxShadow="md"
+              boxShadow="buttonShadow"
               colorScheme="blue"
               mr={3}
               onClick={(e) => handleSubmit(e)}

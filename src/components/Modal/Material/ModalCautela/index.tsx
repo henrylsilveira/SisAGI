@@ -17,21 +17,28 @@ import {
   Stack,
   Flex,
   Heading,
-  FormHelperText
+  FormHelperText,
+  NumberInput,
+  NumberInputField,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInputStepper,
 } from "@chakra-ui/react";
 import React, { FormEvent, useContext, useState } from "react";
 import { Input } from "../../../Form/Input";
 import { api } from "../../../../services/api";
 import { BsBoxArrowRight } from "react-icons/bs";
-import { Militar } from '../../../../@types/types';
-import { useSession } from 'next-auth/react';
+import { Militar } from "../../../../@types/types";
+import { useSession } from "next-auth/react";
 
-export function ModalCautela({ data: militares,  dataMaterial: material}) {
+export function ModalCautela({ data: militares, dataMaterial: material }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { data: session } = useSession()
+  const { data: session } = useSession();
   const toast = useToast();
 
   const [senha, setSenha] = useState(" ");
+  const [quantidade, setQuantidade] = useState(1);
+  const [observacao, setObservacao] = useState("");
   const [militar, setMilitar] = useState("");
   const finalRef = React.useRef(null);
 
@@ -39,20 +46,24 @@ export function ModalCautela({ data: militares,  dataMaterial: material}) {
     e.preventDefault();
 
     const values = {
-    militarNome: session.militar.nome_guerra, //NOME DO MILITAR COM A SESSÃO
-    materialId: material.id,
-    observacao: 'ALGUMA COISA',
-    local: material.local,
-    cautelouId: militar,
-    senha
-    }
+      militarNome: session.militar.nome_guerra,
+      materialId: material.id,
+      observacao,
+      quantidade,
+      sub_unidade: material.sub_unidade,
+      dependencia: material.dependencia,
+      cautelouId: militar,
+      senha,
+    };
 
     try {
       const result = await api.post("/cautela/create", values);
       if (result.status === 201) {
         toast({
           title: "Cautela",
-          description: senha ? "A cautela foi criada e VALIDADA com sucesso." :  "A cautela foi criada com sucesso SEM VALIDAÇÃO.",
+          description: senha
+            ? "A cautela foi criada e VALIDADA com sucesso."
+            : "A cautela foi criada com sucesso SEM VALIDAÇÃO.",
           status: "success",
           duration: 2000,
           isClosable: true,
@@ -96,25 +107,23 @@ export function ModalCautela({ data: militares,  dataMaterial: material}) {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader roundedTop={4} bg="gray.800">
-            <Heading textAlign='center' size='lg'>
-            Criar cautela
-
+            <Heading textAlign="center" size="lg">
+              Criar cautela
             </Heading>
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody bg="gray.800">
             <Stack pb={4}>
-                <Flex justifyContent='space-between'>
-                    <Text>Nome: {material.nome}</Text>
-                    <Text>Condição: {material.condicoes}</Text>
+              <Flex justifyContent="space-between">
+                <Text>Nome: {material.nome}</Text>
+                <Text>Condição: {material.condicoes}</Text>
+              </Flex>
 
-                </Flex>
-
-                <Flex justifyContent='space-between'>
-                    <Text>Dependência: {material.dependencia}</Text>
-                    <Text>SU: {material.sub_unidade}</Text>
-                </Flex>
-                <Text>Categoria: {material.categoria}</Text>
+              <Flex justifyContent="space-between">
+                <Text>Dependência: {material.dependencia}</Text>
+                <Text>SU: {material.sub_unidade}</Text>
+              </Flex>
+              <Text>Categoria: {material.categoria}</Text>
             </Stack>
             <Divider />
             <FormControl py={4}>
@@ -131,11 +140,63 @@ export function ModalCautela({ data: militares,  dataMaterial: material}) {
                 placeholder="Selecione"
                 onChange={(e) => setMilitar(e.target.value)}
               >
-                <option value=''>Selecione</option>
+                <option value="">Selecione</option>
                 {militares.data?.map((militar: Militar) => (
-                  <option key={militar.id} value={militar.id} >{militar.nome_guerra}</option>
+                  <option key={militar.id} value={militar.id}>
+                    { militar.post_grad + ' ' + militar.nome_guerra}
+                  </option>
                 ))}
               </Input>
+            </FormControl>
+            <FormControl>
+              <FormLabel>Quantidade</FormLabel>
+              <NumberInput
+                focusBorderColor="green.500"
+                bg="gray.900"
+                name="quantidade"
+                rounded="base"
+                max={Number(
+                  material.quantidade -
+                    material.cautelas
+                      ?.filter((c: any) => c.status === "ativo")
+                      .reduce((total = 0, cautela) => {
+                        return total + cautela.quantidade;
+                      }, 0)
+                )}
+                min={0}
+              >
+                <NumberInputField
+                  value={quantidade}
+                  rounded="base"
+                  border={0}
+                  onChange={(e) => setQuantidade(Number(e.target.value))}
+                />
+                <NumberInputStepper>
+                  <NumberIncrementStepper color="whiteAlpha.700" />
+                  <NumberDecrementStepper color="whiteAlpha.700" />
+                </NumberInputStepper>
+              </NumberInput>
+              <FormHelperText>
+                {`Quantidade de material cautelado. Disponível: ${String(
+                  material.quantidade -
+                    material.cautelas
+                      ?.filter((c: any) => c.status === "ativo")
+                      .reduce((total = 0, cautela) => {
+                        return total + cautela.quantidade;
+                      }, 0)
+                )}`}
+              </FormHelperText>
+            </FormControl>
+            <FormControl>
+              <Input
+                as="textarea"
+                name="observacao"
+                value={observacao}
+                label="Observação"
+                type="text"
+                onChange={(e) => setObservacao(e.target.value)}
+              />
+              <FormHelperText>Alterações no material cautelado.</FormHelperText>
             </FormControl>
             <FormControl>
               <Input
@@ -145,14 +206,22 @@ export function ModalCautela({ data: militares,  dataMaterial: material}) {
                 type="password"
                 onChange={(e) => setSenha(e.target.value)}
               />
+              <FormHelperText color="yellow.700">
+                *Deixe o campo vazio para cautelar sem validação.
+              </FormHelperText>
               <FormHelperText>
                 Senha do militar que está cautelando
               </FormHelperText>
             </FormControl>
           </ModalBody>
-          <ModalFooter justifyContent='space-evenly' roundedBottom={4} bg="gray.800">
+          <Divider />
+          <ModalFooter
+            justifyContent="space-evenly"
+            roundedBottom={4}
+            bg="gray.800"
+          >
             <Button
-              boxShadow="md"
+              boxShadow="buttonShadow"
               colorScheme="yellow"
               mr={3}
               onClick={(e) => handleSubmit(e)}
@@ -161,7 +230,7 @@ export function ModalCautela({ data: militares,  dataMaterial: material}) {
               Sem Validar
             </Button>
             <Button
-              boxShadow="md"
+              boxShadow="buttonShadow"
               colorScheme="blue"
               mr={3}
               onClick={(e) => handleSubmit(e)}

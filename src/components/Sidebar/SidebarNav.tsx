@@ -4,6 +4,7 @@ import {
   RiContactsLine,
   RiDraftLine,
   RiSearchLine,
+  RiBook2Line
 } from "react-icons/ri";
 import {
   GiTrade,
@@ -22,9 +23,9 @@ import { NavSection } from "./NavSection";
 export function SidebarNav() {
   return (
     <Stack spacing="12" align="flex-start">
-      <NavSection title="CONTROLE GERAL">
-        <NavLink href="/dashboard" icon={RiDashboardLine}>Estatísticas</NavLink>
-        {/* <NavLink href="/users" icon={RiContactsLine}>Usuários</NavLink> */}
+      <NavSection title="PAINEL DO MILITAR">
+        <NavLink href="/painel/perfil" icon={RiContactsLine}>Perfil</NavLink>
+        <NavLink href="/painel/minhasCautelas" icon={RiBook2Line}>Minhas Cautelas</NavLink>
       </NavSection>
       <NavSection title="MATERIAL">
         <NavLink href="/material/geral" icon={RiDashboardLine}>Geral</NavLink>
@@ -49,3 +50,4 @@ export function SidebarNav() {
     </Stack>
   );
 }
+

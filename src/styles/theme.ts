@@ -16,6 +16,9 @@ export const theme = extendTheme({
              "50": "#EEEEF2",
         }
     },
+    shadows: {
+        buttonShadow: "rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;"
+    },
     font: {
         heading: 'Roboto',
         body: 'Roboto'
@@ -23,9 +26,14 @@ export const theme = extendTheme({
     styles: {
         global: {
             body: {
+                bgImage: "/img/bg.svg",
+                bgRepeat: "no-repeat",
+                bgPosition: "center",
+                bgSize: 'cover',
                 bg: 'gray.990',
                 color: 'gray.50'
             }
         }
+        
     }
 })

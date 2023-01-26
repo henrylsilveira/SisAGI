@@ -18,23 +18,25 @@ export function Profile({ showProfileData = true }: ProfileProps) {
 
             <Tag
             size='sm'
-                borderRadius='full'
+                borderRadius='base'
                 variant='solid'
                 colorScheme='green'
                 my='0.5'
                 alignItems='center'
+                boxShadow="buttonShadow"
               >
-                <TagLabel fontWeight='bold'>{session?.militar.post_grad  + ' ' + session?.militar.nome_guerra}</TagLabel>
+                <TagLabel  fontWeight='bold'>{session?.militar.post_grad  + ' ' + session?.militar.nome_guerra}</TagLabel>
                 
               </Tag>
               
               <Tag
               size='sm'
-                borderRadius='full'
+                borderRadius='base'
                 variant='solid'
                 colorScheme='blue'
+                boxShadow="buttonShadow"
               >
-                <TagLabel pr='2'> { session?.militar.companhia } / {session?.militar.pelotao}</TagLabel>
+                <TagLabel  pr='2'> { session?.militar.companhia } / {session?.militar.pelotao}</TagLabel>
                 <Badge variant='outline' colorScheme='yellow' >
           {session?.militar.funcao_local}
   </Badge>

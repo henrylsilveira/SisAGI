@@ -51,6 +51,7 @@ export default NextAuth({
     secret: process.env.SECRET_KEY_JWT,
     pages: {
       signIn: "/dashboard", 
+      signOut: "/",
       error: "/", 
     },
     jwt: {

@@ -41,17 +41,10 @@ import { Input } from "../../../components/Form/Input";
 import { SlRefresh } from 'react-icons/sl'
 import { TiInfoLarge } from 'react-icons/ti'
 import { useSession } from "next-auth/react";
+import { CautelaArray, Material } from '../../../@types/types';
 
-export type MaterialDataProps = {
-  id?: string;
-  nome: string;
-  condicoes: string;
-  quantidade: number;
-  local?: string;
-  codigo?: string;
-  subUnidade: string;
-  dependencia: string;
-  categoria: string;
+interface MaterialDataProps extends Material {
+  cautelas?: CautelaArray;
 };
 
 const signInFormSchema = yup.object().shape({
@@ -258,15 +251,15 @@ export default function Cadastro() {
                       <Th textAlign="center">Nome</Th>
                       <Th textAlign="center">Condições</Th>
                       <Th textAlign="center">Quantidade</Th>
-                      <Th textAlign="center">Local</Th>
-                      <Th textAlign="center">Codigo</Th>
+                      <Th textAlign="center">SU</Th>
+                      <Th textAlign="center">Dependência</Th>
                       <Th textAlign="center">Cauteladas</Th>
                       <Th textAlign="center">Disponíveis</Th>
                       <Th textAlign="center">Categoria</Th>
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {data?.data.map((res) => (
+                    {data?.data.map((res: MaterialDataProps) => (
                       <Tr key={res.id}>
                         <Td textAlign="center">{res.nome}</Td>
                         <Td textAlign="center">
@@ -290,8 +283,8 @@ export default function Cadastro() {
                           </Popover>
                         </Td>
                         <Td textAlign="center">{res.quantidade}</Td>
-                        <Td textAlign="center">{res.local}</Td>
-                        <Td textAlign="center">{res.codigo}</Td>
+                        <Td textAlign="center">{res.sub_unidade}</Td>
+                        <Td textAlign="center">{res.dependencia}</Td>
                         <Td textAlign="center">{res.cautelas?.length}</Td>
                         <Td textAlign="center">
                           {res.quantidade - res.cautelas?.length}

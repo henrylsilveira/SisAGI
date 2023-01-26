@@ -11,7 +11,6 @@ import {
   Th,
   Thead,
   Tr,
-  theme,
   useBreakpointValue,
   useToast,
 } from "@chakra-ui/react";
@@ -23,6 +22,7 @@ import { useEffect } from "react";
 import Router from "next/router";
 import { convertDate } from "../utils/scripts";
 import { useSession } from "next-auth/react";
+import Head from "next/head";
 
 //Dynamic permite carregar o componente somente quando for necessario, exemplo quando for clicar em um botao
 const Chart = dynamic(() => import("react-apexcharts"), {
@@ -78,37 +78,41 @@ const series = [{
   }];
 
 export default function Dashboard() {
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
   const toast = useToast()
-    useEffect(() => {
-        if(session) {
-            toast({
-              title: 'Autenticação válida.',
-              description: `Seu token de acesso é válido até dia ${convertDate(session.expires)}. `,
-              status: 'info',
-              duration: 2000,
-              isClosable: true,
-            })
-          }else {
-            Router.push('/')
-            toast({
-              title: 'Autenticação inválida.',
-              description: `Seu token de acesso venceu, realize o login novamente. `,
-              status: 'warning',
-              duration: 3000,
-              isClosable: true,
-            })
-            return
-          }
-    }, [session, toast])
+
+  useEffect(() => {
+      if(session && status === 'authenticated') {
+          toast({
+            title: 'Autenticação válida.',
+            description: `Seu token de acesso é válido até dia ${convertDate(session.expires)}. `,
+            status: 'info',
+            duration: 2000,
+            isClosable: true,
+          })
+        }else {
+          Router.push('/')
+          toast({
+            title: 'Autenticação inválida.',
+            description: `Seu token de acesso venceu, realize o login novamente. `,
+            status: 'warning',
+            duration: 3000,
+            isClosable: true,
+          })
+          return
+        }
+  }, [session, toast, status])
 
   const isWideVersion = useBreakpointValue({
     base: false,
     lg: true,
   })
 
-  
   return (
+    <>
+    <Head>
+        <title>SisAGI | Painel Principal</title>
+    </Head>
     <Flex direction="column" h="100vh">
       <Header />
 
@@ -178,19 +182,9 @@ export default function Dashboard() {
               </TableContainer>
             </Box>
           </SimpleGrid>
-
-
         </Flex>
       </Flex>
     </Flex>
+    </>
   );
 }
-
-// export const getServerSideProps: GetServerSideProps = async ({ req }) => {
- 
-//   return {
-//     props: {
-      
-//     }
-//   }
-// };

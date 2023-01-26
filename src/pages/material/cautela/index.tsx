@@ -43,18 +43,10 @@ import {
 import { BsBoxArrowRight } from "react-icons/bs";
 import { ModalCautela } from "../../../components/Modal/Material/ModalCautela";
 import Head from "next/head";
+import { CautelaArray, Material } from '../../../@types/types';
   
-  export type MaterialDataProps = {
-    id?: string;
-    nome: string;
-    condicoes: string;
-    quantidade: number;
-    local?: string;
-    codigo?: string;
-    subUnidade: string;
-    dependencia: string;
-    categoria: string;
-    cautelas?: []
+  interface MaterialDataProps extends Material {
+    cautelas?: CautelaArray
   };
   
   const signInFormSchema = yup.object().shape({
@@ -148,11 +140,11 @@ import Head from "next/head";
                   <Table size="sm" colorScheme="whiteAlpha">
                     <Thead>
                       <Tr>
-                        <Th textAlign="center">Nome</Th>
+                        <Th textAlign="center">Material</Th>
                         <Th textAlign="center">Condições</Th>
                         <Th textAlign="center">Quantidade</Th>
-                        <Th textAlign="center">Local</Th>
-                        <Th textAlign="center">Codigo</Th>
+                        <Th textAlign="center">SU</Th>
+                        <Th textAlign="center">Dependência</Th>
                         <Th textAlign="center">Cauteladas</Th>
                         <Th textAlign="center">Disponíveis</Th>
                         <Th textAlign="center">Categoria</Th>
@@ -184,30 +176,38 @@ import Head from "next/head";
                             </Popover>
                           </Td>
                           <Td textAlign="center">{res.quantidade}</Td>
-                          <Td textAlign="center">{res.local}</Td>
-                          <Td textAlign="center">{res.codigo}</Td>
-                          <Td textAlign="center">{res.cautelas?.length}</Td>
+                          <Td textAlign="center">{res.sub_unidade}</Td>
+                          <Td textAlign="center">{res.dependencia}</Td>
+                          <Td textAlign="center">{res.cautelas?.filter((c: any) => c.status === 'ativo').reduce(
+                            ((total = 0, cautela) => {return total + cautela.quantidade}), 0
+                          )}</Td>
                           <Td textAlign="center">
-                            {res.quantidade - (res.cautelas?.filter((c: any) => c.status === 'ativo')).length}
+                            {res.quantidade - (res.cautelas?.filter((c: any) => c.status === 'ativo')).reduce(
+                            ((total = 0, cautela) => {return total + cautela.quantidade}), 0
+                          )}
                           </Td>
                           <Td textAlign="center">
                             {res.categoria === 'controlado' ? <Badge as='span' variant='outline' colorScheme='red'>{res.categoria}</Badge> : <Badge as='span' variant='outline' colorScheme='green'>{res.categoria}</Badge>}
                           </Td>
                           <Td>
-                            <ModalCautela data={militares} dataMaterial={res}  />
+                            {res.quantidade - (res.cautelas?.filter((c: any) => c.status === 'ativo')).reduce(
+                            ((total = 0, cautela) => {return total + cautela.quantidade}), 0
+                          ) !== 0 ? <ModalCautela data={militares} dataMaterial={res}  /> : <Badge as='span' variant='outline' colorScheme='red'>SEM MATERIAL</Badge>}
+                            
                           </Td>
                         </Tr>
                       ))}
                     </Tbody>
                     <Tfoot>
                       <Tr>
-                        <Th textAlign="center">Nome</Th>
+                      <Th textAlign="center">Material</Th>
                         <Th textAlign="center">Condições</Th>
                         <Th textAlign="center">Quantidade</Th>
-                        <Th textAlign="center">Local</Th>
-                        <Th textAlign="center">Codigo</Th>
+                        <Th textAlign="center">SU</Th>
+                        <Th textAlign="center">Dependência</Th>
                         <Th textAlign="center">Cauteladas</Th>
                         <Th textAlign="center">Disponíveis</Th>
+                        <Th textAlign="center">Categoria</Th>
                       </Tr>
                     </Tfoot>
                   </Table>

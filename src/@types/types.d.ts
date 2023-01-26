@@ -36,6 +36,8 @@ export interface Material {
   categoria?: string;
 }
 
+export type MaterialArray = Material[];
+
 export interface Armamento {
   id: string;
   nome: string;
@@ -56,7 +58,9 @@ export type Cautela = {
   id: string;
   data_cautela: string;
   observacao: string;
-  companhia: string;
+  sub_unidade: string;
+  dependencia: string;
+  quantidade?: number;
   validado: boolean;
   resp_cautela: string;
   status: string;
@@ -73,6 +77,7 @@ export type CautelaArmamento = {
   id: string;
   data_cautela: string;
   observacao?: string;
+  quantidade?: number;
   companhia: string;
   validado: boolean;
   resp_cautela: string;

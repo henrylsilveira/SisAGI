@@ -17,6 +17,8 @@ import { useEffect } from "react";
 import Router from "next/router";
 
 import { signIn, useSession } from "next-auth/react"
+import { GetServerSideProps } from "next";
+import Head from "next/head";
 
 type SignInFormData = {
   identidade: string;
@@ -32,16 +34,16 @@ export default function Home() {
   const { register, handleSubmit, formState, formState: {errors} } = useForm({
     resolver: yupResolver(signInFormSchema)
   })
-  const { data:session } = useSession()
+  const { data:session , status } = useSession()
 
   const toast = useToast()
   useEffect(() => {
-    if(session){
+    if(session && status === 'authenticated'){
       Router.push('/dashboard')
     }else {
       return
     }
-  }, [session])
+  }, [session, status])
 
   const handleSignIn:SubmitHandler<SignInFormData> = async (values) => {
     await new Promise(resolve => setTimeout(resolve, 2000))
@@ -62,12 +64,15 @@ export default function Home() {
       });
       return Router.push('/')
     }
-
     Router.push('/dashboard');
   }
 
 
   return (
+    <>
+    <Head>
+        <title>SisAGI | Sistema de Apoio a Gestão Interna</title>
+    </Head>
     <Flex w="100vw" h="100vh" flexDir="row" align="center" justify="center">
       <Flex bg="gray.800" rounded="lg" px={8}>
         <Flex align="center" justify="center"> 
@@ -105,5 +110,17 @@ export default function Home() {
         </Flex>
       </Flex>
     </Flex>
+    </>
+    
   );
+}
+
+
+export const getServerSideProps: GetServerSideProps = async () => {
+
+  return {
+    props: {
+
+    }
+  }
 }
