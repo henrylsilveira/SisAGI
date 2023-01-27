@@ -28,7 +28,8 @@ import {
     Thead,
     Tr,
     useToast,
-    Text
+    Text,
+    Center
   } from "@chakra-ui/react";
   import { Header } from "../../../components/Header";
   import { Sidebar } from "../../../components/Sidebar";
@@ -59,26 +60,48 @@ const Chart = dynamic(() => import("react-apexcharts"), {
 const options: ApexOptions = {
   chart: {
     type: 'bar',
-    height: 350
+    height: 430,
+    animations: {
+      enabled: true,
+      easing: "easein"
+   },
   },
   plotOptions: {
     bar: {
-      borderRadius: 4,
       horizontal: true,
+      dataLabels: {
+        position: 'top',
+      },
     }
   },
   dataLabels: {
-    enabled: true
+    enabled: true,
+    offsetX: -6,
+    style: {
+      fontSize: '12px',
+      colors: ['#fff']
+    }
+  },
+  stroke: {
+    show: true,
+    width: 2,
+    colors: ['#ffffff22']
+  },
+  tooltip: {
+    enabled: false,
+    shared: false
   },
   xaxis: {
-    categories: ['South Korea', 'Canada', 'United Kingdom', 'Netherlands', 'Italy', 'France', 'Japan',
-      'United States', 'China', 'Germany'
-    ],
-  }
+    categories: [2001, 2002, 2003, 2004, 2005, 2006, 2007],
+  },
 }
 
 const series = [{
-  data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380]
+  name: "Abertas",
+  data: [44, 55, 41, 64, 22, 43, 21]
+}, {
+  name: "Fechadas",
+  data: [53, 32, 33, 52, 13, 44, 32]
 }]
   
   
@@ -124,15 +147,101 @@ const series = [{
                       
                     <Box p={["6", "8"]} bg="gray.800" borderRadius={8} pb="4">
                       <Flex flexDirection='row' gap={4} justifyContent='space-between'>
-                        <Flex bg='gray.900' boxShadow="buttonShadow" rounded='lg' w="100%">
-                          <Chart options={options} series={series} type="bar" width='100%' height='300px'  />
-                        *Apresentar cautelas no nome do Militar
-                        *Quantas não estao validadas
+                        <Flex bgGradient='linear(to-tr, gray.990, gray.990, green.900)' boxShadow="buttonShadow" rounded='lg' w="100%" flexDirection="column">
+                      *TORNAR DINÂMICO ESSA PARTE TRAZENDO AS CAUTELAS DO MILITAR POR MÊS DO ANO, FECHADAS E ABERTAS 
+                          <Flex bg='gray.990' boxShadow='buttonShadow' m={4}>
+                            <Heading size="md" p={2}> Cautelas</Heading>
+                          </Flex>
+                            
+                          <Box m='auto' w='100%' h='100%' px={2}>
+                            <Chart options={options} series={series} type="bar" width='100%' height="auto"/>
+                          </Box>
                         </Flex>
-                        <Flex bg='gray.900' boxShadow='buttonShadow' rounded='lg' transition='ease-in-out' _hover={{border: "1px", borderColor: 'green.800'}} w="100%">
-                        <Chart options={options} series={series} type="bar" width='100%' height='300px' />
-                        Apresentar armamento vinculado ao militar
+                        <Flex bgGradient='linear(to-tr, gray.990, gray.990, green.900)'
+                             boxShadow='buttonShadow' rounded='lg' transition='ease-in-out' w="100%" flexDirection="column">
+                              *TORNAR DINÂMICO ESSA PARTE TRAZENDO O ARMAMENTO VINCULADO AO MILITAR, DE QUAL CIA E SUAS ULTIMAS 3 CAUTELAS 
+                          <Flex bg='gray.990' boxShadow='buttonShadow' m={4}>
+                            <Heading size="md" p={2}> Armamento</Heading>
+                          </Flex>
+                          <Flex flexDirection="row" p={2} borderBottom='1px' borderBottomStyle='solid' borderColor='green.800' style={{ borderImage: 'linear-gradient(to bottom, rgba(0, 0, 0, 0), #00FF00, rgba(0, 0, 0, 0)) 1 100%;'}} m={2} >
+                            <Center>
+
+                              {/* TORNAR DINÂMICO ESSA PARTE TRAZENDO O ARMAMENTO VINCULADO AO MILITAR, DE QUAL CIA E SUAS ULTIMAS 3 CAUTELAS */}
+                              <Heading size="md" p={2}> FUZIL IA2</Heading>
+                              <Badge variant='outline' colorScheme='yellow' fontSize='sm'>
+                              BR02934
+                              </Badge>
+                            </Center>
+                            <Circle
+                              boxShadow="buttonShadow"
+                              size={20}
+                              bg="green.700"
+                              ml='auto'
+                              mr={2}
+                            >
+                              <Center>
+                                  <Circle
+                                  boxShadow="buttonShadow"
+                                  size={12}
+                                  bg="gray.800"
+                                  ml='auto'
+                                >
+                                  1 CIA
+                                </Circle>
+
+                              </Center>
+                            </Circle>
+                          </Flex>
+                          <Flex bg='gray.990' boxShadow='buttonShadow' m={4}>
+                            <Heading size="md" p={2}> Últimas cautelas</Heading>
+                          </Flex>
+                          <Flex mx='auto'>
+                          <TableContainer>
+                              <Table size='sm' colorScheme="whiteAlpha" w='fit-content'>
+                                <Thead>
+                                  <Tr>
+                                    <Th textAlign="center">Data</Th>
+                                    <Th textAlign="center">Armamento</Th>
+                                    <Th textAlign="center">Observação</Th>
+                                    <Th textAlign="center">Fechamento</Th>
+                                  </Tr>
+                                </Thead>
+                                <Tbody>
+                                  <Tr>
+                                    <Td textAlign="center">25/24/2575</Td>
+                                    <Td textAlign="center">centimetres (cm)</Td>
+                                    <Td textAlign="center">centimetres (cm)</Td>
+                                    <Td textAlign="center">25/24/2575</Td>
+                                    
+                                  </Tr>
+                                  <Tr>
+                                    <Td textAlign="center">25/24/2575</Td>
+                                    <Td textAlign="center">centimetres (cm)</Td>
+                                    <Td textAlign="center">centimetres (cm)</Td>
+                                    <Td textAlign="center">25/24/2575</Td>
+                                    
+                                  </Tr>
+                                  <Tr>
+                                    <Td textAlign="center">25/24/2575</Td>
+                                    <Td textAlign="center">centimetres (cm)</Td>
+                                    <Td textAlign="center">centimetres (cm)</Td>
+                                    <Td textAlign="center">25/24/2575</Td>
+                                    
+                                  </Tr>
+                                </Tbody>
+                                <Tfoot>
+                                  <Tr>
+                                  <Th textAlign="center">Data</Th>
+                                    <Th textAlign="center">Armamento</Th>
+                                    <Th textAlign="center">Observação</Th>
+                                    <Th textAlign="center">Fechamento</Th>
+                                  </Tr>
+                                </Tfoot>
+                              </Table>
+                            </TableContainer>
+                          </Flex>
                         </Flex>
+                        
                       </Flex>
                         
                         <Heading fontSize="2xl" my="4">

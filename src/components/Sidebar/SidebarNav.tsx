@@ -25,7 +25,7 @@ export function SidebarNav() {
     <Stack spacing="12" align="flex-start">
       <NavSection title="PAINEL DO MILITAR">
         <NavLink href="/painel/perfil" icon={RiContactsLine}>Perfil</NavLink>
-        <NavLink href="/painel/minhasCautelas" icon={RiBook2Line}>Minhas Cautelas</NavLink>
+        <NavLink href="/painel/minhasCautelas" icon={RiBook2Line}>Cautelas</NavLink>
       </NavSection>
       <NavSection title="MATERIAL">
         <NavLink href="/material/geral" icon={RiDashboardLine}>Geral</NavLink>
@@ -46,6 +46,12 @@ export function SidebarNav() {
         <NavLink href="/furriel/geral" icon={RiDashboardLine}>Geral</NavLink>
         <NavLink href="/furriel/municao" icon={GiAmmoBox}>Munição</NavLink>
         <NavLink href="/furriel/combustivel" icon={GiOilDrum}>Combustível</NavLink>
+      </NavSection>
+      <NavSection title="CMT DA GDA">
+        <NavLink href="#" icon={RiDashboardLine}>Geral</NavLink>
+        <NavLink href="#" icon={GiAmmoBox}>Pessoal</NavLink>
+        <NavLink href="#" icon={GiOilDrum}>Viatura</NavLink>
+        <NavLink href="#" icon={GiOilDrum}>Civil</NavLink>
       </NavSection>
     </Stack>
   );

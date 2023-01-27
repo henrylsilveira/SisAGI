@@ -1,4 +1,4 @@
-import { Flex, Avatar, Box, Text, Tag, TagCloseButton, TagLabel, VStack, Badge } from "@chakra-ui/react";
+import { Flex, Avatar, Box, Text, Tag, TagCloseButton, TagLabel, VStack, Badge, AvatarBadge } from "@chakra-ui/react";
 import { useSession } from 'next-auth/react';
 
 interface ProfileProps {
@@ -37,21 +37,27 @@ export function Profile({ showProfileData = true }: ProfileProps) {
                 boxShadow="buttonShadow"
               >
                 <TagLabel  pr='2'> { session?.militar.companhia } / {session?.militar.pelotao}</TagLabel>
-                <Badge variant='outline' colorScheme='yellow' >
-          {session?.militar.funcao_local}
-  </Badge>
               </Tag>
           </Flex>
           
         </>
       )}
-      <Flex flexDirection='column'>
+      <Flex flexDirection='column' alignItems='center'>
 
       <Avatar
             size="lg"
             name="Henry Leao"
-            src="https://github.com/henrylsilveira.png"
-          />
+            bg='green.900'
+            src=""
+          >
+            <AvatarBadge borderColor='gray.990' boxSize='1.1em' bg='green.500' />
+          </Avatar>
+          {!showProfileData && ( 
+             <Badge variant="outline" colorScheme="yellow" mx='auto' zIndex='toast' >
+             { session?.militar.companhia } / {session?.militar.pelotao}
+               </Badge>
+          )}
+           
           
          
       </Flex>
