@@ -98,7 +98,7 @@ const series = [
   },
 ];
 
-export default function Cadastro() {
+export default function Perfil() {
   const { data: session } = useSession();
   const toast = useToast();
 
@@ -126,79 +126,72 @@ export default function Cadastro() {
       <Head>
         <title>SisAGI | Minhas Cautelas</title>
       </Head>
-      <Flex direction="column" h="100vh">
-        <Header />
-
-        <Flex w="100%" my={6} maxWidth={1480} mx="auto" px="6">
-          <Sidebar />
-          <Flex direction="column" flex="1" gap={4}>
-            <SimpleGrid
-              flex="1"
-              gap="4"
-              minChildWidth="320px"
-              alignItems="flex-start"
-            >
-              <Box p={["6", "8"]} bg="gray.800" borderRadius={8} pb="4">
-              <Flex
-                    bgGradient="linear(to-tr, gray.990, gray.990, green.900)"
-                    boxShadow="buttonShadow"
-                    rounded="lg"
-                    w="100%"
-                    flexDirection="column"
-                    mb={4}
-                  >
-                    <Flex bg="gray.990" boxShadow="buttonShadow" m={4} >
-                      <Heading size="md" p={2}>
-                        Perfil
-                      </Heading>
-                    </Flex>
-                    <Box m="auto" w="100%" h="100%" px={2}>
-                      
-                    </Box>
-                  </Flex>
-                <Flex
-                  flexDirection="row"
-                  gap={4}
-                  justifyContent="space-between"
-                >
-                  <Flex
-                    bgGradient="linear(to-tr, gray.990, gray.990, green.900)"
-                    boxShadow="buttonShadow"
-                    rounded="lg"
-                    w="100%"
-                    flexDirection="column"
-                  >
-                    <Flex bg="gray.990" boxShadow="buttonShadow" m={4}>
-                      <Heading size="md" p={2}>
-                        Dados Pessoais
-                      </Heading>
-                    </Flex>
-                    <Box m="auto" w="100%" h="100%" px={2}>
-                      
-                    </Box>
-                  </Flex>
-                  <Flex
-                    bgGradient="linear(to-tr, gray.990, gray.990, green.900)"
-                    boxShadow="buttonShadow"
-                    rounded="lg"
-                    transition="ease-in-out"
-                    w="100%"
-                    flexDirection="column"
-                  >
-                    <Flex bg="gray.990" boxShadow="buttonShadow" m={4}>
-                      <Heading size="md" p={2}>
-                        Dados Militares
-                      </Heading>
-                    </Flex>
-                    
-                    
-                    
-                  </Flex>
+      <Flex direction="column" flex="1" gap={4}>
+        <SimpleGrid
+          flex="1"
+          gap="4"
+          minChildWidth="320px"
+          alignItems="flex-start"
+        >
+          <Box p={["6", "8"]} bg="gray.800" borderRadius={8} pb="4">
+          <Flex
+                bgGradient="linear(to-tr, gray.990, gray.990, green.900)"
+                boxShadow="buttonShadow"
+                rounded="lg"
+                w="100%"
+                flexDirection="column"
+                mb={4}
+              >
+                <Flex bg="gray.990" boxShadow="buttonShadow" m={4} >
+                  <Heading size="md" p={2}>
+                    Perfil
+                  </Heading>
                 </Flex>
-              </Box>
-            </SimpleGrid>
-          </Flex>
-        </Flex>
+                <Box m="auto" w="100%" h="100%" px={2}>
+                  
+                </Box>
+              </Flex>
+            <Flex
+              flexDirection="row"
+              gap={4}
+              justifyContent="space-between"
+            >
+              <Flex
+                bgGradient="linear(to-tr, gray.990, gray.990, green.900)"
+                boxShadow="buttonShadow"
+                rounded="lg"
+                w="100%"
+                flexDirection="column"
+              >
+                <Flex bg="gray.990" boxShadow="buttonShadow" m={4}>
+                  <Heading size="md" p={2}>
+                    Dados Pessoais
+                  </Heading>
+                </Flex>
+                <Box m="auto" w="100%" h="100%" px={2}>
+                  
+                </Box>
+              </Flex>
+              <Flex
+                bgGradient="linear(to-tr, gray.990, gray.990, green.900)"
+                boxShadow="buttonShadow"
+                rounded="lg"
+                transition="ease-in-out"
+                w="100%"
+                flexDirection="column"
+              >
+                <Flex bg="gray.990" boxShadow="buttonShadow" m={4}>
+                  <Heading size="md" p={2}>
+                    Dados Militares
+                  </Heading>
+                </Flex>
+                
+                
+                
+              </Flex>
+            </Flex>
+          </Box>
+        </SimpleGrid>
       </Flex>
     </>
   );

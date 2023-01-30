@@ -105,11 +105,6 @@ import Head from "next/head";
         <Head>
             <title>SisAGI | Armamento - Manutenção</title>
         </Head>
-        <Flex direction="column" h="100vh">
-        <Header />
-  
-        <Flex w="100%" my={6} maxWidth={1480} mx="auto" px="6">
-          <Sidebar />
           <Flex direction="column" flex="1" gap={4}>
             <SimpleGrid
               flex="1"
@@ -243,8 +238,6 @@ import Head from "next/head";
               </Box>
             </SimpleGrid>
           </Flex>
-        </Flex>
-      </Flex>
         </>
       
     );

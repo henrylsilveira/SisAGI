@@ -1,5 +1,6 @@
 import { Manutencao } from "./types.d";
 export interface Militar {
+  //DADOS BÁSICOS
   id: string;
   identidade: string;
   post_grad: string;
@@ -9,17 +10,41 @@ export interface Militar {
   companhia?: string;
   pelotao?: string;
   funcao_local: string;
-  status: string;
+  status: 'ativo' | 'encostado' | 'baixado' | 'adido' | 'incapaz' | 'inativo';
+  //DADOS COMPLEMENTARES
+  cpf?: string; 
+  nome_pai?: string;
+  nome_mae?: string;
+  naturalidade?: string;
+  data_nascimento?: Date;	
+  data_praca?: Date;	
+  qmg_qmp?: string;	
+  sexo?: string;
+  cidade?: string;
+  estado?: string;
+  bairro?: string;
+  nr_rua?: string;	
+  complemento?: string;
+  cep?: string;
+  telefone?: string;
+  email?: string;
+  cargo_qcp?: string;	
+  tipo_sanguineo?: string;
+  prec_cp?: string;
+  local_cumpre_expediente?: string;	
+  motocarro?: string;
+  hab_militar?: string;
+  //GEOLOCALIZAÇÃO
   longitude?: string;
   latitude?: string;
-
-  cautelas?: [];
+  //RELACIONAMENTOS DE TABELAS
+  cautelas?: CautelaArray;
   Session?: [];
-  CautelaArmamento?: CautelaArmamentoArray[];
-  ArmamentoMilitar?: VinculoArmamentoMilitarArray[];
-  Municao?: MunicaoArray[];
-  Combustivel?: CombustivelArray[];
-  FuncaoMilitar?: FuncaoMilitarArray[];
+  CautelaArmamento?: CautelaArmamentoArray;
+  ArmamentoMilitar?: VinculoArmamentoMilitarArray;
+  Municao?: MunicaoArray;
+  Combustivel?: CombustivelArray;
+  Funcao?: FuncaoMilitarArray;
 }
 
 export type MilitarArray = Militar[];
@@ -152,6 +177,9 @@ export type FuncaoMilitar = {
   id: string;
   funcao: string;
   created_at: Date;
+  data_inicio:  Date;
+  data_termino: Date;
+  status: 'ativo' | 'inativo'
   militarId: Militar
 }
 

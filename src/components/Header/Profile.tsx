@@ -43,11 +43,10 @@ export function Profile({ showProfileData = true }: ProfileProps) {
         </>
       )}
       <Flex flexDirection='column' alignItems='center'>
-
       <Avatar
             size="lg"
-            name="Henry Leao"
-            bg='green.900'
+            name={session?.militar.nome_completo}
+            bg='green.700'
             src=""
           >
             <AvatarBadge borderColor='gray.990' boxSize='1.1em' bg='green.500' />
@@ -57,9 +56,6 @@ export function Profile({ showProfileData = true }: ProfileProps) {
              { session?.militar.companhia } / {session?.militar.pelotao}
                </Badge>
           )}
-           
-          
-         
       </Flex>
     </Flex>
   );

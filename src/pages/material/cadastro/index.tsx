@@ -27,8 +27,6 @@ import {
   Tr,
   useToast,
 } from "@chakra-ui/react";
-import { Header } from "../../../components/Header";
-import { Sidebar } from "../../../components/Sidebar";
 import { useQuery } from "react-query";
 import { api } from "../../../services/api";
 import { useState } from "react";
@@ -42,6 +40,7 @@ import { SlRefresh } from 'react-icons/sl'
 import { TiInfoLarge } from 'react-icons/ti'
 import { useSession } from "next-auth/react";
 import { CautelaArray, Material } from '../../../@types/types';
+import Head from "next/head";
 
 interface MaterialDataProps extends Material {
   cautelas?: CautelaArray;
@@ -106,12 +105,11 @@ export default function Cadastro() {
   };
 
   return (
-    <Flex direction="column" h="100vh">
-      <Header />
-
-      <Flex w="100%" my={6} maxWidth={1480} mx="auto" px="6">
-        <Sidebar />
-        <Flex direction="column" flex="1" gap={4}>
+      <>
+      <Head>
+        <title>SisAGI | Material - Cadastro</title>
+      </Head>
+      <Flex direction="column" flex="1" gap={4}>
           <SimpleGrid
             flex="1"
             gap="4"
@@ -311,7 +309,8 @@ export default function Cadastro() {
             </Box>
           </SimpleGrid>
         </Flex>
-      </Flex>
-    </Flex>
+      </>
+        
+
   );
 }

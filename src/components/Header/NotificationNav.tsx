@@ -17,11 +17,11 @@ export function NotificationNav() {
       <Icon as={RiNotificationLine} fontSize={20} />
       {/* <Icon as={RiUserAddLine} fontSize={20} /> */}
       <Button
-        bg="red.400"
+        bgGradient="linear(to-tr, red.900, gray.990, gray.990 )"
         size="md"
         boxShadow="buttonShadow"
         color="whiteAlpha.900"
-        _hover={{ bgColor: "red.600" }}
+        _hover={{ bgGradient: "linear(to-tr, red.900, red.800, gray.990 )", transition: 'top ease 0.5s'}}
         onClick={() => signOut()}
         p="4"
       >

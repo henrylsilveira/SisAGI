@@ -38,7 +38,7 @@ const signInFormSchema = yup.object().shape({
   pelotao: yup.string(),
 });
 
-export default function Home() {
+export default function Cadastro() {
   const toast = useToast()
   const {
     register,

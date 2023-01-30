@@ -95,11 +95,7 @@ export default function BuscaArmamento() {
     <Head>
         <title>SisAGI | Armamento - Buscar</title>
     </Head>
-    <Flex direction="column" h="100vh">
-      <Header />
 
-      <Flex w="100%" my={6} maxWidth={1480} mx="auto" px="6">
-        <Sidebar />
         <Flex direction="column" flex="1" gap={4}>
           <SimpleGrid
             flex="1"
@@ -258,8 +254,6 @@ export default function BuscaArmamento() {
             </Box>
           </SimpleGrid>
         </Flex>
-      </Flex>
-    </Flex>
     </>
   );
 }

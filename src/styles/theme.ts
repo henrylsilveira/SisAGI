@@ -14,10 +14,11 @@ export const theme = extendTheme({
              "200": "#B3B5C6",
              "100": "#D1D2DC",
              "50": "#EEEEF2",
-        }
+        },
     },
     shadows: {
-        buttonShadow: "rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;"
+        buttonShadow: "rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;",
+        innerShadow: "rgba(0, 0, 0) 3px 3px 6px 0px inset, rgba(0, 0, 0, 0.5) -3px -3px 6px 1px inset;",
     },
     font: {
         heading: 'Roboto',

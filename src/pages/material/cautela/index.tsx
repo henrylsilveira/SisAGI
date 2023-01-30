@@ -120,103 +120,97 @@ import { CautelaArray, Material } from '../../../@types/types';
       <Head>
         <title>SisAGI | Material - Cautelar</title>
       </Head>
-      <Flex direction="column" h="100vh">
-        <Header />
-  
-        <Flex w="100%" my={6} maxWidth={1480} mx="auto" px="6">
-          <Sidebar />
-          <Flex direction="column" flex="1" gap={4}>
-            <SimpleGrid
-              flex="1"
-              gap="4"
-              minChildWidth="320px"
-              alignItems="flex-start"
-            >
-              <Box p={["6", "8"]} bg="gray.800" borderRadius={8} pb="4">
-                <Heading fontSize="2xl" my="4">
-                  Materiais {isLoading ? <Spinner ml={8} /> : ""} <IconButton bg='blue.700' float='right' _hover={{ bgColor: 'blue.900'}} onClick={() => refetch()} aria-label="Atualizar tabela" icon={<SlRefresh />} />
-                </Heading>
-                <TableContainer>
-                  <Table size="sm" colorScheme="whiteAlpha">
-                    <Thead>
-                      <Tr>
-                        <Th textAlign="center">Material</Th>
-                        <Th textAlign="center">Condições</Th>
-                        <Th textAlign="center">Quantidade</Th>
-                        <Th textAlign="center">SU</Th>
-                        <Th textAlign="center">Dependência</Th>
-                        <Th textAlign="center">Cauteladas</Th>
-                        <Th textAlign="center">Disponíveis</Th>
-                        <Th textAlign="center">Categoria</Th>
-                        <Th></Th>
-                      </Tr>
-                    </Thead>
-                    <Tbody>
-                      {data?.data.map((res: MaterialDataProps) => (
-                        <Tr key={res.id}>
-                          <Td textAlign="center">{res.nome}</Td>
-                          <Td textAlign="center">
-                            <Popover placement="top-start">
-                              <PopoverTrigger>
-                                <Button bg="green.400" size="xs" _hover={{ bgColor: 'green.600'}} py="1">
-                                  <Icon boxSize={6} as={TiInfoLarge} />
-                                </Button>
-                              </PopoverTrigger>
-                              <PopoverContent  bg="gray.900" border="0">
-                                <PopoverHeader fontWeight="bold">
-                                  Condições
-                                </PopoverHeader>
-                                <PopoverArrow bg="gray.800" />
-                                <PopoverCloseButton />
-                                <PopoverBody as="div" wordBreak='normal' h="auto" py={6} overflow="scroll">
-                                {res.condicoes}
-  
-                                  </PopoverBody>
-                              </PopoverContent>
-                            </Popover>
-                          </Td>
-                          <Td textAlign="center">{res.quantidade}</Td>
-                          <Td textAlign="center">{res.sub_unidade}</Td>
-                          <Td textAlign="center">{res.dependencia}</Td>
-                          <Td textAlign="center">{res.cautelas?.filter((c: any) => c.status === 'ativo').reduce(
-                            ((total = 0, cautela) => {return total + cautela.quantidade}), 0
-                          )}</Td>
-                          <Td textAlign="center">
-                            {res.quantidade - (res.cautelas?.filter((c: any) => c.status === 'ativo')).reduce(
-                            ((total = 0, cautela) => {return total + cautela.quantidade}), 0
-                          )}
-                          </Td>
-                          <Td textAlign="center">
-                            {res.categoria === 'controlado' ? <Badge as='span' variant='outline' colorScheme='red'>{res.categoria}</Badge> : <Badge as='span' variant='outline' colorScheme='green'>{res.categoria}</Badge>}
-                          </Td>
-                          <Td>
-                            {res.quantidade - (res.cautelas?.filter((c: any) => c.status === 'ativo')).reduce(
-                            ((total = 0, cautela) => {return total + cautela.quantidade}), 0
-                          ) !== 0 ? <ModalCautela data={militares} dataMaterial={res}  /> : <Badge as='span' variant='outline' colorScheme='red'>SEM MATERIAL</Badge>}
-                            
-                          </Td>
-                        </Tr>
-                      ))}
-                    </Tbody>
-                    <Tfoot>
-                      <Tr>
-                      <Th textAlign="center">Material</Th>
-                        <Th textAlign="center">Condições</Th>
-                        <Th textAlign="center">Quantidade</Th>
-                        <Th textAlign="center">SU</Th>
-                        <Th textAlign="center">Dependência</Th>
-                        <Th textAlign="center">Cauteladas</Th>
-                        <Th textAlign="center">Disponíveis</Th>
-                        <Th textAlign="center">Categoria</Th>
-                      </Tr>
-                    </Tfoot>
-                  </Table>
-                </TableContainer>
-              </Box>
-            </SimpleGrid>
-          </Flex>
-        </Flex>
+      <Flex direction="column" flex="1" gap={4}>
+        <SimpleGrid
+          flex="1"
+          gap="4"
+          minChildWidth="320px"
+          alignItems="flex-start"
+        >
+          <Box p={["6", "8"]} bg="gray.800" borderRadius={8} pb="4">
+            <Heading fontSize="2xl" my="4">
+              Materiais {isLoading ? <Spinner ml={8} /> : ""} <IconButton bg='blue.700' float='right' _hover={{ bgColor: 'blue.900'}} onClick={() => refetch()} aria-label="Atualizar tabela" icon={<SlRefresh />} />
+            </Heading>
+            <TableContainer>
+              <Table size="sm" colorScheme="whiteAlpha">
+                <Thead>
+                  <Tr>
+                    <Th textAlign="center">Material</Th>
+                    <Th textAlign="center">Condições</Th>
+                    <Th textAlign="center">Quantidade</Th>
+                    <Th textAlign="center">SU</Th>
+                    <Th textAlign="center">Dependência</Th>
+                    <Th textAlign="center">Cauteladas</Th>
+                    <Th textAlign="center">Disponíveis</Th>
+                    <Th textAlign="center">Categoria</Th>
+                    <Th></Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {data?.data.map((res: MaterialDataProps) => (
+                    <Tr key={res.id}>
+                      <Td textAlign="center">{res.nome}</Td>
+                      <Td textAlign="center">
+                        <Popover placement="top-start">
+                          <PopoverTrigger>
+                            <Button bg="green.400" size="xs" _hover={{ bgColor: 'green.600'}} py="1">
+                              <Icon boxSize={6} as={TiInfoLarge} />
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent  bg="gray.900" border="0">
+                            <PopoverHeader fontWeight="bold">
+                              Condições
+                            </PopoverHeader>
+                            <PopoverArrow bg="gray.800" />
+                            <PopoverCloseButton />
+                            <PopoverBody as="div" wordBreak='normal' h="auto" py={6} overflow="scroll">
+                            {res.condicoes}
+
+                              </PopoverBody>
+                          </PopoverContent>
+                        </Popover>
+                      </Td>
+                      <Td textAlign="center">{res.quantidade}</Td>
+                      <Td textAlign="center">{res.sub_unidade}</Td>
+                      <Td textAlign="center">{res.dependencia}</Td>
+                      <Td textAlign="center">{res.cautelas?.filter((c: any) => c.status === 'ativo').reduce(
+                        ((total = 0, cautela) => {return total + cautela.quantidade}), 0
+                      )}</Td>
+                      <Td textAlign="center">
+                        {res.quantidade - (res.cautelas?.filter((c: any) => c.status === 'ativo')).reduce(
+                        ((total = 0, cautela) => {return total + cautela.quantidade}), 0
+                      )}
+                      </Td>
+                      <Td textAlign="center">
+                        {res.categoria === 'controlado' ? <Badge as='span' variant='outline' colorScheme='red'>{res.categoria}</Badge> : <Badge as='span' variant='outline' colorScheme='green'>{res.categoria}</Badge>}
+                      </Td>
+                      <Td>
+                        {res.quantidade - (res.cautelas?.filter((c: any) => c.status === 'ativo')).reduce(
+                        ((total = 0, cautela) => {return total + cautela.quantidade}), 0
+                      ) !== 0 ? <ModalCautela data={militares} dataMaterial={res}  /> : <Badge as='span' variant='outline' colorScheme='red'>SEM MATERIAL</Badge>}
+                        
+                      </Td>
+                    </Tr>
+                  ))}
+                </Tbody>
+                <Tfoot>
+                  <Tr>
+                  <Th textAlign="center">Material</Th>
+                    <Th textAlign="center">Condições</Th>
+                    <Th textAlign="center">Quantidade</Th>
+                    <Th textAlign="center">SU</Th>
+                    <Th textAlign="center">Dependência</Th>
+                    <Th textAlign="center">Cauteladas</Th>
+                    <Th textAlign="center">Disponíveis</Th>
+                    <Th textAlign="center">Categoria</Th>
+                  </Tr>
+                </Tfoot>
+              </Table>
+            </TableContainer>
+          </Box>
+        </SimpleGrid>
       </Flex>
+
       </>
       
     );
