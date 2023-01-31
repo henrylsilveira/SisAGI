@@ -38,8 +38,8 @@ export function Sidebar() {
   return (
     <Box as="aside" w="48" mr="8">
       <SidebarNav />
-      <Flex boxShadow='buttonShadow' my={4} mx='auto' alignItems='center'>
-        <Text fontSize='xs' fontWeight="bold" letterSpacing="tight" w="64" bgGradient="linear(to-tr, green.300, gray.600, green.300 )" bgClip='text'>
+      <Flex boxShadow='buttonShadow' my={4} alignItems='center' w='full'>
+        <Text fontSize='xs' fontWeight="bold" letterSpacing="tight" bgGradient="linear(to-tr, green.300, gray.600, green.300 )" bgClip='text' p={2} w='full'>
           Desenvolvido pelo 3ªSgt Henry - 2016
         </Text>
       </Flex>

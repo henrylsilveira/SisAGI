@@ -35,7 +35,10 @@ export default function SuperAdmin() {
     ["todosMilitares"],
     async () => {
       const result = await api.get<MilitarArray>("/militar");
-      setResult(result.data);
+      setResult(result.data.sort((x,y) => {
+        let a = x.nome_guerra.toUpperCase(), b = y.nome_guerra.toUpperCase()
+        return a == b ? 0 : a > b ? 1 : -1
+      }));
       return result;
     }
   );

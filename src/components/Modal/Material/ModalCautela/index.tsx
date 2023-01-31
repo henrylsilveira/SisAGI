@@ -46,7 +46,7 @@ export function ModalCautela({ data: militares, dataMaterial: material }) {
     e.preventDefault();
 
     const values = {
-      militarNome: session.militar.nome_guerra,
+      militarNome: `${session.militar.post_grad} ${session.militar.nome_guerra}`,
       materialId: material.id,
       observacao,
       quantidade,
@@ -99,6 +99,7 @@ export function ModalCautela({ data: militares, dataMaterial: material }) {
         _hover={{ bgColor: "green.600" }}
         onClick={onOpen}
         py="1"
+        boxShadow="buttonShadow"
       >
         <Icon boxSize={4} as={BsBoxArrowRight} pr={1} />
         Cautelar
@@ -132,27 +133,37 @@ export function ModalCautela({ data: militares, dataMaterial: material }) {
                 as="select"
                 focusBorderColor="green.500"
                 name="militar"
-                bgColor="gray.900"
                 textColor="gray.200"
                 variant="filled"
-                _hover={{ bgColor: "gray.900" }}
+                _hover={{ bgColor: "gray.990" }}
                 size="lg"
                 placeholder="Selecione"
                 onChange={(e) => setMilitar(e.target.value)}
               >
                 <option value="">Selecione</option>
-                {militares.data?.map((militar: Militar) => (
-                  <option key={militar.id} value={militar.id}>
-                    { militar.post_grad + ' ' + militar.nome_guerra}
-                  </option>
-                ))}
+                {militares.data
+                  ?.filter((mil: Militar) => mil.identidade !== session.militar.identidade).sort((x, y) => {
+                    let a = x.nome_guerra.toUpperCase(),
+                      b = y.nome_guerra.toUpperCase();
+                    return a == b ? 0 : a > b ? 1 : -1;
+                  })
+                  .map((militar: Militar) => (
+                    <option key={militar.id} value={militar.id}>
+                      {`${militar.post_grad} ${militar.nome_guerra} (${militar.companhia})`}
+                    </option>
+                  ))}
               </Input>
+              <FormHelperText>
+                Militares listados em ordem alfabética
+              </FormHelperText>
             </FormControl>
             <FormControl>
               <FormLabel>Quantidade</FormLabel>
               <NumberInput
                 focusBorderColor="green.500"
-                bg="gray.900"
+                bg="gray.990"
+                border="1px"
+                borderColor="gray.700"
                 name="quantidade"
                 rounded="base"
                 max={Number(

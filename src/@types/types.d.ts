@@ -175,7 +175,7 @@ export type CombustivelArray = Combustivel[];
 
 export type FuncaoMilitar = {
   id: string;
-  funcao: string;
+  funcao: 'super admin' | 'cmt cia' | 'enc mat' | 'armeiro' | 'cmt pel' | 'cmt gda' | 'furriel' | 'comum' | string;
   created_at: Date;
   data_inicio:  Date;
   data_termino: Date;

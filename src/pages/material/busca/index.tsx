@@ -8,7 +8,7 @@ import {
   FormLabel,
   Heading,
   IconButton,
-  Input,
+
   SimpleGrid,
   Spinner,
   Table,
@@ -36,8 +36,11 @@ import { SlRefresh } from "react-icons/sl";
 import { Cautela, CautelaArray } from "../../../@types/types";
 import { ModalEncerrarCautela } from "../../../components/Modal/Material/ModalEncerrarCautela";
 import Head from "next/head";
+import { Input } from "../../../components/Form/Input";
+import { useSession } from "next-auth/react";
 
 export default function Busca() {
+  const { data: session } = useSession()
   const [result, setResult] = useState([]);
 
   const [search, setSearch] = useState(result);
@@ -48,9 +51,10 @@ export default function Busca() {
   const { isLoading, error, data, isFetching, refetch } = useQuery(
     ["todasCautelas"],
     async () => {
-      const result = await api.get("/cautela");
-      setResult(result.data as CautelaArray);
-      return result.data;
+      const result = await api.get<CautelaArray>("/cautela");
+      const filteredData = result.data.filter(cautela => cautela.sub_unidade === session.militar.companhia && cautela.dependencia === session.militar.pelotao )
+      setResult(filteredData);
+      return filteredData;
     }
   );
   useEffect(() => {
@@ -95,17 +99,30 @@ export default function Busca() {
           alignItems="flex-start"
         >
           <Box p={["6", "8"]} bg="gray.800" borderRadius={8} pb="4">
-            <Flex direction="column">
-              <Heading fontSize="2xl" mb="4">
-                <Flex alignItems="center">
-                  <BsSearch size={25} />
-                  <Flex px={4}>Buscar cautela</Flex>
-                </Flex>
+            <Flex bgGradient="linear(to-tr, gray.990, gray.990, green.900)"
+              boxShadow="innerShadow" flexDirection="column"
+              rounded="lg"
+              p={4}
+              w="100%">
+            <Flex
+              bg="gray.990"
+              
+              boxShadow="buttonShadow"
+              m={4}
+              justifyContent="space-between"
+              alignItems="center"
+              py={2}
+              
+            >
+              <Heading fontSize="2xl" pl={2}>
+                BUSCAR CAUTELA
               </Heading>
-              <Flex direction="row" gap={4}>
+            </Flex>
+              <Flex direction="row" gap={4} mx={4}>
                 <FormControl>
-                  <FormLabel>Militar</FormLabel>
                   <Input
+                  name="militar"
+                  label="Militar"
                     value={militar}
                     onChange={(e) => setMilitar(e.target.value)}
                     type="text"
@@ -113,8 +130,9 @@ export default function Busca() {
                   <FormHelperText>Filtre a busca pelo nome</FormHelperText>
                 </FormControl>
                 <FormControl>
-                  <FormLabel>Material</FormLabel>
                   <Input
+                  name="material"
+                  label="Material"
                     value={material}
                     onChange={(e) => setMaterial(e.target.value)}
                     type="text"
@@ -125,28 +143,46 @@ export default function Busca() {
                 </FormControl>
               </Flex>
             </Flex>
-            <Heading fontSize="2xl" my="4">
-              Cautelas {isLoading ? <Spinner ml={8} /> : ""}{" "}
+            <Flex bgGradient="linear(to-tr, gray.990, gray.990, green.900)"
+              boxShadow="innerShadow" flexDirection="column"
+              rounded="lg"
+              px={4}
+              w="100%" mt={4}>
+            <Flex
+              bg="gray.990"
+              boxShadow="buttonShadow"
+              m={4}
+              justifyContent="space-between"
+              alignItems="center"
+              py={2}
+              
+            >
+              <Heading fontSize="2xl" pl={2}>
+                CAUTELAS {isLoading ? <Spinner ml={8} /> : ""}
+              </Heading>
               <IconButton
-                bg="blue.700"
+                boxShadow="buttonShadow"
+                colorScheme="twitter"
                 float="right"
-                _hover={{ bgColor: "blue.900" }}
+                mr={2}
                 onClick={() => refetch()}
                 aria-label="Atualizar tabela"
                 icon={<SlRefresh />}
               />
-            </Heading>
-            <Flex bg="gray.990" p="2" rounded="2xl" boxShadow="lg">
-              <Text mr={4}>Filtros:</Text>
+            </Flex>
+
+            <Flex bg="gray.990" w='xl' mx='auto' p="2" rounded="md" boxShadow="buttonShadow" justifyContent='space-between'>
+              <Text mr={4}>FILTRO</Text>
               <Checkbox
                 size="lg"
                 colorScheme="blue"
                 onChange={(e) => setCautelaFechada(e.target.checked)}
+                mr={4}
               >
                 Fechada?
               </Checkbox>
             </Flex>
-            <TableContainer>
+            <TableContainer my={4}>
               <Table size="sm" colorScheme="whiteAlpha">
                 <Thead>
                   <Tr>
@@ -182,7 +218,7 @@ export default function Busca() {
                           <Circle
                             mx="auto"
                             size="40px"
-                            boxShadow="md"
+                            boxShadow='buttonShadow'
                             bg="gray.990"
                           >
                             <BiLock size={24} color="#00AA00" />
@@ -224,6 +260,7 @@ export default function Busca() {
                 </Tfoot>
               </Table>
             </TableContainer>
+            </Flex>
           </Box>
         </SimpleGrid>
       </Flex>
