@@ -9,20 +9,29 @@ import {
   Tag,
   TagCloseButton,
   TagLabel,
-  TagRightIcon,
-  color,
   useToast,
 } from "@chakra-ui/react";
 import { Input } from "../../Form/Input";
 import { FuncaoMilitar, Militar } from "../../../@types/types";
 import { FcAcceptDatabase } from "react-icons/fc";
 import { MdAdd } from "react-icons/md";
-import { convertISODateToInputValue, convertDate, convertDateInputToISODate } from '../../../utils/scripts';
+import { convertISODateToInputValue, convertDateInputToISODate } from '../../../utils/scripts';
 import { useState } from "react";
 import { api } from "../../../services/api";
+import { useSession } from "next-auth/react";
+import dynamic from "next/dynamic";
+
+
+//Dynamic permite carregar o componente somente quando for necessario, exemplo quando for clicar em um botao
+const MapWithNoSSR = dynamic(() => import("../../Map"), {
+  ssr: false
+});
+
 
 export function DadosMilitares(props) {
+  const { data:session } = useSession()
   const mil = props.militar as Militar;
+  
   return (
     <Flex
       bgGradient="linear(to-tr, gray.990, gray.990, green.900)"
@@ -42,6 +51,7 @@ export function DadosMilitares(props) {
         <Heading size="md" p={2}>
           Dados Militares
         </Heading>
+        {session?.militar.Funcao.find((func) => func.funcao === "comum") ? null : 
         <Button
           boxShadow="buttonShadow"
           colorScheme="messenger"
@@ -50,7 +60,7 @@ export function DadosMilitares(props) {
         >
           <FcAcceptDatabase size={20} />
           Salvar
-        </Button>
+        </Button>}
       </Flex>
       <Box m="auto" w="100%" h="100%" px={4} pb={4}>
         <FormControl>
@@ -187,6 +197,9 @@ export function DadosMilitares(props) {
             <option value="NÃO">NÃO</option>
           </Input>
         </FormControl>
+        
+        {session?.militar.Funcao.find((func) => func.funcao === "comum") ? null :
+        <>
         <Flex
           bg="gray.990"
           boxShadow="buttonShadow"
@@ -199,29 +212,33 @@ export function DadosMilitares(props) {
           </Heading>
         </Flex>
         <Grid m={4} gridTemplateColumns="1fr 1fr">
-            {mil.Funcao?.map((func: FuncaoMilitar, index: number) => (
-                <Tag
-                flex={1}
-                justifyContent="space-between"
-                borderRadius="base"
-                variant="solid"
-                colorScheme="facebook"
-                boxShadow="buttonShadow"
-                key={index}
-                m={2}
-              >
-                <TagLabel>{func.funcao.toUpperCase()}</TagLabel>
-                <TagCloseButton onClick={() => {}} />
-              </Tag>
-            ))}
-        </Grid>
+        {mil.Funcao?.map((func: FuncaoMilitar, index: number) => (
+            <Tag
+            flex={1}
+            justifyContent="space-between"
+            borderRadius="base"
+            variant="solid"
+            colorScheme="facebook"
+            boxShadow="buttonShadow"
+            key={index}
+            m={2}
+          >
+            <TagLabel>{func.funcao.toUpperCase()}</TagLabel>
+            <TagCloseButton onClick={() => {}} />
+          </Tag>
+        ))}
+    </Grid> 
         <AtribuirFuncao militar={mil} />
+        
+        </>
+        }
       </Box>
     </Flex>
   );
 }
 
 export function DadosPessoais(props) {
+  const { data:session } = useSession()
   const mil = props.militar as Militar;
 
   return (
@@ -242,6 +259,7 @@ export function DadosPessoais(props) {
         <Heading size="md" p={2}>
           Dados Pessoais
         </Heading>
+        {session?.militar.Funcao.find((func) => func.funcao === "comum") ? null : 
         <Button
           boxShadow="buttonShadow"
           colorScheme="messenger"
@@ -250,7 +268,7 @@ export function DadosPessoais(props) {
         >
           <FcAcceptDatabase size={20} />
           Salvar
-        </Button>
+        </Button>}
       </Flex>
       <Box m="auto" w="100%" h="100%" px={4} pb={4}>
         <FormControl>
@@ -454,6 +472,7 @@ export function DadosPessoais(props) {
 }
 
 export function Endereco(props) {
+  const { data:session } = useSession()
   const mil = props.militar as Militar;
 
   return (
@@ -476,6 +495,7 @@ export function Endereco(props) {
         <Heading size="md" p={2}>
           Endereço
         </Heading>
+        {session?.militar.Funcao.find((func) => func.funcao === "comum") ? null : 
         <Button
           boxShadow="buttonShadow"
           colorScheme="messenger"
@@ -484,7 +504,7 @@ export function Endereco(props) {
         >
           <FcAcceptDatabase size={20} />
           Salvar
-        </Button>
+        </Button>}
       </Flex>
       <Grid
         gridTemplateColumns="1fr 1fr"
@@ -578,7 +598,7 @@ export function Endereco(props) {
         <Heading size="md" p={2}>
           Mapa
         </Heading>
-        <Button
+        {mil.longitude !== '' && mil.latitude !== '' ? <Button
           boxShadow="buttonShadow"
           colorScheme="messenger"
           size="sm"
@@ -586,7 +606,7 @@ export function Endereco(props) {
         >
           <FcAcceptDatabase size={20} />
           Salvar
-        </Button>
+        </Button> : null}
       </Flex>
       <Grid
         gridTemplateColumns="1fr 1fr"
@@ -622,6 +642,10 @@ export function Endereco(props) {
           />
         </FormControl>
       </Grid>
+        <Flex>
+          <MapWithNoSSR />
+        </Flex>
+      
     </Flex>
   );
 }

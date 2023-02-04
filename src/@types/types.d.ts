@@ -45,6 +45,7 @@ export interface Militar {
   Municao?: MunicaoArray;
   Combustivel?: CombustivelArray;
   Funcao?: FuncaoMilitarArray;
+  _count?: Object;
 }
 
 export type MilitarArray = Militar[];

@@ -11,6 +11,7 @@ import { Sidebar } from "../components/Sidebar";
 import { useRouter } from "next/router";
 import { Header } from "../components/Header";
 
+
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const router = useRouter();
   return (
