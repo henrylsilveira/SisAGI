@@ -11,7 +11,6 @@ import {
   AvatarBadge,
   VStack,
   Tag,
-  TagCloseButton,
   TagLabel,
 } from "@chakra-ui/react";
 import { useQuery } from "react-query";
@@ -20,27 +19,27 @@ import { api } from "../../../services/api";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { FuncaoMilitar, Militar } from "../../../@types/types";
-import dynamic from "next/dynamic";
-import { DadosPessoais, Endereco } from "../../../components/SuperAdmin/Forms";
-import { DadosMilitares } from "../../../components/SuperAdmin/Forms/index";
+import { DadosMilitares } from "../../../components/SuperAdmin/Forms/DadosMilitares";
+import { DadosPessoais } from "../../../components/SuperAdmin/Forms/DadosPessoais";
+import { Endereco } from "../../../components/SuperAdmin/Forms/Endereco";
 
 // const Chart = dynamic(() => import("react-apexcharts"), {
 //   ssr: false,
 // });
 
-
 export default function Perfil() {
-  
   const { data: session } = useSession();
   const toast = useToast();
 
-  const { isLoading, error, data, isFetching, refetch } = useQuery(
+  const { isLoading, error, data: militar, isFetching, refetch } = useQuery(
     ["dadosMilitar"],
     async () => {
       const res = await api.get<Militar>(`/militar/${session?.militar.id}`);
       return res.data;
     }
   );
+ 
+
   // const series = [{ data: () => new Array(Object.values(data?._count))}];
 
   // const options: ApexOptions = {
@@ -109,8 +108,6 @@ export default function Perfil() {
   //   }
   // };
 
- 
-
   return (
     <>
       <Head>
@@ -165,7 +162,7 @@ export default function Perfil() {
                     bg="green.500"
                   />
                 </Avatar>
-                
+
                 <Flex>
                   <VStack alignItems="start">
                     <Text borderBottom="1px" borderBottomColor="gray.800">
@@ -180,7 +177,6 @@ export default function Perfil() {
                     <Text borderBottom="1px" borderBottomColor="gray.800">
                       Telefone:{" "}
                     </Text>
-                    
                   </VStack>
                   <VStack
                     alignItems="end"
@@ -202,36 +198,30 @@ export default function Perfil() {
                     </Text>
                   </VStack>
                 </Flex>
-                <Flex
-                bg="gray.990"
-                boxShadow="buttonShadow"
-              >
-
-              </Flex>
-                    <Grid gridTemplateColumns='1fr 1fr' m={2}>
-        {data?.Funcao.map((func: FuncaoMilitar, index: number) => (
-            <Tag
-            justifyContent="space-between"
-            borderRadius="base"
-            variant="outline"
-            colorScheme="whatsapp"
-            boxShadow="buttonShadow"
-            key={index}
-          >
-            <TagLabel>{func.funcao.toUpperCase()}</TagLabel>
-          </Tag>
-        ))}
-    </Grid> 
-                
+                <Flex bg="gray.990" boxShadow="buttonShadow"></Flex>
+                <Grid gridTemplateColumns="1fr 1fr" m={2}>
+                  {militar?.Funcao.map((func: FuncaoMilitar, index: number) => (
+                    <Tag
+                      justifyContent="space-between"
+                      borderRadius="base"
+                      variant="outline"
+                      colorScheme="whatsapp"
+                      boxShadow="buttonShadow"
+                      key={index}
+                    >
+                      <TagLabel>{func.funcao.toUpperCase()}</TagLabel>
+                    </Tag>
+                  ))}
+                </Grid>
               </Grid>
             </Flex>
 
             <Grid gridTemplateColumns="1fr 1fr" gap={4}>
-              <DadosPessoais militar={{ ...data }} />
-              <DadosMilitares militar={{ ...data }} />
+              <DadosPessoais militar={{ ...session.militar,...militar }} />
+              <DadosMilitares militar={{ ...session.militar,...militar }} />
             </Grid>
             <Flex>
-              <Endereco militar={{ ...data }} />
+              <Endereco militar={{ ...session.militar,...militar }} />
             </Flex>
           </Box>
         </SimpleGrid>

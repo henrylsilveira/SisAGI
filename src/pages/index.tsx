@@ -19,6 +19,7 @@ import Router from "next/router";
 import { signIn, useSession } from "next-auth/react"
 import { GetServerSideProps } from "next";
 import Head from "next/head";
+import { getUserIP } from "../utils/scripts";
 
 type SignInFormData = {
   identidade: string;
@@ -52,6 +53,7 @@ export default function Home() {
       redirect: false,
       identidade: values.identidade,
       senha: values.senha,
+      ip: await getUserIP()
     });
 
     if (res.error) {

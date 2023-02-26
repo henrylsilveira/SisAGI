@@ -1,6 +1,7 @@
 import NextAuth from "next-auth"
 import CredentialProvider from "next-auth/providers/credentials"
 import { api } from "../../../services/api";
+import { getUserIP } from "../../../utils/scripts";
 
 export default NextAuth({
     providers: [
@@ -9,13 +10,16 @@ export default NextAuth({
         credentials: {
           identidade: {label: "Identidade", type: "text", placeholder: "Identidade"},
           senha: { label: "Senha", type: "password" },
+          ip: {type: "text"}
         },
         authorize: async (credentials) => {
           try {
             const user = await api.post("/auth", {
                 identidade: credentials.identidade,
                 senha: credentials.senha,
+                ip: credentials.ip
             });
+            
             if (user) {
               const userAccount = user.data.result;
               return userAccount;

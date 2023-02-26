@@ -57,6 +57,7 @@ export default function Busca() {
       return filteredData;
     }
   );
+
   useEffect(() => {
     if (militar == "" && material == "") {
       return setSearch(

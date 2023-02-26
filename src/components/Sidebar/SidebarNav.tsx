@@ -22,10 +22,10 @@ export function SidebarNav() {
     <Stack spacing="12" align="flex-start">
       {session?.militar.Funcao.find((func) => func.funcao === "super admin") ? (
         <NavSection title="SUPER ADMIN">
-          <NavLink href="/superAdmin" icon={IoIosPeople}>
+          <NavLink href="/superAdmin/usuarios" icon={IoIosPeople}>
             Usuários
           </NavLink>
-          <NavLink href="#" icon={GoSettings}>
+          <NavLink href="/superAdmin/funcoes" icon={GoSettings}>
             Funções
           </NavLink>
         </NavSection>

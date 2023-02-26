@@ -291,7 +291,9 @@ export default function Cadastro() {
                                 <Icon boxSize={6} as={TiInfoLarge} />
                               </Button>
                             </PopoverTrigger>
-                            <PopoverContent bg="gray.900" border="0">
+                            <PopoverContent bg="gray.990"
+                          border="1px"
+                          borderColor="green.700">
                               <PopoverHeader fontWeight="bold">
                                 Condições
                               </PopoverHeader>

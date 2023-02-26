@@ -44,6 +44,8 @@ import { BiLock } from "react-icons/bi";
 import { ModalValidate } from "../../../components/Modal/Material/ModalValidate";
 import dynamic from "next/dynamic";
 import { ApexOptions } from "apexcharts";
+import { ArmamentoComponentPainel } from "../../../components/Painel/Armamento";
+import { CautelasComponentPainel } from "../../../components/Painel/Cautelas";
 
 const Chart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
@@ -101,26 +103,25 @@ const series = [
 
 export default function Cadastro() {
   const { data: session } = useSession();
-  const toast = useToast();
 
   const [cautelaFechada, setCautelaFechada] = useState(Boolean);
-  const [result, setResult] = useState([]);
-  const [search, setSearch] = useState(result);
+  const [search, setSearch] = useState([]);
 
   const { isLoading, error, data, isFetching, refetch } = useQuery(
-    ["todasCautelas"],
+    ["todasCautelasDoMilitar"],
     async () => {
-      const result = await api.get("/cautela");
-      setResult(result.data as CautelaArray);
+      const result = await api.get(`/cautela/${session?.militar.id}`);
+      setSearch(result.data)
       return result;
     }
   );
 
-  useEffect(() => {
-    return setSearch(
-      result.filter((res) => (cautelaFechada ? res : res.status === "ativo"))
+  function filterResult(e) {
+    setCautelaFechada(e.target.checked)
+    setSearch(
+      data?.data.filter((res) => (cautelaFechada ? res : res.status === "ativo"))
     );
-  }, [result, cautelaFechada]);
+  }
 
   return (
     <>
@@ -137,137 +138,8 @@ export default function Cadastro() {
         >
           <Box p={["6", "8"]} bg="gray.800" borderRadius={8} pb="4">
             <Flex flexDirection="row" gap={4} justifyContent="space-between">
-              <Flex
-                bgGradient="linear(to-tr, gray.990, gray.990, green.900)"
-                boxShadow="buttonShadow"
-                rounded="lg"
-                w="100%"
-                flexDirection="column"
-              >
-                *TORNAR DINÂMICO ESSA PARTE TRAZENDO AS CAUTELAS DO MILITAR POR
-                MÊS DO ANO, FECHADAS E ABERTAS
-                <Flex bg="gray.990" boxShadow="buttonShadow" m={4}>
-                  <Heading size="md" p={2}>
-                    {" "}
-                    Cautelas
-                  </Heading>
-                </Flex>
-                <Box m="auto" w="100%" h="100%" px={2}>
-                  <Chart
-                    options={options}
-                    series={series}
-                    type="bar"
-                    width="100%"
-                    height="auto"
-                  />
-                </Box>
-              </Flex>
-              <Flex
-                bgGradient="linear(to-tr, gray.990, gray.990, green.900)"
-                boxShadow="buttonShadow"
-                rounded="lg"
-                transition="ease-in-out"
-                w="100%"
-                flexDirection="column"
-              >
-                *TORNAR DINÂMICO ESSA PARTE TRAZENDO O ARMAMENTO VINCULADO AO
-                MILITAR, DE QUAL CIA E SUAS ULTIMAS 3 CAUTELAS
-                <Flex bg="gray.990" boxShadow="buttonShadow" m={4}>
-                  <Heading size="md" p={2}>
-                    {" "}
-                    Armamento
-                  </Heading>
-                </Flex>
-                <Flex
-                  flexDirection="row"
-                  p={2}
-                  borderBottom="1px"
-                  borderBottomStyle="solid"
-                  borderColor="green.800"
-                  style={{
-                    borderImage:
-                      "linear-gradient(to bottom, rgba(0, 0, 0, 0), #00FF00, rgba(0, 0, 0, 0)) 1 100%;",
-                  }}
-                  m={2}
-                >
-                  <Center>
-                    {/* TORNAR DINÂMICO ESSA PARTE TRAZENDO O ARMAMENTO VINCULADO AO MILITAR, DE QUAL CIA E SUAS ULTIMAS 3 CAUTELAS */}
-                    <Heading size="md" p={2}>
-                      {" "}
-                      FUZIL IA2
-                    </Heading>
-                    <Badge variant="outline" colorScheme="yellow" fontSize="sm">
-                      BR02934
-                    </Badge>
-                  </Center>
-                  <Circle
-                    boxShadow="buttonShadow"
-                    size={20}
-                    bg="green.700"
-                    ml="auto"
-                    mr={2}
-                  >
-                    <Center>
-                      <Circle
-                        boxShadow="buttonShadow"
-                        size={12}
-                        bg="gray.800"
-                        ml="auto"
-                      >
-                        1 CIA
-                      </Circle>
-                    </Center>
-                  </Circle>
-                </Flex>
-                <Flex bg="gray.990" boxShadow="buttonShadow" m={4}>
-                  <Heading size="md" p={2}>
-                    {" "}
-                    Últimas cautelas
-                  </Heading>
-                </Flex>
-                <Flex mx="auto">
-                  <TableContainer>
-                    <Table size="sm" colorScheme="whiteAlpha" w="fit-content">
-                      <Thead>
-                        <Tr>
-                          <Th textAlign="center">Data</Th>
-                          <Th textAlign="center">Armamento</Th>
-                          <Th textAlign="center">Observação</Th>
-                          <Th textAlign="center">Fechamento</Th>
-                        </Tr>
-                      </Thead>
-                      <Tbody>
-                        <Tr>
-                          <Td textAlign="center">25/24/2575</Td>
-                          <Td textAlign="center">centimetres (cm)</Td>
-                          <Td textAlign="center">centimetres (cm)</Td>
-                          <Td textAlign="center">25/24/2575</Td>
-                        </Tr>
-                        <Tr>
-                          <Td textAlign="center">25/24/2575</Td>
-                          <Td textAlign="center">centimetres (cm)</Td>
-                          <Td textAlign="center">centimetres (cm)</Td>
-                          <Td textAlign="center">25/24/2575</Td>
-                        </Tr>
-                        <Tr>
-                          <Td textAlign="center">25/24/2575</Td>
-                          <Td textAlign="center">centimetres (cm)</Td>
-                          <Td textAlign="center">centimetres (cm)</Td>
-                          <Td textAlign="center">25/24/2575</Td>
-                        </Tr>
-                      </Tbody>
-                      <Tfoot>
-                        <Tr>
-                          <Th textAlign="center">Data</Th>
-                          <Th textAlign="center">Armamento</Th>
-                          <Th textAlign="center">Observação</Th>
-                          <Th textAlign="center">Fechamento</Th>
-                        </Tr>
-                      </Tfoot>
-                    </Table>
-                  </TableContainer>
-                </Flex>
-              </Flex>
+              <CautelasComponentPainel />
+              <ArmamentoComponentPainel />
             </Flex>
 
             <Flex
@@ -313,7 +185,7 @@ export default function Cadastro() {
                 <Checkbox
                   size="lg"
                   colorScheme="blue"
-                  onChange={(e) => setCautelaFechada(e.target.checked)}
+                  onChange={(e) => filterResult(e)}
                   mr={4}
                 >
                   Fechada?
@@ -335,23 +207,25 @@ export default function Cadastro() {
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {search.map((res: Cautela) => (
+                    {search ? search?.map((res: Cautela) => (
                       <Tr key={res.id}>
                         <Td textAlign="center">{res.material.nome}</Td>
                         <Td textAlign="center">
                           <Popover placement="top-start">
                             <PopoverTrigger>
-                              <Button
-                                bg="green.400"
-                                boxShadow="buttonShadow"
-                                size="xs"
-                                _hover={{ bgColor: "green.600" }}
-                                py={1}
-                              >
+                            <Circle
+                            size="30px"
+                            bg="green.600"
+                            _hover={{ bgColor: "green.800" }}
+                            boxShadow="buttonShadow"
+                            py={1}
+                            my={1}
+                            mx="auto"
+                          >
                                 <Icon boxSize={6} as={TiInfoLarge} />
-                              </Button>
+                              </Circle>
                             </PopoverTrigger>
-                            <PopoverContent bg="gray.900" border="0">
+                            <PopoverContent bg="gray.990" border="1px" borderColor="green.700">
                               <PopoverHeader fontWeight="bold">
                                 Observação
                               </PopoverHeader>
@@ -373,14 +247,14 @@ export default function Cadastro() {
                         <Td textAlign="center">{res.sub_unidade}</Td>
                         <Td textAlign="center">{res.dependencia}</Td>
                         <Td textAlign="center">
-                          {res.cautelou.post_grad +
+                          {res.cautelou?.post_grad +
                             " " +
-                            res.cautelou.nome_guerra}
+                            res.cautelou?.nome_guerra}
                         </Td>
                         <Td textAlign="center">
                           {convertDate(res.data_cautela)}
                         </Td>
-                        <Td textAlign="center">{res.status}</Td>
+                        <Td textAlign="center"><Badge variant="outline" colorScheme={res.status === "ativo" ? "whatsapp" : "orange"}>{res.status}</Badge></Td>
                         <Td textAlign="center">
                           {res.validado ? (
                             <Circle
@@ -396,7 +270,7 @@ export default function Cadastro() {
                           )}
                         </Td>
                       </Tr>
-                    ))}
+                    )): <Text>Vazio</Text>}
                   </Tbody>
                   <Tfoot>
                     <Tr>

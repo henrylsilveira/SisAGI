@@ -7,6 +7,8 @@ import {
 } from "@chakra-ui/react";
 import { FieldError } from "react-hook-form";
 import { forwardRef, ForwardRefRenderFunction } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 interface InputProps extends ChakraInputProps {
   name: string;
@@ -35,10 +37,12 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
         ref={ref}
         {...rest}
       />
+      
       {!!error && (
         <FormErrorMessage>{error.message}</FormErrorMessage>
       )}
     </FormControl>
+    
   );
 };
 

@@ -4,7 +4,6 @@ import {
   Box,
   Button,
   Flex,
-  FormControl,
   Heading,
   Icon,
   IconButton,
@@ -25,22 +24,15 @@ import {
   Th,
   Thead,
   Tr,
-  useToast,
+  filter,
 } from "@chakra-ui/react";
-import { Header } from "../../../components/Header";
-import { Sidebar } from "../../../components/Sidebar";
 import { useQuery } from "react-query";
 import { api } from "../../../services/api";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { SubmitHandler } from "react-hook-form/dist/types";
-import { Input } from "../../../components/Form/Input";
 
 import { SlRefresh } from "react-icons/sl";
 import { TiInfoLarge } from "react-icons/ti";
-import { BsBoxArrowRight } from "react-icons/bs";
 import { ModalCautela } from "../../../components/Modal/Material/ModalCautela";
 import Head from "next/head";
 import { CautelaArray, Material, MaterialArray } from "../../../@types/types";
@@ -86,7 +78,7 @@ export default function Cautela() {
       return filterData;
     }
   );
-
+    console.log(data)
 
   return (
     <>
@@ -162,7 +154,9 @@ export default function Cautela() {
                                 <Icon boxSize={6} as={TiInfoLarge} />
                               </Button>
                             </PopoverTrigger>
-                            <PopoverContent bg="gray.900" border="0">
+                            <PopoverContent bg="gray.990"
+                          border="1px"
+                          borderColor="green.700">
                               <PopoverHeader fontWeight="bold">
                                 Condições
                               </PopoverHeader>

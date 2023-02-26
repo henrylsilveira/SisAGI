@@ -14,16 +14,18 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { useQuery } from "react-query";
-import { api } from "../../services/api";
+import { api } from "../../../services/api";
 import { useState } from "react";
 
 import Head from "next/head";
 import {
   Militar,
   MilitarArray,
-} from "../../@types/types";
-import { DadosMilitares, DadosPessoais, Endereco } from "../../components/SuperAdmin/Forms";
+} from "../../../@types/types";
 import { RxUpdate } from "react-icons/rx";
+import { DadosPessoais } from "../../../components/SuperAdmin/Forms/DadosPessoais";
+import { DadosMilitares } from "../../../components/SuperAdmin/Forms/DadosMilitares";
+import { Endereco } from "../../../components/SuperAdmin/Forms/Endereco";
 
 export default function SuperAdmin() {
   const [result, setResult] = useState<MilitarArray>([]);
@@ -141,36 +143,6 @@ export default function SuperAdmin() {
                   </Accordion>
               </Box>
             </Flex>
-            {/* <Flex flexDirection="row" gap={4} justifyContent="space-between">
-              <Flex
-                bgGradient="linear(to-tr, gray.990, gray.990, green.900)"
-                boxShadow="buttonShadow"
-                rounded="lg"
-                w="100%"
-                flexDirection="column"
-              >
-                <Flex bg="gray.990" boxShadow="buttonShadow" m={4}>
-                  <Heading size="md" p={2}>
-                    Dados Pessoais
-                  </Heading>
-                </Flex>
-                <Box m="auto" w="100%" h="100%" px={2}></Box>
-              </Flex>
-              <Flex
-                bgGradient="linear(to-tr, gray.990, gray.990, green.900)"
-                boxShadow="buttonShadow"
-                rounded="lg"
-                transition="ease-in-out"
-                w="100%"
-                flexDirection="column"
-              >
-                <Flex bg="gray.990" boxShadow="buttonShadow" m={4}>
-                  <Heading size="md" p={2}>
-                    Dados Militares
-                  </Heading>
-                </Flex>
-              </Flex>
-            </Flex> */}
           </Box>
         </SimpleGrid>
       </Flex>

@@ -23,6 +23,7 @@ import Router from "next/router";
 import { convertDate } from "../utils/scripts";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
+import { ComumComponentDashboard } from "../components/Dashboard/Comum";
 
 //Dynamic permite carregar o componente somente quando for necessario, exemplo quando for clicar em um botao
 const Chart = dynamic(() => import("react-apexcharts"), {
@@ -113,70 +114,8 @@ export default function Dashboard() {
     <Head>
         <title>SisAGI | Painel Principal</title>
     </Head>
-    <Flex direction="column" flex="1" gap={4}>
-      <SimpleGrid
-        flex="1"
-        gap="4"
-        minChildWidth="320px"
-        alignItems="flex-start"
-      >
-        <Box p={["6", "8"]} bg="gray.800" borderRadius={8} pb="4">
-          <Text fontSize="lg" mb="4">
-            Material Cautelado
-          </Text>
-          <Chart options={options} series={series} type="bar" height="280" width='100%' />
-        </Box>
-      </SimpleGrid>
-      <SimpleGrid
-        flex="1"
-        gap="4"
-        minChildWidth="320px"
-        alignItems="flex-start"
-      >
-        <Box p={["6", "8"]} bg="gray.800" borderRadius={8} pb="4">
-          <Text fontSize="lg" mb="4">
-            Cautelas abertas
-          </Text>
-          <TableContainer>
-            <Table size="sm" colorScheme="whiteAlpha">
-            <Thead>
-              <Tr>
-                <Th px={["4", "4", "6"]} color="gray.300" width="8">
-                  Coluna 1
-                </Th>
-                <Th>Usuário</Th>
-                {isWideVersion && <Th>Data de cadastro</Th>}
-                <Th width={8}></Th>
-              </Tr>
-            </Thead>
-              <Tbody>
-                <Tr>
-                  <Td>inches</Td>
-                  <Td>millimetres (mm)</Td>
-                  <Td isNumeric>25.4</Td>
-                </Tr>
-                <Tr>
-                  <Td>feet</Td>
-                  <Td>centimetres (cm)</Td>
-                  <Td isNumeric>30.48</Td>
-                </Tr>
-                <Tr>
-                  <Td>yards</Td>
-                  <Td>metres (m)</Td>
-                  <Td isNumeric>0.91444</Td>
-                </Tr>
-              </Tbody>
-              <Tfoot>
-                <Tr>
-                  <Th>To convert</Th>
-                  <Th>into</Th>
-                  <Th isNumeric>multiply by</Th>
-                </Tr>
-              </Tfoot>
-            </Table>
-          </TableContainer>
-        </Box>
-      </SimpleGrid>
+    <Flex direction="column" flex="1" gap={4} bg="gray.800" borderRadius={8} p={4}>
+        <ComumComponentDashboard />
     </Flex>
     </>
   );

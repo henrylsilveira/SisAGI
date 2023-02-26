@@ -9,7 +9,7 @@ interface NavSectionProps {
 export function NavSection({ title, children }: NavSectionProps) {
   return (
     <Box>
-      <Heading fontWeight="bold" color="gray.400" fontSize="sm">
+      <Heading fontWeight="bold" color="gray.400" fontSize="lg" p={2}>
         {title}
       </Heading>
       <Stack spacing={1} >

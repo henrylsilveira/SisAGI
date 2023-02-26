@@ -60,6 +60,7 @@ export interface Material {
   sub_unidade?: string;
   dependencia?: string;
   categoria?: string;
+  cautelas?: CautelaArray;
 }
 
 export type MaterialArray = Material[];
@@ -176,7 +177,7 @@ export type CombustivelArray = Combustivel[];
 
 export type FuncaoMilitar = {
   id: string;
-  funcao: 'super admin' | 'cmt cia' | 'enc mat' | 'armeiro' | 'cmt pel' | 'cmt gda' | 'furriel' | 'comum' | string;
+  funcao: 'super admin' | 'cmt cia' | 'enc mat' | 'armeiro' | 'cmt pel' | 'cmt gda' | 'furriel' | 'comum';
   created_at: Date;
   data_inicio:  Date;
   data_termino: Date;
