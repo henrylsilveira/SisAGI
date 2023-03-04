@@ -19,12 +19,12 @@ export default NextAuth({
                 senha: credentials.senha,
                 ip: credentials?.ip
             });
-            
+            console.log(user);
             if (user) {
               const userAccount = user?.data?.result;
               return userAccount;
             }
-            
+            throw new Error()
           } catch (error) {
             const message = error.response.data?.message; 
             throw new Error(message + ": " + error.response);
