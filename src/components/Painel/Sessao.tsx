@@ -81,7 +81,7 @@ import { formatarDataHora } from "../../utils/scripts";
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {data?.map((res) => (
+                    {data?.slice(0,5).map((res) => (
                       <Tr key={res.id}>
                         <Td textAlign="center">{formatarDataHora(res.access)}</Td>
                         <Td textAlign="center">{formatarDataHora(res.expires)}</Td>

@@ -16,15 +16,14 @@ export default NextAuth({
             const user = await api.post("/auth", {
                 identidade: credentials.identidade,
                 senha: credentials.senha,
-                ip: credentials.ip
+                ip: credentials?.ip
             });
             
             if (user) {
               const userAccount = user?.data?.result;
               return userAccount;
-            } else {
-              return null;
             }
+            throw new Error();
           } catch (error) {
             const message = error.response.data?.message; 
             throw new Error(message);
