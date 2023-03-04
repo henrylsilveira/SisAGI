@@ -20,7 +20,7 @@ export default NextAuth({
             });
             
             if (user) {
-              const userAccount = user.data.result;
+              const userAccount = user?.data?.result;
               return userAccount;
             } else {
               return null;
@@ -46,8 +46,8 @@ export default NextAuth({
         const militar = await api.get(`/me/${session.id}` );
         return {
           ...session,
-          militar: militar.data?.result,
-          token: militar.data?.token
+          militar: militar?.data?.result,
+          token: militar?.data?.token
         };
       },
     },
