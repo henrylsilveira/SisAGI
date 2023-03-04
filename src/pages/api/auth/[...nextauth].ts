@@ -1,7 +1,6 @@
 import NextAuth from "next-auth"
 import CredentialProvider from "next-auth/providers/credentials"
 import { api } from "../../../services/api";
-import { getUserIP } from "../../../utils/scripts";
 
 export default NextAuth({
     providers: [
@@ -47,8 +46,8 @@ export default NextAuth({
         const militar = await api.get(`/me/${session.id}` );
         return {
           ...session,
-          militar: militar.data.result,
-          token: militar.data.token
+          militar: militar.data?.result,
+          token: militar.data?.token
         };
       },
     },
