@@ -74,7 +74,7 @@ export function ModalValidate({ data }) {
           onClick={onOpen}
           _hover={{ bg: "#003300" }}
           mx="auto"
-          boxShadow="md"
+          boxShadow="buttonShadow"
           size="40px"
           bg="gray.990"
         >

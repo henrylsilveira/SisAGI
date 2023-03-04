@@ -4,6 +4,7 @@ import {
   Button,
   Flex,
   FormControl,
+  Grid,
   Heading,
   IconButton,
   SimpleGrid,
@@ -45,7 +46,7 @@ const signInFormSchema = yup.object().shape({
 });
 
 export default function Cadastro() {
-  const { data: session } = useSession()
+  const { data: session } = useSession();
   const [result, setResult] = useState({});
   const toast = useToast();
 
@@ -78,7 +79,7 @@ export default function Cadastro() {
           duration: 2000,
           isClosable: true,
         });
-        refetch()
+        refetch();
       }
     } catch (error) {
       toast({
@@ -101,15 +102,33 @@ export default function Cadastro() {
       >
         <Box p={["6", "8"]} bg="gray.800" borderRadius={8} pb="4">
           <Flex
+            bgGradient="linear(to-tr, gray.990, gray.990, green.900)"
+            boxShadow="buttonShadow"
+            rounded="lg"
+            w="100%"
+            flexDirection="column"
+            p={4}
             as="form"
             direction="column"
             onSubmit={handleSubmit(handleSignIn)}
           >
-            <Heading fontSize="2xl" mb="4">
-              Cadastro de armamentos
-            </Heading>
-
-            <Flex>
+            <Flex
+              bg="gray.990"
+              boxShadow="buttonShadow"
+              px={2}
+              mb={4}
+              rounded="base"
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              <Heading fontSize="2xl" p={2}>
+                Cadastro de armamentos
+              </Heading>
+            </Flex>
+            <Grid
+              gridTemplateColumns={["1fr", "1fr 1fr", "1fr 1fr 1fr"]}
+              gap={4}
+            >
               <FormControl>
                 <Input
                   size="sm"
@@ -121,7 +140,7 @@ export default function Cadastro() {
                   {...register("nome")}
                 />
               </FormControl>
-              <FormControl px={4}>
+              <FormControl>
                 <Input
                   size="sm"
                   rounded="lg"
@@ -132,7 +151,7 @@ export default function Cadastro() {
                   {...register("nr_serie")}
                 />
               </FormControl>
-              <FormControl px={4}>
+              <FormControl>
                 <Input
                   size="sm"
                   rounded="lg"
@@ -155,7 +174,7 @@ export default function Cadastro() {
                   {...register("tipo")}
                 />
               </FormControl>
-              <FormControl px={4}>
+              <FormControl>
                 <Input
                   size="sm"
                   htmlSize={2}
@@ -167,9 +186,6 @@ export default function Cadastro() {
                   {...register("emprego")}
                 />
               </FormControl>
-
-            </Flex>
-            <Flex>
               <FormControl>
                 <Input
                   size="sm"
@@ -182,7 +198,7 @@ export default function Cadastro() {
                   {...register("condicoes")}
                 />
               </FormControl>
-              <FormControl px={4}>
+              <FormControl>
                 <Input
                   size="sm"
                   htmlSize={2}
@@ -209,21 +225,32 @@ export default function Cadastro() {
                   <option value="indisponivel">Indisponível</option>
                 </Input>
               </FormControl>
-            </Flex>
+            </Grid>
             <Button
-              colorScheme="green"
+              bg="green.800"
+              _hover={{ bg: "green.900" }}
               size="sm"
               type="submit"
               isLoading={formState.isSubmitting}
               w="24"
               mt={4}
               ml="auto"
+              boxShadow="buttonShadow"
             >
               OK
             </Button>
-          </Flex>
-          <Heading fontSize="2xl" my="4">
-            Armamentos {isLoading ? <Spinner ml={8} /> : ""}{" "}
+            <Flex
+            bg="gray.990"
+            boxShadow="buttonShadow"
+            px={2}
+            my={4}
+            rounded="base"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Heading fontSize="2xl" my="4">
+              Armamentos {isLoading ? <Spinner ml={8} /> : ""}{" "}
+            </Heading>
             <IconButton
               bg="blue.700"
               float="right"
@@ -232,7 +259,8 @@ export default function Cadastro() {
               aria-label="Atualizar tabela"
               icon={<SlRefresh />}
             />
-          </Heading>
+          </Flex>
+
           <TableContainer>
             <Table size="sm" colorScheme="whiteAlpha">
               <Thead>
@@ -272,6 +300,8 @@ export default function Cadastro() {
               </Tfoot>
             </Table>
           </TableContainer>
+          </Flex>
+          
         </Box>
       </SimpleGrid>
     </Flex>

@@ -7,10 +7,12 @@ import {
   RiBook2Line,
 } from "react-icons/ri";
 import { GiTrade, GiAmmoBox, GiOilDrum } from "react-icons/gi";
+import { MdOutlinePersonSearch } from "react-icons/md";
 import { FaTools } from "react-icons/fa";
 import { FaPeopleCarry } from "react-icons/fa";
 import { IoIosPeople } from "react-icons/io";
 import { GoSettings } from "react-icons/go";
+import { RiShieldKeyholeLine } from "react-icons/ri";
 import { NavLink } from "./NavLink";
 import { NavSection } from "./NavSection";
 import { useSession } from "next-auth/react";
@@ -27,6 +29,9 @@ export function SidebarNav() {
           </NavLink>
           <NavLink href="/superAdmin/funcoes" icon={GoSettings}>
             Funções
+          </NavLink>
+          <NavLink href="/superAdmin/sessoes" icon={RiShieldKeyholeLine}>
+            Sessões
           </NavLink>
         </NavSection>
       ) : null}
@@ -94,6 +99,17 @@ export function SidebarNav() {
           </NavLink>
           <NavLink href="/furriel/combustivel" icon={GiOilDrum}>
             Combustível
+          </NavLink>
+        </NavSection>
+      ) : null}
+
+{session?.militar.Funcao.find((func) => func.funcao === "sgte") ? (
+        <NavSection title="PESSOAL">
+          <NavLink href="/pessoal/geral" icon={RiDashboardLine}>
+            Geral
+          </NavLink>
+          <NavLink href="/pessoal/gerenciamento" icon={MdOutlinePersonSearch}>
+            Gerenciar
           </NavLink>
         </NavSection>
       ) : null}

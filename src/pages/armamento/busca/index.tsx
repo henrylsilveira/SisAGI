@@ -8,7 +8,6 @@ import {
   FormLabel,
   Heading,
   IconButton,
-  Input,
   SimpleGrid,
   Spinner,
   Table,
@@ -28,7 +27,7 @@ import {
   AccordionItem,
   AccordionPanel,
   Tag,
-  TagLabel
+  TagLabel,
 } from "@chakra-ui/react";
 import { Header } from "../../../components/Header";
 import { Sidebar } from "../../../components/Sidebar";
@@ -39,14 +38,19 @@ import { convertDate } from "../../../utils/scripts";
 import { BsBoxArrowUp, BsSearch } from "react-icons/bs";
 import { BiLock } from "react-icons/bi";
 import { SlRefresh } from "react-icons/sl";
-import { Armamento, CautelaArmamento, CautelaArmamentoArray } from "../../../@types/types";
+import {
+  Armamento,
+  CautelaArmamento,
+  CautelaArmamentoArray,
+} from "../../../@types/types";
 import { ModalValidate } from "../../../components/Modal/Armamento/ModalValidate";
 import { ModalEncerrarCautela } from "../../../components/Modal/Armamento/ModalEncerrarCautela";
 import Head from "next/head";
 import { useSession } from "next-auth/react";
+import { Input } from "../../../components/Form/Input";
 
 export default function BuscaArmamento() {
-  const { data: session } = useSession()
+  const { data: session } = useSession();
 
   const [result, setResult] = useState([]);
   const [nomeArmamentos, setNomeArmamentos] = useState([]);
@@ -59,27 +63,41 @@ export default function BuscaArmamento() {
     ["todasCautelasArmamento"],
     async () => {
       const result = await api.get("/armamento/cautela");
-      var data = [] // CONJUNTO DE INSTRUCAO FILTRA OS NOME DE TODOS ARMAMENTOS NO BANCO E TIRA OS REPETIDOS
-      result.data.map((el: CautelaArmamento) => { return data.push( el.companhia === session.militar.companhia ? el.armamento.nome : null) })
+      var data = []; // CONJUNTO DE INSTRUCAO FILTRA OS NOME DE TODOS ARMAMENTOS NO BANCO E TIRA OS REPETIDOS
+      result.data.map((el: CautelaArmamento) => {
+        return data.push(
+          el.companhia === session.militar.companhia ? el.armamento.nome : null
+        );
+      });
       const filtered = Array.from(new Set(data)).filter(function (res) {
         return res != null;
       });
-      setNomeArmamentos(filtered)
+      setNomeArmamentos(filtered);
       setResult(result.data as CautelaArmamentoArray);
       return result.data;
     }
   );
   useEffect(() => {
     if (militar == "" && armamento == "") {
-      return setSearch(result.filter(res => cautelaFechada ? res : res.status === 'ativo'));
+      return setSearch(
+        result.filter((res) => (cautelaFechada ? res : res.status === "ativo"))
+      );
     } else {
       return setSearch(
-        result.filter(res => armamento ? res.armamento.nome.toLowerCase().includes(armamento.toLowerCase()) : result).filter(
-          (res) =>
+        result
+          .filter((res) =>
+            armamento
+              ? res.armamento.nome
+                  .toLowerCase()
+                  .includes(armamento.toLowerCase())
+              : result
+          )
+          .filter((res) =>
             res.cautelou.nome_guerra
               .toLowerCase()
               .includes(militar.toLowerCase())
-        ).filter(res => cautelaFechada ? res : res.status === 'ativo')
+          )
+          .filter((res) => (cautelaFechada ? res : res.status === "ativo"))
       );
     }
   }, [militar, armamento, result, cautelaFechada]);
@@ -92,106 +110,185 @@ export default function BuscaArmamento() {
   if (error) return "An error has occurred: " + error;
   return (
     <>
-    <Head>
+      <Head>
         <title>SisAGI | Armamento - Buscar</title>
-    </Head>
+      </Head>
 
-        <Flex direction="column" flex="1" gap={4}>
-          <SimpleGrid
-            flex="1"
-            gap="4"
-            minChildWidth="320px"
-            alignItems="flex-start"
-          >
-            
-            <Box p={["6", "8"]} bg="gray.800" borderRadius={8} pb="4">
-              <Flex direction="column">
-                <Heading size='lg'>
-                  Armamentos Cautelados
+      <Flex direction="column" flex="1" gap={4}>
+        <SimpleGrid
+          flex="1"
+          gap="4"
+          minChildWidth="320px"
+          alignItems="flex-start"
+        >
+          <Box p={["6", "8"]} bg="gray.800" borderRadius={8} pb="4">
+            <Flex
+              bgGradient="linear(to-tr, gray.990, gray.990, green.900)"
+              boxShadow="buttonShadow"
+              rounded="lg"
+              flexDirection="column"
+              p={4}
+              mb={4}
+            >
+              <Flex
+                bg="gray.990"
+                boxShadow="buttonShadow"
+                m={4}
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                <Heading fontSize="2xl" m={4}>
+                  ARMAMENTOS CAUTELADOS {isLoading ? <Spinner ml={8} /> : ""}
                 </Heading>
-              <Accordion bg='gray.800' border='1px' borderColor='gray.600' rounded='2xl' boxShadow='lg' my='5'>
-                  {nomeArmamentos.map((arm, index) => (
-                    <AccordionItem key={index} borderTop='0' borderBottom='0' >
-                      <h2>
-                        <AccordionButton bg='blue.700' _hover={{ bg: 'blue.800'}} rounded='2xl' border='1px' borderColor='blackAlpha.500'>
-                          <Box as="span" flex="1" textAlign="left">
-                            {arm}
-                            <Tag ml='4' fontSize='md' fontWeight='black' color='black'>
-                              {data.filter(arma => arma.armamento.nome === arm && arma.status === 'ativo').length}
-                            </Tag>
-                          </Box>
-                          <AccordionIcon />
-                        </AccordionButton>
-                      </h2>
-                      <AccordionPanel pb={4}>
-                        {data
-                        .filter((el: CautelaArmamento) => { return el.status === 'ativo'})
-                        .filter((el: CautelaArmamento) => { return el.companhia === session.militar.companhia})
-                        .filter((elem: CautelaArmamento) => { return elem.armamento.nome === arm })
+                <IconButton
+                  mr={4}
+                  boxShadow="buttonShadow"
+                  bg="blue.700"
+                  float="right"
+                  _hover={{ bgColor: "blue.900" }}
+                  onClick={() => refetch()}
+                  aria-label="Atualizar tabela"
+                  icon={<SlRefresh />}
+                />
+              </Flex>
+              <Accordion
+                allowToggle
+                m={4}
+              >
+                {nomeArmamentos?.map((arm, index) => (
+                  <AccordionItem
+                    key={index + arm.id}
+                    borderTop="0"
+                    borderBottom="0"
+                  >
+                    <h2>
+                      <AccordionButton
+                        boxShadow="buttonShadow"
+                        bgGradient="linear(to-tr, gray.990, gray.990, green.900)"
+                        rounded={4}
+                        border="0"
+                      >
+                        <Box as="span" flex="1" textAlign="left">
+                          {arm}
+                          <Tag
+                            float="right"
+                            fontSize="md"
+                            fontWeight="black"
+                            color="whiteAlpha.600"
+                            boxShadow="buttonShadow"
+                            bgGradient="linear(to-tr, gray.990, gray.990, gray.900)"
+                          >
+                            {
+                              data?.filter(
+                                (arma) =>
+                                  arma.armamento.nome === arm &&
+                                  arma.status === "ativo"
+                              ).length
+                            }
+                          </Tag>
+                        </Box>
+                        <AccordionIcon />
+                      </AccordionButton>
+                    </h2>
+                    <AccordionPanel as="div"
+                    pb={4}
+                    border="0"
+                    borderTop={0}
+                    roundedBottom="lg"
+                    borderColor="green.600"
+                    bgColor="gray.990"
+                    boxShadow="innerShadow">
+                      {data
+                        .filter((el: CautelaArmamento) => {
+                          return el.status === "ativo";
+                        })
+                        .filter((el: CautelaArmamento) => {
+                          return el.companhia === session.militar.companhia;
+                        })
+                        .filter((elem: CautelaArmamento) => {
+                          return elem.armamento.nome === arm;
+                        })
                         .map((cautela: CautelaArmamento, index) => (
                           <Tag
-                          boxShadow='md'
-                            size='lg'
-                            key={index}
-                            borderRadius='full'
-                            variant='solid'
-                            colorScheme={cautela.status === 'ativo' ? 'green' : 'red'}
+                          boxShadow="buttonShadow"
+                          size="lg"
+                          key={index + cautela.id}
+                          borderRadius="base"
+                          variant="solid"
+                            colorScheme={
+                              cautela.status === "ativo" ? "green" : "red"
+                            }
                             mr={4}
                           >
-                            <TagLabel pr={2}>{cautela.armamento.nome} - {cautela.cautelou.nome_guerra} - Nr {cautela.armamento.nr_serie} { cautela.armamento.cabide ? ' - ' + cautela.armamento.cabide : ''}</TagLabel>
+                            <TagLabel pr={2}>
+                              {cautela.armamento.nome} -{" "}
+                              {cautela.cautelou.nome_guerra} - Nr{" "}
+                              {cautela.armamento.nr_serie}{" "}
+                              {cautela.armamento.cabide
+                                ? " - " + cautela.armamento.cabide
+                                : ""}
+                            </TagLabel>
                             <BsBoxArrowUp />
                           </Tag>
                         ))}
-
-                      </AccordionPanel>
-                    </AccordionItem>
-                  ))}
-
-                </Accordion>
-                <Heading fontSize="lg" mb="4">
-                  <Flex alignItems="center">
-                    <BsSearch size={20} />
-                    <Flex px={4}>
-                    Buscar cautela de armamento
-                    </Flex>
-                  </Flex>
+                    </AccordionPanel>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+              <Flex
+                bg="gray.990"
+                boxShadow="buttonShadow"
+                m={4}
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                <Heading fontSize="2xl" m={4}>
+                  CAUTELAS {isLoading ? <Spinner ml={8} /> : ""}
                 </Heading>
-                <Flex direction="row" gap={4}>
-                  <FormControl>
-                    <FormLabel>Militar</FormLabel>
-                    <Input
-                      value={militar}
-                      borderColor='gray.700'
-                      onChange={(e) => setMilitar(e.target.value)}
-                      type="text"
-                    />
-                    <FormHelperText>Filtre a busca pelo nome</FormHelperText>
-                  </FormControl>
-                  <FormControl>
-                    <FormLabel>Armamento</FormLabel>
-                    <Input
-                      value={armamento}
-                      borderColor='gray.700'
-                      onChange={(e) => setArmamento(e.target.value)}
-                      type="text"
-                    />
-                    <FormHelperText>
-                      Filtre a busca pelo material
-                    </FormHelperText>
-                  </FormControl>
-                </Flex>
+                
               </Flex>
-              <Heading size='lg' my="4">
-                Cautelas {isLoading ? <Spinner ml={8} /> : ""}
-               
-                 <IconButton bg='blue.700' float='right' _hover={{ bgColor: 'blue.900'}} onClick={() => refetch()} aria-label="Atualizar tabela" icon={<SlRefresh />} />
-              </Heading>
-              <Flex bg='gray.990' p='2' rounded='2xl' boxShadow='lg'>
-                <Text mr={4}>Filtro:</Text>
-                  <Checkbox size='lg' colorScheme='blue' onChange={(e) => setCautelaFechada(e.target.checked)}>
+              <Flex direction="row" gap={4} m={4}>
+                <FormControl>
+                  <Input
+                    label="Militar"
+                    name="militar"
+                    value={militar}
+                    borderColor="gray.700"
+                    onChange={(e) => setMilitar(e.target.value)}
+                    type="text"
+                  />
+                  <FormHelperText>Filtre a busca pelo nome</FormHelperText>
+                </FormControl>
+                <FormControl>
+                  <Input
+                    label="Armamento"
+                    name="armamento"
+                    value={armamento}
+                    borderColor="gray.700"
+                    onChange={(e) => setArmamento(e.target.value)}
+                    type="text"
+                  />
+                  <FormHelperText>Filtre a busca pelo material</FormHelperText>
+                </FormControl>
+
+                <Flex
+                  bg="gray.990"
+                  p={4}
+                  m={6}
+                  rounded="base"
+                  boxShadow="buttonShadow"
+                >
+                  <Checkbox
+                    size="lg"
+                    colorScheme="blue"
+                    onChange={(e) => setCautelaFechada(e.target.checked)}
+                    mr={4}
+                  >
                     Fechada?
                   </Checkbox>
-                  </Flex>
+                </Flex>
+              </Flex>
+
               <TableContainer>
                 <Table size="sm" colorScheme="whiteAlpha">
                   <Thead>
@@ -216,21 +313,36 @@ export default function BuscaArmamento() {
                         <Td textAlign="center">{res.companhia}</Td>
                         <Td textAlign="center">{res.armamento?.nome}</Td>
                         <Td textAlign="center">{res.resp_cautela}</Td>
-                        <Td textAlign="center">{res.cautelou?.post_grad+' '+res.cautelou?.nome_guerra}</Td>
+                        <Td textAlign="center">
+                          {res.cautelou?.post_grad +
+                            " " +
+                            res.cautelou?.nome_guerra}
+                        </Td>
                         <Td justifyItems="center">
                           {res.validado ? (
-                            <Circle mx="auto" size="40px" boxShadow='md' bg="gray.990">
+                            <Circle
+                              mx="auto"
+                              size="40px"
+                              boxShadow="md"
+                              bg="gray.990"
+                            >
                               <BiLock size={24} color="#00AA00" />
                             </Circle>
-                          ) : (                           
-                              <ModalValidate data={res} />
+                          ) : (
+                            <ModalValidate data={res} />
                           )}
                         </Td>
                         <Td justifyItems="center">
-                          {res.status === 'ativo' ? (
+                          {res.status === "ativo" ? (
                             <ModalEncerrarCautela data={res} />
-                          ) : (                           
-                            <Badge as='span' variant='outline' colorScheme='green'>Fechada</Badge>
+                          ) : (
+                            <Badge
+                              as="span"
+                              variant="outline"
+                              colorScheme="green"
+                            >
+                              Fechada
+                            </Badge>
                           )}
                         </Td>
                       </Tr>
@@ -251,9 +363,10 @@ export default function BuscaArmamento() {
                   </Tfoot>
                 </Table>
               </TableContainer>
-            </Box>
-          </SimpleGrid>
-        </Flex>
+            </Flex>
+          </Box>
+        </SimpleGrid>
+      </Flex>
     </>
   );
 }

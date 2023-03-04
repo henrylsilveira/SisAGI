@@ -20,12 +20,13 @@ import {
   VinculoArmamentoMilitarArray,
 } from "../../@types/types";
 import { useQuery } from "react-query";
-import { convertISODateToInputValue, convertDate } from "../../utils/scripts";
+import { convertDate } from "../../utils/scripts";
+import { NotData } from "../NotData";
 
 export function ArmamentoComponentPainel() {
   const { data: session } = useSession();
 
-  const { isLoading, error, data, isFetching, refetch } = useQuery(
+  const { data } = useQuery(
     ["vinculoArmamentoMilitar"],
     async () => {
       const result = await api.get<VinculoArmamentoMilitarArray>(
@@ -41,7 +42,7 @@ export function ArmamentoComponentPainel() {
       const result = await api.get<CautelaArmamentoArray>(
         `/armamento/cautela/${session.militar.id}`
       );
-      return result;
+      return result.data;
     }
   );
 
@@ -61,7 +62,7 @@ export function ArmamentoComponentPainel() {
         </Heading>
       </Flex>
 
-      {data?.data?.map((vinculo, index) => (
+      {!(data?.data?.length === 0) ? data?.data.map((vinculo, index) => (
         <Flex
           flexDirection="row"
           p={2}
@@ -103,14 +104,15 @@ export function ArmamentoComponentPainel() {
             </Center>
           </Circle>
         </Flex>
-      ))}
+      )) : <NotData textoComponent="Nenhum armamento vinculado." />}
 
       <Flex bg="gray.990" boxShadow="buttonShadow" m={4}>
         <Heading size="md" p={2}>
           Últimas cautelas
         </Heading>
       </Flex>
-      <Flex mx="auto">
+      {!(cautelaArmamento?.length === 0) ? (
+        <Flex mx="auto">
         <TableContainer>
           <Table size="sm" colorScheme="whiteAlpha" w="fit-content">
             <Thead>
@@ -122,7 +124,7 @@ export function ArmamentoComponentPainel() {
               </Tr>
             </Thead>
             <Tbody>
-              {cautelaArmamento?.data.slice(0).map((arm, index) => (
+              {cautelaArmamento?.slice(0).map((arm, index) => (
                 <Tr key={`${arm.id + index}`}>
                   <Td textAlign="center">{convertDate(arm.data_cautela)}</Td>
                   <Td textAlign="center">{arm.armamento.nome}</Td>
@@ -150,6 +152,8 @@ export function ArmamentoComponentPainel() {
           </Table>
         </TableContainer>
       </Flex>
+      ) : <NotData textoComponent="Nenhuma cautela encontrada." />}
+      
     </Flex>
   );
 }

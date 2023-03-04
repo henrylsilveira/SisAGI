@@ -30,7 +30,7 @@ export default function MaterialGeral() {
           <Box p={["6", "8"]} bg="gray.800" borderRadius={8} pb="4">
             <Flex
               bgGradient="linear(to-tr, gray.990, gray.990, green.900)"
-              boxShadow="innerShadow"
+              boxShadow="buttonShadow"
               rounded="lg"
               transition="ease-in-out"
               w="100%"
@@ -47,7 +47,7 @@ export default function MaterialGeral() {
                   MATERIAIS DO BATALHÃO
                 </Heading>
               </Flex>
-              <Grid gridTemplateColumns="1fr 1fr" gap={4}>
+              <Grid gridTemplateColumns={["1fr","1fr 1fr","1fr 1fr 1fr"]} gap={4}>
               {Array.from(new Set(data?.map((item) => item.sub_unidade))).map(
                     (cia, index) => (
                         <ListarMaterialCompanhias key={cia+index+cia} companhia={cia} materiais={data} />

@@ -14,8 +14,6 @@ export function Profile({ showProfileData = true }: ProfileProps) {
           <Flex mr="4" textAlign="right" flexDirection='column' alignItems='end' borderLeftWidth={1} pl={6}
       borderColor="gray.700">
             <Text>{session?.militar.nome_completo}</Text>
-
-
             <Tag
             size='sm'
                 borderRadius='base'
@@ -26,9 +24,7 @@ export function Profile({ showProfileData = true }: ProfileProps) {
                 boxShadow="buttonShadow"
               >
                 <TagLabel  fontWeight='bold'>{session?.militar.post_grad  + ' ' + session?.militar.nome_guerra}</TagLabel>
-                
               </Tag>
-              
               <Tag
               size='sm'
                 borderRadius='base'

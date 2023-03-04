@@ -101,7 +101,7 @@ export function Mapa(props) {
             border="1px"
             borderColor="gray.700"
             _hover={{ bgColor: "gray.990" }}
-            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin") && asPath == "/superAdmin/usuarios" ? false : true}
+            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
             onChange={(e) => setLongitude({name: e.target.name,value: e.target.value})}
           />
           <FormHelperText>
@@ -118,7 +118,7 @@ export function Mapa(props) {
             border="1px"
             borderColor="gray.700"
             _hover={{ bgColor: "gray.990" }}
-            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin") && asPath == "/superAdmin/usuarios" ? false : true}
+            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
             onChange={(e) => setLatitude({name: e.target.name,value: e.target.value})}
           />
           <FormHelperText>

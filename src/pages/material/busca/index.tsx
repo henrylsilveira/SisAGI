@@ -8,7 +8,6 @@ import {
   FormLabel,
   Heading,
   IconButton,
-
   SimpleGrid,
   Spinner,
   Table,
@@ -38,9 +37,10 @@ import { ModalEncerrarCautela } from "../../../components/Modal/Material/ModalEn
 import Head from "next/head";
 import { Input } from "../../../components/Form/Input";
 import { useSession } from "next-auth/react";
+import { NotData } from "../../../components/NotData";
 
 export default function Busca() {
-  const { data: session } = useSession()
+  const { data: session } = useSession();
   const [result, setResult] = useState([]);
 
   const [search, setSearch] = useState(result);
@@ -52,7 +52,11 @@ export default function Busca() {
     ["todasCautelas"],
     async () => {
       const result = await api.get<CautelaArray>("/cautela");
-      const filteredData = result.data.filter(cautela => cautela.sub_unidade === session.militar.companhia && cautela.dependencia === session.militar.pelotao )
+      const filteredData = result.data.filter(
+        (cautela) =>
+          cautela.sub_unidade === session.militar.companhia &&
+          cautela.dependencia === session.militar.pelotao
+      );
       setResult(filteredData);
       return filteredData;
     }
@@ -100,30 +104,31 @@ export default function Busca() {
           alignItems="flex-start"
         >
           <Box p={["6", "8"]} bg="gray.800" borderRadius={8} pb="4">
-            <Flex bgGradient="linear(to-tr, gray.990, gray.990, green.900)"
-              boxShadow="innerShadow" flexDirection="column"
+            <Flex
+              bgGradient="linear(to-tr, gray.990, gray.990, green.900)"
+              boxShadow="buttonShadow"
+              flexDirection="column"
               rounded="lg"
               p={4}
-              w="100%">
-            <Flex
-              bg="gray.990"
-              
-              boxShadow="buttonShadow"
-              m={4}
-              justifyContent="space-between"
-              alignItems="center"
-              py={2}
-              
+              w="100%"
             >
-              <Heading fontSize="2xl" pl={2}>
-                BUSCAR CAUTELA
-              </Heading>
-            </Flex>
+              <Flex
+                bg="gray.990"
+                boxShadow="buttonShadow"
+                m={4}
+                justifyContent="space-between"
+                alignItems="center"
+                py={2}
+              >
+                <Heading fontSize="2xl" pl={2}>
+                  BUSCAR CAUTELA
+                </Heading>
+              </Flex>
               <Flex direction="row" gap={4} mx={4}>
                 <FormControl>
                   <Input
-                  name="militar"
-                  label="Militar"
+                    name="militar"
+                    label="Militar"
                     value={militar}
                     onChange={(e) => setMilitar(e.target.value)}
                     type="text"
@@ -132,140 +137,147 @@ export default function Busca() {
                 </FormControl>
                 <FormControl>
                   <Input
-                  name="material"
-                  label="Material"
+                    name="material"
+                    label="Material"
                     value={material}
                     onChange={(e) => setMaterial(e.target.value)}
                     type="text"
                   />
-                  <FormHelperText>
-                    Filtre a busca pelo material
-                  </FormHelperText>
+                  <FormHelperText>Filtre a busca pelo material</FormHelperText>
                 </FormControl>
               </Flex>
-            </Flex>
-            <Flex bgGradient="linear(to-tr, gray.990, gray.990, green.900)"
-              boxShadow="innerShadow" flexDirection="column"
-              rounded="lg"
-              px={4}
-              w="100%" mt={4}>
-            <Flex
-              bg="gray.990"
-              boxShadow="buttonShadow"
-              m={4}
-              justifyContent="space-between"
-              alignItems="center"
-              py={2}
               
-            >
-              <Heading fontSize="2xl" pl={2}>
-                CAUTELAS {isLoading ? <Spinner ml={8} /> : ""}
-              </Heading>
-              <IconButton
+              <Flex
+                bg="gray.990"
                 boxShadow="buttonShadow"
-                colorScheme="twitter"
-                float="right"
-                mr={2}
-                onClick={() => refetch()}
-                aria-label="Atualizar tabela"
-                icon={<SlRefresh />}
-              />
-            </Flex>
-
-            <Flex bg="gray.990" w='xl' mx='auto' p="2" rounded="md" boxShadow="buttonShadow" justifyContent='space-between'>
-              <Text mr={4}>FILTRO</Text>
-              <Checkbox
-                size="lg"
-                colorScheme="blue"
-                onChange={(e) => setCautelaFechada(e.target.checked)}
-                mr={4}
+                m={4}
+                justifyContent="space-between"
+                alignItems="center"
+                py={2}
               >
-                Fechada?
-              </Checkbox>
-            </Flex>
-            <TableContainer my={4}>
-              <Table size="sm" colorScheme="whiteAlpha">
-                <Thead>
-                  <Tr>
-                    {isWideVersion && (
-                      <Th textAlign="center">Data de cadastro</Th>
-                    )}
-                    <Th textAlign="center">SU</Th>
-                    <Th textAlign="center">Dependência</Th>
-                    <Th textAlign="center">Quantidade</Th>
-                    <Th textAlign="center">Material</Th>
-                    <Th textAlign="center">Resp Cautela</Th>
-                    <Th textAlign="center">Cautelou</Th>
-                    <Th textAlign="center">Validado</Th>
-                    <Th textAlign="center"></Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {search.map((res: Cautela) => (
-                    <Tr key={res.id}>
-                      <Td textAlign="center">
-                        {convertDate(res.data_cautela)}
-                      </Td>
-                      <Td textAlign="center">{res.sub_unidade}</Td>
-                      <Td textAlign="center">{res.dependencia}</Td>
-                      <Td textAlign="center">{res.quantidade}</Td>
-                      <Td textAlign="center">{res.material?.nome}</Td>
-                      <Td textAlign="center">{res.resp_cautela}</Td>
-                      <Td textAlign="center">
-                        {res.cautelou.post_grad + ' ' + res.cautelou?.nome_guerra }
-                      </Td>
-                      <Td justifyItems="center">
-                        {res.validado ? (
-                          <Circle
-                            mx="auto"
-                            size="40px"
-                            boxShadow='buttonShadow'
-                            bg="gray.990"
-                          >
-                            <BiLock size={24} color="#00AA00" />
-                          </Circle>
-                        ) : (
-                          <ModalValidate data={res} />
+                <Heading fontSize="2xl" pl={2}>
+                  CAUTELAS {isLoading ? <Spinner ml={8} /> : ""}
+                </Heading>
+                <IconButton
+                  boxShadow="buttonShadow"
+                  colorScheme="twitter"
+                  float="right"
+                  mr={2}
+                  onClick={() => refetch()}
+                  aria-label="Atualizar tabela"
+                  icon={<SlRefresh />}
+                />
+              </Flex>
+
+              <Flex
+                bg="gray.990"
+                w="xl"
+                mx="auto"
+                p="2"
+                rounded="md"
+                boxShadow="buttonShadow"
+                justifyContent="space-between"
+              >
+                <Text mr={4}>FILTRO</Text>
+                <Checkbox
+                  size="lg"
+                  colorScheme="blue"
+                  onChange={(e) => setCautelaFechada(e.target.checked)}
+                  mr={4}
+                >
+                  Fechada?
+                </Checkbox>
+              </Flex>
+              {!(search.length === 0) ? (
+                <TableContainer my={4}>
+                  <Table size="sm" colorScheme="whiteAlpha">
+                    <Thead>
+                      <Tr>
+                        {isWideVersion && (
+                          <Th textAlign="center">Data de cadastro</Th>
                         )}
-                      </Td>
-                      <Td justifyItems="center">
-                        {res.status === "ativo" ? (
-                          <ModalEncerrarCautela data={res} />
-                        ) : (
-                          <Badge
-                            as="span"
-                            variant="outline"
-                            colorScheme="green"
-                          >
-                            Fechada
-                          </Badge>
+                        <Th textAlign="center">SU</Th>
+                        <Th textAlign="center">Dependência</Th>
+                        <Th textAlign="center">Quantidade</Th>
+                        <Th textAlign="center">Material</Th>
+                        <Th textAlign="center">Resp Cautela</Th>
+                        <Th textAlign="center">Cautelou</Th>
+                        <Th textAlign="center">Validado</Th>
+                        <Th textAlign="center"></Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      {search?.map((res: Cautela) => (
+                        <Tr key={res.id}>
+                          <Td textAlign="center">
+                            {convertDate(res.data_cautela)}
+                          </Td>
+                          <Td textAlign="center">{res.sub_unidade}</Td>
+                          <Td textAlign="center">{res.dependencia}</Td>
+                          <Td textAlign="center">{res.quantidade}</Td>
+                          <Td textAlign="center">{res.material?.nome}</Td>
+                          <Td textAlign="center">{res.resp_cautela}</Td>
+                          <Td textAlign="center">
+                            {res.cautelou.post_grad +
+                              " " +
+                              res.cautelou?.nome_guerra}
+                          </Td>
+                          <Td justifyItems="center">
+                            {res.validado ? (
+                              <Circle
+                                mx="auto"
+                                size="40px"
+                                boxShadow="buttonShadow"
+                                bg="gray.990"
+                              >
+                                <BiLock size={24} color="#00AA00" />
+                              </Circle>
+                            ) : (
+                              <ModalValidate data={res} />
+                            )}
+                          </Td>
+                          <Td justifyItems="center">
+                            {res.status === "ativo" ? (
+                              <ModalEncerrarCautela data={res} />
+                            ) : (
+                              <Badge
+                                as="span"
+                                variant="outline"
+                                colorScheme="green"
+                              >
+                                Fechada
+                              </Badge>
+                            )}
+                          </Td>
+                        </Tr>
+                      ))}
+                    </Tbody>
+                    <Tfoot>
+                      <Tr>
+                        {isWideVersion && (
+                          <Th textAlign="center">Data de cadastro</Th>
                         )}
-                      </Td>
-                    </Tr>
-                  ))}
-                </Tbody>
-                <Tfoot>
-                  <Tr>
-                    {isWideVersion && (
-                      <Th textAlign="center">Data de cadastro</Th>
-                    )}
-                    <Th textAlign="center">SU</Th>
-                    <Th textAlign="center">Dependência</Th>
-                    <Th textAlign="center">Quantidade</Th>
-                    <Th textAlign="center">Material</Th>
-                    <Th textAlign="center">Resp Cautela</Th>
-                    <Th textAlign="center">Cautelou</Th>
-                    <Th textAlign="center">Validado</Th>
-                    <Th textAlign="center"></Th>
-                  </Tr>
-                </Tfoot>
-              </Table>
-            </TableContainer>
+                        <Th textAlign="center">SU</Th>
+                        <Th textAlign="center">Dependência</Th>
+                        <Th textAlign="center">Quantidade</Th>
+                        <Th textAlign="center">Material</Th>
+                        <Th textAlign="center">Resp Cautela</Th>
+                        <Th textAlign="center">Cautelou</Th>
+                        <Th textAlign="center">Validado</Th>
+                        <Th textAlign="center"></Th>
+                      </Tr>
+                    </Tfoot>
+                  </Table>
+                </TableContainer>
+              ) : (
+                <NotData textoComponent="Não foram encontradas cautelas abertas." />
+              )}
             </Flex>
+            
+            
           </Box>
         </SimpleGrid>
       </Flex>
-
     </>
   );
 }

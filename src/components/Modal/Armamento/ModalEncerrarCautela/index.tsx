@@ -85,6 +85,7 @@ import { useSession } from "next-auth/react";
       <>
         <Button
         bg="red.600"
+        boxShadow="buttonShadow"
         size="xs"
         _hover={{ bgColor: "red.800" }}
         onClick={onOpen}

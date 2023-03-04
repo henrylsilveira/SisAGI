@@ -45,10 +45,20 @@ export interface Militar {
   Municao?: MunicaoArray;
   Combustivel?: CombustivelArray;
   Funcao?: FuncaoMilitarArray;
+  Feedback?: FeedbackArray;
   _count?: Object;
 }
 
 export type MilitarArray = Militar[];
+
+export interface Feedback {
+  id: string;
+  dateFeedback: Date;
+  informacao: string;
+  militarId: string;
+}
+
+export type FeedbackArray = Feedback[];
 
 export interface Material {
   id: string;
@@ -76,10 +86,12 @@ export interface Armamento {
   status: "disponivel" | "indisponivel";
   companhia: string;
   cabide?: string;
-  cautelaArmamento?: CautelaArmamento;
+  cautelaArmamento?: CautelaArmamento[];
   ArmamentoMilitar?: ArmamentoMilitar;
   Manutencao?: Manutencao;
 }
+
+export type ArmamentoArray = Armamento[];
 
 export type Cautela = {
   id: string;
@@ -177,7 +189,7 @@ export type CombustivelArray = Combustivel[];
 
 export type FuncaoMilitar = {
   id: string;
-  funcao: 'super admin' | 'cmt cia' | 'enc mat' | 'armeiro' | 'cmt pel' | 'cmt gda' | 'furriel' | 'comum';
+  funcao: 'sgte' | 'super admin' | 'cmt cia' | 'enc mat' | 'armeiro' | 'cmt pel' | 'cmt gda' | 'furriel' | 'comum';
   created_at: Date;
   data_inicio:  Date;
   data_termino: Date;
@@ -186,3 +198,13 @@ export type FuncaoMilitar = {
 }
 
 export type FuncaoMilitarArray = FuncaoMilitar[];
+
+export type Session = {
+  id: string;
+  access: Date;
+  expires: Date;
+  ipAccess: string;
+  militar: Militar;
+}
+
+export type SessionArray = Session[]; 

@@ -75,7 +75,7 @@ export function DadosMilitares(props) {
         <Box m="auto" w="100%" h="100%" px={4} pb={4}>
           <FormControl>
             <Input
-            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin") && asPath == "/superAdmin/usuarios" ? false : true}
+            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
               type="date"
               label="Data de praça"
               name="data_praca"
@@ -90,7 +90,7 @@ export function DadosMilitares(props) {
           </FormControl>
           <FormControl>
             <Input
-            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin") && asPath == "/superAdmin/usuarios" ? false : true}
+            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
               as="select"
               label="Companhia"
               name="companhia"
@@ -110,7 +110,7 @@ export function DadosMilitares(props) {
           </FormControl>
           <FormControl>
             <Input
-            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin") && asPath == "/superAdmin/usuarios" ? false : true}
+            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
               as="select"
               label="Pelotao"
               name="pelotao"
@@ -131,7 +131,7 @@ export function DadosMilitares(props) {
           </FormControl>
           <FormControl>
             <Input
-            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin") && asPath == "/superAdmin/usuarios" ? false : true}
+            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
               as="select"
               label="Status"
               name="status"
@@ -151,7 +151,7 @@ export function DadosMilitares(props) {
           </FormControl>
           <FormControl>
             <Input
-            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin") && asPath == "/superAdmin/usuarios" ? false : true}
+            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
               label="QMG/QMP"
               name="qmg_qmp"
               bgColor="gray.990"
@@ -165,7 +165,7 @@ export function DadosMilitares(props) {
           </FormControl>
           <FormControl>
             <Input
-            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin") && asPath == "/superAdmin/usuarios" ? false : true}
+            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
               label="Cargo no QCP"
               name="cargo_qcp"
               defaultValue={mil.cargo_qcp}
@@ -179,7 +179,7 @@ export function DadosMilitares(props) {
           </FormControl>
           <FormControl>
             <Input
-            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin") && asPath == "/superAdmin/usuarios" ? false : true}
+            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
               label="Lugar que cumpre expediente"
               name="local_cumpre_expediente"
               defaultValue={mil.local_cumpre_expediente}
@@ -193,7 +193,7 @@ export function DadosMilitares(props) {
           </FormControl>
           <FormControl>
             <Input
-            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin") && asPath == "/superAdmin/usuarios" ? false : true}
+            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
               as="select"
               label="Motocarro"
               name="motocarro"
@@ -210,7 +210,7 @@ export function DadosMilitares(props) {
           </FormControl>
           <FormControl>
             <Input
-            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin") && asPath == "/superAdmin/usuarios" ? false : true}
+            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
               as="select"
               label="Habilitação Militar"
               name="hab_militar"

@@ -19,8 +19,8 @@ interface ProfileProps {
 
 export function Functions({ showProfileData = true }: ProfileProps) {
   const { data: session } = useSession();
-  const colors = ['green', 'yellow', 'blue','red','orange']
-  console.log(colors[Math.floor(Math.random() * colors.length)])
+  const colors = ['green', 'yellow', 'blue','red','orange', 'gray', 'green', 'purple'];
+  // console.log(colors[Math.floor(Math.random() * colors.length)])
   return (
     <Flex flexDirection="column" mx="auto" px={4}>
       {showProfileData && (
@@ -31,7 +31,7 @@ export function Functions({ showProfileData = true }: ProfileProps) {
                 FUNÇÕES
               </Text>
             </Flex>
-            <Grid gridTemplateColumns='1fr 1fr 1fr'>
+            <Grid gridTemplateColumns='1fr 1fr'>
               {session?.militar.Funcao.filter((func: FuncaoMilitar, index) => {return func.status === 'ativo'}).map((func, index) =>(
                 <Badge key={`${func}-${index}`} textAlign='center' variant="outline" colorScheme={colors[Math.floor(Math.random() * colors.length)]} mx={1} mb={1}>
                   {func.funcao}

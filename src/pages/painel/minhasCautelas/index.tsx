@@ -29,6 +29,7 @@ import {
   useToast,
   Text,
   Center,
+  Grid,
 } from "@chakra-ui/react";
 import { useQuery } from "react-query";
 import { api } from "../../../services/api";
@@ -46,62 +47,9 @@ import dynamic from "next/dynamic";
 import { ApexOptions } from "apexcharts";
 import { ArmamentoComponentPainel } from "../../../components/Painel/Armamento";
 import { CautelasComponentPainel } from "../../../components/Painel/Cautelas";
+import { NotData } from '../../../components/NotData/index';
 
-const Chart = dynamic(() => import("react-apexcharts"), {
-  ssr: false,
-});
-
-const options: ApexOptions = {
-  chart: {
-    type: "bar",
-    height: 430,
-    animations: {
-      enabled: true,
-      easing: "easein",
-    },
-  },
-  plotOptions: {
-    bar: {
-      horizontal: true,
-      dataLabels: {
-        position: "top",
-      },
-    },
-  },
-  dataLabels: {
-    enabled: true,
-    offsetX: -6,
-    style: {
-      fontSize: "12px",
-      colors: ["#fff"],
-    },
-  },
-  stroke: {
-    show: true,
-    width: 2,
-    colors: ["#ffffff22"],
-  },
-  tooltip: {
-    enabled: false,
-    shared: false,
-  },
-  xaxis: {
-    categories: [2001, 2002, 2003, 2004, 2005, 2006, 2007],
-  },
-};
-
-const series = [
-  {
-    name: "Abertas",
-    data: [44, 55, 41, 64, 22, 43, 21],
-  },
-  {
-    name: "Fechadas",
-    data: [53, 32, 33, 52, 13, 44, 32],
-  },
-];
-
-export default function Cadastro() {
+export default function MinhasCautelas() {
   const { data: session } = useSession();
 
   const [cautelaFechada, setCautelaFechada] = useState(Boolean);
@@ -137,14 +85,13 @@ export default function Cadastro() {
           alignItems="flex-start"
         >
           <Box p={["6", "8"]} bg="gray.800" borderRadius={8} pb="4">
-            <Flex flexDirection="row" gap={4} justifyContent="space-between">
+            <Grid gridTemplateColumns={["1fr","1fr 1fr "]} gap={4} justifyContent="space-between">
               <CautelasComponentPainel />
               <ArmamentoComponentPainel />
-            </Flex>
-
+            </Grid>
             <Flex
               bgGradient="linear(to-tr, gray.990, gray.990, green.900)"
-              boxShadow="innerShadow"
+              boxShadow="buttonShadow"
               flexDirection="column"
               rounded="lg"
               px={4}
@@ -172,11 +119,13 @@ export default function Cadastro() {
                   icon={<SlRefresh />}
                 />
               </Flex>
-              <Flex
+              
+                
+                <Flex
                 bg="gray.990"
-                w="xl"
                 mx="auto"
                 p="2"
+                w="auto"
                 rounded="md"
                 boxShadow="buttonShadow"
                 justifyContent="space-between"
@@ -191,7 +140,8 @@ export default function Cadastro() {
                   Fechada?
                 </Checkbox>
               </Flex>
-              <TableContainer m={4}>
+              {!(search.length === 0) ? (
+              <TableContainer my={6}>
                 <Table size="sm" colorScheme="whiteAlpha">
                   <Thead>
                     <Tr>
@@ -287,6 +237,7 @@ export default function Cadastro() {
                   </Tfoot>
                 </Table>
               </TableContainer>
+              ) : <NotData textoComponent="Nenhuma cautela encontrada" />}
             </Flex>
           </Box>
         </SimpleGrid>

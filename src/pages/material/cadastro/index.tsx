@@ -42,6 +42,7 @@ import { TiInfoLarge } from "react-icons/ti";
 import { useSession } from "next-auth/react";
 import { CautelaArray, Material, MaterialArray } from "../../../@types/types";
 import Head from "next/head";
+import { NotData } from "../../../components/NotData";
 
 interface MaterialDataProps extends Material {
   cautelas?: CautelaArray;
@@ -127,7 +128,7 @@ export default function Cadastro() {
               direction="column"
               onSubmit={handleSubmit(handleSignIn)}
               bgGradient="linear(to-tr, gray.990, gray.990, green.900)"
-              boxShadow="innerShadow"
+              boxShadow="buttonShadow"
               rounded="lg"
               w="100%"
               flexDirection="column"
@@ -229,16 +230,6 @@ export default function Cadastro() {
                   </Input>
                 </FormControl>
               </Grid>
-            </Flex>
-            <Flex
-              bgGradient="linear(to-tr, gray.990, gray.990, green.900)"
-              boxShadow="innerShadow"
-              rounded="lg"
-              w="100%"
-              flexDirection="column"
-              p={4}
-              mb={4}
-            >
               <Flex
                 bg="gray.990"
                 boxShadow="buttonShadow"
@@ -260,8 +251,8 @@ export default function Cadastro() {
                   icon={<SlRefresh />}
                 />
               </Flex>
-
-              <TableContainer>
+              {!(data.length === 0) ? (
+                <TableContainer>
                 <Table size="sm" colorScheme="whiteAlpha">
                   <Thead>
                     <Tr>
@@ -353,6 +344,8 @@ export default function Cadastro() {
                   </Tfoot>
                 </Table>
               </TableContainer>
+              ) : <NotData textoComponent="Não foram encontrados materiais cadastrados." /> }
+              
             </Flex>
           </Box>
         </SimpleGrid>

@@ -17,7 +17,8 @@ import {
   Stack,
   Flex,
   Heading,
-  FormHelperText
+  FormHelperText,
+  Circle
 } from "@chakra-ui/react";
 import React, { FormEvent, useContext, useState } from "react";
 import { Input } from "../../../Form/Input";
@@ -88,21 +89,21 @@ export function ModalCautela({ data: militares,  dataArmamento: armamento, adapt
 
   return (
     <>
-    {adapter ? (<Button
+    {adapter ? (<Circle
         bg="green.800"
-        size="xs"
+        size="28px"
         rounded='full'
         _hover={{ bgColor: "green.900" }}
-        boxShadow='base'
+        boxShadow='buttonShadow'
         onClick={onOpen}
         py="1"
       >
         <Icon boxSize={4} as={BsBoxArrowUp} />
-      </Button>) : (<Button
-        bg="green.400"
+      </Circle>) : (<Button
+        bg="green.800"
         size="xs"
-        _hover={{ bgColor: "green.600" }}
-        boxShadow='base'
+        _hover={{ bgColor: "green.800" }}
+        boxShadow='buttonShadow'
         onClick={onOpen}
         py="1"
       >
@@ -148,7 +149,7 @@ export function ModalCautela({ data: militares,  dataArmamento: armamento, adapt
                 onChange={(e) => setMilitar(e.target.value)}
               >
                 <option value=''>Selecione</option>
-                {militares ? militares?.data.map((militar: Militar) => (
+                {militares?.data ? militares?.data.map((militar: Militar) => (
                   <option key={militar.id} value={militar.id} >{militar.post_grad+' '+militar.nome_guerra}</option>
                 )) : null}
               </Input>

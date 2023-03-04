@@ -40,3 +40,8 @@ export async function getUserIP() {
     const response = await api.get("https://api.ipify.org/?format=json");
     return response.data.ip;
   }
+
+export function formatarDataHora(iso: string | number | Date) {
+    const data = new Date(iso);
+    return data.toLocaleString('pt-BR');
+  }

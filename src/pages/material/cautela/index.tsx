@@ -95,7 +95,7 @@ export default function Cautela() {
           <Box p={["6", "8"]} bg="gray.800" borderRadius={8} pb="4">
             <Flex
               bgGradient="linear(to-tr, gray.990, gray.990, green.900)"
-              boxShadow="innerShadow"
+              boxShadow="buttonShadow"
               flexDirection="column"
               rounded="lg"
               px={4}

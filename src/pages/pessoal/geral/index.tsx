@@ -12,10 +12,6 @@ import {
   AccordionItem,
   AccordionPanel,
   Button,
-  Tag,
-  Avatar,
-  TagLabel,
-  Circle,
   Icon,
   Popover,
   PopoverArrow,
@@ -24,56 +20,62 @@ import {
   PopoverContent,
   PopoverHeader,
   PopoverTrigger,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Tfoot,
+  Th,
+  Thead,
+  Tr,
+  TableCaption,
+  Avatar,
+  Circle,
+  Tag,
+  TagLabel,
+  Grid,
 } from "@chakra-ui/react";
 import { useQuery } from "react-query";
 import { api } from "../../../services/api";
 import { useState } from "react";
 
 import Head from "next/head";
-import { Militar, MilitarArray } from "../../../@types/types";
+import { FuncaoMilitar, Militar, MilitarArray } from "../../../@types/types";
 import { RxUpdate } from "react-icons/rx";
 import { DadosPessoais } from "../../../components/SuperAdmin/Forms/DadosPessoais";
 import { DadosMilitares } from "../../../components/SuperAdmin/Forms/DadosMilitares";
 import { Endereco } from "../../../components/SuperAdmin/Forms/Endereco";
-import { FuncaoMilitarArray } from "../../../@types/types";
+import { useSession } from "next-auth/react";
 import { TiInfoLarge } from "react-icons/ti";
-import {
-  convertISODateToInputValue,
-  convertDateFuncaoMilitar,
-} from "../../../utils/scripts";
+import { ModalCautela } from "../../../components/Modal/Armamento/ModalCautela";
 
-export default function SuperAdminFuncoes() {
+export default function GerenciamentoPessoal() {
+  const { data: session } = useSession();
   const [result, setResult] = useState<MilitarArray>([]);
-  const [militarFuncao, setMilitarFuncao] = useState<MilitarArray>([]);
+  const [militarPostGrad, setMilitarPostGrad] = useState<MilitarArray>([]);
 
-  const [search, setSearch] = useState(result);
-
-  const { data, refetch } = useQuery(["todasfuncoes"], async () => {
-    const result = await api.get<FuncaoMilitarArray>("/funcoes");
-    return result.data;
+  const { data, refetch } = useQuery(["todosMilitares"], async () => {
+    const result = await api.get<MilitarArray>("/militar");
+    
+    return result.data.filter(mil => mil.companhia === session.militar.companhia);
   });
-  const { data: militares, refetch: refMilitares } = useQuery(
-    ["todosMilitares"],
-    async () => {
-      const result = await api.get<MilitarArray>("/militar");
-      return result.data;
-    }
-  );
 
   async function handleGetFunctionMilitar(
     militares: MilitarArray,
-    funcao: string
+    post_grad: string
   ) {
-    const filterMilitarFuncao = militares.filter((mil) =>
-      mil?.Funcao.find((fun) => fun.funcao == funcao.toLowerCase())
+    const filterMilitarPostGrad = militares.filter((mil) =>
+      mil?.post_grad === post_grad
     );
-    setMilitarFuncao(filterMilitarFuncao);
+    setMilitarPostGrad(filterMilitarPostGrad);
   }
 
   return (
     <>
       <Head>
-        <title>SisAGI | Administração - Funções</title>
+        <title>
+          SisAGI | Gerencimento Pessoal - {session?.militar.companhia}
+        </title>
       </Head>
       <Flex direction="column" flex="1" gap={4}>
         <SimpleGrid
@@ -99,7 +101,7 @@ export default function SuperAdminFuncoes() {
                 justifyContent="space-between"
               >
                 <Heading size="md" p={2}>
-                  MILITARES
+                  MILITARES - {session?.militar.companhia}
                 </Heading>
                 <Button
                   boxShadow="buttonShadow"
@@ -112,16 +114,48 @@ export default function SuperAdminFuncoes() {
                   <RxUpdate size={16} />
                 </Button>
               </Flex>
+              
+              <TableContainer px={4} mb={4}>
+                <Table size="sm" variant="simple" colorScheme="whiteAlpha">
+                  <TableCaption>QUADRO DE EFETIVO DA COMPANHIA</TableCaption>
+                  <Thead>
+                    <Tr>
+                      <Th textAlign="center">Capitão</Th>
+                      <Th textAlign="center">1º Ten</Th>
+                      <Th textAlign="center">2º Ten</Th>
+                      <Th textAlign="center">Sub Ten</Th>
+                      <Th textAlign="center">1º Sgt</Th>
+                      <Th textAlign="center">2º Sgt</Th>
+                      <Th textAlign="center">3º Sgt</Th>
+                      <Th textAlign="center">Cb</Th>
+                      <Th textAlign="center">Sd</Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    <Tr>
+                      <Td textAlign="center">2</Td>
+                      <Td textAlign="center">4</Td>
+                      <Td textAlign="center">5</Td>
+                      <Td textAlign="center">6</Td>
+                      <Td textAlign="center">2</Td>
+                      <Td textAlign="center">4</Td>
+                      <Td textAlign="center">5</Td>
+                      <Td textAlign="center">6</Td>
+                      <Td textAlign="center">6</Td>
+                    </Tr>
+                  </Tbody>
+                </Table>
+              </TableContainer>
               <Box m="auto" w="100%" h="100%" px={2}>
                 <Accordion allowToggle>
-                  {Array.from(new Set(data?.map((item) => item.funcao))).map(
-                    (func, index) => (
+                  {Array.from(new Set(data?.map((item) => item.post_grad))).map(
+                    (post_grad, index) => (
                       <AccordionItem
                         border="0"
                         mb={2}
-                        key={func + index}
+                        key={post_grad + index}
                         onClick={() =>
-                          handleGetFunctionMilitar(militares, func)
+                          handleGetFunctionMilitar(data, post_grad)
                         }
                       >
                         <h2>
@@ -139,7 +173,7 @@ export default function SuperAdminFuncoes() {
                                 fontWeight="extrabold"
                                 textTransform="uppercase"
                               >
-                                {func}
+                                {post_grad}
                               </Text>
                             </Box>
                             <Tag
@@ -151,7 +185,7 @@ export default function SuperAdminFuncoes() {
                               bgGradient="linear(to-tr, gray.990, gray.990, gray.900)"
                             >
                               {
-                                data?.filter((fun) => fun.funcao === func)
+                                data?.filter((fun) => fun.post_grad === post_grad)
                                   .length
                               }
                             </Tag>
@@ -168,7 +202,7 @@ export default function SuperAdminFuncoes() {
                           bgColor="gray.990"
                           boxShadow="innerShadow"
                         >
-                          {militarFuncao?.map((militar) => (
+                          {militarPostGrad?.map((militar) => (
                             <Tag
                               mr={4}
                               mt={2}
@@ -257,7 +291,8 @@ export default function SuperAdminFuncoes() {
                                       boxShadow="buttonShadow"
                                       px={4}
                                       py={1}
-                                      m={1}
+                                      mx={1}
+                                      my={2}
                                       alignItems="center"
                                       justifyContent="space-between"
                                     >
@@ -268,31 +303,18 @@ export default function SuperAdminFuncoes() {
                                         boxShadow="buttonShadow"
                                         fontWeight="bold"
                                       >
-                                        <Text>Data de Início</Text>
-                                        <Text></Text>
+                                        Funções
                                       </Flex>
-                                      {/* {militar.Funcao.find(fun => fun.funcao === func.toLowerCase()).data_inicio} */}
+                                      <Grid gridTemplateColumns='1fr 1fr'>
+                                    {militar?.Funcao.filter((func: FuncaoMilitar, index) => {return func.status === 'ativo'}).map((func, index) =>(
+                                        <Badge key={`${func}-${index}`} textAlign='center' variant="outline" colorScheme="green" mx={1} mb={1}>
+                                        {func.funcao}
+                                        </Badge>
+                                    ))}
+                                    </Grid>
                                     </Flex>
-                                    <Flex
-                                      boxShadow="buttonShadow"
-                                      px={4}
-                                      py={1}
-                                      m={1}
-                                      alignItems="center"
-                                      justifyContent="space-between"
-                                    >
-                                      <Flex
-                                        p={2}
-                                        rounded="lg"
-                                        bg="green.700"
-                                        boxShadow="buttonShadow"
-                                        fontWeight="bold"
-                                      >
-                                        <Text>Data de Termino</Text>
-                                        <Text></Text>
-                                      </Flex>
-                                      {/* {convertDateFuncaoMilitar(militar, func)} */}
-                                    </Flex>
+                                    
+                                    
                                   </PopoverBody>
                                 </PopoverContent>
                               </Popover>
