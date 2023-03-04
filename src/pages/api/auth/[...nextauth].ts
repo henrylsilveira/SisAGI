@@ -18,7 +18,7 @@ export default NextAuth({
                 senha: credentials.senha,
                 ip: credentials.ip
             });
-            
+            console.log(user);
             if (user) {
               const userAccount = user?.data?.result;
               return userAccount;
@@ -26,7 +26,7 @@ export default NextAuth({
               return null;
             }
           } catch (error) {
-            const message = error.response.data.message; 
+            const message = error.response.data?.message; 
             throw new Error(message);
           }
         },
