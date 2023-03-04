@@ -1,6 +1,7 @@
 import NextAuth from "next-auth"
 import CredentialProvider from "next-auth/providers/credentials"
 import { api } from "../../../services/api";
+import { Militar } from "../../../@types/types";
 
 export default NextAuth({
     providers: [
@@ -23,7 +24,7 @@ export default NextAuth({
               const userAccount = user?.data?.result;
               return userAccount;
             }
-            throw new Error();
+            
           } catch (error) {
             const message = error.response.data?.message; 
             throw new Error(message + ": " + error.response);
