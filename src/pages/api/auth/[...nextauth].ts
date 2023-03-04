@@ -26,7 +26,7 @@ export default NextAuth({
             throw new Error();
           } catch (error) {
             const message = error.response.data?.message; 
-            throw new Error(message);
+            throw new Error(message + ": " + error.response);
           }
         },
       }),
