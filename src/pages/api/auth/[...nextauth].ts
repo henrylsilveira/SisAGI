@@ -59,7 +59,9 @@ export default NextAuth({
     jwt: {
       maxAge: 24 * 60 * 60,
     },
+    debug: true,
     session: {
+      strategy: "jwt",
       maxAge: 24 * 60 * 60,
     },
     useSecureCookies: true
