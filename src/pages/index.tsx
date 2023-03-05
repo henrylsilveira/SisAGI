@@ -80,7 +80,7 @@ export default function Home() {
         <title>SisAGI | Sistema de Apoio a Gestão Interna</title>
       </Head>
       <Flex w="100vw" h="100vh" flexDir="row" align="center" justify="center">
-        <Grid gridTemplateColumns={["1fr","1fr 1fr"]} bg="gray.990" boxShadow="buttonShadow" rounded="lg" px={8}>
+        <Grid gridTemplateColumns={["1fr","1fr 1fr"]} bg="#1b1b1b44" backdropFilter="blur(5px)" boxShadow="buttonShadow" rounded="2xl" px={8}>
           <Flex w={["25","30"]} mx="auto" align="center" justify="center">
             <Image src="./img/CFRN5BIS.png" alt="brasão Cmdo Fron RN / 5 BIS" />
           </Flex>
@@ -97,6 +97,7 @@ export default function Home() {
               spacing={4}
               border="1px"
               boxShadow="buttonShadow"
+              bg="gray.990"
               borderColor="green.800"
               rounded="2xl"
               pb={8}
@@ -136,14 +137,16 @@ export default function Home() {
                 error={errors.senha}
                 {...register("senha")}
               />
-            </Stack>
-            <Flex flexDir="row" justifyContent="space-between">
+              <Flex flexDir="row" justifyContent="space-between">
               <Button
                 boxShadow="buttonShadow"
                 variant="ghost"
-                _hover={{ bg: "green.500", color: "white" }}
+                w="100%"
+                transition="0.3s"
+                _hover={{ border: "1px" , borderColor: "green.700" }}
                 type="submit"
                 mt="6"
+                mr={4}
                 colorScheme="green"
                 size="lg"
                 isLoading={formState.isSubmitting}
@@ -154,8 +157,10 @@ export default function Home() {
                 <Button
                   boxShadow="buttonShadow"
                   mt="6"
+                  w="100%"
                   variant="ghost"
-                  _hover={{ bg: "blue.500", color: "white" }}
+                  transition="0.3s"
+                  _hover={{ border: "1px" , borderColor: "blue.700" }}
                   colorScheme="blue"
                   size="lg"
                 >
@@ -163,6 +168,8 @@ export default function Home() {
                 </Button>
               </Link>
             </Flex>
+            </Stack>
+            
             <Flex
               textAlign="center"
               boxShadow="buttonShadow"

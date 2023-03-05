@@ -48,13 +48,14 @@ import { Endereco } from "../../../components/SuperAdmin/Forms/Endereco";
 import { useSession } from "next-auth/react";
 import { TiInfoLarge } from "react-icons/ti";
 import { ModalCautela } from "../../../components/Modal/Armamento/ModalCautela";
+import { NotLoaded } from "../../../components/NotLoaded";
 
 export default function GerenciamentoPessoal() {
   const { data: session } = useSession();
   const [result, setResult] = useState<MilitarArray>([]);
   const [militarPostGrad, setMilitarPostGrad] = useState<MilitarArray>([]);
 
-  const { data, refetch } = useQuery(["todosMilitares"], async () => {
+  const { isLoading, data, refetch } = useQuery(["todosMilitares"], async () => {
     const result = await api.get<MilitarArray>("/militar");
     
     return result.data.filter(mil => mil.companhia === session.militar.companhia);
@@ -148,7 +149,7 @@ export default function GerenciamentoPessoal() {
               </TableContainer>
               <Box m="auto" w="100%" h="100%" px={2}>
                 <Accordion allowToggle>
-                  {Array.from(new Set(data?.map((item) => item.post_grad))).map(
+                  {isLoading ? <NotLoaded /> : Array.from(new Set(data?.map((item) => item.post_grad))).map(
                     (post_grad, index) => (
                       <AccordionItem
                         border="0"
@@ -185,7 +186,7 @@ export default function GerenciamentoPessoal() {
                               bgGradient="linear(to-tr, gray.990, gray.990, gray.900)"
                             >
                               {
-                                data?.filter((fun) => fun.post_grad === post_grad)
+                                isLoading ? <NotLoaded /> : data?.filter((fun) => fun.post_grad === post_grad)
                                   .length
                               }
                             </Tag>
@@ -202,7 +203,7 @@ export default function GerenciamentoPessoal() {
                           bgColor="gray.990"
                           boxShadow="innerShadow"
                         >
-                          {militarPostGrad?.map((militar) => (
+                          {isLoading ? <NotLoaded /> : militarPostGrad?.map((militar) => (
                             <Tag
                               mr={4}
                               mt={2}

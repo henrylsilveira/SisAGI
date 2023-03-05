@@ -4,7 +4,6 @@ import {
   Stack,
   Image,
   Heading,
-  Link,
   FormControl,
   useToast,
   Text,
@@ -17,6 +16,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Input } from "../../components/Form/Input";
 import { api } from "../../services/api";
 import Router from "next/router";
+import Link from "next/link";
 
 type SignInFormData = {
   nomeCompleto: string;
@@ -83,8 +83,14 @@ export default function Cadastro() {
 
   return (
     <Flex w="100vw" flexDir="row" align="center" justify="center" my={4}>
-      <Grid gridTemplateColumns={["1fr","1fr 1fr"]} bg="gray.990" boxShadow="buttonShadow" rounded="lg" px={8}>
-        <Flex w={["25","30"]} mx="auto" align="center" justify="center">
+      <Grid
+        gridTemplateColumns={["1fr","1fr","1fr 1fr"]}
+        boxShadow="buttonShadow"
+        bg="#1b1b1b44" backdropFilter="blur(5px)"
+        rounded="2xl"
+        px={8}
+      >
+        <Flex w={["200px","300px", "300px"]} mx="auto" align="center" justify="center">
           <Image src="./img/CFRN5BIS.png" alt="brasão Cmdo Fron RN / 5 BIS" />
         </Flex>
         <Flex
@@ -96,7 +102,16 @@ export default function Cadastro() {
           borderRadius={8}
           onSubmit={handleSubmit(handleSignIn)}
         >
-          <Stack spacing={2} border="1px" boxShadow="buttonShadow" borderColor="green.800" rounded="2xl" pb={4} px={6}>
+          <Stack
+            spacing={2}
+            border="1px"
+            boxShadow="buttonShadow"
+            borderColor="green.800"
+            bg="gray.990"
+            rounded="2xl"
+            pb={4}
+            px={6}
+          >
             <Flex align="center" justify="center" flexDir="column">
               <Heading
                 fontWeight="bold"
@@ -202,54 +217,59 @@ export default function Cadastro() {
               error={errors.senha}
               {...register("senha")}
             />
-          </Stack>
-          <Flex flexDir="row" justifyContent="space-between">
-            <Button
-              type="submit"
-              mt="6"
-              colorScheme="blue"
-              size="lg"
-              boxShadow="buttonShadow"
-              variant="ghost"
-              _hover={{ bg: "blue.500", color: "white" }}
-              isLoading={formState.isSubmitting}
-            >
-              Cadastrar
-            </Button>
-            <Link href="/">
+            <Flex flexDir="row" justifyContent="space-between">
+              <Button
+                type="submit"
+                mt="6"
+                mr={4}
+                w="100%"
+                colorScheme="blue"
+                size="lg"
+                boxShadow="buttonShadow"
+                variant="ghost"
+                transition="0.3s"
+                _hover={{ border: "1px", borderColor: "blue.700" }}
+                isLoading={formState.isSubmitting}
+              >
+                Cadastrar
+              </Button>
+
               <Button
                 boxShadow="buttonShadow"
                 variant="ghost"
-                _hover={{ bg: "yellow.500", color: "white" }}
+                w="100%"
+                transition="0.3s"
+                _hover={{ border: "1px", borderColor: "yellow.700" }}
                 mt="6"
                 colorScheme="yellow"
                 size="lg"
               >
-                Voltar
+                <Link href="/">Voltar</Link>
               </Button>
-            </Link>
-          </Flex>
-          <Flex
-              textAlign="center"
-              boxShadow="buttonShadow"
-              my={4}
-              alignItems="center"
-              w="full"
-              bg="blackAlpha.500"
-              rounded="lg"
-            >
-              <Text
-                fontSize="xs"
-                fontWeight="bold"
-                letterSpacing="tight"
-                bgGradient="linear(to-tr, green.300, gray.600, green.300 )"
-                bgClip="text"
-                p={2}
-                w="full"
-              >
-                Desenvolvido pelo 3ªSgt Henry - 2016
-              </Text>
             </Flex>
+          </Stack>
+
+          <Flex
+            textAlign="center"
+            boxShadow="buttonShadow"
+            my={4}
+            alignItems="center"
+            w="full"
+            bg="blackAlpha.500"
+            rounded="lg"
+          >
+            <Text
+              fontSize="xs"
+              fontWeight="bold"
+              letterSpacing="tight"
+              bgGradient="linear(to-tr, green.300, gray.600, green.300 )"
+              bgClip="text"
+              p={2}
+              w="full"
+            >
+              Desenvolvido pelo 3ªSgt Henry - 2016
+            </Text>
+          </Flex>
         </Flex>
       </Grid>
     </Flex>
