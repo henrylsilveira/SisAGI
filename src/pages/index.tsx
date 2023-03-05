@@ -5,18 +5,19 @@ import {
   Image,
   Heading,
   useToast,
-  Text
+  Text,
+  Grid,
 } from "@chakra-ui/react";
 import { Input } from "../components/Form/Input";
-import { useForm } from 'react-hook-form';
+import { useForm } from "react-hook-form";
 import { SubmitHandler } from "react-hook-form/dist/types";
-import * as yup from 'yup'
-import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
 import { useEffect } from "react";
 import Router from "next/router";
 
-import { signIn, useSession } from "next-auth/react"
+import { signIn, useSession } from "next-auth/react";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { getUserIP } from "../utils/scripts";
@@ -24,105 +25,175 @@ import { getUserIP } from "../utils/scripts";
 type SignInFormData = {
   identidade: string;
   senha: string;
-}
+};
 
 const signInFormSchema = yup.object().shape({
-  identidade: yup.string().required('Obrigatório.'),
-  senha: yup.string().required('Senha obrigatória.')
-})
+  identidade: yup.string().required("Obrigatório."),
+  senha: yup.string().required("Senha obrigatória."),
+});
 
 export default function Home() {
-  const { register, handleSubmit, formState, formState: {errors} } = useForm({
-    resolver: yupResolver(signInFormSchema)
-  })
-  const { data:session , status } = useSession()
+  const {
+    register,
+    handleSubmit,
+    formState,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(signInFormSchema),
+  });
+  const { data: session, status } = useSession();
 
-  const toast = useToast()
+  const toast = useToast();
   useEffect(() => {
-    if(session && status === 'authenticated'){
-      Router.push('/dashboard')
-    }else {
-      return
+    if (session && status === "authenticated") {
+      Router.push("/dashboard");
+    } else {
+      return;
     }
-  }, [session, status])
+  }, [session, status]);
 
-  const handleSignIn:SubmitHandler<SignInFormData> = async (values) => {
-    await new Promise(resolve => setTimeout(resolve, 2000))
+  const handleSignIn: SubmitHandler<SignInFormData> = async (values) => {
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     const res = await signIn("Credentials", {
       redirect: false,
       identidade: values.identidade,
       senha: values.senha,
-      ip: await getUserIP()
+      ip: await getUserIP(),
     });
 
     if (res.error) {
       toast({
-        title: 'Login',
-        description: 'Senha ou indentidade incorreta.',
+        title: "Login",
+        description: "Senha ou indentidade incorreta.",
         status: "error",
         duration: 3000,
         isClosable: true,
       });
-      return Router.push('/')
+      return Router.push("/");
     }
-    Router.push('/dashboard');
-  }
-
+    Router.push("/dashboard");
+  };
 
   return (
     <>
-    <Head>
+      <Head>
         <title>SisAGI | Sistema de Apoio a Gestão Interna</title>
-    </Head>
-    <Flex w="100vw" h="100vh" flexDir="row" align="center" justify="center">
-      <Flex bg="gray.800" rounded="lg" px={8}>
-        <Flex align="center" justify="center"> 
-            <Image src='./img/CFRN5BIS.png' alt='brasão Cmdo Fron RN / 5 BIS' />
-        </Flex>
-        <Flex
-          as="form"
-          w="100%"
-          flexDir="column"
-          maxWidth={360}
-          p="8"
-          borderRadius={8}
-          onSubmit={handleSubmit(handleSignIn)}
-        >
-          <Stack spacing={4}>
-            <Flex align="center" justify="center" flexDir='column'>
-              <Heading as='h1' size='2xl' pb={4}>SisAGI</Heading>
-              <Text fontSize={['sm','md','lg']}>Sistema de Apoio a Gestão Interna</Text>
-              <Heading as='h2' size='md'>Cmdo Fron RN / 5 BIS</Heading>
-            </Flex>
-
-            <Input name="identidade" label="Identidade" type="text" error={errors.identidade} {...register("identidade")} />
-            <Input name="password" label="Senha" type="password" error={errors.senha} {...register("senha")}/>
-          </Stack>
-          <Flex flexDir="row" justifyContent="space-between">
-          <Button type="submit" mt="6" colorScheme="green" size="lg" isLoading={formState.isSubmitting}>
-            Entrar
-          </Button>
-          <Link href="/cadastro">
-            <Button mt="6" colorScheme="blue" size="lg" >
-              Cadastrar
-            </Button>
-          </Link>
+      </Head>
+      <Flex w="100vw" h="100vh" flexDir="row" align="center" justify="center">
+        <Grid gridTemplateColumns={["1fr","1fr 1fr"]} bg="gray.990" boxShadow="buttonShadow" rounded="lg" px={8}>
+          <Flex w={["25","30"]} mx="auto" align="center" justify="center">
+            <Image src="./img/CFRN5BIS.png" alt="brasão Cmdo Fron RN / 5 BIS" />
           </Flex>
-        </Flex>
+          <Flex
+            as="form"
+            w="100%"
+            flexDir="column"
+            maxWidth={420}
+            p="8"
+            borderRadius={8}
+            onSubmit={handleSubmit(handleSignIn)}
+          >
+            <Stack
+              spacing={4}
+              border="1px"
+              boxShadow="buttonShadow"
+              borderColor="green.800"
+              rounded="2xl"
+              pb={8}
+              px={6}
+            >
+              <Flex align="center" justify="center" flexDir="column">
+                <Heading
+                  fontWeight="bold"
+                  letterSpacing="tight"
+                  bgGradient="linear(to-tr, green.300, gray.600, green.300 )"
+                  bgClip="text"
+                  size="2xl"
+                  mt={2}
+                  p={4}
+                >
+                  SisAGI
+                </Heading>
+                <Text fontSize={["sm", "md", "lg"]}>
+                  Sistema de Apoio a Gestão Interna
+                </Text>
+                <Heading as="h2" size="md">
+                  Cmdo Fron RN / 5 BIS
+                </Heading>
+              </Flex>
+
+              <Input
+                name="identidade"
+                label="Identidade"
+                type="text"
+                error={errors.identidade}
+                {...register("identidade")}
+              />
+              <Input
+                name="password"
+                label="Senha"
+                type="password"
+                error={errors.senha}
+                {...register("senha")}
+              />
+            </Stack>
+            <Flex flexDir="row" justifyContent="space-between">
+              <Button
+                boxShadow="buttonShadow"
+                variant="ghost"
+                _hover={{ bg: "green.500", color: "white" }}
+                type="submit"
+                mt="6"
+                colorScheme="green"
+                size="lg"
+                isLoading={formState.isSubmitting}
+              >
+                Entrar
+              </Button>
+              <Link href="/cadastro">
+                <Button
+                  boxShadow="buttonShadow"
+                  mt="6"
+                  variant="ghost"
+                  _hover={{ bg: "blue.500", color: "white" }}
+                  colorScheme="blue"
+                  size="lg"
+                >
+                  Cadastrar
+                </Button>
+              </Link>
+            </Flex>
+            <Flex
+              textAlign="center"
+              boxShadow="buttonShadow"
+              my={4}
+              alignItems="center"
+              w="full"
+              bg="blackAlpha.500"
+              rounded="lg"
+            >
+              <Text
+                fontSize="xs"
+                fontWeight="bold"
+                letterSpacing="tight"
+                bgGradient="linear(to-tr, green.300, gray.600, green.300 )"
+                bgClip="text"
+                p={2}
+                w="full"
+              >
+                Desenvolvido pelo 3ªSgt Henry - 2016
+              </Text>
+            </Flex>
+          </Flex>
+        </Grid>
       </Flex>
-    </Flex>
     </>
-    
   );
 }
 
-
 export const getServerSideProps: GetServerSideProps = async () => {
-
   return {
-    props: {
-
-    }
-  }
-}
+    props: {},
+  };
+};

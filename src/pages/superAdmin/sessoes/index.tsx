@@ -11,17 +11,16 @@ import { api } from "../../../services/api";
 import Head from "next/head";
 import { convertDate, convertISODateToInputValue, formatarDataHora } from "../../../utils/scripts";
 import { Input } from "../../../components/Form/Input";
+import { NotLoaded } from "../../../components/NotLoaded";
 
 
 export default function Sessoes() {
     const [militarNome, setMilitarNome] = useState("");
-    const [sessoes, setSessoes] = useState<SessionArray>()
   
-    const { isLoading, refetch } = useQuery(
+    const { isLoading, data, refetch } = useQuery(
       ["todasSession"],
       async () => {
         const result = await api.get<SessionArray>("/sessions");
-        setSessoes(result.data)
         return result.data
       }
     );
@@ -42,7 +41,7 @@ export default function Sessoes() {
             <Box p={["6", "8"]} bg="gray.800" borderRadius={8} pb="4">
               <Flex
                 bgGradient="linear(to-tr, gray.990, gray.990, green.900)"
-                boxShadow="innerShadow"
+                boxShadow="buttonShadow"
                 flexDirection="column"
                 rounded="lg"
                 px={4}
@@ -83,7 +82,7 @@ export default function Sessoes() {
                       </Tr>
                     </Thead>
                     <Tbody>
-                      {sessoes?.filter(s => militarNome !== "" ? s.militar.nome_guerra == militarNome : s).map((res) => (
+                      {isLoading ? <NotLoaded /> : data?.filter(s => militarNome !== "" ? s.militar.nome_guerra == militarNome : s).map((res) => (
                         <Tr key={res.id}>
                           <Td textAlign="center">{formatarDataHora(res.access)}</Td>
                           <Td textAlign="center">{formatarDataHora(res.expires)}</Td>

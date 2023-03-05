@@ -12,6 +12,7 @@ import {
   AccordionItem,
   AccordionPanel,
   Button,
+  Center,
 } from "@chakra-ui/react";
 import { useQuery } from "react-query";
 import { api } from "../../../services/api";
@@ -26,6 +27,8 @@ import { RxUpdate } from "react-icons/rx";
 import { DadosPessoais } from "../../../components/SuperAdmin/Forms/DadosPessoais";
 import { DadosMilitares } from "../../../components/SuperAdmin/Forms/DadosMilitares";
 import { Endereco } from "../../../components/SuperAdmin/Forms/Endereco";
+import { DotLoader } from "react-spinners";
+import { NotLoaded } from "../../../components/NotLoaded";
 
 export default function SuperAdmin() {
   const [result, setResult] = useState<MilitarArray>([]);
@@ -33,7 +36,7 @@ export default function SuperAdmin() {
 
   const [search, setSearch] = useState(result);
 
-  const { refetch } = useQuery(
+  const { refetch, isLoading } = useQuery(
     ["todosMilitares"],
     async () => {
       const result = await api.get<MilitarArray>("/militar");
@@ -72,13 +75,13 @@ export default function SuperAdmin() {
               mb={4}
             >
               <Flex bg="gray.990" boxShadow="buttonShadow" m={4} alignItems='center' justifyContent='space-between'>
-                <Heading size="md" p={2}>
-                  Militares
+                <Heading size="md" p={4}>
+                  MILITARES
                 </Heading>
                 <Button
           boxShadow="buttonShadow"
           colorScheme="messenger"
-          size="xs"
+          size="md"
           p={4}
           mr={2}
           onClick={() => refetch}
@@ -88,7 +91,7 @@ export default function SuperAdmin() {
               </Flex>
               <Box m="auto" w="100%" h="100%" px={2}>
                 <Accordion allowToggle>
-                  {result.map((mil: Militar, index) => (
+                  {isLoading ? <NotLoaded /> : result.map((mil: Militar, index) => (
                     <AccordionItem border="0" mb={2}  key={index} onClick={() => handleGetMilitar(mil.id)}>
                       <h2>
                         <AccordionButton

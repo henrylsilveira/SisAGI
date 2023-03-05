@@ -5,10 +5,10 @@ import {
   Image,
   Heading,
   Link,
-  Select,
-  FormLabel,
   FormControl,
-  useToast
+  useToast,
+  Text,
+  Grid,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { SubmitHandler } from "react-hook-form/dist/types";
@@ -39,7 +39,7 @@ const signInFormSchema = yup.object().shape({
 });
 
 export default function Cadastro() {
-  const toast = useToast()
+  const toast = useToast();
   const {
     register,
     handleSubmit,
@@ -51,57 +51,67 @@ export default function Cadastro() {
 
   const handleSignIn: SubmitHandler<SignInFormData> = async (values) => {
     try {
-      const result = await api.post('/militar/create', values )
-      if(result.status == 201) {
-          toast({
-          title: 'Militar cadastrado.',
+      const result = await api.post("/militar/create", values);
+      if (result.status == 201) {
+        toast({
+          title: "Militar cadastrado.",
           description: "Os dados do militar foram cadastrados no sistema.",
-          status: 'success',
+          status: "success",
           duration: 2000,
           isClosable: true,
-        })
-        Router.push('/')
-      }else {
+        });
+        Router.push("/");
+      } else {
         toast({
-        title: 'Militar não cadastrado.',
-        description: "Talvez a identidade já esteja cadastrada.",
-        status: 'error',
-        duration: 2000,
-        isClosable: true,
-      })
+          title: "Militar não cadastrado.",
+          description: "Talvez a identidade já esteja cadastrada.",
+          status: "error",
+          duration: 2000,
+          isClosable: true,
+        });
       }
     } catch (error) {
       toast({
-        title: 'Militar não cadastrado.',
+        title: "Militar não cadastrado.",
         description: "Verifique os dados do militar.",
-        status: 'error',
+        status: "error",
         duration: 2000,
         isClosable: true,
-      })
+      });
     }
-    
   };
 
   return (
-    <Flex w="100vw" h="100vh" flexDir="row" align="center" justify="center">
-      <Flex bg="gray.800" rounded="lg" px={8}>
-        <Flex align="center" justify="center">
+    <Flex w="100vw" flexDir="row" align="center" justify="center" my={4}>
+      <Grid gridTemplateColumns={["1fr","1fr 1fr"]} bg="gray.990" boxShadow="buttonShadow" rounded="lg" px={8}>
+        <Flex w={["25","30"]} mx="auto" align="center" justify="center">
           <Image src="./img/CFRN5BIS.png" alt="brasão Cmdo Fron RN / 5 BIS" />
         </Flex>
         <Flex
           as="form"
           w="100%"
           flexDir="column"
-          maxWidth={360}
+          maxWidth={420}
           p="8"
           borderRadius={8}
           onSubmit={handleSubmit(handleSignIn)}
         >
-          <Stack spacing={4}>
+          <Stack spacing={2} border="1px" boxShadow="buttonShadow" borderColor="green.800" rounded="2xl" pb={4} px={6}>
             <Flex align="center" justify="center" flexDir="column">
-              <Heading as="h1" size="2xl" pb={4}>
+              <Heading
+                fontWeight="bold"
+                letterSpacing="tight"
+                bgGradient="linear(to-tr, green.300, gray.600, green.300 )"
+                bgClip="text"
+                size="2xl"
+                mt={2}
+                p={4}
+              >
                 SisAGI
               </Heading>
+              <Text fontSize={["sm", "md", "lg"]}>
+                Sistema de Apoio a Gestão Interna
+              </Text>
               <Heading as="h2" size="md">
                 Cmdo Fron RN / 5 BIS
               </Heading>
@@ -119,7 +129,7 @@ export default function Cadastro() {
                 label="P/G"
                 focusBorderColor="green.500"
                 name="postoGrad"
-                bgColor="gray.900"
+                bgColor="gray.990"
                 textColor="gray.200"
                 variant="filled"
                 _hover={{ bgColor: "gray.900" }}
@@ -165,11 +175,11 @@ export default function Cadastro() {
               {...register("companhia")}
             >
               <option value="1 CIA">1 CIA</option>
-                <option value="2 CIA">2 CIA</option>
-                <option value="3 CIA">3 CIA</option>
-                <option value="CCAp">CCAp</option>
-                <option value="EM">EM</option>
-              </Input>
+              <option value="2 CIA">2 CIA</option>
+              <option value="3 CIA">3 CIA</option>
+              <option value="CCAp">CCAp</option>
+              <option value="EM">EM</option>
+            </Input>
             <Input
               name="local"
               label="Pelotão"
@@ -178,13 +188,13 @@ export default function Cadastro() {
               error={errors.pelotao}
               {...register("pelotao")}
             >
-            <option value="Nenhum">Nenhum</option>
-            <option value="1 PEL">1 PEL</option>
-                <option value="2 PEL">2 PEL</option>
-                <option value="3 PEL">3 PEL</option>
-                <option value="PEL Ap">PEL Ap</option>
-                <option value="SEC CMDO">SEC CMDO</option>
-              </Input>
+              <option value="Nenhum">Nenhum</option>
+              <option value="1 PEL">1 PEL</option>
+              <option value="2 PEL">2 PEL</option>
+              <option value="3 PEL">3 PEL</option>
+              <option value="PEL Ap">PEL Ap</option>
+              <option value="SEC CMDO">SEC CMDO</option>
+            </Input>
             <Input
               name="senha"
               label="Senha"
@@ -199,18 +209,49 @@ export default function Cadastro() {
               mt="6"
               colorScheme="blue"
               size="lg"
+              boxShadow="buttonShadow"
+              variant="ghost"
+              _hover={{ bg: "blue.500", color: "white" }}
               isLoading={formState.isSubmitting}
             >
               Cadastrar
             </Button>
             <Link href="/">
-              <Button mt="6" colorScheme="yellow" size="lg">
+              <Button
+                boxShadow="buttonShadow"
+                variant="ghost"
+                _hover={{ bg: "yellow.500", color: "white" }}
+                mt="6"
+                colorScheme="yellow"
+                size="lg"
+              >
                 Voltar
               </Button>
             </Link>
           </Flex>
+          <Flex
+              textAlign="center"
+              boxShadow="buttonShadow"
+              my={4}
+              alignItems="center"
+              w="full"
+              bg="blackAlpha.500"
+              rounded="lg"
+            >
+              <Text
+                fontSize="xs"
+                fontWeight="bold"
+                letterSpacing="tight"
+                bgGradient="linear(to-tr, green.300, gray.600, green.300 )"
+                bgClip="text"
+                p={2}
+                w="full"
+              >
+                Desenvolvido pelo 3ªSgt Henry - 2016
+              </Text>
+            </Flex>
         </Flex>
-      </Flex>
+      </Grid>
     </Flex>
   );
 }
