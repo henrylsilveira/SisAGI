@@ -51,8 +51,8 @@ export default NextAuth({
       },
     },
     pages: {
-      signIn: "/dashboard", 
-      signOut: "/",
+      signIn: "/", 
+      signOut: "/*",
       error: "/", 
     },
     jwt: {
