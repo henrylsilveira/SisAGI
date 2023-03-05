@@ -49,7 +49,7 @@ export default function Home() {
   const handleSignIn:SubmitHandler<SignInFormData> = async (values) => {
     await new Promise(resolve => setTimeout(resolve, 2000))
 
-    const res = await signIn("credentials", {
+    const res = await signIn("credentials-login", {
       redirect: false,
       identidade: values.identidade,
       senha: values.senha,
