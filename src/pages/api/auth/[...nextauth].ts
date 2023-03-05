@@ -6,7 +6,7 @@ export default NextAuth({
     providers: [
       CredentialProvider({
         id: "Credentials", 
-        name: "credentials",
+        name: "Credentials",
         credentials: {
           identidade: {label: "Identidade", type: "text", placeholder: "Identidade"},
           senha: { label: "Senha", type: "password" },
