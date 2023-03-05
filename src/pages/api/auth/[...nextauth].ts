@@ -4,7 +4,7 @@ import { api } from "../../../services/api";
 
 
 export default NextAuth({
-    secret: process.env.NEXTAUTH_URL,
+    secret: process.env.SECRET_KEY_JWT,
     providers: [
       CredentialProvider({
         id: "Credentials", 
@@ -57,6 +57,7 @@ export default NextAuth({
       error: "/", 
     },
     jwt: {
+      secret: process.env.SECRET_KEY_JWT,
       maxAge: 24 * 60 * 60,
     },
     debug: true,
