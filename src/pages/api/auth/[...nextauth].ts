@@ -24,8 +24,9 @@ export default NextAuth({
             if (user?.data) {
               const userAccount = user?.data?.result;
               return userAccount;
+            }else{
+              return null
             }
-            return null
 
         },
       }),
