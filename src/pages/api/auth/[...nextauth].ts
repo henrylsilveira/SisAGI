@@ -5,6 +5,7 @@ import { api } from "../../../services/api";
 export default NextAuth({
     providers: [
       CredentialProvider({
+        id: "credentials", 
         name: "credentials",
         credentials: {
           identidade: {label: "Identidade", type: "text", placeholder: "Identidade"},
@@ -50,7 +51,7 @@ export default NextAuth({
         };
       },
     },
-    // secret: process.env.SECRET_KEY_JWT,
+    secret: process.env.SECRET_KEY_JWT,
     pages: {
       signIn: "/dashboard", 
       signOut: "/",
