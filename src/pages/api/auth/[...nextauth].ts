@@ -1,7 +1,6 @@
 import NextAuth from "next-auth"
 import CredentialProvider from "next-auth/providers/credentials"
 import { api } from "../../../services/api";
-import { Militar } from "../../../@types/types";
 
 export default NextAuth({
     providers: [
@@ -15,12 +14,12 @@ export default NextAuth({
         authorize: async (credentials) => {
           try {
             const user = await api.post("/auth", {
-                identidade: credentials.identidade,
-                senha: credentials.senha,
+                identidade: credentials?.identidade,
+                senha: credentials?.senha,
                 ip: credentials?.ip
             });
             console.log(user);
-            if (user) {
+            if (user.data) {
               const userAccount = user?.data?.result;
               return userAccount;
             }
