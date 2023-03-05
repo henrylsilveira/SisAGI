@@ -9,14 +9,14 @@ export default NextAuth({
         credentials: {
           identidade: {label: "Identidade", type: "text", placeholder: "Identidade"},
           senha: { label: "Senha", type: "password" },
-          ip: {type: "text"}
+          // ip: {type: "text"}
         },
         authorize: async (credentials) => {
           try {
             const user = await api.post("/auth", {
                 identidade: credentials?.identidade,
                 senha: credentials?.senha,
-                ip: credentials?.ip
+                // ip: credentials?.ip
             });
             console.log(user);
             if (user.data) {
