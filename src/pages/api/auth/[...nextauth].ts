@@ -2,7 +2,9 @@ import NextAuth from "next-auth"
 import CredentialProvider from "next-auth/providers/credentials"
 import { api } from "../../../services/api";
 
+
 export default NextAuth({
+    secret: process.env.NEXTAUTH_URL,
     providers: [
       CredentialProvider({
         id: "Credentials", 
@@ -49,19 +51,16 @@ export default NextAuth({
         };
       },
     },
-    secret: "09dc40d77eba7c0c6c53c776b1566a1a",
     pages: {
       signIn: "/dashboard", 
       signOut: "/",
       error: "/", 
     },
     jwt: {
-      secret: "09dc40d77eba7c0c6c53c776b1566a1a",
+      maxAge: 24 * 60 * 60,
     },
     session: {
-
       maxAge: 24 * 60 * 60,
-    }
-  });
-  
-  
+    },
+    useSecureCookies: true
+  })
