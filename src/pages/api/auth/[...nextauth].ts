@@ -9,23 +9,23 @@ export default NextAuth({
         credentials: {
           identidade: {label: "Identidade", type: "text", placeholder: "Identidade"},
           senha: { label: "Senha", type: "password" },
-          // ip: {type: "text"}
+          ip: {type: "text"}
         },
         authorize: async (credentials) => {
           try {
             const user = await api.post("/auth", {
                 identidade: credentials?.identidade,
                 senha: credentials?.senha,
-                // ip: credentials?.ip
+                ip: credentials?.ip
             });
-            console.log(user);
-            if (user.data) {
+
+            if (user?.data) {
               const userAccount = user?.data?.result;
               return userAccount;
             }
             throw new Error()
           } catch (error) {
-            const message = error.response.data?.message; 
+            const message = error?.response?.data?.message; 
             throw new Error(message + ": " + error.response);
           }
         },
@@ -50,7 +50,7 @@ export default NextAuth({
         };
       },
     },
-    secret: process.env.SECRET_KEY_JWT,
+    // secret: process.env.SECRET_KEY_JWT,
     pages: {
       signIn: "/dashboard", 
       signOut: "/",
