@@ -20,7 +20,7 @@ export default NextAuth({
                 senha: credentials?.senha,
                 ip: credentials?.ip
             });
-            console.log(user.data);
+            
             if (user?.data) {
               const userAccount = user?.data?.result;
               return userAccount;
@@ -49,14 +49,14 @@ export default NextAuth({
         };
       },
     },
-    secret: process.env.SECRET_KEY_JWT,
+    secret: "09dc40d77eba7c0c6c53c776b1566a1a",
     pages: {
       signIn: "/dashboard", 
       signOut: "/",
       error: "/", 
     },
     jwt: {
-      secret: process.env.SECRET_KEY_JWT,
+      secret: "09dc40d77eba7c0c6c53c776b1566a1a",
     },
     session: {
 
