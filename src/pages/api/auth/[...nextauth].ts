@@ -56,9 +56,9 @@ export default NextAuth({
       signOut: "/",
       error: "/", 
     },
-    // jwt: {
-    //   secret: process.env.SECRET_KEY_JWT,
-    // },
+    jwt: {
+      secret: process.env.SECRET_KEY_JWT,
+    },
     session: {
       maxAge: 24 * 60 * 60,
     }
