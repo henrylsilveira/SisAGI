@@ -42,7 +42,6 @@ export default function Home() {
     resolver: yupResolver(signInFormSchema),
   });
   const { data: session, status } = useSession();
-
   const toast = useToast();
   useEffect(() => {
     if (session && status === "authenticated") {

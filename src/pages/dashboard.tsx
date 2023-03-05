@@ -13,6 +13,7 @@ import { ComumComponentDashboard } from "../components/Dashboard/Comum";
 
 export default function Dashboard() {
   const { data: session, status } = useSession()
+  console.log(session)
   const toast = useToast()
   const idLogado = 'toastNaoLogado'
   const id = 'toastLogin'

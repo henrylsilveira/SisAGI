@@ -1,6 +1,7 @@
 import NextAuth from "next-auth"
 import CredentialProvider from "next-auth/providers/credentials"
 import { api } from "../../../services/api";
+import { Militar } from "../../../@types/types";
 
 
 export default NextAuth({
@@ -16,16 +17,14 @@ export default NextAuth({
           ip: {type: "text"}
         },
         authorize: async (credentials) => {
-
-            const user = await api.post("/auth", {
+            const { data } = await api.post("/auth", {
                 identidade: credentials?.identidade,
                 senha: credentials?.senha,
                 ip: credentials?.ip
             });
             
-            if (user?.data) {
-              const userAccount = user?.data?.result;
-              return userAccount;
+            if (data) {
+              return data
             }else{
               throw new Error();
             }
@@ -43,11 +42,11 @@ export default NextAuth({
         if (token) {
           session.id = token.id as string;
         }
-        const militar = await api.get(`/me/${session.id}` );
+        const { data } = await api.get<Militar>(`/me/${session.id}` );
         return {
           ...session,
-          militar: militar?.data?.result,
-          token: militar?.data?.token
+          militar: data,
+          token: data['token']
         };
       },
     },
