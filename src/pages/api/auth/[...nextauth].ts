@@ -52,7 +52,7 @@ export default NextAuth({
     },
     pages: {
       signIn: "/", 
-      signOut: "/*",
+      signOut: "/",
       error: "/", 
     },
     jwt: {
