@@ -20,14 +20,13 @@ export default NextAuth({
                 senha: credentials?.senha,
                 ip: credentials?.ip
             });
-
+            console.log(user.data);
             if (user?.data) {
               const userAccount = user?.data?.result;
               return userAccount;
             }else{
               throw new Error();
             }
-
         },
       }),
     ],
