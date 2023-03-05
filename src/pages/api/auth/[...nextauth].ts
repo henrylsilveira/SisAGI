@@ -5,7 +5,7 @@ import { api } from "../../../services/api";
 export default NextAuth({
     providers: [
       CredentialProvider({
-        id: "credentials-login", 
+        id: "Credentials", 
         name: "credentials",
         credentials: {
           identidade: {label: "Identidade", type: "text", placeholder: "Identidade"},
