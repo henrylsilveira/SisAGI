@@ -14,7 +14,7 @@ export default NextAuth({
           ip: {type: "text"}
         },
         authorize: async (credentials) => {
-          try {
+
             const user = await api.post("/auth", {
                 identidade: credentials?.identidade,
                 senha: credentials?.senha,
@@ -25,11 +25,8 @@ export default NextAuth({
               const userAccount = user?.data?.result;
               return userAccount;
             }
-            throw new Error()
-          } catch (error) {
-            const message = error?.response?.data?.message; 
-            throw new Error(message + ": " + error.response);
-          }
+            return null
+
         },
       }),
     ],
