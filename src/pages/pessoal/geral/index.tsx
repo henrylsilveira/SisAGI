@@ -24,7 +24,6 @@ import {
   TableContainer,
   Tbody,
   Td,
-  Tfoot,
   Th,
   Thead,
   Tr,
@@ -40,14 +39,10 @@ import { api } from "../../../services/api";
 import { useState } from "react";
 
 import Head from "next/head";
-import { FuncaoMilitar, Militar, MilitarArray } from "../../../@types/types";
+import { FuncaoMilitar, MilitarArray } from "../../../@types/types";
 import { RxUpdate } from "react-icons/rx";
-import { DadosPessoais } from "../../../components/SuperAdmin/Forms/DadosPessoais";
-import { DadosMilitares } from "../../../components/SuperAdmin/Forms/DadosMilitares";
-import { Endereco } from "../../../components/SuperAdmin/Forms/Endereco";
 import { useSession } from "next-auth/react";
 import { TiInfoLarge } from "react-icons/ti";
-import { ModalCautela } from "../../../components/Modal/Armamento/ModalCautela";
 import { NotLoaded } from "../../../components/NotLoaded";
 
 export default function GerenciamentoPessoal() {
@@ -119,32 +114,26 @@ export default function GerenciamentoPessoal() {
               <TableContainer px={4} mb={4}>
                 <Table size="sm" variant="simple" colorScheme="whiteAlpha">
                   <TableCaption>QUADRO DE EFETIVO DA COMPANHIA</TableCaption>
-                  <Thead>
-                    <Tr>
-                      <Th textAlign="center">Capitão</Th>
-                      <Th textAlign="center">1º Ten</Th>
-                      <Th textAlign="center">2º Ten</Th>
-                      <Th textAlign="center">Sub Ten</Th>
-                      <Th textAlign="center">1º Sgt</Th>
-                      <Th textAlign="center">2º Sgt</Th>
-                      <Th textAlign="center">3º Sgt</Th>
-                      <Th textAlign="center">Cb</Th>
-                      <Th textAlign="center">Sd</Th>
-                    </Tr>
-                  </Thead>
-                  <Tbody>
-                    <Tr>
-                      <Td textAlign="center">2</Td>
-                      <Td textAlign="center">4</Td>
-                      <Td textAlign="center">5</Td>
-                      <Td textAlign="center">6</Td>
-                      <Td textAlign="center">2</Td>
-                      <Td textAlign="center">4</Td>
-                      <Td textAlign="center">5</Td>
-                      <Td textAlign="center">6</Td>
-                      <Td textAlign="center">6</Td>
-                    </Tr>
-                  </Tbody>
+                  
+                    <>
+                      <Thead>
+                      <Tr>
+                      {isLoading ? <NotLoaded /> : Array.from(new Set(data?.map((item) => item.post_grad))).map((postGrad, index) => (
+                        <Th key={postGrad + index} textAlign="center">{postGrad}</Th>
+                        ))}
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      <Tr>
+                      {isLoading ? <NotLoaded /> : Array.from(new Set(data?.map((item) => item.post_grad))).map((postGrad, index) => (
+                        <Td key={postGrad + index} textAlign="center">{data?.filter(mil => mil.post_grad === postGrad).length}</Td>
+                        ))}
+                      </Tr>
+                    </Tbody>
+                    </>
+                    
+                  
+                  
                 </Table>
               </TableContainer>
               <Box m="auto" w="100%" h="100%" px={2}>

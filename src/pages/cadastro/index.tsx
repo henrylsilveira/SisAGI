@@ -8,6 +8,7 @@ import {
   useToast,
   Text,
   Grid,
+  FormHelperText,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { SubmitHandler } from "react-hook-form/dist/types";
@@ -17,6 +18,33 @@ import { Input } from "../../components/Form/Input";
 import { api } from "../../services/api";
 import Router from "next/router";
 import Link from "next/link";
+import { verificaSenha } from '../../utils/scripts';
+import { useState } from "react";
+
+// import { faker } from '@faker-js/faker'
+
+// if(process.env.NODE_ENV === "development"){
+//   const amountOfUsers = 200;
+
+//   for (let i = 0; i < amountOfUsers; i++) {
+//     const firstName = faker.name.firstName()
+//     const lastName = faker.name.lastName()
+
+//     const militar = {
+//         nomeCompleto: faker.name.fullName({ firstName, lastName }),
+//         nomeGuerra: faker.name.firstName(),
+//         identidade: faker.random.numeric(10),
+//         postoGrad: faker.helpers.arrayElement(['SD', 'CB', '3 SGT', '2 SGT', '1 SGT', 'SUB TEN', '2 TEN', '1 TEN', 'CAP', 'MAJ', 'TEN CEL', 'CEL']),
+//         senha: '123456',
+//         companhia: faker.helpers.arrayElement(['1 CIA', '2 CIA', '3 CIA', 'CCAp', 'EM']),
+//         pelotao: faker.helpers.arrayElement(['1 PEL', '2 PEL', '3 PEL', 'SEC CMDO', 'PEL AP']),
+//     };
+
+//     const createMilitar = async () => await api.post("/militar/create", militar)
+//     createMilitar()
+//   }
+// }
+
 
 type SignInFormData = {
   nomeCompleto: string;
@@ -40,6 +68,8 @@ const signInFormSchema = yup.object().shape({
 
 export default function Cadastro() {
   const toast = useToast();
+  const [senha, setSenha] = useState("")
+  console.log(senha)
   const {
     register,
     handleSubmit,
@@ -210,13 +240,17 @@ export default function Cadastro() {
               <option value="PEL Ap">PEL Ap</option>
               <option value="SEC CMDO">SEC CMDO</option>
             </Input>
-            <Input
+            <FormControl>
+              <Input
               name="senha"
               label="Senha"
               type="password"
               error={errors.senha}
+              onFocus={(e) => setSenha(verificaSenha(e.target.value))}
               {...register("senha")}
             />
+            <FormHelperText color="red.600">{senha}</FormHelperText>
+            </FormControl>            
             <Flex flexDir="row" justifyContent="space-between">
               <Button
                 type="submit"
