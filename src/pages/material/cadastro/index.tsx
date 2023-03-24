@@ -251,7 +251,7 @@ export default function Cadastro() {
                   icon={<SlRefresh />}
                 />
               </Flex>
-              {!(data.length === 0) ? (
+              {!(data?.length === 0) ? (
                 <TableContainer>
                 <Table size="sm" colorScheme="whiteAlpha">
                   <Thead>

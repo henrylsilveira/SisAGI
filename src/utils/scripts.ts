@@ -52,43 +52,44 @@ export function formatarDataHora(iso: string | number | Date) {
 }
 
 export function verificaSenha(senha) {
-  // verifica a força da senha
-  var forca = 0;
-
-  // verificando o comprimento mínimo
-  if (senha.length >= 8) {
-    forca += 1;
+    // Define a pontuação base e as variáveis para cada critério de verificação
+    var pontuacao = 0;
+    var comprimento = senha.length;
+    var numeros = senha.match(/[0-9]/g);
+    var simbolos = senha.match(/[^\w\s]/g);
+    var letrasMinusculas = senha.match(/[a-z]/g);
+    var letrasMaiusculas = senha.match(/[A-Z]/g);
+  
+    // Adiciona pontos com base em cada critério de verificação
+    if (comprimento >= 8) {
+      pontuacao += 2;
+    }
+    if (comprimento >= 12) {
+      pontuacao += 1;
+    }
+    if (numeros && numeros.length >= 2) {
+      pontuacao += 2;
+    }
+    if (simbolos && simbolos.length >= 2) {
+      pontuacao += 2;
+    }
+    if (letrasMinusculas && letrasMinusculas.length >= 2) {
+      pontuacao += 1;
+    }
+    if (letrasMaiusculas && letrasMaiusculas.length >= 2) {
+      pontuacao += 1;
+    }
+  
+    // Define o nível da senha com base na pontuação obtida
+    if (pontuacao < 4) {
+      return "Senha fraca";
+    } else if (pontuacao < 8) {
+      return "Senha razoável";
+    } else if (pontuacao < 12) {
+      return "Senha boa";
+    } else if (pontuacao < 16) {
+      return "Senha forte";
+    } else {
+      return "Senha muito forte";
+    }
   }
-
-  // verificando a presença de letras maiúsculas e minúsculas
-  if (senha.match(/[a-z]+/)) {
-    forca += 1;
-  }
-  if (senha.match(/[A-Z]+/)) {
-    forca += 1;
-  }
-
-  // verificando a presença de números
-  if (senha.match(/[0-9]+/)) {
-    forca += 1;
-  }
-
-  // verificando a presença de caracteres especiais
-  if (senha.match(/[\W]+/)) {
-    forca += 1;
-  }
-
-  // verificando o nível de força
-  switch (forca) {
-    case 0:
-      return "Senha muito fraca.";
-    case 1:
-      return "Senha fraca.";
-    case 2:
-      return "Senha média.";
-    case 3:
-      return "Senha forte.";
-    case 4:
-      return "Senha muito forte.";
-  }
-}

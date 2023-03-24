@@ -140,7 +140,7 @@ export default function MinhasCautelas() {
                   Fechada?
                 </Checkbox>
               </Flex>
-              {!(search.length === 0) ? (
+              {!(search?.length === 0) ? (
               <TableContainer my={6}>
                 <Table size="sm" colorScheme="whiteAlpha">
                   <Thead>

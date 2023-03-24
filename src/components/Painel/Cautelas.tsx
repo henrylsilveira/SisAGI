@@ -100,7 +100,7 @@ export function CautelasComponentPainel() {
           MATERIAIS
         </Heading>
       </Flex>
-      {!(data?.data?.length === 0 || data?.data?.filter((cautela) => cautela.status === "ativo")) ? (
+      {(data?.data?.length === 0 || data?.data?.filter((cautela) => cautela.status === "ativo")) ? (
         <Grid
         gridTemplateColumns={["1fr","1fr 1fr"]}
         mb={4}
@@ -126,6 +126,7 @@ export function CautelasComponentPainel() {
           >
             {cautela}
             <Circle
+            ml={2}
               size="40px"
               bg="green.700"
               boxShadow="buttonShadow"

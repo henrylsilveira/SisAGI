@@ -13,45 +13,55 @@ import {
   AccordionPanel,
   Button,
   Center,
+  background,
 } from "@chakra-ui/react";
 import { useQuery } from "react-query";
 import { api } from "../../../services/api";
 import { useState } from "react";
 
 import Head from "next/head";
-import {
-  Militar,
-  MilitarArray,
-} from "../../../@types/types";
+import { Militar, MilitarArray } from "../../../@types/types";
 import { RxUpdate } from "react-icons/rx";
 import { DadosPessoais } from "../../../components/SuperAdmin/Forms/DadosPessoais";
 import { DadosMilitares } from "../../../components/SuperAdmin/Forms/DadosMilitares";
 import { Endereco } from "../../../components/SuperAdmin/Forms/Endereco";
 import { DotLoader } from "react-spinners";
 import { NotLoaded } from "../../../components/NotLoaded";
+import ReactPaginate from "react-paginate";
+import { Input } from "../../../components/Form/Input";
 
 export default function SuperAdmin() {
   const [result, setResult] = useState<MilitarArray>([]);
   const [militar, setMilitar] = useState<Militar>();
+  const [militarNome, setMilitarNome] = useState("");
 
-  const [search, setSearch] = useState(result);
-
-  const { refetch, isLoading } = useQuery(
-    ["todosMilitares"],
-    async () => {
-      const result = await api.get<MilitarArray>("/militar");
-      setResult(result.data.sort((x,y) => {
-        let a = x.nome_guerra.toUpperCase(), b = y.nome_guerra.toUpperCase()
-        return a == b ? 0 : a > b ? 1 : -1
-      }));
-      return result;
-    }
-  );
-
-  async function handleGetMilitar(id: string) {  
-    const res = await api.get<Militar>(`/militar/${id}`); 
+  const { refetch, isLoading } = useQuery(["todosMilitares"], async () => {
+    const result = await api.get<MilitarArray>("/militar");
+    setResult(
+      result.data
+        .sort((x, y) => {
+          let a = x.nome_guerra.toUpperCase(),
+            b = y.nome_guerra.toUpperCase();
+          return a == b ? 0 : a > b ? 1 : -1;
+        })
+        
+    );
+    return result;
+  });
+  async function handleGetMilitar(id: string) {
+    const res = await api.get<Militar>(`/militar/${id}`);
     setMilitar(res.data);
   }
+
+  const itemsPerPage = 15;
+  const [itemOffset, setItemOffset] = useState(0);
+  const endOffset = itemOffset + itemsPerPage;
+  const resultPaginated = result.filter((mil) => (militarNome ? mil.nome_guerra == militarNome : mil)).slice(itemOffset, endOffset);
+  const pageCount = Math.ceil(result.length / itemsPerPage);
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * itemsPerPage) % result.length;
+    setItemOffset(newOffset);
+  };
 
   return (
     <>
@@ -74,76 +84,114 @@ export default function SuperAdmin() {
               flexDirection="column"
               mb={4}
             >
-              <Flex bg="gray.990" boxShadow="buttonShadow" m={4} alignItems='center' justifyContent='space-between'>
+              <Flex
+                bg="gray.990"
+                boxShadow="buttonShadow"
+                m={4}
+                alignItems="center"
+                justifyContent="space-between"
+              >
                 <Heading size="md" p={4}>
                   MILITARES
                 </Heading>
                 <Button
-          boxShadow="buttonShadow"
-          colorScheme="messenger"
-          size="md"
-          p={4}
-          mr={2}
-          onClick={() => refetch}
-        >
-          <RxUpdate size={16} />
-        </Button>
+                  boxShadow="buttonShadow"
+                  colorScheme="messenger"
+                  size="md"
+                  p={4}
+                  mr={2}
+                  onClick={() => refetch}
+                >
+                  <RxUpdate size={16} />
+                </Button>
+              </Flex>
+              <Flex mx={4}>
+                <Input
+                  label="Filtrar por militar"
+                  name="nomeMilitar"
+                  type="text"
+                  px="8"
+                  mb={4}
+                  onChange={(e) => setMilitarNome(e.target.value)}
+                />
               </Flex>
               <Box m="auto" w="100%" h="100%" px={2}>
                 <Accordion allowToggle>
-                  {isLoading ? <NotLoaded /> : result.map((mil: Militar, index) => (
-                    <AccordionItem border="0" mb={2}  key={index} onClick={() => handleGetMilitar(mil.id)}>
-                      <h2>
-                        <AccordionButton
-                          boxShadow="buttonShadow"
-                          bgGradient="linear(to-tr, gray.990, gray.990, green.900)"
-                          rounded={4}
-                          px={4}
-                          py="0.5"
-                          w="full"
-                          border="0"
-                        >
-                          <Box as="span" flex="1" textAlign="left" py={2}>
-                            <Text
-                              fontWeight="extrabold"
-                              textTransform="uppercase"
-                            >
-                              {mil.nome_completo}
-                              <Badge
-                                variant="outline"
-                                colorScheme="green"
-                                ml={2}
-                              >
-                                {mil.post_grad + " " + mil.nome_guerra}
-                              </Badge>
-                            </Text>
-                          </Box>
-                          <AccordionIcon />
-                        </AccordionButton>
-                      </h2>
-                      <AccordionPanel
-                        as="div"
-                        pb={4}
+                  {isLoading ? (
+                    <NotLoaded />
+                  ) : (
+                    resultPaginated.map((mil: Militar, index) => (
+                      <AccordionItem
                         border="0"
-                        borderTop={0}
-                        roundedBottom="lg"
-                        borderColor="green.600"
-                        bgColor="gray.990"
-                        boxShadow="innerShadow"
+                        mb={2}
+                        key={index}
+                        onClick={() => handleGetMilitar(mil.id)}
                       >
-                        <Flex
-                          flexDirection="row"
-                          gap={4}
-                          justifyContent="space-between"
+                        <h2>
+                          <AccordionButton
+                            boxShadow="buttonShadow"
+                            bgGradient="linear(to-tr, gray.990, gray.990, green.900)"
+                            rounded={4}
+                            px={4}
+                            py="0.5"
+                            w="full"
+                            border="0"
+                          >
+                            <Box as="span" flex="1" textAlign="left" py={2}>
+                              <Text
+                                fontWeight="extrabold"
+                                textTransform="uppercase"
+                              >
+                                {mil.nome_completo}
+                                <Badge
+                                  variant="outline"
+                                  colorScheme="green"
+                                  ml={2}
+                                >
+                                  {mil.post_grad + " " + mil.nome_guerra}
+                                </Badge>
+                              </Text>
+                            </Box>
+                            <AccordionIcon />
+                          </AccordionButton>
+                        </h2>
+                        <AccordionPanel
+                          as="div"
+                          pb={4}
+                          border="0"
+                          borderTop={0}
+                          roundedBottom="lg"
+                          borderColor="green.600"
+                          bgColor="gray.990"
+                          boxShadow="innerShadow"
                         >
-                          <DadosPessoais militar={{...mil, ...militar}} />
-                          <DadosMilitares militar={{...mil, ...militar}} />
-                        </Flex>
-                        <Endereco militar={{...mil, ...militar}} />
-                      </AccordionPanel>
-                    </AccordionItem>
-                  ))}
-                  </Accordion>
+                          <Flex
+                            flexDirection="row"
+                            gap={4}
+                            justifyContent="space-between"
+                          >
+                            <DadosPessoais militar={{ ...mil, ...militar }} />
+                            <DadosMilitares militar={{ ...mil, ...militar }} />
+                          </Flex>
+                          <Endereco militar={{ ...mil, ...militar }} />
+                        </AccordionPanel>
+                      </AccordionItem>
+                    ))
+                  )}
+                  <Flex>
+                    <ReactPaginate
+                      breakLabel="..."
+                      nextLabel=">>>>"
+                      onPageChange={handlePageClick}
+                      pageRangeDisplayed={3}
+                      pageCount={pageCount}
+                      previousLabel="<<<<"
+                      renderOnZeroPageCount={null}
+                      className="paginate"
+                      selectedPageRel="canonical"
+                    />
+                  </Flex>
+                </Accordion>
               </Box>
             </Flex>
           </Box>

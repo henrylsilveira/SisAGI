@@ -141,15 +141,15 @@ export function ModalCautela({ data: militares, dataMaterial: material }) {
                 onChange={(e) => setMilitar(e.target.value)}
               >
                 <option value="">Selecione</option>
-                {militares.data
-                  ?.filter((mil: Militar) => mil.identidade !== session.militar.identidade).sort((x, y) => {
+                {militares.data?.sort((x, y) => {
                     let a = x.nome_guerra.toUpperCase(),
                       b = y.nome_guerra.toUpperCase();
                     return a == b ? 0 : a > b ? 1 : -1;
                   })
+                  ?.filter((mil: Militar) => mil.identidade !== session.militar.identidade)
                   .map((militar: Militar) => (
                     <option key={militar.id} value={militar.id}>
-                      {`${militar.post_grad} ${militar.nome_guerra} (${militar.companhia})`}
+                      {`${militar.nome_guerra} - ${militar.post_grad} (${militar.companhia})`}
                     </option>
                   ))}
               </Input>
