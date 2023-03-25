@@ -41,6 +41,7 @@ import {
   convertISODateToInputValue,
   convertDateFuncaoMilitar,
 } from "../../../utils/scripts";
+import { NotLoaded } from "../../../components/NotLoaded";
 
 export default function SuperAdminFuncoes() {
   const [result, setResult] = useState<MilitarArray>([]);
@@ -48,7 +49,7 @@ export default function SuperAdminFuncoes() {
 
   const [search, setSearch] = useState(result);
 
-  const { data, refetch } = useQuery(["todasfuncoes"], async () => {
+  const { data, refetch, isLoading } = useQuery(["todasfuncoes"], async () => {
     const result = await api.get<FuncaoMilitarArray>("/funcoes");
     return result.data;
   });
@@ -98,7 +99,7 @@ export default function SuperAdminFuncoes() {
                 alignItems="center"
                 justifyContent="space-between"
               >
-                <Heading size="md" p={2}>
+                <Heading size="md" p={4}>
                   MILITARES
                 </Heading>
                 <Button
@@ -114,7 +115,9 @@ export default function SuperAdminFuncoes() {
               </Flex>
               <Box m="auto" w="100%" h="100%" px={2}>
                 <Accordion allowToggle>
-                  {Array.from(new Set(data?.map((item) => item.funcao))).map(
+                  {isLoading ? (
+                          <NotLoaded />
+                        ) : ( Array.from(new Set(data?.map((item) => item.funcao))).map(
                     (func, index) => (
                       <AccordionItem
                         border="0"
@@ -150,7 +153,7 @@ export default function SuperAdminFuncoes() {
                               boxShadow="buttonShadow"
                               bgGradient="linear(to-tr, gray.990, gray.990, gray.900)"
                             >
-                              {
+                              { 
                                 data?.filter((fun) => fun.funcao === func)
                                   .length
                               }
@@ -168,7 +171,7 @@ export default function SuperAdminFuncoes() {
                           bgColor="gray.990"
                           boxShadow="innerShadow"
                         >
-                          {militarFuncao?.map((militar) => (
+                          { militarFuncao?.map((militar) => (
                             <Tag
                               mr={4}
                               mt={2}
@@ -301,7 +304,7 @@ export default function SuperAdminFuncoes() {
                         </AccordionPanel>
                       </AccordionItem>
                     )
-                  )}
+                  ))}
                 </Accordion>
               </Box>
             </Flex>

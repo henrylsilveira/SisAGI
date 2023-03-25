@@ -14,6 +14,14 @@ import {
   Button,
   Center,
   background,
+  Table,
+  TableCaption,
+  TableContainer,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
 } from "@chakra-ui/react";
 import { useQuery } from "react-query";
 import { api } from "../../../services/api";
@@ -34,17 +42,16 @@ export default function SuperAdmin() {
   const [result, setResult] = useState<MilitarArray>([]);
   const [militar, setMilitar] = useState<Militar>();
   const [militarNome, setMilitarNome] = useState("");
+  const [militarPostGrad, setMilitarPostGrad] = useState("");
 
   const { refetch, isLoading } = useQuery(["todosMilitares"], async () => {
     const result = await api.get<MilitarArray>("/militar");
     setResult(
-      result.data
-        .sort((x, y) => {
-          let a = x.nome_guerra.toUpperCase(),
-            b = y.nome_guerra.toUpperCase();
-          return a == b ? 0 : a > b ? 1 : -1;
-        })
-        
+      result.data.sort((x, y) => {
+        let a = x.nome_completo.toUpperCase(),
+          b = y.nome_completo.toUpperCase();
+        return a == b ? 0 : a > b ? 1 : -1;
+      })
     );
     return result;
   });
@@ -56,7 +63,10 @@ export default function SuperAdmin() {
   const itemsPerPage = 15;
   const [itemOffset, setItemOffset] = useState(0);
   const endOffset = itemOffset + itemsPerPage;
-  const resultPaginated = result.filter((mil) => (militarNome ? mil.nome_guerra == militarNome : mil)).slice(itemOffset, endOffset);
+  const resultPaginated = result
+    .filter((mil) => (militarNome ? mil.nome_guerra == militarNome : mil))
+    .filter((mil) => (militarPostGrad ? mil.post_grad == militarPostGrad : mil))
+    .slice(itemOffset, endOffset);
   const pageCount = Math.ceil(result.length / itemsPerPage);
   const handlePageClick = (event) => {
     const newOffset = (event.selected * itemsPerPage) % result.length;
@@ -105,7 +115,27 @@ export default function SuperAdmin() {
                   <RxUpdate size={16} />
                 </Button>
               </Flex>
-              <Flex mx={4}>
+              <Flex mx={4} gap={8}>
+                <Input
+                  name="local"
+                  label="P/G"
+                  type="text"
+                  as="select"
+                  onChange={(e) => setMilitarPostGrad(e.target.value)}
+                >
+                  <option value="">Todos</option>
+                  {Array.from(new Set(result?.map((item) => item.post_grad)))
+                    .sort((x, y) => {
+                      let a = x.toUpperCase(),
+                        b = y.toUpperCase();
+                      return a == b ? 0 : a > b ? 1 : -1;
+                    })
+                    .map((postGrad, index) => (
+                      <option key={postGrad + index} value={postGrad}>
+                        {postGrad}
+                      </option>
+                    ))}
+                </Input>
                 <Input
                   label="Filtrar por militar"
                   name="nomeMilitar"
@@ -115,12 +145,65 @@ export default function SuperAdmin() {
                   onChange={(e) => setMilitarNome(e.target.value)}
                 />
               </Flex>
+              <TableContainer px={4} mb={4}>
+                <Table size="sm" variant="simple" colorScheme="whiteAlpha">
+                  <TableCaption>QUADRO DE EFETIVO DA COMPANHIA</TableCaption>
+                  <>
+                    <Thead>
+                      <Tr>
+                        {isLoading ? (
+                          <NotLoaded />
+                        ) : (
+                          Array.from(
+                            new Set(result?.map((item) => item.post_grad))
+                          )
+                            .sort((x, y) => {
+                              let a = x.toUpperCase(),
+                                b = y.toUpperCase();
+                              return a == b ? 0 : a > b ? 1 : -1;
+                            })
+                            .map((postGrad, index) => (
+                              <Th key={postGrad + index} textAlign="center">
+                                {postGrad}
+                              </Th>
+                            ))
+                        )}
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      <Tr>
+                        {isLoading ? (
+                          <NotLoaded />
+                        ) : (
+                          Array.from(
+                            new Set(result?.map((item) => item.post_grad))
+                          )
+                            .sort((x, y) => {
+                              let a = x.toUpperCase(),
+                                b = y.toUpperCase();
+                              return a == b ? 0 : a > b ? 1 : -1;
+                            })
+                            .map((postGrad, index) => (
+                              <Td key={postGrad + index} textAlign="center">
+                                {
+                                  result?.filter(
+                                    (mil) => mil.post_grad === postGrad
+                                  ).length
+                                }
+                              </Td>
+                            ))
+                        )}
+                      </Tr>
+                    </Tbody>
+                  </>
+                </Table>
+              </TableContainer>
               <Box m="auto" w="100%" h="100%" px={2}>
                 <Accordion allowToggle>
                   {isLoading ? (
                     <NotLoaded />
                   ) : (
-                    resultPaginated.map((mil: Militar, index) => (
+                    resultPaginated?.map((mil: Militar, index) => (
                       <AccordionItem
                         border="0"
                         mb={2}

@@ -184,16 +184,16 @@ export default function Perfil() {
                     borderRightColor="gray.800"
                     px={2}
                   >
-                    <Text bgColor="blue.500" rounded="lg" px={1}>
+                    <Text color="gray.400" rounded="lg" px={1}>
                       {session?.militar.nome_completo}
                     </Text>
-                    <Text bgColor="blue.500" rounded="lg" px={1}>
+                    <Text color="gray.400" rounded="lg" px={1}>
                       {session?.militar.nome_guerra}
                     </Text>
-                    <Text bgColor="blue.500" rounded="lg" px={1}>
+                    <Text color="gray.400" rounded="lg" px={1}>
                       {session?.militar.email}
                     </Text>
-                    <Text bgColor="blue.500" rounded="lg" px={1}>
+                    <Text color="gray.400" rounded="lg" px={1}>
                       {session?.militar.telefone}
                     </Text>
                   </VStack>
