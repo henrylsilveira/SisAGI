@@ -40,6 +40,7 @@ import { TiInfoLarge } from "react-icons/ti";
 import {
   convertISODateToInputValue,
   convertDateFuncaoMilitar,
+  returnAvatarImage,
 } from "../../../utils/scripts";
 import { NotLoaded } from "../../../components/NotLoaded";
 
@@ -181,7 +182,7 @@ export default function SuperAdminFuncoes() {
                               key={militar.id + militar.identidade}
                             >
                               <Avatar
-                                src=""
+                                src={returnAvatarImage(militar.avatar_url)}
                                 size="xs"
                                 name={militar.nome_completo}
                                 bg="green.400"

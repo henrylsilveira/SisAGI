@@ -6,12 +6,18 @@ import {
   FormHelperText,
   Box,
   useToast,
+  Avatar,
+  AvatarBadge,
+  Badge,
 } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { memo, FormEvent } from "react";
 import { FcAcceptDatabase } from "react-icons/fc";
 import { Militar } from "../../../@types/types";
-import { convertISODateToInputValue } from "../../../utils/scripts";
+import {
+  convertISODateToInputValue,
+  returnAvatarImage,
+} from "../../../utils/scripts";
 import { Input } from "../../Form/Input";
 import { api } from "../../../services/api";
 import { useRouter } from "next/router";
@@ -82,6 +88,32 @@ function DadosPessoaisComponent(props) {
         </Heading>
       </Flex>
       <Box m="auto" w="100%" h="100%" px={4} pb={4}>
+        <Flex flexDirection="column" alignItems="center">
+          <Avatar
+            size="2xl"
+            name={mil.nome_completo}
+            bg="green.700"
+            border="5px"
+            borderColor="gray.400"
+            boxShadow="buttonShadow"
+            src={returnAvatarImage(mil.avatar_url)}
+          >
+            <AvatarBadge
+              borderColor="gray.990"
+              boxSize="1.1em"
+              bg="green.500"
+            />
+          </Avatar>
+
+          <Badge
+            variant="outline"
+            colorScheme="yellow"
+            mx="auto"
+            zIndex="toast"
+          >
+            {mil.companhia} / {mil.pelotao}
+          </Badge>
+        </Flex>
         <FormControl>
           <Input
             as="select"

@@ -93,3 +93,7 @@ export function verificaSenha(senha) {
       return "Senha muito forte";
     }
   }
+
+  export function returnAvatarImage(avatar: string){
+    return api.defaults.baseURL + avatar
+  }

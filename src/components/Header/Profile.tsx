@@ -1,5 +1,7 @@
 import { Flex, Avatar, Box, Text, Tag, TagCloseButton, TagLabel, VStack, Badge, AvatarBadge } from "@chakra-ui/react";
 import { useSession } from 'next-auth/react';
+import { api } from "../../services/api";
+import { returnAvatarImage } from "../../utils/scripts";
 
 interface ProfileProps {
   showProfileData?: boolean;
@@ -43,7 +45,7 @@ export function Profile({ showProfileData = true }: ProfileProps) {
             size="lg"
             name={session?.militar.nome_completo}
             bg='green.700'
-            src=""
+            src={returnAvatarImage(session?.militar.avatar_url)}
           >
             <AvatarBadge borderColor='gray.990' boxSize='1.1em' bg='green.500' />
           </Avatar>

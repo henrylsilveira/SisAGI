@@ -3,6 +3,7 @@ export interface Militar {
   //DADOS BÁSICOS
   id: string;
   identidade: string;
+  avatar_url?: string;
   post_grad: string;
   nome_completo: string;
   nome_guerra: string;

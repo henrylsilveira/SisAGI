@@ -22,6 +22,7 @@ import { FuncaoMilitar, Militar } from "../../../@types/types";
 import { DadosMilitares } from "../../../components/SuperAdmin/Forms/DadosMilitares";
 import { DadosPessoais } from "../../../components/SuperAdmin/Forms/DadosPessoais";
 import { Endereco } from "../../../components/SuperAdmin/Forms/Endereco";
+import { returnAvatarImage } from "../../../utils/scripts";
 
 // const Chart = dynamic(() => import("react-apexcharts"), {
 //   ssr: false,
@@ -154,7 +155,7 @@ export default function Perfil() {
                   name={session?.militar.nome_completo}
                   bg="green.700"
                   m={4}
-                  src=""
+                  src={returnAvatarImage(session?.militar.avatar_url)}
                 >
                   <AvatarBadge
                     borderColor="gray.990"
