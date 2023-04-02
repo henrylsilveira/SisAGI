@@ -13,6 +13,7 @@ import { Header } from "../components/Header";
 import '../styles/global.css'
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const router = useRouter();
+  
   return (
     <QueryClientProvider client={queryClient}>
       <ChakraProvider theme={theme}>

@@ -23,9 +23,7 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { api } from "../../services/api";
 import { MaterialArray } from "../../@types/types";
-import { useQuery } from "react-query";
 import { TiInfoLarge } from "react-icons/ti";
 
 export function ListarMaterialCompanhias(props) {
@@ -33,14 +31,13 @@ export function ListarMaterialCompanhias(props) {
   const materiais = props.materiais as MaterialArray;
 
   return (
-    <Grid gridTemplateRows="auto 1fr" gap={4}>
+    <Grid gridTemplateRows="auto 1fr">
       <Grid
         gridTemplateRows="auto 1fr"
         bg="gray.990"
         boxShadow="buttonShadow"
-        m={4}
-        justifyContent="space-between"
-        alignItems="center"
+        m={2}
+        textAlign="center"
       >
         <Heading size="md" p={2}>
           {cia === "1 CIA"
@@ -62,7 +59,6 @@ export function ListarMaterialCompanhias(props) {
         rounded="lg"
         justifyContent="center"
         m={2}
-        p={2}
       >
         <TableContainer w="100%">
           <Table size="xs" colorScheme="whiteAlpha">
@@ -74,7 +70,11 @@ export function ListarMaterialCompanhias(props) {
             </Thead>
             <Tbody>
               {materiais
-                ?.filter((mat) => mat.sub_unidade === cia)
+                ?.filter((mat) => mat.sub_unidade === cia).sort((x, y) => {
+                  let a = x.nome.toUpperCase(),
+                    b = y.nome.toUpperCase();
+                  return a == b ? 0 : a > b ? 1 : -1;
+                })
                 .map((res) => (
                   <Tr key={res.id + res.condicoes}>
                     <Td textAlign="center">{res.nome}</Td>
@@ -194,6 +194,7 @@ export function ListarMaterialCompanhias(props) {
                                 bg="green.700"
                                 boxShadow="buttonShadow"
                                 fontWeight="bold"
+                                _hover={{ bgColor: "green.800" }}
                               >
                                 <Popover>
                                   <PopoverTrigger>

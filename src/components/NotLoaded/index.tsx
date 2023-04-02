@@ -3,7 +3,7 @@ import DotLoader from "react-spinners/DotLoader";
 
 export function NotLoaded(){
     return (
-        <Center h="100vh">
+        <Center h="auto">
         <DotLoader size={64} color="#55DD55" />
       </Center>
     )

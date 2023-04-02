@@ -4,8 +4,12 @@ import { ListarMaterialCompanhias } from '../../../components/Material/ListarMat
 import { useQuery } from "react-query";
 import { api } from "../../../services/api";
 import { MaterialArray } from "../../../@types/types";
+import { NotLoaded } from "../../../components/NotLoaded";
+import { ListarMaterialPelotao } from "../../../components/Material/ListarMaterialPelotao";
+import { useSession } from "next-auth/react";
 
 export default function MaterialGeral() {
+  const {data:session } = useSession()
 
     const { isLoading, error, data, isFetching, refetch } = useQuery(
         ["todosMateriais"],
@@ -20,7 +24,7 @@ export default function MaterialGeral() {
       <Head>
         <title>SisAGI | Material - Geral</title>
       </Head>
-      <Flex direction="column" flex="1" gap={4}>
+      <Flex direction="column" flex="1" gap={2}>
         <SimpleGrid
           flex="1"
           gap="4"
@@ -33,10 +37,27 @@ export default function MaterialGeral() {
               boxShadow="buttonShadow"
               rounded="lg"
               transition="ease-in-out"
-              w="100%"
               flexDirection="column"
               my={4}
             >
+              <Flex
+                bg="gray.990"
+                boxShadow="buttonShadow"
+                m={4}
+                w="auto"
+                justifyContent="center"
+              >
+                <Heading size="md" p={2}>
+                  MATERIAIS DOS PELOTÕES DA {session.militar.companhia}
+                </Heading>
+              </Flex>
+              <Grid gridTemplateColumns={["1fr","1fr","1fr","1fr 1fr"]} gap={2}>
+              {isLoading ? <NotLoaded /> : Array.from(new Set(data?.filter(item => item.sub_unidade === session.militar.companhia).map((item) => item.dependencia))).map(
+                    (dependencia, index) => (
+                        <ListarMaterialPelotao key={dependencia+index+dependencia} companhia={session.militar.companhia} dependencia={dependencia} materiais={data} />
+                    )
+                )}
+            </Grid>
               <Flex
                 bg="gray.990"
                 boxShadow="buttonShadow"
@@ -47,13 +68,12 @@ export default function MaterialGeral() {
                   MATERIAIS DO BATALHÃO
                 </Heading>
               </Flex>
-              <Grid gridTemplateColumns={["1fr","1fr 1fr","1fr 1fr 1fr"]} gap={4}>
-              {Array.from(new Set(data?.map((item) => item.sub_unidade))).map(
+              <Grid gridTemplateColumns={["1fr","1fr","1fr","1fr 1fr","1fr 1fr"]} gap={4}>
+              {isLoading ? <NotLoaded /> : Array.from(new Set(data?.map((item) => item.sub_unidade))).map(
                     (cia, index) => (
                         <ListarMaterialCompanhias key={cia+index+cia} companhia={cia} materiais={data} />
                     )
                 )}
-              
             </Grid>
             </Flex>
 
