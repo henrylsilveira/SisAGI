@@ -12,8 +12,6 @@ import {
   AccordionItem,
   AccordionPanel,
   Button,
-  Center,
-  background,
   Table,
   TableCaption,
   TableContainer,
@@ -33,7 +31,6 @@ import { RxUpdate } from "react-icons/rx";
 import { DadosPessoais } from "../../../components/SuperAdmin/Forms/DadosPessoais";
 import { DadosMilitares } from "../../../components/SuperAdmin/Forms/DadosMilitares";
 import { Endereco } from "../../../components/SuperAdmin/Forms/Endereco";
-import { DotLoader } from "react-spinners";
 import { NotLoaded } from "../../../components/NotLoaded";
 import ReactPaginate from "react-paginate";
 import { Input } from "../../../components/Form/Input";

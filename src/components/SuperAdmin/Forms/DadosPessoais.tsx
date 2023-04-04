@@ -11,7 +11,7 @@ import {
   Badge,
 } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
-import { memo, FormEvent } from "react";
+import { memo, FormEvent, useState } from "react";
 import { FcAcceptDatabase } from "react-icons/fc";
 import { Militar } from "../../../@types/types";
 import {
@@ -27,6 +27,60 @@ function DadosPessoaisComponent(props) {
   const mil = props.militar as Militar;
   const toast = useToast();
   const { asPath } = useRouter();
+
+  const [file, setFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
+
+  function handleFileInputChange(event) {
+    const newFile = event.target.files[0];
+    setFile(newFile);
+
+    const reader = new FileReader();
+    reader.readAsDataURL(newFile);
+    reader.onloadend = () => {
+      setPreviewUrl(reader.result);
+    };
+  }
+
+  async function handleSubmitImage(event: FormEvent, id: string) {
+    event.preventDefault();
+
+    const formData = new FormData();
+    formData.append("avatarMilitar", file);
+    try {
+      const result = await api.post(`/avatarMilitar/upload/${id}`,
+        formData
+      , { headers: {
+        'content-type': 'multipart/form-data'
+      }})
+      
+      if (result.status == 201) {
+        toast({
+          title: "Militar",
+          description: "Dados atualizados.",
+          status: "success",
+          duration: 1000,
+          isClosable: true,
+        });
+      } else {
+        toast({
+          title: "Militar",
+          description: "Dados não atualizados.",
+          status: "error",
+          duration: 2000,
+          isClosable: true,
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Militar",
+        description: "Erro interno",
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
+    }
+  }
 
   async function handleSubmitForm(
     inputObject: { name: string; value: string },
@@ -96,7 +150,7 @@ function DadosPessoaisComponent(props) {
             border="5px"
             borderColor="gray.400"
             boxShadow="buttonShadow"
-            src={returnAvatarImage(mil.avatar_url)}
+            src={previewUrl ? previewUrl : returnAvatarImage(mil.avatar_url)}
           >
             <AvatarBadge
               borderColor="gray.990"
@@ -113,7 +167,19 @@ function DadosPessoaisComponent(props) {
           >
             {mil.companhia} / {mil.pelotao}
           </Badge>
+          
         </Flex>
+        <Flex ml={0}>
+            <Input
+              name="avatarMilitar"
+              label="Selecione a imagem"
+              className="uploadInput"
+              type="file"
+              onChange={handleFileInputChange}
+            />
+            <Button variant="outline" size="lg" ml={2} mt={8} _hover={{ bgColor: "green.800" }}
+            borderColor="green.800" onClick={(e) => handleSubmitImage(e, mil.id)}>Upload</Button>
+          </Flex>
         <FormControl>
           <Input
             as="select"

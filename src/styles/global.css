@@ -32,3 +32,8 @@
 .paginate a:hover {
   color: #fec163;
 }
+
+.uploadInput[type="file"]::file-selector-button {
+  float: right;
+  visibility: hidden;
+}
