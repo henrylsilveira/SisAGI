@@ -50,7 +50,7 @@ export function Profile({ showProfileData = true }: ProfileProps) {
             <AvatarBadge borderColor='gray.990' boxSize='1.1em' bg='green.500' />
           </Avatar>
           {!showProfileData && ( 
-             <Badge variant="outline" colorScheme="yellow" mx='auto' zIndex='toast' >
+             <Badge variant="outline" colorScheme="yellow" mx='auto' zIndex="base">
              { session?.militar.companhia } / {session?.militar.pelotao}
                </Badge>
           )}

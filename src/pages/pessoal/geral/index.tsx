@@ -44,6 +44,8 @@ import { RxUpdate } from "react-icons/rx";
 import { useSession } from "next-auth/react";
 import { TiInfoLarge } from "react-icons/ti";
 import { NotLoaded } from "../../../components/NotLoaded";
+import { returnAvatarImage } from "../../../utils/scripts";
+import { PostoGraduacaoArray } from "../../../utils/staticArray";
 
 export default function GerenciamentoPessoal() {
   const { data: session } = useSession();
@@ -54,7 +56,9 @@ export default function GerenciamentoPessoal() {
     ["todosMilitares"],
     async () => {
       const result = await api.get<MilitarArray>("/militar");
-
+      setResult(result.data.filter(
+        (mil) => mil.companhia === session.militar.companhia
+      ))
       return result.data.filter(
         (mil) => mil.companhia === session.militar.companhia
       );
@@ -125,9 +129,7 @@ export default function GerenciamentoPessoal() {
                         {isLoading ? (
                           <NotLoaded />
                         ) : (
-                          Array.from(
-                            new Set(data?.map((item) => item.post_grad))
-                          ).map((postGrad, index) => (
+                            PostoGraduacaoArray?.map((postGrad, index) => (
                             <Th key={postGrad + index} textAlign="center">
                               {postGrad}
                             </Th>
@@ -140,13 +142,11 @@ export default function GerenciamentoPessoal() {
                         {isLoading ? (
                           <NotLoaded />
                         ) : (
-                          Array.from(
-                            new Set(data?.map((item) => item.post_grad))
-                          ).map((postGrad, index) => (
+                          PostoGraduacaoArray?.map((postGrad, index) => (
                             <Td key={postGrad + index} textAlign="center">
                               {
-                                data?.filter(
-                                  (mil) => mil.post_grad === postGrad
+                                result?.filter(
+                                  (mil) => mil.post_grad === postGrad ? mil.post_grad : 0
                                 ).length
                               }
                             </Td>
@@ -163,14 +163,14 @@ export default function GerenciamentoPessoal() {
                     <NotLoaded />
                   ) : (
                     Array.from(
-                      new Set(data?.map((item) => item.post_grad))
+                      new Set(result?.map((item) => item.post_grad))
                     ).map((post_grad, index) => (
                       <AccordionItem
                         border="0"
                         mb={2}
                         key={post_grad + index}
                         onClick={() =>
-                          handleGetFunctionMilitar(data, post_grad)
+                          handleGetFunctionMilitar(result, post_grad)
                         }
                       >
                         <h2>
@@ -202,7 +202,7 @@ export default function GerenciamentoPessoal() {
                               {isLoading ? (
                                 <NotLoaded />
                               ) : (
-                                data?.filter(
+                                result?.filter(
                                   (fun) => fun.post_grad === post_grad
                                 ).length
                               )}
@@ -233,7 +233,7 @@ export default function GerenciamentoPessoal() {
                                 key={militar.id + militar.identidade}
                               >
                                 <Avatar
-                                  src=""
+                                  src={returnAvatarImage(militar.avatar_url)}
                                   size="xs"
                                   name={militar.nome_completo}
                                   bg="green.400"

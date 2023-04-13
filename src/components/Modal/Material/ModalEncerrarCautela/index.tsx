@@ -11,7 +11,8 @@ import {
     useToast,
     Icon,
     FormHelperText,
-    FormControl
+    FormControl,
+    Divider
   } from "@chakra-ui/react";
   import React, { FormEvent, useState } from "react";
   import { Input } from "../../../Form/Input";
@@ -96,19 +97,21 @@ import { useSession } from "next-auth/react";
       </Button>
         <Modal finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
-          <ModalContent>
-            <ModalHeader roundedTop={4} bg="gray.800">Encerrar cautela</ModalHeader>
+          <ModalContent bg="gray.990" border="1px" borderColor="green.700">
+            <ModalHeader roundedTop={4}>Encerrar cautela</ModalHeader>
             <ModalCloseButton />
-            <ModalBody bg="gray.800">
-              <FormControl>
+            <ModalBody>
+              <Divider borderColor="green.700" />
+              <FormControl py={6}>
                 <Input name="senha" value={senha} label="Senha" type="password" onChange={(e) => setSenha(e.target.value)} />
                 <FormHelperText>
                 Senha do militar responsável pela cautela
               </FormHelperText>
 
               </FormControl>
+              <Divider borderColor="green.700" />
             </ModalBody>
-            <ModalFooter roundedBottom={4} bg="gray.800">
+            <ModalFooter roundedBottom={4}>
               <Button boxShadow="buttonShadow" colorScheme="yellow" mr={3} onClick={(e) => handleSubmit(e)}>
                 Fechar
               </Button>

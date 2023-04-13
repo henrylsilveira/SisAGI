@@ -1,4 +1,4 @@
-import { Flex, Grid, Heading } from "@chakra-ui/react";
+import { Flex, Grid, Heading, VStack } from "@chakra-ui/react";
 import { ArmamentoComponentPainel } from '../Painel/Armamento';
 import { CautelasComponentPainel } from '../Painel/Cautelas';
 import { SessaoComponentPainel } from "../Painel/Sessao";

@@ -12,15 +12,9 @@ export function generateNowISOTime() {
   return time.toISOString();
 }
 
+
 export function convertDateInputToISODate(iso: string) {
-  // const d = new Date(iso)
-  // const date = d.toISOString()+"T"+d.getUTCHours()
-  let darr = iso.split("-"); // ["29", "1", "2016"]
-  let isoDate = new Date(
-    parseInt(darr[2]),
-    parseInt(darr[1]) - 1,
-    parseInt(darr[0])
-  );
+  let isoDate = new Date(iso).toISOString();
   return isoDate;
 }
 
@@ -42,8 +36,11 @@ export function convertDateFuncaoMilitar(militar: Militar, funcao: string) {
 }
 
 export async function getUserIP() {
-  const response = await api.get("https://api.ipify.org/?format=json");
-  return response.data.ip;
+  const response = await api.get("https://api.ipify.org/?format=json").then(response => {
+    return response.data.ip
+  }).catch(() => {
+    return "sem ip";
+  })
 }
 
 export function formatarDataHora(iso: string | number | Date) {

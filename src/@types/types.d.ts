@@ -10,8 +10,11 @@ export interface Militar {
   senha: string;
   companhia?: string;
   pelotao?: string;
+  fracao?: string;
+  funcao_fracao?: string;
   funcao_local: string;
-  status: 'ativo' | 'encostado' | 'baixado' | 'adido' | 'incapaz' | 'inativo';
+  status: 'ativo' | 'inativo' | 'transferido';
+  situacao_med: 'apto' | 'apto A' | 'incapaz B1'| 'incapaz B2'| 'incapaz C'| 'encostado'| 'reintegrado'| 'adido'
   //DADOS COMPLEMENTARES
   cpf?: string; 
   nome_pai?: string;
@@ -35,6 +38,8 @@ export interface Militar {
   local_cumpre_expediente?: string;	
   motocarro?: string;
   hab_militar?: string;
+  indigena?: string;
+
   //GEOLOCALIZAÇÃO
   longitude?: string;
   latitude?: string;
@@ -52,12 +57,6 @@ export interface Militar {
 
 export type MilitarArray = Militar[];
 
-export interface Feedback {
-  id: string;
-  dateFeedback: Date;
-  informacao: string;
-  militarId: string;
-}
 
 export type FeedbackArray = Feedback[];
 
@@ -209,3 +208,28 @@ export type Session = {
 }
 
 export type SessionArray = Session[]; 
+
+
+
+export interface Feedback {
+  id: string;
+  dateFeedback: Date;
+  imageFeedback_url: string;
+  informacao: string;
+  militarId: string;
+}
+
+export type FeedbackArray = Feedback[]; 
+
+export interface Missao {
+  id?: string;
+  created_at?: Date;
+  data_finalizacao: Date | string;
+  descricao: string;
+  situacao?: string;
+  militar_origem: string;
+  militar_destino: string;
+  militar?: Militar;
+}
+
+export type MissaoArray = Missao[]; 

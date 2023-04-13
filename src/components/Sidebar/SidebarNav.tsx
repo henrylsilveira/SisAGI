@@ -44,6 +44,9 @@ export function SidebarNav() {
           <NavLink href="/painel/minhasCautelas" icon={RiBook2Line}>
             Cautelas
           </NavLink>
+          <NavLink href="/painel/minhaFracao" icon={RiBook2Line}>
+            Minha Fração
+          </NavLink>
         </NavSection>
       ) : null}
 

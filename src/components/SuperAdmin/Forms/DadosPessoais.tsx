@@ -176,8 +176,25 @@ function DadosPessoaisComponent(props) {
               className="uploadInput"
               type="file"
               onChange={handleFileInputChange}
+              isDisabled={
+                session?.militar.Funcao.find(
+                  (func) => func.funcao == "super admin" || func.funcao == "sgte"
+                ) &&
+                (asPath == "/superAdmin/usuarios" ||
+                  asPath == "/pessoal/gerenciamento")
+                  ? false
+                  : true
+              }
             />
-            <Button variant="outline" size="lg" ml={2} mt={8} _hover={{ bgColor: "green.800" }}
+            <Button variant="outline" size="lg" ml={2} mt={8} _hover={{ bgColor: "green.800" }} isDisabled={
+              session?.militar.Funcao.find(
+                (func) => func.funcao == "super admin" || func.funcao == "sgte"
+              ) &&
+              (asPath == "/superAdmin/usuarios" ||
+                asPath == "/pessoal/gerenciamento")
+                ? false
+                : true
+            }
             borderColor="green.800" onClick={(e) => handleSubmitImage(e, mil.id)}>Upload</Button>
           </Flex>
         <FormControl>

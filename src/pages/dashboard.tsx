@@ -46,15 +46,14 @@ export default function Dashboard() {
       <Head>
         <title>SisAGI | Painel Principal</title>
       </Head>
-      <Grid
-        gridTemplateColumns={["1fr"]}
-        gap={4}
+      <Flex
         bg="gray.800"
         borderRadius={8}
+        w="100%"
         p={4}
       >
         <ComumComponentDashboard />
-      </Grid>
+      </Flex>
     </>
   );
 }

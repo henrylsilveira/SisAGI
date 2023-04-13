@@ -12,19 +12,10 @@ import {
   AccordionItem,
   AccordionPanel,
   Button,
-  Icon,
-  Popover,
-  PopoverArrow,
-  PopoverBody,
-  PopoverCloseButton,
-  PopoverContent,
-  PopoverHeader,
-  PopoverTrigger,
   Table,
   TableContainer,
   Tbody,
   Td,
-  Tfoot,
   Th,
   Thead,
   Tr,
@@ -41,9 +32,8 @@ import { DadosPessoais } from "../../../components/SuperAdmin/Forms/DadosPessoai
 import { DadosMilitares } from "../../../components/SuperAdmin/Forms/DadosMilitares";
 import { Endereco } from "../../../components/SuperAdmin/Forms/Endereco";
 import { useSession } from "next-auth/react";
-import { TiInfoLarge } from "react-icons/ti";
-import { ModalCautela } from "../../../components/Modal/Armamento/ModalCautela";
 import ReactPaginate from "react-paginate";
+import { NotLoaded } from "../../../components/NotLoaded";
 
 export default function GerenciamentoPessoal() {
   const { data: session } = useSession();
@@ -52,7 +42,7 @@ export default function GerenciamentoPessoal() {
 
   const [search, setSearch] = useState(result);
 
-  const { refetch } = useQuery(["todosMilitares"], async () => {
+  const { refetch, isLoading } = useQuery(["todosMilitares"], async () => {
     const result = await api.get<MilitarArray>("/militar");
     setResult(
       result.data
@@ -116,6 +106,10 @@ export default function GerenciamentoPessoal() {
                 <Heading size="md" p={2}>
                   MILITARES - {session?.militar.companhia}
                 </Heading>
+                <Flex boxShadow="buttonShadow"
+                  bg="gray.990" borderRadius="full" border="1px" borderColor="green.700">
+                    <Flex p={2} >{" Total de Militares " + " - "}<Text fontWeight="extrabold" color="red.600">{ " " + result.length}</Text></Flex>
+                </Flex>
                 <Button
                   boxShadow="buttonShadow"
                   colorScheme="messenger"
@@ -127,37 +121,6 @@ export default function GerenciamentoPessoal() {
                   <RxUpdate size={16} />
                 </Button>
               </Flex>
-              <TableContainer px={4} mb={4}>
-                <Table size="sm" variant="simple" colorScheme="whiteAlpha">
-                  <TableCaption>QUADRO DE EFETIVO DA COMPANHIA</TableCaption>
-                  <Thead>
-                    <Tr>
-                      <Th textAlign="center">Capitão</Th>
-                      <Th textAlign="center">1º Ten</Th>
-                      <Th textAlign="center">2º Ten</Th>
-                      <Th textAlign="center">Sub Ten</Th>
-                      <Th textAlign="center">1º Sgt</Th>
-                      <Th textAlign="center">2º Sgt</Th>
-                      <Th textAlign="center">3º Sgt</Th>
-                      <Th textAlign="center">Cb</Th>
-                      <Th textAlign="center">Sd</Th>
-                    </Tr>
-                  </Thead>
-                  <Tbody>
-                    <Tr>
-                      <Td textAlign="center">2</Td>
-                      <Td textAlign="center">4</Td>
-                      <Td textAlign="center">5</Td>
-                      <Td textAlign="center">6</Td>
-                      <Td textAlign="center">2</Td>
-                      <Td textAlign="center">4</Td>
-                      <Td textAlign="center">5</Td>
-                      <Td textAlign="center">6</Td>
-                      <Td textAlign="center">6</Td>
-                    </Tr>
-                  </Tbody>
-                </Table>
-              </TableContainer>
               <Box m="auto" w="100%" h="100%" px={2}>
                 <Accordion allowToggle>
                   {resultPaginated?.map((mil: Militar, index) => (

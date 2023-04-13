@@ -24,7 +24,6 @@ export function CautelasComponentPainel() {
     );
     return result;
   });
-
   return (
     <Flex
       bgGradient="linear(to-tr, gray.990, gray.990, green.900)"
@@ -100,8 +99,13 @@ export function CautelasComponentPainel() {
           MATERIAIS
         </Heading>
       </Flex>
-      {data?.data?.length === 0 ||
-      data?.data?.filter((cautela) => cautela.status === "ativo") ? (
+      {isLoading ? (
+        <NotLoaded />
+      ) : data?.data.filter(
+          (cautela) =>
+          cautela.status === 'ativo' &&
+            cautela.cautelou.nome_guerra === session.militar.nome_guerra
+        ).length !== 0 ? (
         <Grid gridTemplateColumns={["1fr", "1fr 1fr"]} mb={4} pb={4} mx={4}>
           {/* UMA OBRA DE ARTE ESSE CODIGO ABAIXO */}
           {isLoading ? (
@@ -113,39 +117,38 @@ export function CautelasComponentPainel() {
                   .filter((cautela) => cautela.status === "ativo")
                   .map((item) => item.material.nome)
               )
-            ).map((cautela, index) => (
+            ).map((nomeMaterial, index) => (
               <Flex
-                key={cautela + index}
+                key={nomeMaterial + index}
                 boxShadow="buttonShadow"
                 px={4}
                 py={1}
                 m={1}
                 alignItems="center"
                 justifyContent="space-between"
-                
               >
                 <VStack>
-                <Text mr={2}>
-                  {cautela}
-                </Text>
-                <HStack>
-                  <Tag bgColor="green.600" color="white">Cautelas:
-                    {
-                      data?.data.filter(
-                        (item) => item.material.nome === cautela
-                      ).length
-                    }
-                  </Tag>
-                  <Tag bgColor="green.600" color="white">Quantidade:
-                    {data?.data
-                      .filter((item) => item.material.nome === cautela)
-                      .map((item) => item.quantidade || 0)
-                      .reduce(
-                        (acumulador, valorAtual) => acumulador + valorAtual,
-                        0
-                      )}
-                  </Tag>
-                </HStack>
+                  <Text mr={2}>{nomeMaterial}</Text>
+                  <HStack>
+                    <Tag bgColor="green.600" color="white">
+                      Cautelas:
+                      {
+                        data?.data.filter(
+                          (item) => item.material.nome === nomeMaterial
+                        ).length
+                      }
+                    </Tag>
+                    <Tag bgColor="green.600" color="white">
+                      Quantidade:
+                      {data?.data
+                        .filter((item) => item.material.nome === nomeMaterial)
+                        .map((item) => item.quantidade || 0)
+                        .reduce(
+                          (acumulador, valorAtual) => acumulador + valorAtual,
+                          0
+                        )}
+                    </Tag>
+                  </HStack>
                 </VStack>
               </Flex>
             ))

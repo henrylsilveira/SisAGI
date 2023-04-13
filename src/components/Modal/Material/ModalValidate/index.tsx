@@ -13,6 +13,7 @@ import {
   Tooltip,
   FormControl,
   FormHelperText,
+  Divider,
 } from "@chakra-ui/react";
 import React, { FormEvent, useState } from "react";
 import { Input } from "../../../Form/Input";
@@ -83,13 +84,14 @@ export function ModalValidate({ data }) {
       </Tooltip>
       <Modal finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent>
-          <ModalHeader roundedTop={4} bg="gray.800">
+        <ModalContent bg="gray.990" border="1px" borderColor="green.700">
+          <ModalHeader roundedTop={4}>
             Validar cautela de material
           </ModalHeader>
           <ModalCloseButton />
-          <ModalBody bg="gray.800">
-            <FormControl>
+          <ModalBody>
+            <Divider borderColor="green.700" />
+            <FormControl py={6}>
               <Input
                 name="senha"
                 value={senha}
@@ -99,8 +101,9 @@ export function ModalValidate({ data }) {
               />
             <FormHelperText>Senha do militar que realizou a cautela.</FormHelperText>
             </FormControl>
+            <Divider borderColor="green.700" />
           </ModalBody>
-          <ModalFooter roundedBottom={4} bg="gray.800">
+          <ModalFooter roundedBottom={4}>
             <Button
               boxShadow="buttonShadow"
               colorScheme="blue"

@@ -3,6 +3,7 @@ import {
   Badge,
   Box,
   Button,
+  Circle,
   Flex,
   FormControl,
   Grid,
@@ -40,13 +41,14 @@ import { Input } from "../../../components/Form/Input";
 import { SlRefresh } from "react-icons/sl";
 import { TiInfoLarge } from "react-icons/ti";
 import { useSession } from "next-auth/react";
-import { CautelaArray, Material, MaterialArray } from "../../../@types/types";
+import { Cautela, CautelaArray, Material, MaterialArray } from "../../../@types/types";
 import Head from "next/head";
 import { NotData } from "../../../components/NotData";
+import { EditarMaterial } from "../../../components/Material/EditarMaterial";
 
-interface MaterialDataProps extends Material {
-  cautelas?: CautelaArray;
-}
+// interface MaterialDataProps extends Material {
+//   cautelas?: CautelaArray;
+// }
 
 const signInFormSchema = yup.object().shape({
   nome: yup.string().required("Nome obrigatório."),
@@ -59,7 +61,6 @@ const signInFormSchema = yup.object().shape({
 });
 
 export default function Cadastro() {
-  const [result, setResult] = useState({});
   const { data: session } = useSession();
   const toast = useToast();
 
@@ -72,7 +73,6 @@ export default function Cadastro() {
           result.sub_unidade === session.militar.companhia &&
           result.dependencia === session.militar.pelotao
       );
-      setResult(filterData);
       return filterData;
     }
   );
@@ -86,7 +86,7 @@ export default function Cadastro() {
     resolver: yupResolver(signInFormSchema),
   });
 
-  const handleSignIn: SubmitHandler<MaterialDataProps> = async (values) => {
+  const handleSignIn: SubmitHandler<Material> = async (values) => {
     try {
       const result = await api.post("/material/create", values);
       if (result.status == 201) {
@@ -210,7 +210,7 @@ export default function Cadastro() {
                     isReadOnly
                     size="sm"
                     rounded="md"
-                    label="SU"
+                    label="Pelotão"
                     name="dependencia"
                     {...register("dependencia")}
                   ></Input>
@@ -253,99 +253,123 @@ export default function Cadastro() {
               </Flex>
               {!(data?.length === 0) ? (
                 <TableContainer>
-                <Table size="sm" colorScheme="whiteAlpha">
-                  <Thead>
-                    <Tr>
-                      <Th textAlign="center">Nome</Th>
-                      <Th textAlign="center">Condições</Th>
-                      <Th textAlign="center">Quantidade</Th>
-                      <Th textAlign="center">SU</Th>
-                      <Th textAlign="center">Dependência</Th>
-                      <Th textAlign="center">Cauteladas</Th>
-                      <Th textAlign="center">Disponíveis</Th>
-                      <Th textAlign="center">Categoria</Th>
-                    </Tr>
-                  </Thead>
-                  <Tbody>
-                    {data?.map((res: MaterialDataProps) => (
-                      <Tr key={res.id}>
-                        <Td textAlign="center">{res.nome}</Td>
-                        <Td textAlign="center">
-                          <Popover placement="top-start">
-                            <PopoverTrigger>
-                              <Button
-                                bg="green.400"
-                                size="xs"
-                                _hover={{ bgColor: "green.600" }}
-                                py={1}
-                              >
-                                <Icon boxSize={6} as={TiInfoLarge} />
-                              </Button>
-                            </PopoverTrigger>
-                            <PopoverContent bg="gray.990"
-                          border="1px"
-                          borderColor="green.700">
-                              <PopoverHeader fontWeight="bold">
-                                Condições
-                              </PopoverHeader>
-                              <PopoverArrow bg="gray.800" />
-                              <PopoverCloseButton />
-                              <PopoverBody
-                                as="div"
-                                wordBreak="normal"
-                                h="auto"
-                                py={6}
-                                overflow="scroll"
-                              >
-                                {res.condicoes}
-                              </PopoverBody>
-                            </PopoverContent>
-                          </Popover>
-                        </Td>
-                        <Td textAlign="center">{res.quantidade}</Td>
-                        <Td textAlign="center">{res.sub_unidade}</Td>
-                        <Td textAlign="center">{res.dependencia}</Td>
-                        <Td textAlign="center">{res.cautelas?.length}</Td>
-                        <Td textAlign="center">
-                          {res.quantidade - res.cautelas?.length}
-                        </Td>
-                        <Td textAlign="center">
-                          {res.categoria === "controlado" ? (
-                            <Badge
-                              as="span"
-                              variant="outline"
-                              colorScheme="red"
-                            >
-                              {res.categoria}
-                            </Badge>
-                          ) : (
-                            <Badge
-                              as="span"
-                              variant="outline"
-                              colorScheme="green"
-                            >
-                              {res.categoria}
-                            </Badge>
-                          )}
-                        </Td>
+                  <Table size="sm" colorScheme="whiteAlpha">
+                    <Thead>
+                      <Tr>
+                        <Th textAlign="center">Nome</Th>
+                        <Th textAlign="center">Condições</Th>
+                        <Th textAlign="center">Quantidade</Th>
+                        <Th textAlign="center">SU</Th>
+                        <Th textAlign="center">Dependência</Th>
+                        <Th textAlign="center">Cauteladas</Th>
+                        <Th textAlign="center">Disponíveis</Th>
+                        <Th textAlign="center">Categoria</Th>
+                        <Th textAlign="center"></Th>
+                        <Th textAlign="center"></Th>
                       </Tr>
-                    ))}
-                  </Tbody>
-                  <Tfoot>
-                    <Tr>
-                      <Th textAlign="center">Nome</Th>
-                      <Th textAlign="center">Condições</Th>
-                      <Th textAlign="center">Quantidade</Th>
-                      <Th textAlign="center">Local</Th>
-                      <Th textAlign="center">Codigo</Th>
-                      <Th textAlign="center">Cauteladas</Th>
-                      <Th textAlign="center">Disponíveis</Th>
-                    </Tr>
-                  </Tfoot>
-                </Table>
-              </TableContainer>
-              ) : <NotData textoComponent="Não foram encontrados materiais cadastrados." /> }
-              
+                    </Thead>
+                    <Tbody>
+                      {data?.map((res: Material) => (
+                        <Tr key={res.id}>
+                          <Td textAlign="center">{res.nome}</Td>
+                          <Td textAlign="center">
+                            <Popover placement="top-start">
+                              <PopoverTrigger>
+                                <Circle
+                                  size="30px"
+                                  bg="green.600"
+                                  _hover={{ bgColor: "green.800" }}
+                                  boxShadow="buttonShadow"
+                                  py={1}
+                                  my={1}
+                                  mx="auto"
+                                >
+                                  <Icon boxSize={6} as={TiInfoLarge} />
+                                </Circle>
+                              </PopoverTrigger>
+                              <PopoverContent
+                                bg="gray.990"
+                                border="1px"
+                                borderColor="green.700"
+                              >
+                                <PopoverHeader fontWeight="bold">
+                                  Condições
+                                </PopoverHeader>
+                                <PopoverArrow bg="gray.800" />
+                                <PopoverCloseButton />
+                                <PopoverBody
+                                  as="div"
+                                  wordBreak="normal"
+                                  h="auto"
+                                  py={6}
+                                  overflow="scroll"
+                                >
+                                  {res.condicoes}
+                                </PopoverBody>
+                              </PopoverContent>
+                            </Popover>
+                          </Td>
+                          <Td textAlign="center">{res.quantidade}</Td>
+                          <Td textAlign="center">{res.sub_unidade}</Td>
+                          <Td textAlign="center">{res.dependencia}</Td>
+                          <Td textAlign="center">{res.cautelas.filter((c: Cautela) => c.status === "ativo")
+                              .reduce((total = 0, cautela) => {
+                                return total + cautela.quantidade;
+                              }, 0)}
+                          </Td>
+                          <Td textAlign="center">
+                            {res.quantidade - res.cautelas.filter((c: Cautela) => c.status === "ativo")
+                              .reduce((total = 0, cautela) => {
+                                return total + cautela.quantidade;
+                              }, 0)}
+                          </Td>
+                          <Td textAlign="center">
+                            {res.categoria === "controlado" ? (
+                              <Badge
+                                as="span"
+                                variant="outline"
+                                colorScheme="red"
+                              >
+                                {res.categoria}
+                              </Badge>
+                            ) : (
+                              <Badge
+                                as="span"
+                                variant="outline"
+                                colorScheme="green"
+                              >
+                                {res.categoria}
+                              </Badge>
+                            )}
+                          </Td>
+                          <Td>
+                            <EditarMaterial material={res} type="edit" />
+                          </Td>
+                          <Td>
+                            <EditarMaterial material={res} type="delete" />
+                          </Td>
+                        </Tr>
+                      ))}
+                    </Tbody>
+                    <Tfoot>
+                      <Tr>
+                        <Th textAlign="center">Nome</Th>
+                        <Th textAlign="center">Condições</Th>
+                        <Th textAlign="center">Quantidade</Th>
+                        <Th textAlign="center">Local</Th>
+                        <Th textAlign="center">Codigo</Th>
+                        <Th textAlign="center">Cauteladas</Th>
+                        <Th textAlign="center">Disponíveis</Th>
+                        <Th textAlign="center">Categoria</Th>
+                        <Th textAlign="center"></Th>
+                        <Th textAlign="center"></Th>
+                      </Tr>
+                    </Tfoot>
+                  </Table>
+                </TableContainer>
+              ) : (
+                <NotData textoComponent="Não foram encontrados materiais cadastrados." />
+              )}
             </Flex>
           </Box>
         </SimpleGrid>
