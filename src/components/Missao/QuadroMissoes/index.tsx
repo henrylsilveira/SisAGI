@@ -3,6 +3,7 @@ import { convertDate, convertISODateToInputValue, formatarDataHora, generateNowI
 import { Missao, MissaoArray } from "../../../@types/types";
 import { memo } from "react";
 import { FiCheck } from "react-icons/fi";
+import { FaAngleDoubleRight } from "react-icons/fa";
 
 function CardMissaoComponent(props) {
   const missoes = props.missoes;
@@ -51,7 +52,7 @@ function CardMissaoComponent(props) {
           _hover={{ border: "1px", borderColor: "green.700" }}
           py="1"
           boxShadow="buttonShadow">
-            <Icon as={FiCheck} />
+           <Icon as={FaAngleDoubleRight} color="blue.600" />
         </Button>
         <Button bg="gray.990"
           size="md"

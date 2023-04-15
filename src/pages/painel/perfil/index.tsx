@@ -18,11 +18,14 @@ import { api } from "../../../services/api";
 
 import { useSession } from "next-auth/react";
 import Head from "next/head";
-import { FuncaoMilitar, Militar } from "../../../@types/types";
+import { FuncaoMilitar, Militar, MissaoArray } from "../../../@types/types";
 import { DadosMilitares } from "../../../components/SuperAdmin/Forms/DadosMilitares";
 import { DadosPessoais } from "../../../components/SuperAdmin/Forms/DadosPessoais";
 import { Endereco } from "../../../components/SuperAdmin/Forms/Endereco";
 import { returnAvatarImage } from "../../../utils/scripts";
+import { MissoesPainel } from "../../../components/Painel/Missoes";
+import { NotLoaded } from "../../../components/NotLoaded";
+import { useState } from "react";
 
 // const Chart = dynamic(() => import("react-apexcharts"), {
 //   ssr: false,
@@ -30,16 +33,24 @@ import { returnAvatarImage } from "../../../utils/scripts";
 
 export default function Perfil() {
   const { data: session } = useSession();
-  const toast = useToast();
+  const [missoes, setMissoes] = useState<MissaoArray>();
+  const [sessionId, setSessionId] = useState("");
+  const {
+    isLoading,
+    error,
+    data: militar,
+    isFetching,
+    refetch,
+  } = useQuery(["dadosMilitar"], async () => {
+    const res = await api.get<Militar>(`/militar/${session?.militar.id}`);
+    return res.data;
+  });
 
-  const { isLoading, error, data: militar, isFetching, refetch } = useQuery(
-    ["dadosMilitar"],
-    async () => {
-      const res = await api.get<Militar>(`/militar/${session?.militar.id}`);
-      return res.data;
-    }
-  );
- 
+  useQuery(["todasMissoesMilitar"], async () => {
+    const res = await api.get<MissaoArray>(`/missao/${session?.militar.id}`);
+    setMissoes(res.data);
+    setSessionId(session.militar.id)
+  });
 
   // const series = [{ data: () => new Array(Object.values(data?._count))}];
 
@@ -143,86 +154,55 @@ export default function Perfil() {
                 </Heading>
               </Flex>
               <Grid
-                gridTemplateColumns="1fr 2fr 2fr"
+                gridTemplateColumns={["1fr", "1fr", "1fr", "1fr 2fr"]}
                 bg="gray.990"
                 boxShadow="buttonShadow"
                 m={4}
                 justifyContent="space-between"
                 alignItems="center"
               >
-                <Avatar
-                  size="2xl"
-                  name={session?.militar.nome_completo}
-                  bg="green.700"
-                  m={4}
-                  src={returnAvatarImage(session?.militar.avatar_url)}
-                >
-                  <AvatarBadge
-                    borderColor="gray.990"
-                    boxSize="1.1em"
-                    bg="green.500"
-                  />
-                </Avatar>
-
-                <Flex>
+                <Flex justifyContent="space-evenly" p={4}>
+                  <Avatar
+                    size="2xl"
+                    name={session?.militar.nome_completo}
+                    bg="green.700"
+                    m={4}
+                    src={returnAvatarImage(session?.militar.avatar_url)}
+                  >
+                    <AvatarBadge
+                      borderColor="gray.990"
+                      boxSize="1.1em"
+                      bg="green.500"
+                    />
+                  </Avatar>
                   <VStack alignItems="start">
                     <Text borderBottom="1px" borderBottomColor="gray.800">
-                      Nome Completo:{" "}
+                      Nome Completo:{session?.militar.nome_completo}
                     </Text>
                     <Text borderBottom="1px" borderBottomColor="gray.800">
-                      Nome de Guerra:{" "}
+                      Nome de Guerra:{session?.militar.nome_guerra}
                     </Text>
                     <Text borderBottom="1px" borderBottomColor="gray.800">
-                      Email:{" "}
+                      Email:{session?.militar.email}
                     </Text>
                     <Text borderBottom="1px" borderBottomColor="gray.800">
-                      Telefone:{" "}
-                    </Text>
-                  </VStack>
-                  <VStack
-                    alignItems="end"
-                    borderRight="1px"
-                    borderRightColor="gray.800"
-                    px={2}
-                  >
-                    <Text color="gray.400" rounded="lg" px={1}>
-                      {session?.militar.nome_completo}
-                    </Text>
-                    <Text color="gray.400" rounded="lg" px={1}>
-                      {session?.militar.nome_guerra}
-                    </Text>
-                    <Text color="gray.400" rounded="lg" px={1}>
-                      {session?.militar.email}
-                    </Text>
-                    <Text color="gray.400" rounded="lg" px={1}>
-                      {session?.militar.telefone}
+                      Contato:{session?.militar.telefone}
                     </Text>
                   </VStack>
                 </Flex>
-                <Flex bg="gray.990" boxShadow="buttonShadow"></Flex>
-                <Grid gridTemplateColumns="1fr 1fr" m={2}>
-                  {militar?.Funcao.map((func: FuncaoMilitar, index: number) => (
-                    <Tag
-                      justifyContent="space-between"
-                      borderRadius="base"
-                      variant="outline"
-                      colorScheme="whatsapp"
-                      boxShadow="buttonShadow"
-                      key={index}
-                    >
-                      <TagLabel>{func.funcao.toUpperCase()}</TagLabel>
-                    </Tag>
-                  ))}
-                </Grid>
+                <MissoesPainel
+                  missoes={missoes}
+                  sessionId={sessionId}
+                />
               </Grid>
             </Flex>
 
             <Grid gridTemplateColumns="1fr 1fr" gap={4}>
-              <DadosPessoais militar={{ ...session.militar,...militar }} />
-              <DadosMilitares militar={{ ...session.militar,...militar }} />
+              <DadosPessoais militar={{ ...session.militar, ...militar }} />
+              <DadosMilitares militar={{ ...session.militar, ...militar }} />
             </Grid>
             <Flex>
-              <Endereco militar={{ ...session.militar,...militar }} />
+              <Endereco militar={{ ...session.militar, ...militar }} />
             </Flex>
           </Box>
         </SimpleGrid>

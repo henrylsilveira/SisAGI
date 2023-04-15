@@ -7,6 +7,7 @@ import {
   RiBook2Line,
 } from "react-icons/ri";
 import { GiTrade, GiAmmoBox, GiOilDrum } from "react-icons/gi";
+import { HiOutlineUserGroup } from "react-icons/hi";
 import { MdOutlinePersonSearch } from "react-icons/md";
 import { FaTools } from "react-icons/fa";
 import { FaPeopleCarry } from "react-icons/fa";
@@ -44,7 +45,7 @@ export function SidebarNav() {
           <NavLink href="/painel/minhasCautelas" icon={RiBook2Line}>
             Cautelas
           </NavLink>
-          <NavLink href="/painel/minhaFracao" icon={RiBook2Line}>
+          <NavLink href="/painel/minhaFracao" icon={HiOutlineUserGroup}>
             Minha Fração
           </NavLink>
         </NavSection>

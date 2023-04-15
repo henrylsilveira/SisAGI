@@ -226,7 +226,7 @@ export interface Missao {
   created_at?: Date;
   data_finalizacao: Date | string;
   descricao: string;
-  situacao?: string;
+  situacao?: "atrasado" | "concluída" | "andamento" | "ativa";
   militar_origem: string;
   militar_destino: string;
   militar?: Militar;

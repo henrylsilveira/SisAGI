@@ -22,7 +22,7 @@ export const theme = extendTheme({
     innerShadow:
       "rgba(0, 0, 0) 3px 3px 6px 0px inset, rgba(0, 0, 0, 0.5) -3px -3px 6px 1px inset;",
   },
-  font: {
+  fonts: {
     heading: "Roboto",
     body: "Roboto",
   },

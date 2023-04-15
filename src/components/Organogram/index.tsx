@@ -79,7 +79,7 @@ export function Organogram() {
                     variant="outline"
                     colorScheme="yellow"
                     mx="auto"
-                    zIndex="toast"
+                    zIndex="base"
                   >
                     {funcao}
                   </Badge>
@@ -159,7 +159,7 @@ export function Organogram() {
                         variant="outline"
                         colorScheme="yellow"
                         mx="auto"
-                        zIndex="toast"
+                        zIndex="base"
                       >
                         {funcao}
                       </Badge>
