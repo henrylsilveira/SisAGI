@@ -12,7 +12,7 @@ import { MdOutlinePersonSearch } from "react-icons/md";
 import { FaTools } from "react-icons/fa";
 import { FaPeopleCarry } from "react-icons/fa";
 import { IoIosPeople } from "react-icons/io";
-import { GoSettings } from "react-icons/go";
+// import { GoSettings } from "react-icons/go";
 import { RiShieldKeyholeLine } from "react-icons/ri";
 import { NavLink } from "./NavLink";
 import { NavSection } from "./NavSection";
@@ -28,7 +28,7 @@ export function SidebarNav() {
           <NavLink href="/superAdmin/usuarios" icon={IoIosPeople}>
             Usuários
           </NavLink>
-          <NavLink href="/superAdmin/funcoes" icon={GoSettings}>
+          <NavLink href="/superAdmin/funcoes" icon={RiShieldKeyholeLine}>
             Funções
           </NavLink>
           <NavLink href="/superAdmin/sessoes" icon={RiShieldKeyholeLine}>
