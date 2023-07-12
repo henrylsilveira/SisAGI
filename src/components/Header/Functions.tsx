@@ -24,7 +24,6 @@ export function Functions({ showProfileData = true }: ProfileProps) {
   return (
     <Flex flexDirection="column" mx="auto" px={4}>
       {showProfileData && (
-
         <>
             <Flex boxShadow="buttonShadow" bgGradient="linear(to-tr, gray.990, gray.990, green.900)" rounded={4} px={4} py='0.5' w='full' mb={4}>
               <Text fontSize='xs' mx='auto' fontWeight='bold'>

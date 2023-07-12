@@ -7,6 +7,7 @@ import {
   Heading,
   VStack,
   Text,
+  IconButton,
 } from "@chakra-ui/react";
 import { MilitarArray } from "../../@types/types";
 import { api } from "../../services/api";
@@ -18,25 +19,49 @@ import {
   OrganogramGpCmdoArray,
   OrganogramPELArray,
 } from "../../utils/staticArray";
+import { useState } from "react";
+import { SlRefresh } from "react-icons/sl";
+import { NotLoaded } from "../NotLoaded";
 
 export function Organogram() {
   const { data: session } = useSession();
+  const [mil, setMil] = useState<MilitarArray>();
 
-  const { data, refetch, isLoading } = useQuery(
-    ["todosMilitares"],
-    async () => {
-      const result = await api.get<MilitarArray>("/militar");
-
-      return result.data.filter(
+  const { isLoading, refetch } = useQuery(["todosMilitares"], async () => {
+    const result = await api.get<MilitarArray>("/militar");
+    setMil(
+      result.data.filter(
         (mil) =>
           mil.companhia === session?.militar.companhia &&
           mil.pelotao === session?.militar.pelotao
-      );
-    }
-  );
+      )
+    );
+  });
 
   return (
     <>
+      <Flex
+        bg="gray.990"
+        boxShadow="buttonShadow"
+        m={4}
+        alignItems="center"
+        justifyContent="space-between"
+        borderRadius="base"
+      >
+        <Heading size="md" p={2}>
+          MILITARES
+        </Heading>
+        <IconButton
+          boxShadow="buttonShadow"
+          colorScheme="twitter"
+          float="right"
+          mr={2}
+          my={2}
+          onClick={() => refetch()}
+          aria-label="Atualizar tabela"
+          icon={<SlRefresh />}
+        />
+      </Flex>
       <VStack mb={4}>
         <Flex
           bg="gray.990"
@@ -49,8 +74,8 @@ export function Organogram() {
             Grupo de Comando
           </Heading>
         </Flex>
-        {OrganogramGpCmdoArray.map((funcao, index) =>
-          data
+        {isLoading ? <NotLoaded /> : OrganogramGpCmdoArray.map((funcao, index) =>
+          mil
             ?.filter((mil) => mil.funcao_fracao === funcao)
             .map((mil) => (
               <Grid
@@ -127,13 +152,10 @@ export function Organogram() {
                 {gc}
               </Heading>
             </Flex>
-            {OrganogramGCArray.map((funcao, index) =>
-              data
-                ?.filter(
-                  (mil) => mil.funcao_fracao === funcao && mil.fracao === gc
-                )
-                .map((mil) => (
-                  <Grid
+            {isLoading ? <NotLoaded /> : OrganogramGCArray.map((funcao, index) =>
+              mil?.filter((mil) => (mil.funcao_fracao === funcao && mil.fracao === gc)).map((mil) => 
+                
+                <Grid
                     gridTemplateColumns="1fr 2fr"
                     bg="gray.990"
                     boxShadow="buttonShadow"
@@ -191,9 +213,10 @@ export function Organogram() {
                           : "Não cadastrado"}
                       </Text>
                     </Flex>
-                  </Grid>
+                </Grid>
                 ))
-            )}
+                
+            }
           </VStack>
         ))}
       </Grid>

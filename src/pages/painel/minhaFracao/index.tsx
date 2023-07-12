@@ -26,17 +26,7 @@ export default function minhaFracao() {
               flexDirection="column"
               mb={4}
             >
-              <Flex
-                bg="gray.990"
-                boxShadow="buttonShadow"
-                m={4}
-                alignItems="center"
-                justifyContent="space-between"
-              >
-                <Heading size="md" p={2}>
-                  MILITARES
-                </Heading>
-              </Flex>
+              
                 <Organogram />
                 </Flex>
               </Box>
