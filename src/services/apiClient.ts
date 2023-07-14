@@ -6,7 +6,7 @@ export function setupAPIClient() {
     baseURL: 
       process.env.NODE_ENV === "development"
         ? "http://localhost:3333/"
-        : "https://sisagiserver.onrender.com/",
+        : "http://localhost:10000/",
     // headers: {
     //     Authorization: `Bearer ${cookies['nextauth.token']}`,
     // }
