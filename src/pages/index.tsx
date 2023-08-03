@@ -21,6 +21,7 @@ import { signIn, useSession } from "next-auth/react";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { getUserIP } from "../utils/scripts";
+import error from "next/error";
 
 type SignInFormData = {
   identidade: string;
@@ -58,8 +59,10 @@ export default function Home() {
       redirect: false,
       identidade: values.identidade,
       senha: values.senha,
+      callbackUrl: "/dashboard",
       ip: await getUserIP(),
     });
+    if (res?.error) { console.log(error); }
 
     if (res.error) {
       toast({
