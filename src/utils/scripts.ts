@@ -35,7 +35,7 @@ export function convertDateFuncaoMilitar(militar: Militar, funcao: string) {
 }
 
 export async function getUserIP() {
-  const response = await api
+  await api
     .get("https://api.ipify.org/?format=json")
     .then((response) => {
       return response.data.ip;

@@ -55,13 +55,12 @@ export default function Home() {
   const handleSignIn: SubmitHandler<SignInFormData> = async (values) => {
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    const res = await signIn("Credentials", {
-      redirect: false,
+    const res = await signIn("credentials", {
       identidade: values.identidade,
       senha: values.senha,
-      callbackUrl: "/dashboard",
       ip: await getUserIP(),
     });
+    console.log(res)
     if (res?.error) { console.log(error); }
 
     if (res.error) {

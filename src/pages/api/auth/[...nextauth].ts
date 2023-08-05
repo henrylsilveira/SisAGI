@@ -8,21 +8,19 @@ export default NextAuth({
     secret: process.env.SECRET_KEY_JWT,
     providers: [
       CredentialProvider({
-        id: "Credentials", 
-        name: "Credentials",
-        type: "credentials",
+        name: "credentials",
         credentials: {
           identidade: {label: "Identidade", type: "text", placeholder: "Identidade"},
           senha: { label: "Senha", type: "password" },
           ip: {type: "text"}
         },
         authorize: async (credentials) => {
+
             const { data } = await api.post("/auth", {
                 identidade: credentials?.identidade,
                 senha: credentials?.senha,
                 ip: credentials?.ip
             });
-            
             if (data) {
               return data
             }else{
@@ -42,16 +40,17 @@ export default NextAuth({
         if (token) {
           session.id = token.id as string;
         }
-        const { data } = await api.get<Militar>(`/me/${session.id}` );
+        const { data } = await api.get<Militar>(`/me/${session.id}`);
+        console.log(data)
         return {
           ...session,
           militar: data,
-          token: data['token']
+          token: data.token
         };
       },
     },
     pages: {
-      signIn: "/", 
+      signIn: "/dashboard", 
       signOut: "/",
       error: "/", 
     },

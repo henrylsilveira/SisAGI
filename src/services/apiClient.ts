@@ -3,10 +3,10 @@ import axios from 'axios';
 export function setupAPIClient() {
 
   const api = axios.create({
-    baseURL: 'https://sisagiserver.onrender.com/'
-      // process.env.NODE_ENV === "development"
-      //   ? "http://localhost:3333/"
-      //   : "http://localhost:10000/",
+    baseURL: 
+      process.env.NODE_ENV === "development"
+        ? "http://localhost:3333/"
+        : 'https://sisagiserver.onrender.com/',
     // headers: {
     //     Authorization: `Bearer ${cookies['nextauth.token']}`,
     // }

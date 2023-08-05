@@ -53,6 +53,8 @@ export interface Militar {
   Funcao?: FuncaoMilitarArray;
   Feedback?: FeedbackArray;
   _count?: Object;
+  //SESSION
+  token?: string;
 }
 
 export type MilitarArray = Militar[];
