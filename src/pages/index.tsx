@@ -15,13 +15,12 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
 import { useEffect } from "react";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 
 import { signIn, useSession } from "next-auth/react";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { getUserIP } from "../utils/scripts";
-import error from "next/error";
 
 type SignInFormData = {
   identidade: string;
@@ -44,6 +43,7 @@ export default function Home() {
   });
   const { data: session, status } = useSession();
   const toast = useToast();
+
   useEffect(() => {
     if (session && status === "authenticated") {
       Router.push("/dashboard");
@@ -53,15 +53,13 @@ export default function Home() {
   }, [session, status]);
 
   const handleSignIn: SubmitHandler<SignInFormData> = async (values) => {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     const res = await signIn("credentials", {
       identidade: values.identidade,
       senha: values.senha,
       ip: await getUserIP(),
     });
-    console.log(res)
-    if (res?.error) { console.log(error); }
 
     if (res.error) {
       toast({

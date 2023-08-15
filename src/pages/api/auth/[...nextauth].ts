@@ -5,7 +5,6 @@ import { Militar } from "../../../@types/types";
 
 
 export default NextAuth({
-    secret: process.env.SECRET_KEY_JWT,
     providers: [
       CredentialProvider({
         name: "credentials",
@@ -14,8 +13,7 @@ export default NextAuth({
           senha: { label: "Senha", type: "password" },
           ip: {type: "text"}
         },
-        authorize: async (credentials) => {
-
+        authorize: async (credentials, req) => {
             const { data } = await api.post("/auth", {
                 identidade: credentials?.identidade,
                 senha: credentials?.senha,
@@ -24,7 +22,7 @@ export default NextAuth({
             if (data) {
               return data
             }else{
-              throw new Error();
+              return null
             }
         },
       }),
@@ -41,7 +39,6 @@ export default NextAuth({
           session.id = token.id as string;
         }
         const { data } = await api.get<Militar>(`/me/${session.id}`);
-        console.log(data)
         return {
           ...session,
           militar: data,
@@ -49,19 +46,8 @@ export default NextAuth({
         };
       },
     },
-    pages: {
-      signIn: "/dashboard", 
-      signOut: "/",
-      error: "/", 
-    },
     jwt: {
       secret: process.env.SECRET_KEY_JWT,
       maxAge: 24 * 60 * 60,
     },
-    debug: true,
-    session: {
-      strategy: "jwt",
-      maxAge: 24 * 60 * 60,
-    },
-    useSecureCookies: true
   })
