@@ -7,7 +7,7 @@ import { Militar } from "../../../@types/types";
 export default NextAuth({
     providers: [
       CredentialProvider({
-        name: "credentials",
+        name: "Credentials",
         credentials: {
           identidade: {label: "Identidade", type: "text", placeholder: "Identidade"},
           senha: { label: "Senha", type: "password" },
