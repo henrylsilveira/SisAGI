@@ -1,19 +1,19 @@
 import NextAuth from "next-auth"
-import CredentialProvider from "next-auth/providers/credentials"
+import CredentialsProvider from "next-auth/providers/credentials"
 import { api } from "../../../services/api";
 import { Militar } from "../../../@types/types";
 
 
 export default NextAuth({
     providers: [
-      CredentialProvider({
+      CredentialsProvider({
         name: "Credentials",
         credentials: {
           identidade: {label: "Identidade", type: "text", placeholder: "Identidade"},
           senha: { label: "Senha", type: "password" },
           ip: {type: "text"}
         },
-        authorize: async (credentials, req) => {
+        async authorize(credentials, req) {
             const { data } = await api.post("/auth", {
                 identidade: credentials?.identidade,
                 senha: credentials?.senha,
