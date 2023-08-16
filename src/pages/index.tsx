@@ -25,11 +25,13 @@ import { getUserIP } from "../utils/scripts";
 type SignInFormData = {
   identidade: string;
   senha: string;
+  ip?: string;
 };
 
 const signInFormSchema = yup.object().shape({
   identidade: yup.string().required("Obrigatório."),
   senha: yup.string().required("Senha obrigatória."),
+  ip: yup.string()
 });
 
 export default function Home() {
@@ -59,9 +61,10 @@ export default function Home() {
       identidade: values.identidade,
       senha: values.senha,
       ip: await getUserIP(),
+      
     });
-
-    if (res.error) {
+    console.log(res);
+    if (res === null) {
       toast({
         title: "Login",
         description: "Senha ou indentidade incorreta.",
