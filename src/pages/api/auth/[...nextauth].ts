@@ -8,7 +8,7 @@ export default NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
-      name: "credentials",
+      name: "Credentials",
       credentials: {
         identidade: { label: "Identidade", type: "text", placeholder: "Identidade" },
         senha: { label: "Senha", type: "password" },
