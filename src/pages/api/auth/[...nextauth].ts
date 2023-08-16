@@ -1,5 +1,4 @@
 import NextAuth from "next-auth"
-import CredentialsProvider from "next-auth/providers/credentials"
 import { api } from "../../../services/api";
 import { Militar } from "../../../@types/types";
 import Credentials from "next-auth/providers/credentials";
@@ -10,7 +9,7 @@ export default NextAuth({
   providers: [
     Credentials({
       id: 'credentials',
-      name: "Credentials",
+      name: "credentials",
       credentials: {
         identidade: { label: "Identidade", type: "text", placeholder: "Identidade" },
         senha: { label: "Senha", type: "password" },
