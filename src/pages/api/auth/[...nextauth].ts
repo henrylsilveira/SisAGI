@@ -1,13 +1,13 @@
 import NextAuth from "next-auth"
 import { api } from "../../../services/api";
 import { Militar } from "../../../@types/types";
-import Credentials from "next-auth/providers/credentials";
+import CredentialsProvider  from "next-auth/providers/credentials";
 
 
 export default NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
-    Credentials({
+    CredentialsProvider({
       id: 'credentials',
       name: "credentials",
       credentials: {
