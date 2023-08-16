@@ -61,7 +61,7 @@ export default function Home() {
       identidade: values.identidade,
       senha: values.senha,
       ip: await getUserIP(),
-      
+      callbackUrl: "/dashboard"      
     });
     console.log(res);
     if (res === null) {
@@ -74,7 +74,6 @@ export default function Home() {
       });
       return Router.push("/");
     }
-    Router.push("/dashboard");
   };
 
   return (
