@@ -22,7 +22,7 @@ export default NextAuth({
           senha: credentials?.senha,
           ip: credentials?.ip
         });
-        console.log(res.status)
+        console.log(res)
         if (res.data) {
           return res.data
         } else {
@@ -57,8 +57,9 @@ export default NextAuth({
     signIn: "/",
     error: "/"
   },
-  // jwt: {
-  //   secret: process.env.SECRET_KEY_JWT,
-  //   maxAge: 24 * 60 * 60,
-  // },
+  debug: process.env.NODE_ENV === 'development',
+  jwt: {
+    secret: process.env.NEXTAUTH_SECRET,
+    maxAge: 24 * 60 * 60,
+  },
 })
