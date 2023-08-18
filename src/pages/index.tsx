@@ -63,8 +63,8 @@ export default function Home() {
       ip: await getUserIP(),
       callbackUrl: "/dashboard"      
     });
-    console.log(res);
-    if (res === null) {
+    
+    if (!res) {
       toast({
         title: "Login",
         description: "Senha ou indentidade incorreta.",

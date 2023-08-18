@@ -69,7 +69,7 @@ const signInFormSchema = yup.object().shape({
 export default function Cadastro() {
   const toast = useToast();
   const [senha, setSenha] = useState("")
-  console.log(senha)
+  
   const {
     register,
     handleSubmit,
