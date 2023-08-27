@@ -14,9 +14,11 @@ import { api } from "../../services/api";
 import { CautelaArray } from "../../@types/types";
 import { NotData } from "../NotData";
 import { NotLoaded } from "../NotLoaded";
+import { useState } from "react";
 
 export function CautelasComponentPainel() {
   const { data: session } = useSession();
+  const [first, setfirst] = useState()
 
   const { data, isLoading } = useQuery(["todasCautelas"], async () => {
     const result = await api.get<CautelaArray>(
