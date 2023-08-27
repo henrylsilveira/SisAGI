@@ -7,7 +7,7 @@ export function setupAPIClient() {
     // 'https://b0cd-18-228-7-33.ngrok.io'
       process.env.NODE_ENV === "development"
         ? "http://localhost:3333/"
-        : 'https://b8c9-15-229-147-76.ngrok-free.app',
+        : 'https://sisagiserver.onrender.com',
     // headers: {
     //     Authorization: `Bearer ${cookies['nextauth.token']}`, 
     // }
