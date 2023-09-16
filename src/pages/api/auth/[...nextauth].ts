@@ -2,12 +2,13 @@ import NextAuth from "next-auth"
 import { api } from "../../../services/api";
 import { Militar } from "../../../@types/types";
 import CredentialsProvider  from "next-auth/providers/credentials";
+import Credentials from "next-auth/providers/credentials";
 
 
 export default NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
-    CredentialsProvider({
+    Credentials({
       id: 'credentials',
       name: "credentials",
       credentials: {
@@ -22,7 +23,6 @@ export default NextAuth({
           senha: credentials?.senha,
           ip: credentials?.ip
         });
-        console.log(res)
         if (res.data) {
           return res.data
         } else {
@@ -54,7 +54,8 @@ export default NextAuth({
     },
   },
   pages: {
-    signIn: "/",
+    signIn: "/dashboard",
+    signOut: "/",
     error: "/"
   },
   debug: process.env.NODE_ENV === 'development',

@@ -1,11 +1,25 @@
 import { Grid, Flex, Avatar, AvatarBadge, Text, Divider, Icon, Button } from "@chakra-ui/react";
 import { convertDate, convertISODateToInputValue, formatarDataHora, generateNowISOTime, returnAvatarImage } from "../../../utils/scripts";
-import { Missao, MissaoArray } from "../../../@types/types";
-import { memo } from "react";
+import { Militar, Missao, MissaoArray } from "../../../@types/types";
+import { memo, useState } from "react";
 import { FiCheck } from "react-icons/fi";
+import { useQuery } from "react-query";
+import { api } from "../../../services/api";
 
 function CardMissaoComponent(props) {
   const missoes = props.missoes;
+  const [militar,setMilitar] = useState({})
+  
+  async function getMilitarId(id: string, type: "nome" | "avatar") {
+    const result = await api.get<Militar>(`/militar/${id}`)
+    if(type === 'nome'){
+      return result.data.nome_completo
+    }else if(type === 'avatar'){
+      return result.data.nome_completo
+    }
+    return setMilitar(militar)
+  }
+
   return missoes.map((missao: Missao, index) => (
     <Grid
       gridTemplateColumns="1fr 3fr"
@@ -46,22 +60,22 @@ function CardMissaoComponent(props) {
         </Text>
         <Divider borderColor="green.700" />
         <Flex gap={2} ml="auto">
-            <Button bg="gray.990"
-          size="md"
-          _hover={{ border: "1px", borderColor: "green.700" }}
-          py="1"
-          boxShadow="buttonShadow">
+          <Button bg="gray.990"
+            size="md"
+            _hover={{ border: "1px", borderColor: "green.700" }}
+            py="1"
+            boxShadow="buttonShadow">
             <Icon as={FiCheck} />
-        </Button>
-        <Button bg="gray.990"
-          size="md"
-          _hover={{ border: "1px", borderColor: "green.700" }}
-          py="1"
-          boxShadow="buttonShadow">
+          </Button>
+          <Button bg="gray.990"
+            size="md"
+            _hover={{ border: "1px", borderColor: "green.700" }}
+            py="1"
+            boxShadow="buttonShadow">
             <Icon as={FiCheck} />
-        </Button>
+          </Button>
         </Flex>
-        
+
       </Flex>
     </Grid>
   ));

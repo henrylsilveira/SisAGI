@@ -7,7 +7,7 @@ export default function minhaFracao() {
     return (
         <>
           <Head>
-            <title>SisAGI | Minhas Cautelas</title>
+            <title>SisAGI | Minha Fração</title>
           </Head>
     
           <Flex direction="column" flex="1" gap={4}>

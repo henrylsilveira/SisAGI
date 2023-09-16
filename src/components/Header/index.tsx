@@ -17,7 +17,6 @@ export function Header() {
 
   useEffect(() => {
     if(!session || status !== 'authenticated') {
-        Router.push('/')
         toast({
           title: 'Autenticação inválida.',
           description: `Seu token de acesso venceu, realize o login novamente. `,
@@ -25,9 +24,9 @@ export function Header() {
           duration: 3000,
           isClosable: true,
         })
-        return
+        Router.push('/')
       }
-}, [session, toast, status])
+}, [session, status])
 
   const isWideVersion = useBreakpointValue({
     base: false,

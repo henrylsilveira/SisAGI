@@ -50,6 +50,7 @@ export default function Home() {
     if (session && status === "authenticated") {
       Router.push("/dashboard");
     } else {
+      Router.push("/");
       return;
     }
   }, [session, status]);
@@ -74,6 +75,7 @@ export default function Home() {
       });
       return Router.push("/");
     }
+    return Router.push("/dashboard");
   };
 
   return (

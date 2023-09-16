@@ -15,6 +15,7 @@ import {
 } from "../../../utils/scripts";
 import { memo, useState } from "react";
 import { api } from "../../../services/api";
+import { useRouter } from "next/router";
 
 function AtribuirFuncaoComponent(props) {
   const [dataInicio, setDataInicio] = useState("");
@@ -22,6 +23,7 @@ function AtribuirFuncaoComponent(props) {
   const [funcao, setFuncao] = useState("");
 
   const mil = props.militar as Militar;
+  const { asPath } = useRouter();
   const toast = useToast();
 
   async function handleSubmitFunction() {
@@ -96,15 +98,24 @@ function AtribuirFuncaoComponent(props) {
             onChange={(e) => setFuncao(e.target.value)}
           >
             <option>Selecione</option>
-            <option value="super admin">Super Administrador</option>
-            <option value="cmt cia">Comandante de Cia</option>
-            <option value="enc mat">Encarregado de material</option>
-            <option value="sgte">Sargenteante</option>
-            <option value="armeiro">Armeiro</option>
-            <option value="cmt pel">Comandante de Pelotão</option>
-            <option value="cmt gda">Comandante da Guarda</option>
-            <option value="furriel">Furriel</option>
-            <option value="comum">Comum</option>
+            {mil?.Funcao.find((func) => func.funcao == "super admin" ) && asPath == "/superAdmin/usuarios" ? (
+              <>
+                <option value="super admin">Super Administrador</option>
+                <option value="s2">S/2</option>
+              </>
+            ) : (
+              <>
+                <option value="cmt cia">Comandante de Cia</option>
+                <option value="enc mat">Encarregado de material</option>
+                <option value="sgte">Sargenteante</option>
+                <option value="armeiro">Armeiro</option>
+                <option value="cmt pel">Comandante de Pelotão</option>
+                <option value="cmt gda">Comandante da Guarda</option>
+                <option value="furriel">Furriel</option>
+                <option value="comum">Comum</option>
+              </>
+            )}
+            
           </Input>
           <FormHelperText>
             Selecione a função que deseja atribuir
@@ -119,6 +130,7 @@ function AtribuirFuncaoComponent(props) {
             border="1px"
             borderColor="gray.700"
             _hover={{ bgColor: "gray.990" }}
+            isRequired
             onChange={(e) => setDataInicio(e.target.value)}
           />
           <FormHelperText>MM/DD/AAAA</FormHelperText>
@@ -132,6 +144,7 @@ function AtribuirFuncaoComponent(props) {
             border="1px"
             borderColor="gray.700"
             _hover={{ bgColor: "gray.990" }}
+            isRequired
             onChange={(e) => setDataTermino(e.target.value)}
           />
           <FormHelperText>MM/DD/AAAA</FormHelperText>

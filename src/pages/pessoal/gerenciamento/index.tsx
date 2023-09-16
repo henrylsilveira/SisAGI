@@ -34,6 +34,7 @@ import { Endereco } from "../../../components/SuperAdmin/Forms/Endereco";
 import { useSession } from "next-auth/react";
 import ReactPaginate from "react-paginate";
 import { NotLoaded } from "../../../components/NotLoaded";
+import { AtribuirFuncao } from "../../../components/SuperAdmin/Forms/AtribuirFuncao";
 
 export default function GerenciamentoPessoal() {
   const { data: session } = useSession();

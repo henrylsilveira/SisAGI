@@ -313,7 +313,7 @@ export function DadosMilitares(props) {
           </FormControl>
           <ListarFuncao militar={mil} />
   
-          {session?.militar.Funcao.find((func) => func.funcao == "super admin") && asPath == "/superAdmin/usuarios" ? (
+          {session?.militar.Funcao.find((func) => func.funcao == "super admin" || "sgte") && asPath == "/superAdmin/usuarios" || "/pessoal/gerenciamento" ? (
             <>
               <AtribuirFuncao militar={mil} />
             </>

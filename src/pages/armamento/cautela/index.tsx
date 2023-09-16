@@ -203,6 +203,7 @@ export default function CautelaArmamento() {
                               data={militares}
                               dataArmamento={arma}
                               adapter={true}
+                              refresh={refetch}
                             />
                           </Tag>
                         ))}
@@ -231,7 +232,7 @@ export default function CautelaArmamento() {
                         <Th textAlign="center">Nr de série</Th>
                         <Th textAlign="center">Cabide</Th>
                         <Th textAlign="center">Condições</Th>
-                        <Th textAlign="center">Cocal</Th>
+                        <Th textAlign="center">Local</Th>
                         <Th textAlign="center">Status</Th>
                         <Th></Th>
                       </Tr>
@@ -329,6 +330,7 @@ export default function CautelaArmamento() {
                                   data={militares}
                                   dataArmamento={res}
                                   adapter={false}
+                                  refresh={refetch}
                                 />
                               )}
                             </Td>
@@ -337,10 +339,11 @@ export default function CautelaArmamento() {
                     </Tbody>
                     <Tfoot>
                       <Tr>
-                        <Th textAlign="center">Nome</Th>
+                      <Th textAlign="center">Nome</Th>
                         <Th textAlign="center">Nr de série</Th>
+                        <Th textAlign="center">Cabide</Th>
                         <Th textAlign="center">Condições</Th>
-                        <Th textAlign="center">Companhia</Th>
+                        <Th textAlign="center">Local</Th>
                         <Th textAlign="center">Status</Th>
                         <Th></Th>
                       </Tr>

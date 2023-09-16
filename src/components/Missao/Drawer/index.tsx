@@ -64,51 +64,12 @@ export function MissaoDrawer() {
   const toast = useToast();
 
   const [result, setResult] = useState<MissaoArray>();
-
   const btnRef = React.useRef();
 
   useQuery(["todasMissoesMilitar"], async () => {
     const result = await api.get<MissaoArray>(`/missao/${session.militar.id}`);
     setResult(result.data);
   });
-
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-
-    //   const values: Missao = {
-    //     id
-    //   };
-
-    try {
-      const result = await api.post("/missao/create");
-      if (result.status === 201) {
-        toast({
-          title: "Missão",
-          description: "Missão foi designada com sucesso.",
-          status: "success",
-          duration: 2000,
-          isClosable: true,
-        });
-        onClose();
-      } else {
-        toast({
-          title: "Missão",
-          description: "Falha ao designada a missao",
-          status: "error",
-          duration: 2000,
-          isClosable: true,
-        });
-      }
-    } catch (error) {
-      toast({
-        title: "Erro interno.",
-        description: "Contate o desenvolvedor da aplicação",
-        status: "error",
-        duration: 2000,
-        isClosable: true,
-      });
-    }
-  }
 
   return (
     <>

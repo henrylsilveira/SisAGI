@@ -37,6 +37,21 @@ export function SidebarNav() {
         </NavSection>
       ) : null}
 
+{session?.militar.Funcao.find((func) => func.funcao === "s2") ? (
+  //DESENVOLVER AS PAGINAS
+        <NavSection title="S/2">
+          <NavLink href="/s2/dbq" icon={IoIosPeople}>
+            DBQ
+          </NavLink>
+          <NavLink href="/s2/lea" icon={RiShieldKeyholeLine}>
+            LEA
+          </NavLink>
+          <NavLink href="/s2/mi" icon={RiShieldKeyholeLine}>
+            MI
+          </NavLink>
+        </NavSection>
+      ) : null}
+
       {session?.militar.Funcao.find((func) => func.funcao === "comum") ? (
         <NavSection title="PAINEL DO MILITAR">
           <NavLink href="/painel/perfil" icon={RiContactsLine}>

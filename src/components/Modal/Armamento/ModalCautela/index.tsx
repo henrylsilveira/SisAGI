@@ -31,9 +31,10 @@ interface ModalCautelaProps {
   data: any;
   dataArmamento: Armamento;
   adapter: boolean;
+  refresh: () => {}
 }
 
-export function ModalCautela({ data: militares,  dataArmamento: armamento, adapter }: ModalCautelaProps) {
+export function ModalCautela({ data: militares,  dataArmamento: armamento, adapter, refresh }: ModalCautelaProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { data: session } = useSession()
   const toast = useToast();
@@ -67,6 +68,7 @@ export function ModalCautela({ data: militares,  dataArmamento: armamento, adapt
         setSenha("");
         setMilitar("");
         onClose();
+        refresh();
       } else {
         toast({
           title: "Cautela",

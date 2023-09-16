@@ -90,6 +90,7 @@ export default function Cadastro() {
     try {
       const result = await api.post("/material/create", values);
       if (result.status == 201) {
+        refetch;
         toast({
           title: "Material cadastrado.",
           description: "Os dados do material foram cadastrados no sistema.",
@@ -97,7 +98,7 @@ export default function Cadastro() {
           duration: 2000,
           isClosable: true,
         });
-        refetch;
+        
       }
     } catch (error) {
       toast({

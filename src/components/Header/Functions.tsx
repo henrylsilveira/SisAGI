@@ -5,7 +5,7 @@ import {
   Grid,
 } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
-import { FuncaoMilitar } from "../../@types/types";
+import { FuncaoMilitar, FuncaoMilitarArray } from "../../@types/types";
 
 interface ProfileProps {
   showProfileData?: boolean;
@@ -13,7 +13,7 @@ interface ProfileProps {
 
 export function Functions({ showProfileData = true }: ProfileProps) {
   const { data: session } = useSession();
-  const { Funcao } = session.militar
+  const Funcao: FuncaoMilitarArray = session?.militar.Funcao
   const colors = ['green', 'yellow', 'blue','red','orange', 'gray', 'green', 'purple'];
   // console.log(colors[Math.floor(Math.random() * colors.length)])
   return (
