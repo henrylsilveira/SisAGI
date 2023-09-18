@@ -1,7 +1,7 @@
 import NextAuth from "next-auth"
 import { api } from "../../../services/api";
 import { Militar } from "../../../@types/types";
-import CredentialsProvider  from "next-auth/providers/credentials";
+import CredentialsProvider from "next-auth/providers/credentials";
 import Credentials from "next-auth/providers/credentials";
 
 
@@ -17,16 +17,20 @@ export default NextAuth({
         ip: { type: "text" }
       },
       async authorize(credentials, req) {
-        
-        const res = await api.post('/auth', {
-          identidade: credentials?.identidade,
-          senha: credentials?.senha,
-          ip: credentials?.ip
-        });
-        if (res.data) {
-          return res.data
-        } else {
-          return null
+        try {
+          const res = await api.post('/auth', {
+            identidade: credentials?.identidade,
+            senha: credentials?.senha,
+            ip: credentials?.ip
+          });
+          if (res.data) {
+            return res.data
+          } else {
+            return null
+          }
+        } catch (error) {
+          const message = error.response.data.message;
+          throw new Error(message);
         }
       },
     }),
@@ -56,7 +60,6 @@ export default NextAuth({
   pages: {
     signIn: "/dashboard",
     signOut: "/",
-    error: "/"
   },
   debug: process.env.NODE_ENV === 'development',
   jwt: {

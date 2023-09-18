@@ -21,29 +21,33 @@ import Link from "next/link";
 import { verificaSenha } from '../../utils/scripts';
 import { useState } from "react";
 
-// import { faker } from '@faker-js/faker'
 
-// if(process.env.NODE_ENV === "development"){
-//   const amountOfUsers = 200;
+// CODIGO PARA SIMULAR MILITARES NO BANCO DE DADOS
+/**
+ * import { faker } from '@faker-js/faker'
+ * if(process.env.NODE_ENV === "development"){
+ * const amountOfUsers = 200;
 
-//   for (let i = 0; i < amountOfUsers; i++) {
-//     const firstName = faker.name.firstName()
-//     const lastName = faker.name.lastName()
+  for (let i = 0; i < amountOfUsers; i++) {
+    const firstName = faker.name.firstName()
+    const lastName = faker.name.lastName()
 
-//     const militar = {
-//         nomeCompleto: faker.name.fullName({ firstName, lastName }),
-//         nomeGuerra: faker.name.firstName(),
-//         identidade: faker.random.numeric(10),
-//         postoGrad: faker.helpers.arrayElement(['SD', 'CB', '3 SGT', '2 SGT', '1 SGT', 'SUB TEN', '2 TEN', '1 TEN', 'CAP', 'MAJ', 'TEN CEL', 'CEL']),
-//         senha: '123456',
-//         companhia: faker.helpers.arrayElement(['1 CIA', '2 CIA', '3 CIA', 'CCAp', 'EM']),
-//         pelotao: faker.helpers.arrayElement(['1 PEL', '2 PEL', '3 PEL', 'SEC CMDO', 'PEL AP']),
-//     };
+    const militar = {
+        nomeCompleto: faker.name.fullName({ firstName, lastName }),
+        nomeGuerra: faker.name.firstName(),
+        identidade: faker.random.numeric(10),
+        postoGrad: faker.helpers.arrayElement(['SD', 'CB', '3 SGT', '2 SGT', '1 SGT', 'SUB TEN', '2 TEN', '1 TEN', 'CAP', 'MAJ', 'TEN CEL', 'CEL']),
+        senha: '123456',
+        companhia: faker.helpers.arrayElement(['1 CIA', '2 CIA', '3 CIA', 'CCAp', 'EM']),
+        pelotao: faker.helpers.arrayElement(['1 PEL', '2 PEL', '3 PEL', 'SEC CMDO', 'PEL AP']),
+    };
 
-//     const createMilitar = async () => await api.post("/militar/create", militar)
-//     createMilitar()
-//   }
-// }
+    const createMilitar = async () => await api.post("/militar/create", militar)
+    createMilitar()
+  }
+}
+ */
+
 
 
 type SignInFormData = {
@@ -69,7 +73,7 @@ const signInFormSchema = yup.object().shape({
 export default function Cadastro() {
   const toast = useToast();
   const [senha, setSenha] = useState("")
-  
+
   const {
     register,
     handleSubmit,
@@ -114,13 +118,13 @@ export default function Cadastro() {
   return (
     <Flex w="100vw" flexDir="row" align="center" justify="center" my={4}>
       <Grid
-        gridTemplateColumns={["1fr","1fr","1fr 1fr"]}
+        gridTemplateColumns={["1fr", "1fr", "1fr 1fr"]}
         boxShadow="buttonShadow"
         bg="#1b1b1b44" backdropFilter="blur(5px)"
         rounded="2xl"
         px={8}
       >
-        <Flex w={["200px","300px", "300px"]} mx="auto" align="center" justify="center">
+        <Flex w={["200px", "300px", "300px"]} mx="auto" align="center" justify="center">
           <Image src="./img/CFRN5BIS.png" alt="brasão Cmdo Fron RN / 5 BIS" />
         </Flex>
         <Flex
@@ -242,15 +246,15 @@ export default function Cadastro() {
             </Input>
             <FormControl>
               <Input
-              name="senha"
-              label="Senha"
-              type="password"
-              error={errors.senha}
-              onFocus={(e) => setSenha(verificaSenha(e.target.value))}
-              {...register("senha")}
-            />
-            <FormHelperText color="red.600">{senha}</FormHelperText>
-            </FormControl>            
+                name="senha"
+                label="Senha"
+                type="password"
+                error={errors.senha}
+                onFocus={(e) => setSenha(verificaSenha(e.target.value))}
+                {...register("senha")}
+              />
+              <FormHelperText color="red.600">{senha}</FormHelperText>
+            </FormControl>
             <Flex flexDir="row" justifyContent="space-between">
               <Button
                 type="submit"

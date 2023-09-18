@@ -59,21 +59,22 @@ export default function Home() {
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     const res = await signIn("credentials", {
+      redirect: false,
       identidade: values.identidade,
       senha: values.senha,
       ip: await getUserIP(),
       callbackUrl: "/dashboard"      
     });
-    
-    if (!res) {
+
+    if (res.error) {
       toast({
         title: "Login",
-        description: "Senha ou indentidade incorreta.",
+        description: res.error,
         status: "error",
         duration: 3000,
         isClosable: true,
       });
-      return Router.push("/");
+      return ;
     }
     return Router.push("/dashboard");
   };
