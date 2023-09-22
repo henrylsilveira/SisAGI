@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 
 import Head from "next/head";
-import { returnAvatarImage, convertDate } from '../../../utils/scripts';
+import { returnAvatarImage, convertDate, convertISODateToInputValue } from '../../../utils/scripts';
 import { FormEvent, useState } from "react";
 import { api } from "../../../services/api";
 import * as yup from "yup";
@@ -31,7 +31,6 @@ import { FiAlertTriangle, FiUserPlus } from "react-icons/fi";
 import { useSession } from "next-auth/react";
 
 import { BsEyeSlashFill, BsFillPeopleFill } from "react-icons/bs";
-import { useRouter } from "next/router";
 
 
 type DbqFormData = {
@@ -40,6 +39,7 @@ type DbqFormData = {
   cpf: string;
   nomePai: string;
   nomeMae: string;
+  dataNascimento: string;
   origem: string;
   destino: string;
   profissao: string;
@@ -51,6 +51,7 @@ type DbqFormData = {
 const signInFormSchema = yup.object().shape({
   nomeCompleto: yup.string().required("Obrigatório"),
   identidade: yup.string(),
+  dataNascimento: yup.string(),
   cpf: yup.string(),
   nomePai: yup.string(),
   nomeMae: yup.string(),
@@ -73,11 +74,11 @@ export default function DbqPage() {
   const [previewUrlDbqDoc, setPreviewUrlDbqDoc] = useState(null);
   const { data: session } = useSession()
   const toast = useToast()
-  const router = useRouter()
 
   const {
     register,
     handleSubmit,
+    reset,
     formState,
     formState: { errors },
   } = useForm({
@@ -103,6 +104,7 @@ export default function DbqPage() {
     setCivil(null)
     setDbq(null)
     setDbqRecentes(null)
+    reset()
   }
 
   function handleFileInputChange(event, input) {
@@ -307,6 +309,14 @@ export default function DbqPage() {
                   error={errors.nomeCompleto}
                   defaultValue={civil?.nomeCompleto}
                   {...register("nomeCompleto")}
+                />
+                <Input
+                  name="dataNascimento"
+                  label="Data de Nascimento"
+                  type="date"
+                  error={errors.dataNascimento}
+                  defaultValue={convertISODateToInputValue(civil?.dataNascimento)}
+                  {...register("dataNascimento")}
                 />
                 <Input
                   name="cpf"

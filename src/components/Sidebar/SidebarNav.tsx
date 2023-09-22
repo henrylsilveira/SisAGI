@@ -5,6 +5,7 @@ import {
   RiDraftLine,
   RiSearchLine,
   RiBook2Line,
+  RiShieldKeyholeLine,
 } from "react-icons/ri";
 import { GiTrade, GiAmmoBox, GiOilDrum } from "react-icons/gi";
 import { HiOutlineUserGroup } from "react-icons/hi";
@@ -13,7 +14,9 @@ import { FaTools } from "react-icons/fa";
 import { FaPeopleCarry } from "react-icons/fa";
 import { IoIosPeople } from "react-icons/io";
 // import { GoSettings } from "react-icons/go";
-import { RiShieldKeyholeLine } from "react-icons/ri";
+import { BsPeople } from "react-icons/bs";
+import { BsFillPersonLinesFill, BsPersonPlus } from "react-icons/bs";
+import { GiTruck } from "react-icons/gi"; 
 import { NavLink } from "./NavLink";
 import { NavSection } from "./NavSection";
 import { useSession } from "next-auth/react";
@@ -135,17 +138,17 @@ export function SidebarNav() {
 
       {session?.militar.Funcao.find((func) => func.funcao === "cmt gda") ? (
         <NavSection title="CMT DA GDA">
-          <NavLink href="#" icon={RiDashboardLine}>
+          <NavLink href="/cmtGda/geral" icon={BsPeople}>
             Geral
           </NavLink>
-          <NavLink href="#" icon={GiAmmoBox}>
-            Pessoal
+          <NavLink href="/cmtGda/cadastro" icon={BsPersonPlus}>
+            Cadastro
           </NavLink>
-          <NavLink href="#" icon={GiOilDrum}>
-            Viatura
-          </NavLink>
-          <NavLink href="#" icon={GiOilDrum}>
+          <NavLink href="/cmtGda/civil" icon={BsFillPersonLinesFill}>
             Civil
+          </NavLink>
+          <NavLink href="/cmtGda/viatura" icon={GiTruck}>
+            Viatura
           </NavLink>
         </NavSection>
       ) : null}

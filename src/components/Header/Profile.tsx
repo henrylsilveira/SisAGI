@@ -51,7 +51,7 @@ export function Profile({ showProfileData = true }: ProfileProps) {
           </Avatar>
           {!showProfileData && ( 
              <Badge variant="outline" colorScheme="yellow" mx='auto' zIndex="base">
-             { session?.militar.companhia } / {session?.militar.pelotao}
+             {session?.militar.companhia } / {session?.militar.pelotao}
                </Badge>
           )}
       </Flex>

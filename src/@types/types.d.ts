@@ -64,6 +64,7 @@ export interface Civil {
   foto: string;
   fotoDoc: string;
   nomeCompleto: string;
+  dataNascimento: Date;
   identidade?: string;
   cpf?: string;
   nomePai?: string;

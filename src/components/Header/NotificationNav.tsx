@@ -1,7 +1,6 @@
 import { Button, HStack, Icon } from "@chakra-ui/react";
 import { signOut } from "next-auth/react";
 import { BsBoxArrowLeft } from "react-icons/bs";
-import { RiNotificationLine, RiUserAddLine } from "react-icons/ri";
 import { MissaoModal } from "../Missao/Modal/Missao";
 import { MissaoDrawer } from "../Missao/Drawer";
 
@@ -16,7 +15,9 @@ export function NotificationNav() {
       ml='auto'
       pr={4}
     >
+      {/* Colocar um condição para so ser acessivel o menu de missao para postos e grad acima de CB */}
       <MissaoDrawer />
+
       <MissaoModal />
       <Button
         bgGradient="linear(to-tr, red.900, gray.990, gray.990 )"
