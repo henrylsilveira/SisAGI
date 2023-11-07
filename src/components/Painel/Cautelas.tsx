@@ -108,7 +108,7 @@ export function CautelasComponentPainel() {
           cautela.status === 'ativo' &&
             cautela.cautelou.nome_guerra === session.militar.nome_guerra
         ).length !== 0 ? (
-        <Grid gridTemplateColumns={["1fr", "1fr 1fr"]} mb={4} pb={4} mx={4}>
+        <Grid gridTemplateColumns={["1fr","1fr", "1fr 1fr"]} mb={4} pb={4} mx={4}>
           {/* UMA OBRA DE ARTE ESSE CODIGO ABAIXO */}
           {isLoading ? (
             <NotLoaded />
@@ -129,7 +129,7 @@ export function CautelasComponentPainel() {
                 alignItems="center"
                 justifyContent="space-between"
               >
-                <VStack>
+                <VStack flex={1} textAlign="center">
                   <Text mr={2}>{nomeMaterial}</Text>
                   <HStack>
                     <Tag bgColor="green.600" color="white">

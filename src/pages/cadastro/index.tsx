@@ -23,30 +23,30 @@ import { useState } from "react";
 
 
 // CODIGO PARA SIMULAR MILITARES NO BANCO DE DADOS
-/**
- * import { faker } from '@faker-js/faker'
- * if(process.env.NODE_ENV === "development"){
- * const amountOfUsers = 200;
 
-  for (let i = 0; i < amountOfUsers; i++) {
-    const firstName = faker.name.firstName()
-    const lastName = faker.name.lastName()
+//  import { faker } from '@faker-js/faker'
+//  if(process.env.NODE_ENV === "development"){
+//  const amountOfUsers = 80;
 
-    const militar = {
-        nomeCompleto: faker.name.fullName({ firstName, lastName }),
-        nomeGuerra: faker.name.firstName(),
-        identidade: faker.random.numeric(10),
-        postoGrad: faker.helpers.arrayElement(['SD', 'CB', '3 SGT', '2 SGT', '1 SGT', 'SUB TEN', '2 TEN', '1 TEN', 'CAP', 'MAJ', 'TEN CEL', 'CEL']),
-        senha: '123456',
-        companhia: faker.helpers.arrayElement(['1 CIA', '2 CIA', '3 CIA', 'CCAp', 'EM']),
-        pelotao: faker.helpers.arrayElement(['1 PEL', '2 PEL', '3 PEL', 'SEC CMDO', 'PEL AP']),
-    };
+//   for (let i = 0; i < amountOfUsers; i++) {
+//     const firstName = faker.name.firstName()
+//     const lastName = faker.name.lastName()
 
-    const createMilitar = async () => await api.post("/militar/create", militar)
-    createMilitar()
-  }
-}
- */
+//     const militar = {
+//         nomeCompleto: faker.name.fullName({ firstName, lastName }),
+//         nomeGuerra: faker.name.firstName(),
+//         identidade: faker.random.numeric(10),
+//         postoGrad: faker.helpers.arrayElement(['SD', 'CB', '3 SGT', '2 SGT', '1 SGT', 'SUB TEN', '2 TEN', '1 TEN', 'CAP', 'MAJ', 'TEN CEL', 'CEL']),
+//         senha: '123456',
+//         companhia: faker.helpers.arrayElement(['1 CIA', '2 CIA', '3 CIA', 'CCAp', 'EM']),
+//         pelotao: faker.helpers.arrayElement(['1 PEL', '2 PEL', '3 PEL', 'SEC CMDO', 'PEL AP']),
+//     };
+
+//     const createMilitar = async () => await api.post("/militar/create", militar)
+//     createMilitar()
+//   }
+// }
+
 
 
 

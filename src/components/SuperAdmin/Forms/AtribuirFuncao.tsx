@@ -87,12 +87,13 @@ function AtribuirFuncaoComponent(props) {
         </Button>
       </Flex>
       <Grid m={4}>
-        <FormControl>
+        <FormControl mb={2}>
           <Input
             as="select"
             name="habMilitar"
             bgColor="gray.990"
             border="1px"
+            
             borderColor="gray.700"
             _hover={{ bgColor: "gray.990" }}
             onChange={(e) => setFuncao(e.target.value)}
@@ -121,7 +122,8 @@ function AtribuirFuncaoComponent(props) {
             Selecione a função que deseja atribuir
           </FormHelperText>
         </FormControl>
-        <FormControl>
+        <Grid gridTemplateColumns={['1fr','1fr','1fr 1fr']} gap={2}>
+          <FormControl>
           <Input
             type="date"
             label="Data de Início"
@@ -133,7 +135,7 @@ function AtribuirFuncaoComponent(props) {
             isRequired
             onChange={(e) => setDataInicio(e.target.value)}
           />
-          <FormHelperText>MM/DD/AAAA</FormHelperText>
+
         </FormControl>
         <FormControl>
           <Input
@@ -147,8 +149,10 @@ function AtribuirFuncaoComponent(props) {
             isRequired
             onChange={(e) => setDataTermino(e.target.value)}
           />
-          <FormHelperText>MM/DD/AAAA</FormHelperText>
+
         </FormControl>
+          </Grid>
+        
       </Grid>
     </>
   );

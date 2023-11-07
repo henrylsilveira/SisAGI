@@ -25,7 +25,7 @@ export function Functions({ showProfileData = true }: ProfileProps) {
                 FUNÇÕES
               </Text>
             </Flex>
-            <Grid gridTemplateColumns='1fr 1fr'>
+            <Grid gridTemplateColumns={['1fr 1fr','1fr 1fr','1fr 1fr 1fr']}>
               {Funcao ? Funcao?.filter((func: FuncaoMilitar, index) => {return func.status === 'ativo'}).map((func, index) =>(
                 <Badge key={`${func}-${index}`} textAlign='center' variant="outline" colorScheme={colors[Math.floor(Math.random() * colors.length)]} mx={1} mb={1}>
                   {func.funcao}

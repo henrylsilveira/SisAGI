@@ -154,7 +154,7 @@ export default function Perfil() {
                 </Heading>
               </Flex>
               <Grid
-                gridTemplateColumns={["1fr", "1fr", "1fr", "1fr 2fr"]}
+                gridTemplateColumns={["1fr"]}
                 bg="gray.990"
                 boxShadow="buttonShadow"
                 m={4}
@@ -190,10 +190,10 @@ export default function Perfil() {
                     </Text>
                   </VStack>
                 </Flex>
-                <MissoesPainel
+                {/* <MissoesPainel
                   missoes={missoes}
                   sessionId={sessionId}
-                />
+                /> */}
               </Grid>
             </Flex>
 

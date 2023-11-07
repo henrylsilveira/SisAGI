@@ -85,7 +85,7 @@ export default function MinhasCautelas() {
           alignItems="flex-start"
         >
           <Box p={["6", "8"]} bg="gray.800" borderRadius={8} pb="4">
-            <Grid gridTemplateColumns={["1fr","1fr 1fr "]} gap={4} justifyContent="space-between">
+            <Grid gridTemplateColumns={["1fr","1fr","1fr","1fr 1fr "]} gap={4} justifyContent="space-between">
               <CautelasComponentPainel />
               <ArmamentoComponentPainel />
             </Grid>

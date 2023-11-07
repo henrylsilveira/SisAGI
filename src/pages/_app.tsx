@@ -1,5 +1,5 @@
 import { AppProps } from "next/app";
-import { Center, ChakraProvider, Flex } from "@chakra-ui/react";
+import { Center, ChakraProvider, Flex, Image } from "@chakra-ui/react";
 import { theme } from "../styles/theme";
 import { SidebarDrawerProvider } from "../contexts/SidebarDrawerContext";
 import { QueryClientProvider } from "react-query";
@@ -11,6 +11,8 @@ import { Sidebar } from "../components/Sidebar";
 import { useRouter } from "next/router";
 import { Header } from "../components/Header";
 import '../styles/global.css'
+import { NotLoaded } from "../components/NotLoaded";
+import { Logo } from "../components/Header/Logo";
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const router = useRouter();
   
@@ -46,8 +48,9 @@ function Auth({ children }) {
 
   if (status === "loading") {
     return (
-      <Center h="100vh">
-        <DotLoader size={64} color="#55DD55" />
+      <Center flexDirection="column" h="100vh">
+        <Image w="56" src="./img/logo3.png" alt="SisAGI" />
+        <NotLoaded />
       </Center>
     );
   }

@@ -1,4 +1,4 @@
-import { Flex, Heading, Button, FormControl, FormHelperText, Box, useToast } from "@chakra-ui/react";
+import { Flex, Heading, Button, FormControl, FormHelperText, Box, useToast, Grid } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { FcAcceptDatabase } from "react-icons/fc";
 import { AtribuirFuncao } from "./AtribuirFuncao";
@@ -72,7 +72,7 @@ export function DadosMilitares(props) {
             Dados Militares
           </Heading>
         </Flex>
-        <Box m="auto" w="100%" h="100%" px={4} pb={4}>
+        <Grid gridTemplateColumns={['1fr','1fr','1fr 1fr']} gap={2} px={4} pb={4}>
           <FormControl>
             <Input
             isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
@@ -311,14 +311,15 @@ export function DadosMilitares(props) {
               <option value="NÃO">NÃO</option>
             </Input>
           </FormControl>
+        </Grid>
+          <Flex flexDirection="column">
           <ListarFuncao militar={mil} />
-  
           {session?.militar.Funcao.find((func) => func.funcao == "super admin" || "sgte") && asPath == "/superAdmin/usuarios" || "/pessoal/gerenciamento" ? (
             <>
               <AtribuirFuncao militar={mil} />
             </>
           ) : null}
-        </Box>
+          </Flex>
       </Flex>
     );
   }

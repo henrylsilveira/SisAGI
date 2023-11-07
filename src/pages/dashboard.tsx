@@ -11,7 +11,6 @@ export default function Dashboard() {
   const toast = useToast();
   const idLogado = "toastNaoLogado";
   const id = "toastLogin";
-
   useEffect(() => {
     if (session && status === "authenticated") {
       if (!toast.isActive(id)) {

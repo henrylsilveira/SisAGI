@@ -9,6 +9,7 @@ import {
   Avatar,
   AvatarBadge,
   Badge,
+  Grid,
 } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { memo, FormEvent, useState } from "react";
@@ -22,7 +23,7 @@ import { Input } from "../../Form/Input";
 import { api } from "../../../services/api";
 import { useRouter } from "next/router";
 
-function DadosPessoaisComponent(props) {
+export function DadosPessoaisComponent(props) {
   const { data: session } = useSession();
   const mil = props.militar as Militar;
   const toast = useToast();
@@ -141,42 +142,53 @@ function DadosPessoaisComponent(props) {
           Dados Pessoais
         </Heading>
       </Flex>
-      <Box m="auto" w="100%" h="100%" px={4} pb={4}>
-        <Flex flexDirection="column" alignItems="center">
-          <Avatar
-            size="2xl"
-            name={mil.nome_completo}
-            bg="green.700"
-            border="5px"
-            borderColor="gray.400"
-            boxShadow="buttonShadow"
-            src={previewUrl ? previewUrl : returnAvatarImage(mil.avatar_url)}
-          >
-            <AvatarBadge
-              borderColor="gray.990"
-              boxSize="1.1em"
-              bg="green.500"
-            />
-          </Avatar>
+        <Flex alignItems="center" mx={4} justifyContent="space-evenly" mb={4} gap={6} pb={4} borderBottom="1px" borderStyle="solid" borderColor="green.600" style={{borderImage: 'linear-gradient(to bottom, rgba(0, 0, 0, 0), #00FF00, rgba(0, 0, 0, 0)) 1 100%;'}}>
+          <Flex flexDirection="column" alignItems="center">
+            <Avatar
+              size="2xl"
+              name={mil.nome_completo}
+              bg="green.700"
+              border="5px"
+              borderColor="gray.400"
+              boxShadow="buttonShadow"
+              src={previewUrl ? previewUrl : returnAvatarImage(mil.avatar_url)}
+            >
+              <AvatarBadge
+                borderColor="gray.990"
+                boxSize="1.1em"
+                bg="green.500"
+              />
+            </Avatar>
 
-          <Badge
-            variant="outline"
-            colorScheme="yellow"
-            mx="auto"
-            zIndex="toast"
-          >
-            {mil.companhia} / {mil.pelotao}
-          </Badge>
-          
-        </Flex>
-        <Flex ml={0}>
-            <Input
-              name="avatarMilitar"
-              label="Selecione a imagem"
-              className="uploadInput"
-              type="file"
-              onChange={handleFileInputChange}
-              isDisabled={
+            <Badge
+              variant="outline"
+              colorScheme="yellow"
+              mx="auto"
+              zIndex="toast"
+            >
+              {mil.companhia} / {mil.pelotao}
+            </Badge>
+            
+          </Flex>
+          <Flex flexDirection="column">
+              <Input
+               mx="auto"
+                name="avatarMilitar"
+                label="Selecione a imagem"
+                className="uploadInput"
+                type="file"
+                onChange={handleFileInputChange}
+                isDisabled={
+                  session?.militar.Funcao.find(
+                    (func) => func.funcao == "super admin" || func.funcao == "sgte"
+                  ) &&
+                  (asPath == "/superAdmin/usuarios" ||
+                    asPath == "/pessoal/gerenciamento")
+                    ? false
+                    : true
+                }
+              />
+              <Button variant="outline" w="full" mx="auto" mt={8} _hover={{ bgColor: "green.800" }} isDisabled={
                 session?.militar.Funcao.find(
                   (func) => func.funcao == "super admin" || func.funcao == "sgte"
                 ) &&
@@ -185,18 +197,10 @@ function DadosPessoaisComponent(props) {
                   ? false
                   : true
               }
-            />
-            <Button variant="outline" size="lg" ml={2} mt={8} _hover={{ bgColor: "green.800" }} isDisabled={
-              session?.militar.Funcao.find(
-                (func) => func.funcao == "super admin" || func.funcao == "sgte"
-              ) &&
-              (asPath == "/superAdmin/usuarios" ||
-                asPath == "/pessoal/gerenciamento")
-                ? false
-                : true
-            }
-            borderColor="green.800" onClick={(e) => handleSubmitImage(e, mil.id)}>Upload</Button>
-          </Flex>
+              borderColor="green.800" onClick={(e) => handleSubmitImage(e, mil.id)}>Upload</Button>
+            </Flex>
+        </Flex>
+      <Grid gridTemplateColumns={['1fr','1fr','1fr 1fr']} gap={2} px={4} pb={4}>
         <FormControl>
           <Input
             as="select"
@@ -616,7 +620,7 @@ function DadosPessoaisComponent(props) {
             <option value="O-">O-</option>
           </Input>
         </FormControl>
-      </Box>
+      </Grid>
     </Flex>
   );
 }

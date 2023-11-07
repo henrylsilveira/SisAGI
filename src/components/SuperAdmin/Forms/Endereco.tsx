@@ -79,15 +79,7 @@ function EnderecoComponent(props) {
           Endereço
         </Heading>
       </Flex>
-      <Grid
-        gridTemplateColumns="1fr 1fr"
-        columnGap={4}
-        m="auto"
-        w="100%"
-        h="100%"
-        px={4}
-        pb={4}
-      >
+        <Grid gridTemplateColumns={['1fr','1fr','1fr 1fr']} gap={2} px={4} pb={4}>
         <FormControl>
           <Input
             label="Cidade"
@@ -209,7 +201,7 @@ function EnderecoComponent(props) {
           />
         </FormControl>
       </Grid>
-      <Mapa militar={mil} />
+      {/* <Mapa militar={mil} /> */}
     </Flex>
   );
 }

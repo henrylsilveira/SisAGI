@@ -28,7 +28,7 @@ import { useState } from "react";
 import Head from "next/head";
 import { Militar, MilitarArray } from "../../../@types/types";
 import { RxUpdate } from "react-icons/rx";
-import { DadosPessoais } from "../../../components/SuperAdmin/Forms/DadosPessoais";
+import { DadosPessoaisComponent } from "../../../components/SuperAdmin/Forms/DadosPessoais";
 import { DadosMilitares } from "../../../components/SuperAdmin/Forms/DadosMilitares";
 import { Endereco } from "../../../components/SuperAdmin/Forms/Endereco";
 import { useSession } from "next-auth/react";
@@ -58,6 +58,7 @@ export default function GerenciamentoPessoal() {
   });
 
   async function handleGetMilitar(id: string) {
+    console.log(id)
     const res = await api.get<Militar>(`/militar/${id}`);
     setMilitar(res.data);
   }
@@ -108,8 +109,10 @@ export default function GerenciamentoPessoal() {
                   MILITARES - {session?.militar.companhia}
                 </Heading>
                 <Flex boxShadow="buttonShadow"
-                  bg="gray.990" borderRadius="full" border="1px" borderColor="green.700">
-                    <Flex p={2} >{" Total de Militares " + " - "}<Text fontWeight="extrabold" color="red.600">{ " " + result.length}</Text></Flex>
+                  bg="gray.990" borderRadius="lg" border="1px" borderColor="green.700">
+                    <Flex p={2} gap={2} >{" Total " + " : " }
+                      <Text fontWeight="extrabold" color="red.600">{ " " + result.length}</Text>
+                    </Flex>
                 </Flex>
                 <Button
                   boxShadow="buttonShadow"
@@ -170,11 +173,11 @@ export default function GerenciamentoPessoal() {
                           boxShadow="innerShadow"
                         >
                           <Flex
-                            flexDirection="row"
+                            flexDirection={["column","column","row"]}
                             gap={4}
                             justifyContent="space-between"
                           >
-                            <DadosPessoais militar={{ ...mil, ...militar }} />
+                            <DadosPessoaisComponent militar={{ ...mil, ...militar }} />
                             <DadosMilitares militar={{ ...mil, ...militar }} />
                           </Flex>
                           <Endereco militar={{ ...mil, ...militar }} />

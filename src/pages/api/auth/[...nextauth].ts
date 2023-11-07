@@ -64,6 +64,6 @@ export default NextAuth({
   debug: process.env.NODE_ENV === 'development',
   jwt: {
     secret: process.env.NEXTAUTH_SECRET,
-    maxAge: 24 * 60 * 60,
+    maxAge: 60*30*24, // 1 dia
   },
 })

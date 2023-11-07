@@ -3,7 +3,6 @@ import Link from "next/link";
 
 export function Logo() {
   return (
-
       <Text
         fontSize={["md", "lg", "2xl"]}
         fontWeight="bold"

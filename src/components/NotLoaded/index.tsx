@@ -1,10 +1,12 @@
-import { Center } from "@chakra-ui/react";
-import DotLoader from "react-spinners/DotLoader";
+import { Center, Flex } from "@chakra-ui/react";
+import styles from './styles.module.css'
 
-export function NotLoaded(){
-    return (
-        <Center p={6} m={2} h="auto">
-          <DotLoader size={64} color="#55DD55" />
-        </Center>
-    )
+export function NotLoaded() {
+  return (
+    <Center p={6} m={2}>
+      <Flex>
+        <span className={styles.loader} />
+      </Flex>
+    </Center>
+  )
 }

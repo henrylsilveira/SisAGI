@@ -90,18 +90,18 @@ export function SidebarNav() {
 
       {session?.militar.Funcao.find((func) => func.funcao === "armeiro") ? (
         <NavSection title="ARMAMENTO">
-          <NavLink href="/armamento/geral" icon={RiDashboardLine}>
+          {/* <NavLink href="/armamento/geral" icon={RiDashboardLine}>
             Geral
-          </NavLink>
+          </NavLink> */}
           <NavLink href="/armamento/cadastro" icon={RiDraftLine}>
             Cadastrar
           </NavLink>
-          <NavLink href="/armamento/manutencao" icon={FaTools}>
+          {/* <NavLink href="/armamento/manutencao" icon={FaTools}>
             Manutenção
           </NavLink>
           <NavLink href="/armamento/vinculos" icon={FaPeopleCarry}>
             Vínculos
-          </NavLink>
+          </NavLink> */}
           <NavLink href="/armamento/cautela" icon={GiTrade}>
             Cautelar
           </NavLink>

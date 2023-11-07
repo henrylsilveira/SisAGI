@@ -27,7 +27,7 @@ export function ComumComponentDashboard() {
         </Flex>
         <SessaoComponentPainel />
         <Grid
-        gridTemplateColumns={["1fr","1fr 1fr "]}
+        gridTemplateColumns={["1fr","1fr","1fr","1fr 1fr"]}
           bg="gray.990"
           boxShadow="buttonShadow"
           rounded='md'
