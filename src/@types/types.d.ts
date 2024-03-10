@@ -222,7 +222,7 @@ export type CombustivelArray = Combustivel[];
 
 export type FuncaoMilitar = {
   id: string;
-  funcao: 'sgte' | 'super admin' | 'cmt cia' | 'enc mat' | 'armeiro' | 'cmt pel' | 'cmt gda' | 'furriel' | 'comum' | 's2';
+  funcao: 'sgte' | 'super admin' | 'cmt cia' | 'enc mat' | 'armeiro' | 'cmt pel' | 'cmt gda' | 'furriel' | 'comum' | 's2' | 'enc pmt';
   created_at: Date;
   data_inicio:  Date;
   data_termino: Date;
@@ -266,3 +266,39 @@ export interface Missao {
 }
 
 export type MissaoArray = Missao[]; 
+
+export type Viatura = {
+  id?: string;
+  eb?: string;
+  tipo?: string;
+  tipoTransporte?: string;
+  situacao: "disponivel" | "indisponivel" | "cautelado"
+}
+
+export type PedidoViatura = {
+  id?: string
+  created_at?: Date
+  dataDesejada?: Date
+  missao?: string
+  intinerario?: string
+  chefeViatura?: string
+  motorista?: string
+  dataDevolucao?: DateTime
+  apresentar?: string
+  observacao?: string
+  status?: "aguardando" | "autorizado" | "finalizado"
+}
+
+export type CautelaViatura = {
+  id?: string
+  dataCautela?: Date
+  dataEntrega?: Date
+  motorista?: string
+  status?: "autorizado" | "finalizado"
+  viaturaId?: string
+  pedidoViaturaId?: string
+  observacao?: string
+  
+  viatura: Viatura
+  pedido: PedidoViatura
+}

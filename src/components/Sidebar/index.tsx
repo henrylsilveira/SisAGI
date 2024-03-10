@@ -10,7 +10,6 @@ import {
   Text,
   Flex,
   Button,
-  selector,
   Icon,
 } from "@chakra-ui/react";
 import { useSidebarDrawer } from "../../contexts/SidebarDrawerContext";
@@ -62,6 +61,7 @@ export function Sidebar() {
         bg="gray.990"
         size="sm"
         border="1px"
+        textColor="white"
         borderColor="green.700"
         _hover={{ border: "1px", borderColor: "green.700" }}
         onClick={() => sideBarFunction()}

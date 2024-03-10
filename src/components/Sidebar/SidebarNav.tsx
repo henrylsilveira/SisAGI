@@ -16,14 +16,14 @@ import { IoIosPeople } from "react-icons/io";
 // import { GoSettings } from "react-icons/go";
 import { BsPeople } from "react-icons/bs";
 import { BsFillPersonLinesFill, BsPersonPlus } from "react-icons/bs";
-import { GiTruck } from "react-icons/gi"; 
+import { GiTruck } from "react-icons/gi";
 import { NavLink } from "./NavLink";
 import { NavSection } from "./NavSection";
 import { useSession } from "next-auth/react";
 
 export function SidebarNav() {
   const { data: session } = useSession();
-  
+
   return (
     <Stack spacing="12" align="flex-start">
       {session?.militar.Funcao.find((func) => func.funcao === "super admin") ? (
@@ -40,8 +40,8 @@ export function SidebarNav() {
         </NavSection>
       ) : null}
 
-{session?.militar.Funcao.find((func) => func.funcao === "s2") ? (
-  //DESENVOLVER AS PAGINAS
+      {session?.militar.Funcao.find((func) => func.funcao === "s2") ? (
+        //DESENVOLVER AS PAGINAS
         <NavSection title="S/2">
           <NavLink href="/s2/dbq" icon={IoIosPeople}>
             DBQ
@@ -122,16 +122,39 @@ export function SidebarNav() {
           <NavLink href="/furriel/combustivel" icon={GiOilDrum}>
             Combustível
           </NavLink>
+          <NavLink href="/furriel/pedidoViatura" icon={GiTruck}>
+            Viatura
+          </NavLink>
         </NavSection>
       ) : null}
 
-{session?.militar.Funcao.find((func) => func.funcao === "sgte") ? (
+      {session?.militar.Funcao.find((func) => func.funcao === "sgte") ? (
         <NavSection title="PESSOAL">
           <NavLink href="/pessoal/geral" icon={RiDashboardLine}>
             Geral
           </NavLink>
           <NavLink href="/pessoal/gerenciamento" icon={MdOutlinePersonSearch}>
             Gerenciar
+          </NavLink>
+        </NavSection>
+      ) : null}
+
+{session?.militar.Funcao.find((func) => func.funcao === "enc pmt") ? (
+        <NavSection title="PMT">
+          <NavLink href="/encPmt/geral" icon={RiDashboardLine}>
+            Geral
+          </NavLink>
+          <NavLink href="/encPmt/cadastro" icon={GiTruck}>
+            Viaturas
+          </NavLink>
+          <NavLink href="/encPmt/gerenciamento" icon={MdOutlinePersonSearch}>
+            Pedido
+          </NavLink>
+          <NavLink href="/encPmt/cautela" icon={MdOutlinePersonSearch}>
+            Cautela
+          </NavLink>
+          <NavLink href="/encPmt/relatorio" icon={MdOutlinePersonSearch}>
+            Relatorio
           </NavLink>
         </NavSection>
       ) : null}

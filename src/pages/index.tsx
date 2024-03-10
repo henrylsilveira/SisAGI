@@ -132,6 +132,7 @@ export default function Home() {
                 name="identidade"
                 label="Identidade"
                 type="text"
+                placeholder="Nr identidade"
                 error={errors.identidade}
                 {...register("identidade")}
               />
@@ -139,6 +140,7 @@ export default function Home() {
                 name="password"
                 label="Senha"
                 type="password"
+                placeholder="senha"
                 error={errors.senha}
                 {...register("senha")}
               />

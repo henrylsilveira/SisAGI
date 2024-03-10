@@ -314,7 +314,7 @@ export function DadosMilitares(props) {
         </Grid>
           <Flex flexDirection="column">
           <ListarFuncao militar={mil} />
-          {session?.militar.Funcao.find((func) => func.funcao == "super admin" || "sgte") && asPath == "/superAdmin/usuarios" || "/pessoal/gerenciamento" ? (
+          {session?.militar.Funcao.some((func) => (func.funcao === "super admin" || func.funcao === "sgte"))  && (asPath === "/superAdmin/usuarios" || asPath === "/pessoal/gerenciamento") ? (
             <>
               <AtribuirFuncao militar={mil} />
             </>
