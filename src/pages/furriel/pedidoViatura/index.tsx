@@ -264,7 +264,7 @@ export default function FurrielPedidoViatura() {
               />
             </Flex>
             {isLoading ? <NotLoaded /> :
-              <TableContainer>
+              <TableContainer maxH="50vh" overflowY="scroll" py={4}>
                 <Table size="sm" colorScheme="whiteAlpha">
                   <Thead>
                     <Tr>

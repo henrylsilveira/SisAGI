@@ -20,6 +20,7 @@ import { GiTruck } from "react-icons/gi";
 import { NavLink } from "./NavLink";
 import { NavSection } from "./NavSection";
 import { useSession } from "next-auth/react";
+import { BiNotepad } from "react-icons/bi";
 
 export function SidebarNav() {
   const { data: session } = useSession();
@@ -113,15 +114,15 @@ export function SidebarNav() {
 
       {session?.militar.Funcao.find((func) => func.funcao === "furriel") ? (
         <NavSection title="MUNIÇÃO / COMBUSTÍVEL">
-          <NavLink href="/furriel/geral" icon={RiDashboardLine}>
+          {/* <NavLink href="/furriel/geral" icon={RiDashboardLine}>
             Geral
-          </NavLink>
-          <NavLink href="/furriel/municao" icon={GiAmmoBox}>
+          </NavLink> */}
+          {/* <NavLink href="/furriel/municao" icon={GiAmmoBox}>
             Munição
           </NavLink>
           <NavLink href="/furriel/combustivel" icon={GiOilDrum}>
             Combustível
-          </NavLink>
+          </NavLink> */}
           <NavLink href="/furriel/pedidoViatura" icon={GiTruck}>
             Viatura
           </NavLink>
@@ -139,31 +140,31 @@ export function SidebarNav() {
         </NavSection>
       ) : null}
 
-{session?.militar.Funcao.find((func) => func.funcao === "enc pmt") ? (
+      {session?.militar.Funcao.find((func) => func.funcao === "enc pmt") ? (
         <NavSection title="PMT">
-          <NavLink href="/encPmt/geral" icon={RiDashboardLine}>
+          {/* <NavLink href="/encPmt/geral" icon={RiDashboardLine}>
             Geral
-          </NavLink>
+          </NavLink> */}
           <NavLink href="/encPmt/cadastro" icon={GiTruck}>
             Viaturas
           </NavLink>
-          <NavLink href="/encPmt/gerenciamento" icon={MdOutlinePersonSearch}>
+          {/* <NavLink href="/encPmt/gerenciamento" icon={MdOutlinePersonSearch}>
             Pedido
-          </NavLink>
-          <NavLink href="/encPmt/cautela" icon={MdOutlinePersonSearch}>
+          </NavLink> */}
+          <NavLink href="/encPmt/cautela" icon={BiNotepad}>
             Cautela
           </NavLink>
-          <NavLink href="/encPmt/relatorio" icon={MdOutlinePersonSearch}>
+          {/* <NavLink href="/encPmt/relatorio" icon={MdOutlinePersonSearch}>
             Relatorio
-          </NavLink>
+          </NavLink> */}
         </NavSection>
       ) : null}
 
       {session?.militar.Funcao.find((func) => func.funcao === "cmt gda") ? (
         <NavSection title="CMT DA GDA">
-          <NavLink href="/cmtGda/geral" icon={BsPeople}>
+          {/* <NavLink href="/cmtGda/geral" icon={BsPeople}>
             Geral
-          </NavLink>
+          </NavLink> */}
           <NavLink href="/cmtGda/cadastro" icon={BsPersonPlus}>
             Cadastro
           </NavLink>
