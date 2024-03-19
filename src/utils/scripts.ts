@@ -1,3 +1,4 @@
+
 import { Militar } from "../@types/types";
 import { api } from "../services/api";
 
@@ -110,3 +111,4 @@ export function compareDate(dateStr: string) {
     return "white"; // Retorna normalmente
   }
 }
+

@@ -125,7 +125,7 @@ export default function Cadastro() {
         px={8}
       >
         <Flex w={["200px", "300px", "300px"]} mx="auto" align="center" justify="center">
-          <Image src="./img/CFRN5BIS.png" alt="brasão Cmdo Fron RN / 5 BIS" />
+          <Image src="./img/logo13bib.png" alt="brasão Cmdo Fron RN / 5 BIS" />
         </Flex>
         <Flex
           as="form"

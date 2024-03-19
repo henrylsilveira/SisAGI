@@ -87,7 +87,7 @@ export default function Home() {
       <Flex w="100vw" h="100vh" flexDir="row" align="center" justify="center">
         <Grid gridTemplateColumns={["1fr","1fr 1fr"]} bg="#1b1b1b44" backdropFilter="blur(5px)" boxShadow="buttonShadow" rounded="2xl" px={8}>
           <Flex w={["25","30"]} mx="auto" align="center" justify="center">
-            <Image src="./img/CFRN5BIS.png" alt="brasão Cmdo Fron RN / 5 BIS" />
+            <Image w={480} src="./img/logo13bib.png" alt="brasão 13 BIB" />
           </Flex>
           <Flex
             as="form"
@@ -124,7 +124,7 @@ export default function Home() {
                   Sistema de Apoio a Gestão Interna
                 </Text>
                 <Heading as="h2" size="md">
-                  Cmdo Fron RN / 5 BIS
+                  13º BIB
                 </Heading>
               </Flex>
 

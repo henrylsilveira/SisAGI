@@ -24,7 +24,7 @@ import { Header } from "../../../components/Header";
 import { Sidebar } from "../../../components/Sidebar";
 import { useQuery } from "react-query";
 import { api } from "../../../services/api";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -35,6 +35,8 @@ import { SlRefresh } from "react-icons/sl";
 import { useSession } from "next-auth/react";
 import { Viatura } from "../../../@types/types";
 import { FaTools } from "react-icons/fa";
+import Router from "next/router";
+import Head from "next/Head";
 
 const signInFormSchema = yup.object().shape({
   eb: yup.string().required("Campo obrigatório."),
@@ -46,6 +48,19 @@ export default function CadastroViatura() {
   const { data: session } = useSession();
   const [result, setResult] = useState({});
   const toast = useToast();
+
+  useEffect(() => {
+    if (!session?.militar.Funcao.find((func) => func.funcao === "enc pmt")) {
+      Router.push("/");
+      toast({
+        title: "Acesso não autorizado.",
+        description: 'Você não tem autorização para acessar essa área.',
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+      });
+    }
+  }, [session, toast]);
 
   const { isLoading, error, data, isFetching, refetch } = useQuery(
     ["todasViaturas"],
@@ -89,9 +104,9 @@ export default function CadastroViatura() {
     }
   };
 
-  async function handleUpdateStatus({id, situacao }: Viatura) {
+  async function handleUpdateStatus({ id, situacao }: Viatura) {
     try {
-      const result = await api.put('/veiculo/update/status', {id, situacao});
+      const result = await api.put('/veiculo/update/status', { id, situacao });
       if (result.status == 200) {
         toast({
           title: "Viatura",
@@ -114,6 +129,10 @@ export default function CadastroViatura() {
   }
 
   return (
+  <>
+    <Head>
+        <title>SisAGI | Encarregado do PMT</title>
+      </Head>
     <Flex direction="column" flex="1" gap={4}>
       <SimpleGrid
         flex="1"
@@ -246,24 +265,24 @@ export default function CadastroViatura() {
                             bg="yellow.600"
                             size="sm"
                             _hover={{ backgroundColor: "yellow.800" }}
-                            onClick={() => handleUpdateStatus({id: res.id, situacao: "indisponivel"})}
+                            onClick={() => handleUpdateStatus({ id: res.id, situacao: "indisponivel" })}
                             py="1"
                             boxShadow="buttonShadow"
                           >
                             <Icon as={FaTools} color="white" size={20} />
                           </Button>
                           : res.situacao === "indisponivel" ?
-                          <Button
-                            bg="green.600"
-                            size="sm"
-                            _hover={{ backgroundColor: "green.800" }}
-                            onClick={() => handleUpdateStatus({id: res.id, situacao: "disponivel"})}
-                            py="1"
-                            boxShadow="buttonShadow"
-                          >
-                            <Icon as={FaTools} color="white" size={20} />
-                          </Button>
-                          : null
+                            <Button
+                              bg="green.600"
+                              size="sm"
+                              _hover={{ backgroundColor: "green.800" }}
+                              onClick={() => handleUpdateStatus({ id: res.id, situacao: "disponivel" })}
+                              py="1"
+                              boxShadow="buttonShadow"
+                            >
+                              <Icon as={FaTools} color="white" size={20} />
+                            </Button>
+                            : null
                         }
 
                       </Td>
@@ -286,5 +305,7 @@ export default function CadastroViatura() {
         </Box>
       </SimpleGrid>
     </Flex>
+  </>
+    
   );
 }

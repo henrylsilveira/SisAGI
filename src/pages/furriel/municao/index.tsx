@@ -1,106 +1,120 @@
 /* eslint-disable react/no-unescaped-entities */
 import {
   Badge,
-    Box,
-    Button,
-    Flex,
-    FormControl,
-    FormHelperText,
-    Heading,
-    IconButton,
-    SimpleGrid,
-    Spinner,
-    Table,
-    TableContainer,
-    Tbody,
-    Td,
-    Tfoot,
-    Th,
-    Thead,
-    Tr,
-    useToast,
-  } from "@chakra-ui/react";
-  import { Header } from "../../../components/Header";
-  import { Sidebar } from "../../../components/Sidebar";
-  import { useQuery } from "react-query";
-  import { api } from "../../../services/api";
-  import { useState } from "react";
-  import { useForm } from "react-hook-form";
-  import { yupResolver } from "@hookform/resolvers/yup";
-  import * as yup from "yup";
-  import { SubmitHandler } from "react-hook-form/dist/types";
-  import { Input } from "../../../components/Form/Input";
-  
-  import { SlRefresh } from "react-icons/sl";
-  import { useSession } from "next-auth/react";
-  import { Municao }  from "../../../@types/types";
+  Box,
+  Button,
+  Flex,
+  FormControl,
+  FormHelperText,
+  Heading,
+  IconButton,
+  SimpleGrid,
+  Spinner,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Tfoot,
+  Th,
+  Thead,
+  Tr,
+  useToast,
+} from "@chakra-ui/react";
+import { Header } from "../../../components/Header";
+import { Sidebar } from "../../../components/Sidebar";
+import { useQuery } from "react-query";
+import { api } from "../../../services/api";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { SubmitHandler } from "react-hook-form/dist/types";
+import { Input } from "../../../components/Form/Input";
+
+import { SlRefresh } from "react-icons/sl";
+import { useSession } from "next-auth/react";
+import { Municao } from "../../../@types/types";
 import { convertDate, generateNowISOTime } from "../../../utils/scripts";
 import { DrawerFurriel } from '../../../components/Drawer/Furriel/index';
 import Head from "next/head";
-  
-  const signInFormSchema = yup.object().shape({
-    nrPedido: yup.string().required("Obrigatório."),
-    municaoPedida: yup.number().required("Obrigatório."),
-    unidade: yup.string(),
-    tipoMunicao: yup.string().required("Obrigatório."),
-    dataInstrucao: yup.date().required("Obrigatório."),
-    instrucao: yup.string().required("Obrigatório"),
-    companhia: yup.string().required("Obrigatório"),
-  });
-  
-  export default function FurrielMunicao() {
-    const { data: session } = useSession()
-    const toast = useToast();
+import Router from "next/router";
 
-    const { isLoading, error, data, isFetching, refetch } = useQuery(
-      ["todosMunicao"],
-      async () => {
-        return await api.get("/municao");
-      }
-    );
-  
-    const {
-      register,
-      handleSubmit,
-      formState,
-      formState: { errors },
-    } = useForm({
-      resolver: yupResolver(signInFormSchema),
-    });
-  
-    const handleSignIn: SubmitHandler<Municao> = async (values) => {
-      values = {
-        ...values,
-        militarId: session?.militar.id
-      }
-      try {
-        const result = await api.post("/furriel/municao/create", values);
-        if (result.status == 201) {
-          toast({
-            title: "Pedido de munição cadastrado.",
-            description: "Os dados do pedido foram cadastrados no sistema.",
-            status: "success",
-            duration: 2000,
-            isClosable: true,
-          });
-          refetch()
-        }
-      } catch (error) {
+const signInFormSchema = yup.object().shape({
+  nrPedido: yup.string().required("Obrigatório."),
+  municaoPedida: yup.number().required("Obrigatório."),
+  unidade: yup.string(),
+  tipoMunicao: yup.string().required("Obrigatório."),
+  dataInstrucao: yup.date().required("Obrigatório."),
+  instrucao: yup.string().required("Obrigatório"),
+  companhia: yup.string().required("Obrigatório"),
+});
+
+export default function FurrielMunicao() {
+  const { data: session } = useSession()
+  const toast = useToast();
+
+  useEffect(() => {
+    if (!session?.militar.Funcao.find((func) => func.funcao === "furriel")) {
+      Router.push("/");
+      toast({
+        title: "Acesso não autorizado.",
+        description: 'Você não tem autorização para acessar essa área.',
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+      });
+    }
+  }, [session, toast]);
+
+  const { isLoading, error, data, isFetching, refetch } = useQuery(
+    ["todosMunicao"],
+    async () => {
+      return await api.get("/municao");
+    }
+  );
+
+  const {
+    register,
+    handleSubmit,
+    formState,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(signInFormSchema),
+  });
+
+  const handleSignIn: SubmitHandler<Municao> = async (values) => {
+    values = {
+      ...values,
+      militarId: session?.militar.id
+    }
+    try {
+      const result = await api.post("/furriel/municao/create", values);
+      if (result.status == 201) {
         toast({
-          title: "Pedido não cadastrado.",
-          description: "Verifique os dados do pedido.",
-          status: "error",
+          title: "Pedido de munição cadastrado.",
+          description: "Os dados do pedido foram cadastrados no sistema.",
+          status: "success",
           duration: 2000,
           isClosable: true,
         });
+        refetch()
       }
-    };
-  
-    return (
-      <>
+    } catch (error) {
+      toast({
+        title: "Pedido não cadastrado.",
+        description: "Verifique os dados do pedido.",
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
+    }
+  };
+
+  return (
+    <>
       <Head>
-      <title>SisAGI | Furriel - Munição</title>
-  </Head>
+        <title>SisAGI | Furriel - Munição</title>
+      </Head>
       <Flex direction="column" flex="1" gap={4}>
         <SimpleGrid
           flex="1"
@@ -143,7 +157,7 @@ import Head from "next/head";
                 </FormControl>
                 <FormControl pr={4}>
                   <Input
-                  as='select'
+                    as='select'
                     size="sm"
                     rounded="lg"
                     label="Unidade"
@@ -154,7 +168,7 @@ import Head from "next/head";
                   >
                     <option value="kilograma">Kilograma</option>
                     <option value="unidade">Unidade</option>
-                    </Input>
+                  </Input>
                 </FormControl>
                 <FormControl>
                   <Input
@@ -264,7 +278,7 @@ import Head from "next/head";
                 </Tbody>
                 <Tfoot>
                   <Tr>
-                  <Th textAlign="center">Nr Pedido</Th>
+                    <Th textAlign="center">Nr Pedido</Th>
                     <Th textAlign="center">Munição Pedida</Th>
                     <Th textAlign="center">Unidade</Th>
                     <Th textAlign="center">Tipo de Munição</Th>
@@ -279,9 +293,8 @@ import Head from "next/head";
           </Box>
         </SimpleGrid>
       </Flex>
-      </>
-      
+    </>
 
-    )
-  }
-  
+
+  )
+}
