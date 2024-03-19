@@ -59,7 +59,7 @@ export function ModalRecusa({ pedido, atualizar }: ModalProps) {
         values = {
             ...values,
             id: pedido.id,
-            status: "finalizado"
+            status: "recusado"
         }
         try {
             const result = await api.put("/veiculo/update", values);

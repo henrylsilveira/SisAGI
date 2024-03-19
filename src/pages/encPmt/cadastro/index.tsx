@@ -91,7 +91,7 @@ export default function CadastroViatura() {
 
   async function handleUpdateStatus({id, situacao }: Viatura) {
     try {
-      const result = await api.put("/veiculo/update", {id, situacao });
+      const result = await api.put('/veiculo/update/status', {id, situacao});
       if (result.status == 200) {
         toast({
           title: "Viatura",
@@ -239,7 +239,7 @@ export default function CadastroViatura() {
                       <Td textAlign="center">{res.eb}</Td>
                       <Td textAlign="center">{res.tipo}</Td>
                       <Td textAlign="center">{res.tipoTransporte}</Td>
-                      <Td textAlign="center" fontWeight="bold" color={res.situacao === "disponivel" ? "green.500" : res.situacao === "indisponivel" ? "red.500" : "yellow.500"}>{res.situacao.toLocaleUpperCase()}</Td>
+                      <Td textAlign="center" fontWeight="bold" color={res.situacao === "disponivel" ? "green.500" : res.situacao === "indisponivel" ? "red.500" : "yellow.500"}>{res.situacao?.toLocaleUpperCase()}</Td>
                       <Td>
                         {res.situacao === "disponivel" ?
                           <Button

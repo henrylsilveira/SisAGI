@@ -286,7 +286,7 @@ export type PedidoViatura = {
   dataDevolucao?: DateTime
   apresentar?: string
   observacao?: string
-  status?: "aguardando" | "autorizado" | "finalizado"
+  status: "aguardando" | "autorizado" | "finalizado" | "recusado"
 }
 
 export type CautelaViatura = {
@@ -294,7 +294,7 @@ export type CautelaViatura = {
   dataCautela?: Date
   dataEntrega?: Date
   motorista?: string
-  status?: "autorizado" | "finalizado"
+  status?: "autorizado" | "finalizado" | "recusado"
   viaturaId?: string
   pedidoViaturaId?: string
   observacao?: string

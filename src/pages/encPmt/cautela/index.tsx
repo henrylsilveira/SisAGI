@@ -118,7 +118,7 @@ export default function CautelaViaturaPage() {
         }
     };
 
-    
+
 
     return (
         <Flex direction="column" flex="1" gap={4}>
@@ -306,36 +306,34 @@ export default function CautelaViaturaPage() {
                                                 <Td textAlign="center">{res.chefeViatura}</Td>
                                                 <Td textAlign="center">{res.motorista}</Td>
                                                 <Td textAlign="center">{res.apresentar}</Td>
-                                                <Td textAlign="center" fontSize="small" color={res.status === "aguardando" ? "red.500" : res.status === "autorizado" ? "yellow.500" : "green.500"}>{res.status.toUpperCase()}</Td>
+                                                <Td textAlign="center" fontSize="small" fontWeight="bold" color={res.status === "aguardando" ? "orange.500" : res.status === "autorizado" ? "yellow.500" : res.status === "recusado" ? "red.500" : "green.500"}>{res.status.toUpperCase()}</Td>
                                                 <Td textAlign="center" flex={1} display="flex">
 
-                                                    {res.status === "autorizado" || res.status === "finalizado" ?
+                                                    {res.status === "autorizado" || res.status === "finalizado" || res.status === "recusado" ?
                                                         <Popover closeOnBlur={false} placement='left' initialFocusRef={initRef}>
-                                                        {({ isOpen }) => (
-                                                            <>
-                                                                <PopoverTrigger>
-                                                                    <Button _hover={{ bgColor: "rgba(0, 0, 0, 0.3)" }} size="xs" bgColor={isOpen ? 'yellow.500' : 'green.500'}><HiOutlineInformationCircle color="white" size={18} /></Button>
-                                                                </PopoverTrigger>
-                                                                <Portal>
-                                                                    <PopoverContent bg="gray.990" border="1px" borderColor="green.700">
-                                                                        <PopoverHeader>Observação</PopoverHeader>
-                                                                        <PopoverCloseButton />
-                                                                        <PopoverBody>
-                                                                            <Box>
-                                                                                {res.observacao}
-                                                                            </Box>
-
-                                                                        </PopoverBody>
-
-                                                                    </PopoverContent>
-                                                                </Portal>
-                                                            </>
-                                                        )}
-                                                    </Popover> :
+                                                            {({ isOpen }) => (
+                                                                <>
+                                                                    <PopoverTrigger>
+                                                                        <Button _hover={{ bgColor: "rgba(0, 0, 0, 0.3)" }} size="xs" bgColor={isOpen ? 'yellow.500' : 'green.500'}><HiOutlineInformationCircle color="white" size={18} /></Button>
+                                                                    </PopoverTrigger>
+                                                                    <Portal>
+                                                                        <PopoverContent bg="gray.990" border="1px" borderColor="green.700">
+                                                                            <PopoverHeader>Observação</PopoverHeader>
+                                                                            <PopoverCloseButton />
+                                                                            <PopoverBody>
+                                                                                <Box>
+                                                                                    {res.observacao}
+                                                                                </Box>
+                                                                            </PopoverBody>
+                                                                        </PopoverContent>
+                                                                    </Portal>
+                                                                </>
+                                                            )}
+                                                        </Popover> :
                                                         <Flex gap={2}>
                                                             <CautelaViaturaModal pedido={res} viaturas={viaturas.data} atualizar={refetchPedidos} />
                                                             <ModalRecusa pedido={res} atualizar={refetchPedidos} />
-                                                            
+
                                                         </Flex>
                                                     }
 
@@ -383,77 +381,75 @@ export default function CautelaViaturaPage() {
                         </Flex>
                         {isLoadingCautelas ? <NotLoaded /> :
                             <TableContainer maxH="50vh" overflowY="scroll" py={4}>
-                                {viaturasCauteladas?.data.filter(viatura => viatura.status === "autorizado") ? 
-                                <Table size="sm" colorScheme="whiteAlpha">
-                                <Thead>
-                                    <Tr>
-                                        <Th textAlign="center">Data Desejada</Th>
-                                        <Th textAlign="center">Data Devolução</Th>
-                                        <Th textAlign="center">Missão</Th>
-                                        <Th textAlign="center">Itinerário</Th>
-                                        <Th textAlign="center">Chefe Viatura</Th>
-                                        <Th textAlign="center">Motorista</Th>
-                                        <Th textAlign="center">Apresentar para</Th>
-                                        <Th textAlign="center">Situação</Th>
-                                        <Th></Th>
-                                    </Tr>
-                                </Thead>
-                                <Tbody>
-                                    {viaturasCauteladas?.data.filter(viatura => viatura.status === "autorizado").map((res) => (
-                                        <Tr key={res.id}>
-                                            <Td textAlign="center">{convertDate(res.pedido?.dataDesejada)}</Td>
-                                            <Td textAlign="center">{convertDate(res.pedido?.dataDevolucao)}</Td>
-                                            <Td textAlign="center">{res.pedido?.missao}</Td>
-                                            <Td textAlign="center">{res.pedido?.intinerario}</Td>
-                                            <Td textAlign="center">{res.pedido?.chefeViatura}</Td>
-                                            <Td textAlign="center">{res.pedido?.motorista}</Td>
-                                            <Td textAlign="center">{res.pedido?.apresentar}</Td>
-                                            <Td textAlign="center" fontSize="small" color={res.pedido?.status === "aguardando" ? "red.500" : res.pedido?.status === "autorizado" ? "yellow.500" : "green.500"}>{res.status.toUpperCase()}</Td>
-                                            <Td textAlign="center" flex={1} display="flex">
-                                                {res.pedido.status === "autorizado" ? <DescautelaModal pedido={res} atualizar={refetch} /> :
-                                                    <Popover closeOnBlur={false} placement='left' initialFocusRef={initRef}>
-                                                        {({ isOpen }) => (
-                                                            <>
-                                                                <PopoverTrigger>
-                                                                    <Button _hover={{ bgColor: "rgba(0, 0, 0, 0.3)" }} size="xs" bgColor={isOpen ? 'yellow.500' : 'green.500'}><HiOutlineInformationCircle color="white" size={18} /></Button>
-                                                                </PopoverTrigger>
-                                                                <Portal>
-                                                                    <PopoverContent bg="gray.990" border="1px" borderColor="green.700">
-                                                                        <PopoverHeader>Observação</PopoverHeader>
-                                                                        <PopoverCloseButton />
-                                                                        <PopoverBody>
-                                                                            <Box>
-                                                                                {res.observacao}
-                                                                            </Box>
-
-                                                                        </PopoverBody>
-
-                                                                    </PopoverContent>
-                                                                </Portal>
-                                                            </>
-                                                        )}
-                                                    </Popover>
-                                                }
-                                            </Td>
-                                        </Tr>
-                                    ))}
-                                </Tbody>
-                                <Tfoot>
-                                    <Tr>
-                                        <Th textAlign="center">Data Desejada</Th>
-                                        <Th textAlign="center">Data Devolução</Th>
-                                        <Th textAlign="center">Missão</Th>
-                                        <Th textAlign="center">Itinerário</Th>
-                                        <Th textAlign="center">Chefe Viatura</Th>
-                                        <Th textAlign="center">Motorista</Th>
-                                        <Th textAlign="center">Apresentar para</Th>
-                                        <Th textAlign="center">Situação</Th>
-                                        <Th></Th>
-                                    </Tr>
-                                </Tfoot>
-                            </Table>
-                                : 
-                                <NotData textoComponent="Sem viaturas cauteladas"  />
+                                {viaturasCauteladas?.data.filter(viatura => viatura.status === "autorizado") ?
+                                    <Table size="sm" colorScheme="whiteAlpha">
+                                        <Thead>
+                                            <Tr>
+                                                <Th textAlign="center">Data Desejada</Th>
+                                                <Th textAlign="center">Data Devolução</Th>
+                                                <Th textAlign="center">Missão</Th>
+                                                <Th textAlign="center">Itinerário</Th>
+                                                <Th textAlign="center">Chefe Viatura</Th>
+                                                <Th textAlign="center">Motorista</Th>
+                                                <Th textAlign="center">Apresentar para</Th>
+                                                <Th textAlign="center">Situação</Th>
+                                                <Th></Th>
+                                            </Tr>
+                                        </Thead>
+                                        <Tbody>
+                                            {viaturasCauteladas?.data.filter(viatura => viatura.status === "autorizado").map((res) => (
+                                                <Tr key={res.id}>
+                                                    <Td textAlign="center">{convertDate(res.pedido?.dataDesejada)}</Td>
+                                                    <Td textAlign="center">{convertDate(res.pedido?.dataDevolucao)}</Td>
+                                                    <Td textAlign="center">{res.pedido?.missao}</Td>
+                                                    <Td textAlign="center">{res.pedido?.intinerario}</Td>
+                                                    <Td textAlign="center">{res.pedido?.chefeViatura}</Td>
+                                                    <Td textAlign="center">{res.pedido?.motorista}</Td>
+                                                    <Td textAlign="center">{res.pedido?.apresentar}</Td>
+                                                    <Td textAlign="center" fontSize="small" color={res.pedido?.status === "aguardando" ? "red.500" : res.pedido?.status === "autorizado" ? "yellow.500" : "green.500"}>{res.status.toUpperCase()}</Td>
+                                                    <Td textAlign="center" flex={1} display="flex">
+                                                        {res.pedido.status === "autorizado" ? <DescautelaModal pedido={res} atualizar={refetch} /> :
+                                                            <Popover closeOnBlur={false} placement='left' initialFocusRef={initRef}>
+                                                                {({ isOpen }) => (
+                                                                    <>
+                                                                        <PopoverTrigger>
+                                                                            <Button _hover={{ bgColor: "rgba(0, 0, 0, 0.3)" }} size="xs" bgColor={isOpen ? 'yellow.500' : 'green.500'}><HiOutlineInformationCircle color="white" size={18} /></Button>
+                                                                        </PopoverTrigger>
+                                                                        <Portal>
+                                                                            <PopoverContent bg="gray.990" border="1px" borderColor="green.700">
+                                                                                <PopoverHeader>Observação</PopoverHeader>
+                                                                                <PopoverCloseButton />
+                                                                                <PopoverBody>
+                                                                                    <Box>
+                                                                                        {res.observacao}
+                                                                                    </Box>
+                                                                                </PopoverBody>
+                                                                            </PopoverContent>
+                                                                        </Portal>
+                                                                    </>
+                                                                )}
+                                                            </Popover>
+                                                        }
+                                                    </Td>
+                                                </Tr>
+                                            ))}
+                                        </Tbody>
+                                        <Tfoot>
+                                            <Tr>
+                                                <Th textAlign="center">Data Desejada</Th>
+                                                <Th textAlign="center">Data Devolução</Th>
+                                                <Th textAlign="center">Missão</Th>
+                                                <Th textAlign="center">Itinerário</Th>
+                                                <Th textAlign="center">Chefe Viatura</Th>
+                                                <Th textAlign="center">Motorista</Th>
+                                                <Th textAlign="center">Apresentar para</Th>
+                                                <Th textAlign="center">Situação</Th>
+                                                <Th></Th>
+                                            </Tr>
+                                        </Tfoot>
+                                    </Table>
+                                    :
+                                    <NotData textoComponent="Sem viaturas cauteladas" />
                                 }
                             </TableContainer>
                         }

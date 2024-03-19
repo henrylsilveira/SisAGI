@@ -60,7 +60,8 @@ export default function FurrielPedidoViatura() {
   const [result, setResult] = useState({});
   const toast = useToast();
   const initRef = React.useRef()
-  const { isLoading, error, data, isFetching, refetch } = useQuery(
+
+  const { isLoading, error, data: dataPedidoViatura, isFetching, refetch } = useQuery(
     ["todasViaturas"],
     async () => {
       const result = await api.get<PedidoViatura[]>("/veiculos/pedidos");
@@ -263,11 +264,12 @@ export default function FurrielPedidoViatura() {
                 icon={<SlRefresh />}
               />
             </Flex>
-            {isLoading ? <NotLoaded /> :
+            {isLoading ? <NotLoaded /> : dataPedidoViatura?.data.length === 0 ? <NotData textoComponent="Não existe dados" /> :
               <TableContainer maxH="50vh" overflowY="scroll" py={4}>
                 <Table size="sm" colorScheme="whiteAlpha">
                   <Thead>
                     <Tr>
+                      <Th textAlign="center">Data do Pedido</Th>
                       <Th textAlign="center">Data Desejada</Th>
                       <Th textAlign="center">Data Devolução</Th>
                       <Th textAlign="center">Missão</Th>
@@ -280,8 +282,10 @@ export default function FurrielPedidoViatura() {
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {data?.data ? data?.data?.map((res) => (
+                   
+                    {dataPedidoViatura?.data.map((res) => (
                       <Tr key={res.id}>
+                        <Td textAlign="center">{convertDate(res.created_at)}</Td>
                         <Td textAlign="center">{convertDate(res.dataDesejada)}</Td>
                         <Td textAlign="center">{convertDate(res.dataDevolucao)}</Td>
                         <Td textAlign="center">{res.missao}</Td>
@@ -289,9 +293,9 @@ export default function FurrielPedidoViatura() {
                         <Td textAlign="center">{res.chefeViatura}</Td>
                         <Td textAlign="center">{res.motorista}</Td>
                         <Td textAlign="center">{res.apresentar}</Td>
-                        <Td textAlign="center" fontSize="small" color={res.status === "aguardando" ? "red.500" : res.status === "autorizado" ? "yellow.500" : "green.500"}>{res.status.toUpperCase()}</Td>
+                        <Td textAlign="center" fontSize="small" color={res.status === "aguardando" ? "orange.500" : res.status === "recusado" ? "red.500" : res.status === "autorizado" ? "yellow.500" : "green.500"}>{res?.status?.toUpperCase()}</Td>
                         <Td textAlign="center">
-                          {res.status === "finalizado" ? 
+                          {res?.status === "finalizado" ? 
                           <Popover closeOnBlur={false} placement='left' initialFocusRef={initRef}>
                             {({ isOpen }) => (
                               <>
@@ -316,10 +320,11 @@ export default function FurrielPedidoViatura() {
                           </Popover> : "-"}
                         </Td>
                       </Tr>
-                    )) : <NotData textoComponent="Não existe dados" />}
+                    ))}
                   </Tbody>
                   <Tfoot>
                     <Tr>
+                    <Th textAlign="center">Data do Pedido</Th>
                       <Th textAlign="center">Data Desejada</Th>
                       <Th textAlign="center">Data Devolução</Th>
                       <Th textAlign="center">Missão</Th>
