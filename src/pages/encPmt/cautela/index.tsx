@@ -68,6 +68,7 @@ export default function CautelaViaturaPage() {
     const toast = useToast();
     const initRef = React.useRef()
     const [search, setSearch] = useState("")
+    const [searchCia, setSearchCia] = useState("")
 
     useEffect(() => {
         if (!session?.militar.Funcao.find((func) => func.funcao === "enc pmt")) {
@@ -316,13 +317,38 @@ export default function CautelaViaturaPage() {
                                                     size="sm"
                                                     placeholder="Selecione"
                                                     onChange={e => setSearch(e.target.value)}
-                                                    w={200}
+                                                    w={120}
                                                 >
                                                     <option value="">Todos - {pedidosViatura?.data.length}</option>
                                                     <option value="finalizado">Finalizado - {pedidosViatura?.data.filter(res => res.status === "finalizado").length}</option>
                                                     <option value="aguardando">Aguardando - {pedidosViatura?.data.filter(res => res.status === "aguardando").length}</option>
                                                     <option value="recusado">Recusado - {pedidosViatura?.data.filter(res => res.status === "recusado").length}</option>
                                                     <option value="autorizado">Autorizado - {pedidosViatura?.data.filter(res => res.status === "autorizado").length}</option>
+                                                </Input>
+                                            </FormControl>
+                                            
+                                            <FormControl>
+                                                <Input
+                                                    as="select"
+                                                    rounded="base"
+                                                    focusBorderColor="green.500"
+                                                    name="search"
+                                                    bgColor="gray.990"
+                                                    textColor="gray.200"
+                                                    variant="filled"
+                                                    _hover={{ bgColor: "gray.900" }}
+                                                    size="sm"
+                                                    placeholder="Selecione"
+                                                    onChange={e => setSearchCia(e.target.value)}
+                                                    w={120}
+                                                >
+                                                    <option value="">Todos - {pedidosViatura?.data.filter(res => search ? res.status === search : res.status).length}</option>
+                                                    <option value="1 CIA">1 CIA - {pedidosViatura?.data.filter(res => search ? res.status === search : res.status).filter(res => res.companhia === "1 CIA").length}</option>
+                                                    <option value="2 CIA">2 CIA  - {pedidosViatura?.data.filter(res => search ? res.status === search : res.status).filter(res => res.companhia === "2 CIA").length}</option>
+                                                    <option value="3 CIA">3 CIA  - {pedidosViatura?.data.filter(res => search ? res.status === search : res.status).filter(res => res.companhia === "3 CIA").length}</option>
+                                                    <option value="CCAP">CCAP  - {pedidosViatura?.data.filter(res => search ? res.status === search : res.status).filter(res => res.companhia === "CCAP").length}</option>
+                                                    <option value="EM">EM - {pedidosViatura?.data.filter(res => search ? res.status === search : res.status).filter(res => res.companhia === "EM").length}</option>
+                                                    <option value="BANDA">BANDA - {pedidosViatura?.data.filter(res => search ? res.status === search : res.status).filter(res => res.companhia === "BANDA").length}</option>
                                                 </Input>
                                             </FormControl>
                                         </Flex>
@@ -355,7 +381,7 @@ export default function CautelaViaturaPage() {
                                             </Tr>
                                         </Thead>
                                         <Tbody>
-                                            {pedidosViatura?.data.filter(res => search ? res.status === search : res.status).map((res) => (
+                                            {pedidosViatura?.data.filter(res => search ? res.status === search : res.status).filter(res => searchCia ? res.companhia === searchCia : res.companhia).map((res) => (
                                                 <Tr key={res.id}>
                                                     <Td textAlign="center">{convertDate(res.dataDesejada)}</Td>
                                                     <Td textAlign="center">{convertDate(res.dataDevolucao)}</Td>

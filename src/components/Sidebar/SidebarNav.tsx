@@ -152,7 +152,7 @@ export function SidebarNav() {
             Pedido
           </NavLink> */}
           <NavLink href="/encPmt/cautela" icon={BiNotepad}>
-            Cautela
+            Pedidos
           </NavLink>
           {/* <NavLink href="/encPmt/relatorio" icon={MdOutlinePersonSearch}>
             Relatorio

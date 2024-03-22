@@ -53,6 +53,7 @@ export interface Militar {
   Funcao?: FuncaoMilitarArray;
   Feedback?: FeedbackArray;
   _count?: Object;
+  PedidoViatura?: PedidoViatura[];
   //SESSION
   token?: string;
 }
@@ -287,6 +288,9 @@ export type PedidoViatura = {
   apresentar?: string
   observacao?: string
   status: "aguardando" | "autorizado" | "finalizado" | "recusado"
+  companhia: string
+  militarId: string
+  militar: Militar
 }
 
 export type CautelaViatura = {

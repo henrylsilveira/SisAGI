@@ -228,6 +228,7 @@ export default function Cadastro() {
               <option value="3 CIA">3 CIA</option>
               <option value="CCAp">CCAp</option>
               <option value="EM">EM</option>
+              <option value="BANDA">BANDA</option>
             </Input>
             <Input
               name="local"
@@ -243,6 +244,7 @@ export default function Cadastro() {
               <option value="3 PEL">3 PEL</option>
               <option value="PEL Ap">PEL Ap</option>
               <option value="SEC CMDO">SEC CMDO</option>
+              <option value="MUSICA">MUSICA</option>
             </Input>
             <FormControl>
               <Input
