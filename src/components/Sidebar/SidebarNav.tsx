@@ -41,7 +41,7 @@ export function SidebarNav() {
         </NavSection>
       ) : null}
 
-      {session?.militar.Funcao.find((func) => func.funcao === "s2") ? (
+      {session?.militar.Funcao.find((func) => func.funcao === "s2" && func.status === "ativo") ? (
         //DESENVOLVER AS PAGINAS
         <NavSection title="S/2">
           <NavLink href="/s2/dbq" icon={IoIosPeople}>
@@ -71,7 +71,7 @@ export function SidebarNav() {
       ) : null}
 
       {session?.militar.Funcao.find(
-        (func) => func.funcao === "enc mat" || func.funcao === "cmt pel"
+        (func) => (func.funcao === "enc mat" || func.funcao === "cmt pel") && func.status === "ativo"
       ) ? (
         <NavSection title="MATERIAL">
           <NavLink href="/material/geral" icon={RiDashboardLine}>
@@ -89,7 +89,7 @@ export function SidebarNav() {
         </NavSection>
       ) : null}
 
-      {session?.militar.Funcao.find((func) => func.funcao === "armeiro") ? (
+      {session?.militar.Funcao.find((func) => func.funcao === "armeiro" && func.status === "ativo") ? (
         <NavSection title="ARMAMENTO">
           {/* <NavLink href="/armamento/geral" icon={RiDashboardLine}>
             Geral
@@ -112,7 +112,7 @@ export function SidebarNav() {
         </NavSection>
       ) : null}
 
-      {session?.militar.Funcao.find((func) => func.funcao === "furriel") ? (
+      {session?.militar.Funcao.find((func) => func.funcao === "furriel" && func.status === "ativo") ? (
         <NavSection title="MUNIÇÃO / COMBUSTÍVEL">
           {/* <NavLink href="/furriel/geral" icon={RiDashboardLine}>
             Geral
@@ -129,7 +129,7 @@ export function SidebarNav() {
         </NavSection>
       ) : null}
 
-      {session?.militar.Funcao.find((func) => func.funcao === "sgte") ? (
+      {session?.militar.Funcao.find((func) => func.funcao === "sgte" && func.status === "ativo") ? (
         <NavSection title="PESSOAL">
           <NavLink href="/pessoal/geral" icon={RiDashboardLine}>
             Geral
@@ -140,7 +140,7 @@ export function SidebarNav() {
         </NavSection>
       ) : null}
 
-      {session?.militar.Funcao.find((func) => func.funcao === "enc pmt") ? (
+      {session?.militar.Funcao.find((func) => func.funcao === "enc pmt" && func.status === "ativo") ? (
         <NavSection title="PMT">
           {/* <NavLink href="/encPmt/geral" icon={RiDashboardLine}>
             Geral
@@ -160,11 +160,11 @@ export function SidebarNav() {
         </NavSection>
       ) : null}
 
-      {session?.militar.Funcao.find((func) => func.funcao === "cmt gda") ? (
+      {session?.militar.Funcao.find((func) => func.funcao === "cmt gda" && func.status === "ativo") ? (
         <NavSection title="CMT DA GDA">
-          {/* <NavLink href="/cmtGda/geral" icon={BsPeople}>
-            Geral
-          </NavLink> */}
+          <NavLink href="/cmtGda/controle" icon={BsPeople}>
+            Controle
+          </NavLink>
           <NavLink href="/cmtGda/cadastro" icon={BsPersonPlus}>
             Cadastro
           </NavLink>

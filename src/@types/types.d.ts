@@ -58,6 +58,22 @@ export interface Militar {
   token?: string;
 }
 
+export interface ControleGuardaRegistros {
+  id: string;
+  entrada?: string;
+  saida?: string;
+  destino?: string;
+  status?: string;
+
+  militarServicoId?: string;
+  militarId?: string;
+  civilId?: string;
+
+  militar?: Militar;
+  militarServico?: Militar;
+  civil?: Civil;
+}
+
 export type MilitarArray = Militar[];
 
 export interface Civil {
@@ -291,6 +307,7 @@ export type PedidoViatura = {
   companhia: string
   militarId: string
   militar: Militar
+  CautelaViatura?: CautelaViatura[] | undefined
 }
 
 export type CautelaViatura = {

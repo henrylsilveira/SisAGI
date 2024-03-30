@@ -37,6 +37,7 @@ import { Viatura } from "../../../@types/types";
 import { FaTools } from "react-icons/fa";
 import Router from "next/router";
 import Head from "next/Head";
+import { TbShoppingCartPlus } from "react-icons/tb";
 
 const signInFormSchema = yup.object().shape({
   eb: yup.string().required("Campo obrigatório."),
@@ -47,6 +48,7 @@ const signInFormSchema = yup.object().shape({
 export default function CadastroViatura() {
   const { data: session } = useSession();
   const [result, setResult] = useState({});
+  const [createPedido, setCreatePedido] = useState(false);
   const toast = useToast();
 
   useEffect(() => {
@@ -129,183 +131,190 @@ export default function CadastroViatura() {
   }
 
   return (
-  <>
-    <Head>
+    <>
+      <Head>
         <title>SisAGI | Encarregado do PMT</title>
       </Head>
-    <Flex direction="column" flex="1" gap={4}>
-      <SimpleGrid
-        flex="1"
-        gap="4"
-        minChildWidth="320px"
-        alignItems="flex-start"
-      >
-        <Box p={["6", "8"]} bg="gray.800" borderRadius={8} pb="4">
-          <Flex
-            bgGradient="linear(to-tr, gray.990, gray.990, green.900)"
-            boxShadow="buttonShadow"
-            rounded="lg"
-            w="100%"
-            flexDirection="column"
-            p={4}
-            as="form"
-            direction="column"
-            onSubmit={handleSubmit(handleSignIn)}
-          >
+      <Flex direction="column" flex="1" gap={4}>
+        <SimpleGrid
+          flex="1"
+          gap="4"
+          minChildWidth="320px"
+          alignItems="flex-start"
+        >
+          <Box p={["6", "8"]} bg="gray.800" borderRadius={8} pb="4">
             <Flex
-              bg="gray.990"
+              bgGradient="linear(to-tr, gray.990, gray.990, green.900)"
               boxShadow="buttonShadow"
-              px={2}
-              mb={4}
-              rounded="base"
-              alignItems="center"
-              justifyContent="space-between"
+              rounded="lg"
+              w="100%"
+              flexDirection="column"
+              p={4}
+              as="form"
+              direction="column"
+              onSubmit={handleSubmit(handleSignIn)}
             >
-              <Heading fontSize="2xl" p={2}>
-                Cadastro de Viaturas
-              </Heading>
-            </Flex>
-            <Grid
-              gridTemplateColumns={["1fr", "1fr 1fr", "1fr 1fr 1fr"]}
-              gap={4}
-            >
-              <FormControl>
-                <Input
-                  size="sm"
-                  rounded="lg"
-                  label="EB"
-                  name="eb"
-                  type="text"
-                  error={errors.eb}
-                  {...register("eb")}
+              <Flex
+                bg="gray.990"
+                boxShadow="buttonShadow"
+                px={2}
+                mb={4}
+                rounded="base"
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                <Heading fontSize="2xl" p={2}>
+                  Cadastro de Viaturas
+                </Heading>
+                <Button display="flex" boxShadow="buttonShadow" mr={2} colorScheme='whatsapp' size='sm' onClick={() => (createPedido ? setCreatePedido(false) : setCreatePedido(true))}>
+                  <Icon as={TbShoppingCartPlus} w={6} h={6} pr={2} /> Cadastrar viatura
+                </Button>
+              </Flex>
+              {createPedido ?
+                <>
+                  <Grid
+                    gridTemplateColumns={["1fr", "1fr 1fr", "1fr 1fr 1fr"]}
+                    gap={4}
+                  >
+                    <FormControl>
+                      <Input
+                        size="sm"
+                        rounded="lg"
+                        label="EB"
+                        name="eb"
+                        type="text"
+                        error={errors.eb}
+                        {...register("eb")}
+                      />
+                    </FormControl>
+                    <FormControl>
+                      <Input
+                        size="sm"
+                        rounded="lg"
+                        label="Tipo"
+                        name="tipo"
+                        type="text"
+                        error={errors.tipo}
+                        {...register("tipo")}
+                      />
+                    </FormControl>
+                    <FormControl>
+                      <Input
+                        as={"select"}
+                        size="sm"
+                        rounded="lg"
+                        label="Tipo de transporte"
+                        name="tipoTransporte"
+                        {...register("tipoTransporte")}
+                      >
+                        <option value="tropa">Tropa</option>
+                        <option value="material">Material</option>
+                      </Input>
+                    </FormControl>
+                  </Grid>
+                  <Button
+                    bg="green.800"
+                    _hover={{ bg: "green.900" }}
+                    size="sm"
+                    type="submit"
+                    isLoading={formState.isSubmitting}
+                    w="24"
+                    mt={4}
+                    ml="auto"
+                    textColor="white"
+                    boxShadow="buttonShadow"
+                  >
+                    OK
+                  </Button>
+                </>
+                : null}
+              <Flex
+                bg="gray.990"
+                boxShadow="buttonShadow"
+                px={2}
+                my={4}
+                rounded="base"
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                <Heading fontSize="2xl" my="4">
+                  Viaturas {isLoading ? <Spinner ml={8} /> : ""}{" "}
+                </Heading>
+                <IconButton
+                  bg="blue.700"
+                  float="right"
+                  _hover={{ bgColor: "blue.900" }}
+                  onClick={() => refetch()}
+                  aria-label="Atualizar tabela"
+                  icon={<SlRefresh />}
                 />
-              </FormControl>
-              <FormControl>
-                <Input
-                  size="sm"
-                  rounded="lg"
-                  label="Tipo"
-                  name="tipo"
-                  type="text"
-                  error={errors.tipo}
-                  {...register("tipo")}
-                />
-              </FormControl>
-              <FormControl>
-                <Input
-                  as={"select"}
-                  size="sm"
-                  rounded="lg"
-                  label="Tipo de transporte"
-                  name="tipoTransporte"
-                  {...register("tipoTransporte")}
-                >
-                  <option value="tropa">Tropa</option>
-                  <option value="material">Material</option>
-                </Input>
-              </FormControl>
-            </Grid>
-            <Button
-              bg="green.800"
-              _hover={{ bg: "green.900" }}
-              size="sm"
-              type="submit"
-              isLoading={formState.isSubmitting}
-              w="24"
-              mt={4}
-              ml="auto"
-              textColor="white"
-              boxShadow="buttonShadow"
-            >
-              OK
-            </Button>
-            <Flex
-              bg="gray.990"
-              boxShadow="buttonShadow"
-              px={2}
-              my={4}
-              rounded="base"
-              alignItems="center"
-              justifyContent="space-between"
-            >
-              <Heading fontSize="2xl" my="4">
-                Viaturas {isLoading ? <Spinner ml={8} /> : ""}{" "}
-              </Heading>
-              <IconButton
-                bg="blue.700"
-                float="right"
-                _hover={{ bgColor: "blue.900" }}
-                onClick={() => refetch()}
-                aria-label="Atualizar tabela"
-                icon={<SlRefresh />}
-              />
-            </Flex>
+              </Flex>
 
-            <TableContainer>
-              <Table size="sm" colorScheme="whiteAlpha">
-                <Thead>
-                  <Tr>
-                    <Th textAlign="center">Eb</Th>
-                    <Th textAlign="center">Tipo</Th>
-                    <Th textAlign="center">Tipo de Transporte</Th>
-                    <Th textAlign="center">Situação</Th>
-                    <Th></Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {data?.data.map((res) => (
-                    <Tr key={res.id}>
-                      <Td textAlign="center">{res.eb}</Td>
-                      <Td textAlign="center">{res.tipo}</Td>
-                      <Td textAlign="center">{res.tipoTransporte}</Td>
-                      <Td textAlign="center" fontWeight="bold" color={res.situacao === "disponivel" ? "green.500" : res.situacao === "indisponivel" ? "red.500" : "yellow.500"}>{res.situacao?.toLocaleUpperCase()}</Td>
-                      <Td>
-                        {res.situacao === "disponivel" ?
-                          <Button
-                            bg="yellow.600"
-                            size="sm"
-                            _hover={{ backgroundColor: "yellow.800" }}
-                            onClick={() => handleUpdateStatus({ id: res.id, situacao: "indisponivel" })}
-                            py="1"
-                            boxShadow="buttonShadow"
-                          >
-                            <Icon as={FaTools} color="white" size={20} />
-                          </Button>
-                          : res.situacao === "indisponivel" ?
+              <TableContainer>
+                <Table size="sm" colorScheme="whiteAlpha">
+                  <Thead>
+                    <Tr>
+                      <Th textAlign="center">Eb</Th>
+                      <Th textAlign="center">Tipo</Th>
+                      <Th textAlign="center">Tipo de Transporte</Th>
+                      <Th textAlign="center">Situação</Th>
+                      <Th></Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    {data?.data.map((res) => (
+                      <Tr key={res.id}>
+                        <Td textAlign="center">{res.eb}</Td>
+                        <Td textAlign="center">{res.tipo}</Td>
+                        <Td textAlign="center">{res.tipoTransporte}</Td>
+                        <Td textAlign="center" fontWeight="bold" color={res.situacao === "disponivel" ? "green.500" : res.situacao === "indisponivel" ? "red.500" : "yellow.500"}>{res.situacao?.toLocaleUpperCase()}</Td>
+                        <Td>
+                          {res.situacao === "disponivel" ?
                             <Button
-                              bg="green.600"
+                              bg="yellow.600"
                               size="sm"
-                              _hover={{ backgroundColor: "green.800" }}
-                              onClick={() => handleUpdateStatus({ id: res.id, situacao: "disponivel" })}
+                              _hover={{ backgroundColor: "yellow.800" }}
+                              onClick={() => handleUpdateStatus({ id: res.id, situacao: "indisponivel" })}
                               py="1"
                               boxShadow="buttonShadow"
                             >
                               <Icon as={FaTools} color="white" size={20} />
                             </Button>
-                            : null
-                        }
+                            : res.situacao === "indisponivel" ?
+                              <Button
+                                bg="green.600"
+                                size="sm"
+                                _hover={{ backgroundColor: "green.800" }}
+                                onClick={() => handleUpdateStatus({ id: res.id, situacao: "disponivel" })}
+                                py="1"
+                                boxShadow="buttonShadow"
+                              >
+                                <Icon as={FaTools} color="white" size={20} />
+                              </Button>
+                              : null
+                          }
 
-                      </Td>
+                        </Td>
+                      </Tr>
+                    ))}
+                  </Tbody>
+                  <Tfoot>
+                    <Tr>
+                      <Th textAlign="center">Eb</Th>
+                      <Th textAlign="center">Tipo</Th>
+                      <Th textAlign="center">Tipo de Transporte</Th>
+                      <Th textAlign="center">Situação</Th>
+                      <Th></Th>
                     </Tr>
-                  ))}
-                </Tbody>
-                <Tfoot>
-                  <Tr>
-                    <Th textAlign="center">Eb</Th>
-                    <Th textAlign="center">Tipo</Th>
-                    <Th textAlign="center">Tipo de Transporte</Th>
-                    <Th textAlign="center">Situação</Th>
-                    <Th></Th>
-                  </Tr>
-                </Tfoot>
-              </Table>
-            </TableContainer>
-          </Flex>
+                  </Tfoot>
+                </Table>
+              </TableContainer>
+            </Flex>
 
-        </Box>
-      </SimpleGrid>
-    </Flex>
-  </>
-    
+          </Box>
+        </SimpleGrid>
+      </Flex>
+    </>
+
   );
 }

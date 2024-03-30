@@ -42,7 +42,7 @@ import { Input } from "../../../components/Form/Input";
 
 import { SlRefresh } from "react-icons/sl";
 import { useSession } from "next-auth/react";
-import { PedidoViatura } from "../../../@types/types";
+import { CautelaViatura, PedidoViatura } from "../../../@types/types";
 import { convertDate } from "../../../utils/scripts";
 import { NotLoaded } from "../../../components/NotLoaded";
 import { NotData } from "../../../components/NotData";
@@ -52,6 +52,7 @@ import Router from "next/router";
 import Head from "next/head";
 import { MdSearch } from "react-icons/md";
 import { TbShoppingCartPlus } from "react-icons/tb";
+import { GiTruck } from "react-icons/gi";
 
 const signInFormSchema = yup.object().shape({
   dataDesejada: yup.date().required("Campo obrigatório."),
@@ -89,8 +90,9 @@ export default function FurrielPedidoViatura() {
     ["pedidosViatura"],
     async () => {
       const result = await api.get<PedidoViatura[]>(`/veiculos/pedidos/furriel/${session.militar.companhia}`);
+      console.log(result);
       return result;
-
+      
     }
   );
 
@@ -361,6 +363,7 @@ export default function FurrielPedidoViatura() {
                         <Th textAlign="center">Apresentar para</Th>
                         <Th textAlign="center">Situação</Th>
                         <Th textAlign="center"></Th>
+                        <Th textAlign="center"></Th>
                       </Tr>
                     </Thead>
                     <Tbody>
@@ -377,7 +380,7 @@ export default function FurrielPedidoViatura() {
                           <Td textAlign="center">{res.apresentar}</Td>
                           <Td textAlign="center" fontSize="small" color={res.status === "aguardando" ? "orange.500" : res.status === "recusado" ? "red.500" : res.status === "autorizado" ? "blue.500" : "green.500"}>{res?.status?.toUpperCase()}</Td>
                           <Td textAlign="center">
-                            {(res?.status === "finalizado" || res?.status === "recusado") && res.observacao !== "" ?
+                            {res?.status === "recusado" && res.observacao !== "" ?
                               <Popover closeOnBlur={false} placement='left' initialFocusRef={initRef}>
                                 {({ isOpen }) => (
                                   <>
@@ -386,11 +389,36 @@ export default function FurrielPedidoViatura() {
                                     </PopoverTrigger>
                                     <Portal>
                                       <PopoverContent bg="gray.990" border="1px" borderColor="green.700">
-                                        <PopoverHeader>Observação</PopoverHeader>
+                                        <PopoverHeader>Observação do pedido</PopoverHeader>
                                         <PopoverCloseButton />
                                         <PopoverBody>
                                           <Box>
                                             {res.observacao}
+                                          </Box>
+                                        </PopoverBody>
+                                      </PopoverContent>
+                                    </Portal>
+                                  </>
+                                )}
+                              </Popover> : "-"}
+                          </Td>
+                          <Td textAlign="center">
+                            {(res?.status === "finalizado" && (res?.CautelaViatura?.length !== 0)) ?
+                              <Popover closeOnBlur={false} placement='left' initialFocusRef={initRef}>
+                                {({ isOpen }) => (
+                                  <>
+                                    <PopoverTrigger>
+                                      <Button _hover={{ bgColor: "rgba(0, 0, 0, 0.3)" }} size="xs" bgColor={isOpen ? 'yellow.500' : 'blue.500'}>
+                                        <GiTruck color="white" size={18} />
+                                      </Button>
+                                    </PopoverTrigger>
+                                    <Portal>
+                                      <PopoverContent bg="gray.990" border="1px" borderColor="green.700">
+                                        <PopoverHeader>Observação da descautela</PopoverHeader>
+                                        <PopoverCloseButton />
+                                        <PopoverBody>
+                                          <Box>
+                                            {res?.CautelaViatura[0].observacao}
                                           </Box>
                                         </PopoverBody>
                                       </PopoverContent>

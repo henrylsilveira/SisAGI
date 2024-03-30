@@ -8,6 +8,13 @@ export function convertDate(iso: string | number | Date) {
   return convertDate;
 }
 
+export function convertDateAndTime(iso: string | number | Date) {
+  const d = new Date(iso);
+  const convertDate = d.toLocaleDateString("pt-BR");
+  const convertTime = d.toLocaleTimeString("pt-BR");
+  return convertDate + " às " + convertTime;
+}
+
 export function generateNowISOTime() {
   const time = new Date();
   return time.toISOString();

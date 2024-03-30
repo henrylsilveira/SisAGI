@@ -114,7 +114,7 @@ export function MissaoModal() {
         py="1"
         boxShadow="buttonShadow"
       >
-        <Icon as={MdOutlineWorkOutline} size={20} />
+        <Icon color="white" as={MdOutlineWorkOutline} size={20} />
       </Button>
       <Modal finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />

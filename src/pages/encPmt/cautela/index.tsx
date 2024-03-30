@@ -326,7 +326,7 @@ export default function CautelaViaturaPage() {
                                                     <option value="autorizado">Autorizado - {pedidosViatura?.data.filter(res => res.status === "autorizado").length}</option>
                                                 </Input>
                                             </FormControl>
-                                            
+
                                             <FormControl>
                                                 <Input
                                                     as="select"
@@ -393,7 +393,7 @@ export default function CautelaViaturaPage() {
                                                     <Td textAlign="center" fontSize="small" fontWeight="bold" color={res.status === "aguardando" ? "orange.500" : res.status === "autorizado" ? "blue.500" : res.status === "recusado" ? "red.500" : "green.500"}>{res.status.toUpperCase()}</Td>
                                                     <Td textAlign="center" flex={1} display="flex">
 
-                                                        {(res.status === "autorizado" || res.status === "finalizado" || res.status === "recusado")  && res.observacao !== "" ?
+                                                        {(res.status === "autorizado" || res.status === "finalizado" || res.status === "recusado") && res.observacao !== "" ?
                                                             <Popover closeOnBlur={false} placement='left' initialFocusRef={initRef}>
                                                                 {({ isOpen }) => (
                                                                     <>
@@ -413,12 +413,12 @@ export default function CautelaViaturaPage() {
                                                                         </Portal>
                                                                     </>
                                                                 )}
-                                                            </Popover> : (res.status === "autorizado" || res.status === "finalizado" || res.status === "recusado")  && res.observacao === "" ? "-" :
-                                                            <Flex gap={2}>
-                                                                <CautelaViaturaModal pedido={res} viaturas={viaturas.data} atualizar={refetchPedidos} />
-                                                                <ModalRecusa pedido={res} atualizar={refetchPedidos} />
+                                                            </Popover> : (res.status === "autorizado" || res.status === "finalizado" || res.status === "recusado") && res.observacao === "" ? "-" :
+                                                                <Flex gap={2}>
+                                                                    <CautelaViaturaModal pedido={res} viaturas={viaturas.data} atualizar={refetchPedidos} />
+                                                                    <ModalRecusa pedido={res} atualizar={refetchPedidos} />
 
-                                                            </Flex>
+                                                                </Flex>
                                                         }
 
                                                     </Td>

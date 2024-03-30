@@ -111,8 +111,8 @@ export default function CadastroCivil() {
         formData.append(type, file);
         try {
             const result = await api.post(`/civil/upload/${type}/${id}`,
-                formData
-                , {
+                formData,
+                {
                     headers: {
                         'content-type': 'multipart/form-data'
                     }
@@ -182,7 +182,7 @@ export default function CadastroCivil() {
     return (
         <>
             <Head>
-                <title>SisAGI | DBQ</title>
+                <title>SisAGI | Cadastro Civil</title>
             </Head>
             <Flex direction="column" flex="1" gap={4}>
                 <SimpleGrid
@@ -359,11 +359,12 @@ export default function CadastroCivil() {
                                                     name="fotoCivil"
                                                     label="Foto 3x4"
                                                     className="uploadInput"
+                                                    accept="image/png, image/jpeg"
                                                     type="file"
                                                     h={8}
                                                     onChange={(e) => handleFileInputChange(e, "foto")}
                                                 />
-                                                <Button variant="outline" size="lg" ml={2} mt={8} _hover={{ bgColor: "green.800" }}
+                                                <Button variant="outline" size="lg" ml={2} mt={8} color="white" _hover={{ bgColor: "green.800" }}
                                                     borderColor="green.800" onClick={(e) => handleSubmitImage(e, civil.id, "fotoCivil")}>Upload</Button>
 
                                             </Flex>
@@ -383,19 +384,20 @@ export default function CadastroCivil() {
                                                     name="fotoDoc"
                                                     label="Foto do documento"
                                                     className="uploadInput"
+                                                    accept="image/png, image/jpeg"
                                                     h={8}
                                                     type="file"
                                                     onChange={(e) => handleFileInputChange(e, "fotoDoc")}
                                                 />
                                                 <Button variant="outline" size="lg" ml={2} mt={8} _hover={{ bgColor: "green.800" }}
-                                                    borderColor="green.800" onClick={(e) => handleSubmitImage(e, civil.id, "fotoDoc")}>Upload</Button>
+                                                    borderColor="green.800" color="white" onClick={(e) => handleSubmitImage(e, civil.id, "fotoDoc")}>Upload</Button>
 
                                             </Flex>
                                         </>
                                     ) : (
                                         <Flex bg="blackAlpha.600" w="full" h="full" rounded="lg" border="1px solid" borderColor="red.600" justifyContent="center" alignItems={"center"}>
                                             <Icon color="red.600" as={FiAlertTriangle} />
-                                            <Text ml={2}>Cadastre um DBQ primeiro para em seguida enviar uma foto.</Text>
+                                            <Text ml={2}>Cadastre um Civil primeiro para em seguida enviar uma foto.</Text>
                                         </Flex>
                                     )}
 

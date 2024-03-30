@@ -1,60 +1,23 @@
 import {
   useDisclosure,
   Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
   useToast,
   Icon,
-  Text,
-  FormControl,
-  FormLabel,
   Divider,
-  Stack,
-  Flex,
-  Heading,
-  FormHelperText,
-  NumberInput,
-  NumberInputField,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInputStepper,
-  Grid,
-  Avatar,
-  AvatarBadge,
-  Input,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
   DrawerContent,
-  DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
 } from "@chakra-ui/react";
-import React, { FormEvent, useContext, useState } from "react";
-
+import React, { useState } from "react";
 import { useSession } from "next-auth/react";
-
-import { MdOutlineWorkOutline } from "react-icons/md";
-
 import { useQuery } from "react-query";
-
-import { FaAngleDoubleRight } from "react-icons/fa";
 import {
-  MilitarArray,
-  Missao,
-  Militar,
   MissaoArray,
 } from "../../../@types/types";
 import { api } from "../../../services/api";
-import {
-  convertDateInputToISODate,
-  returnAvatarImage,
-} from "../../../utils/scripts";
 import { RiNotificationLine } from "react-icons/ri";
 import { CardMissao } from "./CardMissao";
 
@@ -82,7 +45,7 @@ export function MissaoDrawer() {
         boxShadow="buttonShadow"
         ref={btnRef}
       >
-        <Icon as={RiNotificationLine} size={20} />
+        <Icon color="white" as={RiNotificationLine} size={20} />
       </Button>
       <Drawer
         isOpen={isOpen}
