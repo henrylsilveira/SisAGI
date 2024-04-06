@@ -41,6 +41,20 @@ export function SidebarNav() {
         </NavSection>
       ) : null}
 
+{session?.militar.Funcao.find((func) => func.funcao === "comum") ? (
+        <NavSection title="PAINEL DO MILITAR">
+          <NavLink href="/painel/perfil" icon={RiContactsLine}>
+            Perfil
+          </NavLink>
+          <NavLink href="/painel/minhasCautelas" icon={RiBook2Line}>
+            Cautelas
+          </NavLink>
+          <NavLink href="/painel/minhaFracao" icon={HiOutlineUserGroup}>
+            Minha Fração
+          </NavLink>
+        </NavSection>
+      ) : null}
+
       {session?.militar.Funcao.find((func) => func.funcao === "s2" && func.status === "ativo") ? (
         //DESENVOLVER AS PAGINAS
         <NavSection title="S/2">
@@ -56,19 +70,22 @@ export function SidebarNav() {
         </NavSection>
       ) : null}
 
-      {session?.militar.Funcao.find((func) => func.funcao === "comum") ? (
-        <NavSection title="PAINEL DO MILITAR">
-          <NavLink href="/painel/perfil" icon={RiContactsLine}>
-            Perfil
+{session?.militar.Funcao.find((func) => func.funcao === "s4" && func.status === "ativo") ? (
+        //DESENVOLVER AS PAGINAS
+        <NavSection title="S/4">
+          <NavLink href="/s4/viaturas" icon={GiTruck}>
+            Viaturas
           </NavLink>
-          <NavLink href="/painel/minhasCautelas" icon={RiBook2Line}>
-            Cautelas
+          {/* <NavLink href="/s4/lea" icon={RiShieldKeyholeLine}>
+            LEA
           </NavLink>
-          <NavLink href="/painel/minhaFracao" icon={HiOutlineUserGroup}>
-            Minha Fração
-          </NavLink>
+          <NavLink href="/s4/mi" icon={RiShieldKeyholeLine}>
+            MI
+          </NavLink> */}
         </NavSection>
       ) : null}
+
+      
 
       {session?.militar.Funcao.find(
         (func) => (func.funcao === "enc mat" || func.funcao === "cmt pel") && func.status === "ativo"
@@ -113,7 +130,7 @@ export function SidebarNav() {
       ) : null}
 
       {session?.militar.Funcao.find((func) => func.funcao === "furriel" && func.status === "ativo") ? (
-        <NavSection title="MUNIÇÃO / COMBUSTÍVEL">
+        <NavSection title="FURRIEL">
           {/* <NavLink href="/furriel/geral" icon={RiDashboardLine}>
             Geral
           </NavLink> */}

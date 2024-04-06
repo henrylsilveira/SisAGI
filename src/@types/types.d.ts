@@ -239,7 +239,7 @@ export type CombustivelArray = Combustivel[];
 
 export type FuncaoMilitar = {
   id: string;
-  funcao: 'sgte' | 'super admin' | 'cmt cia' | 'enc mat' | 'armeiro' | 'cmt pel' | 'cmt gda' | 'furriel' | 'comum' | 's2' | 'enc pmt';
+  funcao: 'sgte' | 'super admin' | 'cmt cia' | 'enc mat' | 'armeiro' | 'cmt pel' | 'cmt gda' | 'furriel' | 'comum' | 's2' | 'enc pmt' | 's4';
   created_at: Date;
   data_inicio:  Date;
   data_termino: Date;
@@ -304,6 +304,7 @@ export type PedidoViatura = {
   apresentar?: string
   observacao?: string
   status: "aguardando" | "autorizado" | "finalizado" | "recusado"
+  autorizado: boolean
   companhia: string
   militarId: string
   militar: Militar

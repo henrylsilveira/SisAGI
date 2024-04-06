@@ -52,6 +52,8 @@ import { ModalRecusa } from "../../../components/Modal/Viatura/ModalRecusa";
 import Router from "next/router";
 import Head from "next/head";
 import { Input } from "../../../components/Form/Input";
+import { GiCheckMark } from "react-icons/gi";
+import { RxCross1 } from "react-icons/rx";
 
 const signInFormSchema = yup.object().shape({
     dataDesejada: yup.date().required("Campo obrigatório."),
@@ -377,6 +379,7 @@ export default function CautelaViaturaPage() {
                                                 <Th textAlign="center">Motorista</Th>
                                                 <Th textAlign="center">Apresentar para</Th>
                                                 <Th textAlign="center">Situação</Th>
+                                                <Th textAlign="center">S/4</Th>
                                                 <Th></Th>
                                             </Tr>
                                         </Thead>
@@ -391,6 +394,9 @@ export default function CautelaViaturaPage() {
                                                     <Td textAlign="center">{res.motorista}</Td>
                                                     <Td textAlign="center">{res.apresentar}</Td>
                                                     <Td textAlign="center" fontSize="small" fontWeight="bold" color={res.status === "aguardando" ? "orange.500" : res.status === "autorizado" ? "blue.500" : res.status === "recusado" ? "red.500" : "green.500"}>{res.status.toUpperCase()}</Td>
+                                                    { res.status === "aguardando" ? (
+                            <Td textAlign="center" bg={res.autorizado ? "green.800" : "red.800"} shadow="buttonShadow">{res.autorizado ? <GiCheckMark /> : <RxCross1 />}</Td>
+                          ) : <Td> - </Td>}
                                                     <Td textAlign="center" flex={1} display="flex">
 
                                                         {(res.status === "autorizado" || res.status === "finalizado" || res.status === "recusado") && res.observacao !== "" ?
@@ -435,6 +441,7 @@ export default function CautelaViaturaPage() {
                                                 <Th textAlign="center">Motorista</Th>
                                                 <Th textAlign="center">Apresentar para</Th>
                                                 <Th textAlign="center">Situação</Th>
+                                                <Th textAlign="center">S/4</Th>
                                                 <Th></Th>
                                             </Tr>
                                         </Tfoot>
