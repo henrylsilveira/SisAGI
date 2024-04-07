@@ -385,7 +385,7 @@ export default function CautelaViaturaPage() {
                                         </Thead>
                                         <Tbody>
                                             {pedidosViatura?.data.filter(res => search ? res.status === search : res.status).filter(res => searchCia ? res.companhia === searchCia : res.companhia).map((res) => (
-                                                <Tr key={res.id}>
+                                                <Tr key={res.id} _hover={{ shadow: "innerShadow", bg: "gray.990", border: "2px", borderColor: "green.900", rounded: "lg" }}>
                                                     <Td textAlign="center">{convertDate(res.dataDesejada)}</Td>
                                                     <Td textAlign="center">{convertDate(res.dataDevolucao)}</Td>
                                                     <Td textAlign="center">{res.missao}</Td>
@@ -489,7 +489,7 @@ export default function CautelaViaturaPage() {
                                             </Thead>
                                             <Tbody>
                                                 {viaturasCauteladas?.data.filter(viatura => viatura.status === "autorizado").map((res) => (
-                                                    <Tr key={res.id}>
+                                                    <Tr key={res.id} _hover={{ shadow: "innerShadow", bg: "gray.990", border: "2px", borderColor: "green.900", rounded: "lg" }}>
                                                         <Td textAlign="center">{convertDate(res.pedido?.dataDesejada)}</Td>
                                                         <Td textAlign="center">{convertDate(res.pedido?.dataDevolucao)}</Td>
                                                         <Td textAlign="center">{res.pedido?.missao}</Td>

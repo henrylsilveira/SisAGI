@@ -107,6 +107,15 @@ function AtribuirFuncaoComponent(props) {
                 <option value="super admin">Super Administrador</option>
                 <option value="s2">S/2</option>
                 <option value="s4">S/4</option>
+                <option value="cmt cia">Comandante de Cia</option>
+                <option value="enc mat">Encarregado de material</option>
+                <option value="sgte">Sargenteante</option>
+                <option value="armeiro">Armeiro</option>
+                <option value="cmt pel">Comandante de Pelotão</option>
+                <option value="cmt gda">Comandante da Guarda</option>
+                <option value="enc pmt">Encarregado PMT</option>
+                <option value="furriel">Furriel</option>
+                <option value="comum">Comum</option>
               </>
             ) : (
               <>

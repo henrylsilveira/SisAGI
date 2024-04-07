@@ -40,7 +40,7 @@ export function MissaoDrawer() {
         bg="gray.990"
         size="md"
         _hover={{ border: "1px", borderColor: "green.700" }}
-        onClick={onOpen}
+        // onClick={onOpen}
         py="1"
         boxShadow="buttonShadow"
         ref={btnRef}

@@ -369,7 +369,7 @@ export default function FurrielPedidoViatura() {
                     <Tbody>
 
                       {dataPedidoViatura?.data.filter(res => search ? res.status === search : res.status).map((res) => (
-                        <Tr key={res.id}>
+                        <Tr key={res.id} _hover={{ shadow: "innerShadow", bg: "gray.990", border: "2px", borderColor: "green.900", rounded: "lg" }}>
                           <Td textAlign="center">{convertDate(res.created_at)}</Td>
                           <Td textAlign="center">{convertDate(res.dataDesejada)}</Td>
                           <Td textAlign="center">{convertDate(res.dataDevolucao)}</Td>

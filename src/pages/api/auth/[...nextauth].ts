@@ -1,7 +1,6 @@
 import NextAuth from "next-auth"
 import { api } from "../../../services/api";
 import { Militar } from "../../../@types/types";
-import CredentialsProvider from "next-auth/providers/credentials";
 import Credentials from "next-auth/providers/credentials";
 
 
