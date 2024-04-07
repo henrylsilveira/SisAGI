@@ -91,7 +91,7 @@ export function Sidebar() {
         </Box>
       </Flex>
       {stateBar ? (
-        <Flex position="absolute" bottom={0} boxShadow='buttonShadow' my={4} alignItems='center' w='85vw' maxWidth="90vw" bg='blackAlpha.500' rounded='lg'>
+        <Flex position="fixed" zIndex={100} bottom={0} left={5} boxShadow='buttonShadow' my={4} mx="auto" alignItems='center' bg='blackAlpha.400' rounded='lg'>
           <Text fontSize='xs' align="center" fontWeight="bold" letterSpacing="tight" bgGradient="linear(to-tr, green.300, gray.600, green.300 )" bgClip='text' p={2} w='full'>
             SisAGI - Desenvolvido e projetado pelo 3ªSgt Henry - 2016
           </Text>
