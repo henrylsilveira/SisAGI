@@ -195,7 +195,7 @@ export default function Home() {
                 p={2}
                 w="full"
               >
-                Desenvolvido pelo 3ªSgt Henry - 2016
+                Desenvolvido e projetado pelo 3ªSgt Henry - 2016
               </Text>
             </Flex>
           </Flex>

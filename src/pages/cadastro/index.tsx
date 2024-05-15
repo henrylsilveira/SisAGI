@@ -162,7 +162,7 @@ export default function Cadastro() {
                 Sistema de Apoio a Gestão Interna
               </Text>
               <Heading as="h2" size="md">
-                Cmdo Fron RN / 5 BIS
+                13º BIB
               </Heading>
             </Flex>
             <Input
