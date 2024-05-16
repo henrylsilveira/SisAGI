@@ -5,7 +5,8 @@ import { useSession } from "next-auth/react";
 import Router, { useRouter } from "next/router";
 import { convertDate, generateNowISOTime } from "../../../utils/scripts";
 import { MdBlock, MdCheck } from "react-icons/md";
-import { FaRegTrashCan } from "react-icons/fa6";
+import { CiTrash } from "react-icons/ci";
+
 
 export function ListarFuncao(props) {
   const mil = props.militar as Militar;
@@ -134,7 +135,7 @@ export function ListarFuncao(props) {
 
               : null}
             {session?.militar.Funcao.find((func) => func.funcao == "super admin") && asPath == "/superAdmin" ?
-              <FaRegTrashCan color="red.500" onClick={() => handleDeleteFuncao(func.id)} />
+              <CiTrash color="red.500" onClick={() => handleDeleteFuncao(func.id)} />
               : null}
           </Tag>
         ))}
@@ -197,7 +198,7 @@ export function ListarFuncao(props) {
 
               : null}
             {session?.militar.Funcao.find((func) => func.funcao == "super admin") && asPath == "/superAdmin" ?
-              <FaRegTrashCan color="red.500" onClick={() => handleDeleteFuncao(func.id)} />
+              <CiTrash color="red.500" onClick={() => handleDeleteFuncao(func.id)} />
               : null}
           </Tag>
         ))}
