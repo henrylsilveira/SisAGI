@@ -23,8 +23,8 @@ export default NextAuth({
             ip: credentials?.ip
           });
           if (res.status === 200) {
-            const user = await res.data
-            return user
+            res.user = await res.data
+            return res.user
           } 
 
           throw new Error("Erro na autenticação.");
