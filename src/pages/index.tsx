@@ -15,10 +15,9 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
 import { useEffect } from "react";
-import Router, { useRouter } from "next/router";
+import Router from "next/router";
 
 import { signIn, useSession } from "next-auth/react";
-import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { getUserIP } from "../utils/scripts";
 

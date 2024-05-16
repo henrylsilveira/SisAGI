@@ -22,11 +22,12 @@ export default NextAuth({
             senha: credentials?.senha,
             ip: credentials?.ip
           });
-          if (res.data) {
-            return res.data
-          } else {
-            return null
-          }
+          if (res.status === 200) {
+            const user = await res.data
+            return user
+          } 
+
+          throw new Error("Erro na autenticação.");
         } catch (error) {
           const message = error.response.data.message;
           throw new Error(message);
