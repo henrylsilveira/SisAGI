@@ -20,8 +20,6 @@ import {
   Tr,
   useToast,
 } from "@chakra-ui/react";
-import { Header } from "../../../components/Header";
-import { Sidebar } from "../../../components/Sidebar";
 import { useQuery } from "react-query";
 import { api } from "../../../services/api";
 import { useEffect, useState } from "react";
@@ -36,8 +34,9 @@ import { useSession } from "next-auth/react";
 import { Viatura } from "../../../@types/types";
 import { FaTools } from "react-icons/fa";
 import Router from "next/router";
-import Head from "next/Head";
+
 import { TbShoppingCartPlus } from "react-icons/tb";
+import Head from "next/head";
 
 const signInFormSchema = yup.object().shape({
   eb: yup.string().required("Campo obrigatório."),
