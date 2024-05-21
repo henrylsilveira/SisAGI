@@ -22,7 +22,7 @@ import {
     SimpleGrid,
     Spinner,
   } from "@chakra-ui/react";
-  import { useSession } from "next-auth/react";
+  // import { useSession } from "next-auth/react";
   import { useQuery } from "react-query";
   import { api } from "../../services/api";
   import { SessionArray } from "../../@types/types";
@@ -30,14 +30,15 @@ import {
 import { SlRefresh } from "react-icons/sl";
 import sessoes from "../../pages/superAdmin/sessoes";
 import { formatarDataHora } from "../../utils/scripts";
+import { useSession } from "../../services/context/auth";
   
   export function SessaoComponentPainel() {
-    const { data: session } = useSession();
+    const { user: session } = useSession();
   
     const { isLoading, data, refetch } = useQuery(
         ["militarSession"],
         async () => {
-          const result = await api.get<SessionArray>(`/sessions/${session.militar.id}`);
+          const result = await api.get<SessionArray>(`/sessions/${session.id}`);
           return result.data
         }
       );

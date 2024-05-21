@@ -12,7 +12,7 @@ import {
   DrawerOverlay,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { useSession } from "next-auth/react";
+
 import { useQuery } from "react-query";
 import {
   MissaoArray,
@@ -20,17 +20,18 @@ import {
 import { api } from "../../../services/api";
 import { RiNotificationLine } from "react-icons/ri";
 import { CardMissao } from "./CardMissao";
+import { useSession } from "../../../services/context/auth";
 
 export function MissaoDrawer() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { data: session } = useSession();
+  const { user: session } = useSession();
   const toast = useToast();
 
   const [result, setResult] = useState<MissaoArray>();
   const btnRef = React.useRef();
 
   useQuery(["todasMissoesMilitar"], async () => {
-    const result = await api.get<MissaoArray>(`/missao/${session.militar.id}`);
+    const result = await api.get<MissaoArray>(`/missao/${session.id}`);
     setResult(result.data);
   });
 

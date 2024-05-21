@@ -30,7 +30,7 @@ import {
 import React, { FormEvent, useContext, useState } from "react";
 
 import { BsBoxArrowRight } from "react-icons/bs";
-import { useSession } from "next-auth/react";
+
 import { Input } from "../../../Form/Input";
 import { Militar, MilitarArray, Missao } from "../../../../@types/types";
 import { MdOutlineWorkOutline } from "react-icons/md";
@@ -38,10 +38,11 @@ import { api } from "../../../../services/api";
 import { useQuery } from "react-query";
 import { convertDateInputToISODate, returnAvatarImage } from "../../../../utils/scripts";
 import { FaAngleDoubleRight } from "react-icons/fa";
+import { useSession } from "../../../../services/context/auth";
 
 export function MissaoModal() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { data: session } = useSession();
+  const { user: session } = useSession();
   const toast = useToast();
 
   const [militar, setMilitar] = useState("");
@@ -57,7 +58,7 @@ export function MissaoModal() {
       const result = await api.get<MilitarArray>("/militar");
       setResult(
         result.data.filter(
-          (mil) => mil.companhia === session?.militar.companhia
+          (mil) => mil.companhia === session?.companhia
         )
       );
     }
@@ -69,7 +70,7 @@ export function MissaoModal() {
     const values: Missao = {
       data_finalizacao: convertDateInputToISODate(dataFinalizacao),
       descricao,
-      militar_origem: session.militar.id,
+      militar_origem: session.id,
       militar_destino: militar,
     };
 
@@ -130,9 +131,9 @@ export function MissaoModal() {
             <Grid py={2} display="flex" alignItems="center" justifyContent="space-evenly" gridTemplateColumns="2fr 1fr 2fr">
               <Avatar
                 size="xl"
-                name={session?.militar.nome_completo}
+                name={session?.nome_completo}
                 bg="green.700"
-                src={returnAvatarImage(session?.militar.avatar_url)}
+                src={returnAvatarImage(session?.avatar_url)}
               >
                 <AvatarBadge
                   borderColor="gray.990"
@@ -176,7 +177,7 @@ export function MissaoModal() {
                   })
                   ?.filter(
                     (mil: Militar) =>
-                      mil.id !== session.militar.id
+                      mil.id !== session.id
                   )
                   .map((militar: Militar) => (
                     <option key={militar.id} value={militar.id}>

@@ -19,15 +19,16 @@ import { BsFillPersonLinesFill, BsPersonPlus } from "react-icons/bs";
 import { GiTruck } from "react-icons/gi";
 import { NavLink } from "./NavLink";
 import { NavSection } from "./NavSection";
-import { useSession } from "next-auth/react";
+// import { useSession } from "next-auth/react";
 import { BiNotepad } from "react-icons/bi";
+import { useSession } from "../../services/context/auth";
 
 export function SidebarNav() {
-  const { data: session } = useSession();
-
+  const { user: session } = useSession();
+  
   return (
     <Stack spacing="12" align="flex-start">
-      {session?.militar.Funcao.find((func) => func.funcao === "super admin") ? (
+      {session?.Funcao?.find((func) => func.funcao === "super admin") ? (
         <NavSection title="SUPER ADMIN">
           <NavLink href="/superAdmin/usuarios" icon={IoIosPeople}>
             Usuários
@@ -41,7 +42,7 @@ export function SidebarNav() {
         </NavSection>
       ) : null}
 
-{session?.militar.Funcao.find((func) => func.funcao === "comum") ? (
+{session?.Funcao?.find((func) => func.funcao === "comum") ? (
         <NavSection title="PAINEL DO MILITAR">
           <NavLink href="/painel/perfil" icon={RiContactsLine}>
             Perfil
@@ -55,7 +56,7 @@ export function SidebarNav() {
         </NavSection>
       ) : null}
 
-      {session?.militar.Funcao.find((func) => func.funcao === "s2" && func.status === "ativo") ? (
+      {session?.Funcao?.find((func) => func.funcao === "s2" && func.status === "ativo") ? (
         //DESENVOLVER AS PAGINAS
         <NavSection title="S/2">
           <NavLink href="/s2/dbq" icon={IoIosPeople}>
@@ -70,7 +71,7 @@ export function SidebarNav() {
         </NavSection>
       ) : null}
 
-{session?.militar.Funcao.find((func) => func.funcao === "s4" && func.status === "ativo") ? (
+{session?.Funcao?.find((func) => func.funcao === "s4" && func.status === "ativo") ? (
         //DESENVOLVER AS PAGINAS
         <NavSection title="S/4">
           <NavLink href="/s4/viaturas" icon={GiTruck}>
@@ -87,7 +88,7 @@ export function SidebarNav() {
 
       
 
-      {session?.militar.Funcao.find(
+      {session?.Funcao?.find(
         (func) => (func.funcao === "enc mat" || func.funcao === "cmt pel") && func.status === "ativo"
       ) ? (
         <NavSection title="MATERIAL">
@@ -106,7 +107,7 @@ export function SidebarNav() {
         </NavSection>
       ) : null}
 
-      {session?.militar.Funcao.find((func) => func.funcao === "armeiro" && func.status === "ativo") ? (
+      {session?.Funcao?.find((func) => func.funcao === "armeiro" && func.status === "ativo") ? (
         <NavSection title="ARMAMENTO">
           {/* <NavLink href="/armamento/geral" icon={RiDashboardLine}>
             Geral
@@ -129,7 +130,7 @@ export function SidebarNav() {
         </NavSection>
       ) : null}
 
-      {session?.militar.Funcao.find((func) => func.funcao === "furriel" && func.status === "ativo") ? (
+      {session?.Funcao?.find((func) => func.funcao === "furriel" && func.status === "ativo") ? (
         <NavSection title="FURRIEL">
           {/* <NavLink href="/furriel/geral" icon={RiDashboardLine}>
             Geral
@@ -146,7 +147,7 @@ export function SidebarNav() {
         </NavSection>
       ) : null}
 
-      {session?.militar.Funcao.find((func) => func.funcao === "sgte" && func.status === "ativo") ? (
+      {session?.Funcao?.find((func) => func.funcao === "sgte" && func.status === "ativo") ? (
         <NavSection title="PESSOAL">
           <NavLink href="/pessoal/geral" icon={RiDashboardLine}>
             Geral
@@ -157,7 +158,7 @@ export function SidebarNav() {
         </NavSection>
       ) : null}
 
-      {session?.militar.Funcao.find((func) => func.funcao === "enc pmt" && func.status === "ativo") ? (
+      {session?.Funcao?.find((func) => func.funcao === "enc pmt" && func.status === "ativo") ? (
         <NavSection title="PMT">
           {/* <NavLink href="/encPmt/geral" icon={RiDashboardLine}>
             Geral
@@ -177,7 +178,7 @@ export function SidebarNav() {
         </NavSection>
       ) : null}
 
-      {session?.militar.Funcao.find((func) => func.funcao === "cmt gda" && func.status === "ativo") ? (
+      {session?.Funcao?.find((func) => func.funcao === "cmt gda" && func.status === "ativo") ? (
         <NavSection title="CMT DA GDA">
           <NavLink href="/cmtGda/controle" icon={BsPeople}>
             Controle

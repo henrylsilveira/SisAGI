@@ -14,12 +14,13 @@ import { SubmitHandler } from "react-hook-form/dist/types";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import Router from "next/router";
 
-import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
 import { getUserIP } from "../utils/scripts";
+import AuthContext from "../services/context/AuthContext";
+import { useSession } from "../services/context/auth";
 
 type SignInFormData = {
   identidade: string;
@@ -42,40 +43,53 @@ export default function Home() {
   } = useForm({
     resolver: yupResolver(signInFormSchema),
   });
-  const { data: session, status } = useSession();
+  // const { data: session, status } = useSession();
   const toast = useToast();
 
-  useEffect(() => {
-    if (session && status === "authenticated") {
-      Router.push("/dashboard");
-    } else {
-      Router.push("/");
-      return;
-    }
-  }, [session, status]);
+  const { signed, Login } = useSession();
+
+  // useEffect(() => {
+  //   if (session && status === "authenticated") {
+  //     Router.push("/dashboard");
+  //   } else {
+  //     Router.push("/");
+  //     return;
+  //   }
+  // }, [session, status]);
 
   const handleSignIn: SubmitHandler<SignInFormData> = async (values) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    const res = await signIn("credentials", {
-      redirect: false,
-      identidade: values.identidade,
-      senha: values.senha,
-      ip: await getUserIP(),
-      callbackUrl: "/dashboard"      
-    });
-
-    if (res.error) {
-      toast({
-        title: "Login",
-        description: res.error,
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-      return ;
+    try {
+        const res = await Login({
+        identidade: values.identidade,
+        senha: values.senha,
+        ip: await getUserIP(),
+      })
+      if (res.status !== 200) {
+        toast({
+          title: "Login",
+          description: "Algo de arrado aconteceu.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+        return ;
+      }
+    } catch (error) {
+      console.error(error);
     }
-    return Router.push("/dashboard");
+    
+
+    // const res = await signIn("credentials", {
+    //   redirect: false,
+    //   identidade: values.identidade,
+    //   senha: values.senha,
+    //   ip: await getUserIP(),
+    //   callbackUrl: "/dashboard"      
+    // });
+    
+   
+    return Router.push("/");
   };
 
   return (
