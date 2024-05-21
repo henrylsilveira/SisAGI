@@ -32,12 +32,13 @@ import { SubmitHandler } from "react-hook-form/dist/types";
 import { Input } from "../../../components/Form/Input";
 
 import { SlRefresh } from "react-icons/sl";
-import { useSession } from "next-auth/react";
+
 import { Viatura } from "../../../@types/types";
 import { FaTools } from "react-icons/fa";
 import Router from "next/router";
 import Head from "next/Head";
 import { TbShoppingCartPlus } from "react-icons/tb";
+import { useSession } from "../../../services/context/auth";
 
 const signInFormSchema = yup.object().shape({
   eb: yup.string().required("Campo obrigatório."),
@@ -46,13 +47,13 @@ const signInFormSchema = yup.object().shape({
 });
 
 export default function CadastroViatura() {
-  const { data: session } = useSession();
+  const { user: session, status } = useSession();
   const [result, setResult] = useState({});
   const [createPedido, setCreatePedido] = useState(false);
   const toast = useToast();
 
   useEffect(() => {
-    if (!session?.militar.Funcao.find((func) => func.funcao === "enc pmt")) {
+    if (!session?.Funcao.find((func) => func.funcao === "enc pmt")) {
       Router.push("/");
       toast({
         title: "Acesso não autorizado.",

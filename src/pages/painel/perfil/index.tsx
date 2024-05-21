@@ -16,7 +16,7 @@ import {
 import { useQuery } from "react-query";
 import { api } from "../../../services/api";
 
-import { useSession } from "next-auth/react";
+
 import Head from "next/head";
 import { FuncaoMilitar, Militar, MissaoArray } from "../../../@types/types";
 import { DadosMilitares } from "../../../components/SuperAdmin/Forms/DadosMilitares";
@@ -26,13 +26,14 @@ import { returnAvatarImage } from "../../../utils/scripts";
 import { MissoesPainel } from "../../../components/Painel/Missoes";
 import { NotLoaded } from "../../../components/NotLoaded";
 import { useState } from "react";
+import { useSession } from "../../../services/context/auth";
 
 // const Chart = dynamic(() => import("react-apexcharts"), {
 //   ssr: false,
 // });
 
 export default function Perfil() {
-  const { data: session } = useSession();
+  const { user: session, status } = useSession();
   const [missoes, setMissoes] = useState<MissaoArray>();
   const [sessionId, setSessionId] = useState("");
   const {
@@ -42,14 +43,14 @@ export default function Perfil() {
     isFetching,
     refetch,
   } = useQuery(["dadosMilitar"], async () => {
-    const res = await api.get<Militar>(`/militar/${session?.militar.id}`);
+    const res = await api.get<Militar>(`/militar/${session?.id}`);
     return res.data;
   });
 
   useQuery(["todasMissoesMilitar"], async () => {
-    const res = await api.get<MissaoArray>(`/missao/${session?.militar.id}`);
+    const res = await api.get<MissaoArray>(`/missao/${session?.id}`);
     setMissoes(res.data);
-    setSessionId(session.militar.id)
+    setSessionId(session.id)
   });
 
   // const series = [{ data: () => new Array(Object.values(data?._count))}];
@@ -164,10 +165,10 @@ export default function Perfil() {
                 <Flex justifyContent="space-evenly" p={4}>
                   <Avatar
                     size="2xl"
-                    name={session?.militar.nome_completo}
+                    name={session?.nome_completo}
                     bg="green.700"
                     m={4}
-                    src={returnAvatarImage(session?.militar.avatar_url)}
+                    src={returnAvatarImage(session?.avatar_url)}
                   >
                     <AvatarBadge
                       borderColor="gray.990"
@@ -177,16 +178,16 @@ export default function Perfil() {
                   </Avatar>
                   <VStack alignItems="start">
                     <Text borderBottom="1px" borderBottomColor="gray.800">
-                      Nome Completo:{session?.militar.nome_completo}
+                      Nome Completo:{session?.nome_completo}
                     </Text>
                     <Text borderBottom="1px" borderBottomColor="gray.800">
-                      Nome de Guerra:{session?.militar.nome_guerra}
+                      Nome de Guerra:{session?.nome_guerra}
                     </Text>
                     <Text borderBottom="1px" borderBottomColor="gray.800">
-                      Email:{session?.militar.email}
+                      Email:{session?.email}
                     </Text>
                     <Text borderBottom="1px" borderBottomColor="gray.800">
-                      Contato:{session?.militar.telefone}
+                      Contato:{session?.telefone}
                     </Text>
                   </VStack>
                 </Flex>
@@ -198,11 +199,11 @@ export default function Perfil() {
             </Flex>
 
             <Grid gridTemplateColumns="1fr 1fr" gap={4}>
-              <DadosPessoais militar={{ ...session.militar, ...militar }} />
-              <DadosMilitares militar={{ ...session.militar, ...militar }} />
+              <DadosPessoais militar={{ ...session, ...militar }} />
+              <DadosMilitares militar={{ ...session, ...militar }} />
             </Grid>
             <Flex>
-              <Endereco militar={{ ...session.militar, ...militar }} />
+              <Endereco militar={{ ...session, ...militar }} />
             </Flex>
           </Box>
         </SimpleGrid>

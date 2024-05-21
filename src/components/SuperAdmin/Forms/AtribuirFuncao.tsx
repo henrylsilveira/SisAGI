@@ -16,13 +16,13 @@ import {
 import { memo, useState } from "react";
 import { api } from "../../../services/api";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
+import { useSession } from "../../../services/context/auth";
 
 function AtribuirFuncaoComponent(props) {
   const [dataInicio, setDataInicio] = useState("");
   const [dataTermino, setDataTermino] = useState("");
   const [funcao, setFuncao] = useState("");
-  const { data: session } = useSession();
+  const { user: session, status } = useSession();
 
   const mil = props.militar as Militar;
   console.log(mil)
@@ -102,7 +102,7 @@ function AtribuirFuncaoComponent(props) {
             onChange={(e) => setFuncao(e.target.value)}
           >
             <option>Selecione</option>
-            {session?.militar.Funcao.find((func) => func.funcao === "super admin" ) && asPath === "/superAdmin/usuarios" ? (
+            {session?.Funcao.find((func) => func.funcao === "super admin" ) && asPath === "/superAdmin/usuarios" ? (
               <>
                 <option value="super admin">Super Administrador</option>
                 <option value="s2">S/2</option>

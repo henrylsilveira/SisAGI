@@ -29,11 +29,12 @@ import { Input } from "../../../Form/Input";
 import { api } from "../../../../services/api";
 import { BsBoxArrowRight } from "react-icons/bs";
 import { Militar } from "../../../../@types/types";
-import { useSession } from "next-auth/react";
+import { useSession } from "../../../../services/context/auth";
+
 
 export function ModalCautela({ data: militares, dataMaterial: material }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { data: session } = useSession();
+  const { user: session, status } = useSession();
   const toast = useToast();
 
   const [senha, setSenha] = useState(" ");
@@ -46,7 +47,7 @@ export function ModalCautela({ data: militares, dataMaterial: material }) {
     e.preventDefault();
 
     const values = {
-      militarNome: `${session.militar.post_grad} ${session.militar.nome_guerra}`,
+      militarNome: `${session.post_grad} ${session.nome_guerra}`,
       materialId: material.id,
       observacao,
       quantidade,
@@ -146,7 +147,7 @@ export function ModalCautela({ data: militares, dataMaterial: material }) {
                       b = y.nome_guerra.toUpperCase();
                     return a == b ? 0 : a > b ? 1 : -1;
                   })
-                  ?.filter((mil: Militar) => mil.identidade !== session.militar.identidade)
+                  ?.filter((mil: Militar) => mil.identidade !== session.identidade)
                   .map((militar: Militar) => (
                     <option key={militar.id} value={militar.id}>
                       {`${militar.nome_guerra} - ${militar.post_grad} (${militar.companhia})`}

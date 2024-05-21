@@ -36,6 +36,7 @@ export function AuthProvider({ children }) {
 
     async function Login(credentials: object){
         try {
+            
             const response = await api.post('/auth', credentials);
             const militar = await api.get<Militar>(`/me/${response.data.id}`);
             async () => await new Promise((resolve, reject) => {
@@ -72,6 +73,6 @@ export function AuthProvider({ children }) {
 export function useSession(){
     const context = useContext(AuthContext);
     return context
-   
+
    }
    

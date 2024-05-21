@@ -31,13 +31,14 @@ import { RxUpdate } from "react-icons/rx";
 import { DadosPessoaisComponent } from "../../../components/SuperAdmin/Forms/DadosPessoais";
 import { DadosMilitares } from "../../../components/SuperAdmin/Forms/DadosMilitares";
 import { Endereco } from "../../../components/SuperAdmin/Forms/Endereco";
-import { useSession } from "next-auth/react";
+
 import ReactPaginate from "react-paginate";
 import { NotLoaded } from "../../../components/NotLoaded";
 import { AtribuirFuncao } from "../../../components/SuperAdmin/Forms/AtribuirFuncao";
+import { useSession } from "../../../services/context/auth";
 
 export default function GerenciamentoPessoal() {
-  const { data: session } = useSession();
+  const { user: session, status } = useSession();
   const [result, setResult] = useState<MilitarArray>([]);
   const [militar, setMilitar] = useState<Militar>();
 
@@ -47,7 +48,7 @@ export default function GerenciamentoPessoal() {
     const result = await api.get<MilitarArray>("/militar");
     setResult(
       result.data
-        .filter((mil) => mil.companhia === session?.militar.companhia)
+        .filter((mil) => mil.companhia === session?.companhia)
         .sort((x, y) => {
           let a = x.nome_completo.toUpperCase(),
             b = y.nome_completo.toUpperCase();
@@ -79,7 +80,7 @@ export default function GerenciamentoPessoal() {
     <>
       <Head>
         <title>
-          SisAGI | Gerencimento Pessoal - {session?.militar.companhia}
+          SisAGI | Gerencimento Pessoal - {session?.companhia}
         </title>
       </Head>
       <Flex direction="column" flex="1" gap={4}>
@@ -106,7 +107,7 @@ export default function GerenciamentoPessoal() {
                 justifyContent="space-between"
               >
                 <Heading size="md" p={2}>
-                  MILITARES - {session?.militar.companhia}
+                  MILITARES - {session?.companhia}
                 </Heading>
                 <Flex boxShadow="buttonShadow"
                   bg="gray.990" borderRadius="lg" border="1px" borderColor="green.700">

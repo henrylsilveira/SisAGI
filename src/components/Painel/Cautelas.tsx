@@ -21,12 +21,12 @@ export function CautelasComponentPainel() {
   const { user: session } = useSession();
   const [first, setfirst] = useState()
 
-  const { data, isLoading } = useQuery(["todasCautelas"], async () => {
-    const result = await api.get<CautelaArray>(
-      `/cautela/${session.id}`
-    );
-    return result;
-  });
+    const { data, isLoading } = useQuery(["todasCautelas"], async () => {
+      const result = await api.get<CautelaArray>(
+        `/cautela/${session.id}`
+      );
+      return result;
+    });
   return (
     <Flex
       bgGradient="linear(to-tr, gray.990, gray.990, green.900)"

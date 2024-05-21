@@ -6,9 +6,10 @@ import { Civil, CivilArray, MilitarArray } from "../../../@types/types"
 import { api } from "../../../services/api"
 import { useQuery } from "react-query"
 import { Input } from "../../Form/Input"
-import { useSession } from "next-auth/react";
+
 import { Router } from "next/router";
 import { convertDate, convertDateAndTime, generateNowISOTime } from "../../../utils/scripts";
+import { useSession } from "../../../services/context/auth";
 
 export function PesquisarMilitarCivil(props: any) {
   const { refresh } = props
@@ -17,7 +18,7 @@ export function PesquisarMilitarCivil(props: any) {
   const [result, setResult] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [search, setSearch] = useState("");
-  const { data: session } = useSession();
+  const { user: session, status } = useSession();
   const toast = useToast()
   useQuery(
     ["todosCivis e todosMilitares"],
@@ -39,7 +40,7 @@ export function PesquisarMilitarCivil(props: any) {
 
   async function handleSubmitMilitar(militarId: string, status: string) {
     try {
-      const result = await api.post('/controleGuarda/registrar/entrada/militar', { militarId, militarServicoId: session.militar.id, status });
+      const result = await api.post('/controleGuarda/registrar/entrada/militar', { militarId, militarServicoId: session.id, status });
       if (result.status == 201) {
         toast({
           title: "Controle Guarda",
@@ -72,7 +73,7 @@ export function PesquisarMilitarCivil(props: any) {
 
   async function handleSubmitCivil(civilId: string, status: string) {
     try {
-      const result = await api.post('/controleGuarda/registrar/entrada/civil', { civilId, militarServicoId: session.militar.id, status });
+      const result = await api.post('/controleGuarda/registrar/entrada/civil', { civilId, militarServicoId: session.id, status });
       if (result.status == 201) {
         toast({
           title: "Controle Guarda",

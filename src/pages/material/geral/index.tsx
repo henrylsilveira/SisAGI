@@ -6,10 +6,11 @@ import { api } from "../../../services/api";
 import { MaterialArray } from "../../../@types/types";
 import { NotLoaded } from "../../../components/NotLoaded";
 import { ListarMaterialPelotao } from "../../../components/Material/ListarMaterialPelotao";
-import { useSession } from "next-auth/react";
+import { useSession } from "../../../services/context/auth";
+
 
 export default function MaterialGeral() {
-  const {data:session } = useSession()
+  const { user: session, status } = useSession();
 
     const { isLoading, error, data, isFetching, refetch } = useQuery(
         ["todosMateriais"],
@@ -48,13 +49,13 @@ export default function MaterialGeral() {
                 justifyContent="center"
               >
                 <Heading size="md" p={2}>
-                  MATERIAIS DOS PELOTÕES DA {session.militar.companhia}
+                  MATERIAIS DOS PELOTÕES DA {session?.companhia}
                 </Heading>
               </Flex>
               <Grid gridTemplateColumns={["1fr","1fr","1fr","1fr 1fr"]} gap={2}>
-              {isLoading ? <NotLoaded /> : Array.from(new Set(data?.filter(item => item.sub_unidade === session.militar.companhia).map((item) => item.dependencia))).map(
+              {isLoading ? <NotLoaded /> : Array.from(new Set(data?.filter(item => item.sub_unidade === session.companhia).map((item) => item.dependencia))).map(
                     (dependencia, index) => (
-                        <ListarMaterialPelotao key={dependencia+index+dependencia} companhia={session.militar.companhia} dependencia={dependencia} materiais={data} />
+                        <ListarMaterialPelotao key={dependencia+index+dependencia} companhia={session.companhia} dependencia={dependencia} materiais={data} />
                     )
                 )}
             </Grid>

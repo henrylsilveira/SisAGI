@@ -31,8 +31,8 @@ import { SubmitHandler } from "react-hook-form/dist/types";
 import { Input } from "../../../components/Form/Input";
 
 import { SlRefresh } from "react-icons/sl";
-import { useSession } from "next-auth/react";
 import { Armamento } from "../../../@types/types";
+import { useSession } from "../../../services/context/auth";
 
 const signInFormSchema = yup.object().shape({
   nome: yup.string().required("Nome do armamento obrigatório."),
@@ -46,7 +46,7 @@ const signInFormSchema = yup.object().shape({
 });
 
 export default function Cadastro() {
-  const { data: session } = useSession();
+  const { user: session, status } = useSession();
   const [result, setResult] = useState({});
   const toast = useToast();
 
@@ -207,7 +207,7 @@ export default function Cadastro() {
                   type="text"
                   name="companhia"
                   isReadOnly
-                  value={session.militar.companhia}
+                  value={session?.companhia}
                   error={errors.companhia}
                   {...register("companhia")}
                 />

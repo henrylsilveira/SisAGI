@@ -52,10 +52,11 @@ import { BsBoxArrowUp } from "react-icons/bs";
 import { ModalCautela } from "../../../components/Modal/Armamento/ModalCautela";
 import Head from "next/head";
 import { Armamento, ArmamentoArray } from "../../../@types/types";
-import { useSession } from "next-auth/react";
+import { useSession } from "../../../services/context/auth";
+
 
 export default function CautelaArmamento() {
-  const { data: session } = useSession();
+  const { user: session, status } = useSession();
   const [nomeArmamentos, setNomeArmamentos] = useState([]);
   const [militares, setMilitares] = useState({});
 
@@ -71,7 +72,7 @@ export default function CautelaArmamento() {
       var data = []; // CONJUNTO DE INSTRUCAO FILTRA OS NOME DE TODOS ARMAMENTOS NO BANCO E TIRA OS REPETIDOS
       result.data.map((el: Armamento) => {
         return data.push(
-          el.companhia === session.militar.companhia ? el.nome : null
+          el.companhia === session.companhia ? el.nome : null
         );
       });
       const filtered = Array.from(new Set(data)).filter(function (res) {
@@ -154,7 +155,7 @@ export default function CautelaArmamento() {
                               .filter(
                                 (arma: Armamento) =>
                                   arma.nome === arm &&
-                                  arma.companhia === session.militar.companhia
+                                  arma.companhia === session.companhia
                               ).length
                           }
                         </Tag>
@@ -176,7 +177,7 @@ export default function CautelaArmamento() {
                           return el.cautelaArmamento.length === 0;
                         })
                         .filter((el) => {
-                          return el.companhia === session.militar.companhia;
+                          return el.companhia === session.companhia;
                         })
                         .filter((elem) => {
                           return elem.nome === arm;
@@ -240,7 +241,7 @@ export default function CautelaArmamento() {
                     <Tbody>
                       {data?.data
                         .filter((el) => {
-                          return el.companhia === session.militar.companhia;
+                          return el.companhia === session.companhia;
                         })
                         .map((res: Armamento) => (
                           <Tr key={res.id}>

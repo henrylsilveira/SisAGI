@@ -36,7 +36,8 @@ import { TiInfoLarge } from "react-icons/ti";
 import { ModalCautela } from "../../../components/Modal/Material/ModalCautela";
 import Head from "next/head";
 import { CautelaArray, Material, MaterialArray } from "../../../@types/types";
-import { useSession } from "next-auth/react";
+import { useSession } from "../../../services/context/auth";
+
 
 interface MaterialDataProps extends Material {
   cautelas?: CautelaArray;
@@ -53,7 +54,7 @@ const signInFormSchema = yup.object().shape({
 });
 
 export default function Cautela() {
-  const { data: session } = useSession();
+  const { user: session, status } = useSession();
   const [result, setResult] = useState({});
   const [militares, setMilitares] = useState({});
 
@@ -71,8 +72,8 @@ export default function Cautela() {
       const result = await api.get<MaterialArray>("/material");
       const filterData = result.data.filter(
         (result: Material) =>
-          result.sub_unidade === session.militar.companhia &&
-          result.dependencia === session.militar.pelotao
+          result.sub_unidade === session.companhia &&
+          result.dependencia === session.pelotao
       );
       setResult(filterData);
       return filterData;

@@ -36,11 +36,11 @@ import { Cautela, CautelaArray } from "../../../@types/types";
 import { ModalEncerrarCautela } from "../../../components/Modal/Material/ModalEncerrarCautela";
 import Head from "next/head";
 import { Input } from "../../../components/Form/Input";
-import { useSession } from "next-auth/react";
 import { NotData } from "../../../components/NotData";
+import { useSession } from "../../../services/context/auth";
 
 export default function Busca() {
-  const { data: session } = useSession();
+  const { user: session, status } = useSession();
   const [result, setResult] = useState([]);
 
   const [search, setSearch] = useState(result);
@@ -54,8 +54,8 @@ export default function Busca() {
       const result = await api.get<CautelaArray>("/cautela");
       const filteredData = result.data.filter(
         (cautela) =>
-          cautela.sub_unidade === session.militar.companhia &&
-          cautela.dependencia === session.militar.pelotao
+          cautela.sub_unidade === session.companhia &&
+          cautela.dependencia === session.pelotao
       );
       setResult(filteredData);
       return filteredData;

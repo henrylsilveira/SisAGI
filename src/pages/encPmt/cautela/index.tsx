@@ -37,7 +37,6 @@ import * as yup from "yup";
 import { SubmitHandler } from "react-hook-form/dist/types";
 
 import { CiInboxIn } from "react-icons/ci";
-import { useSession } from "next-auth/react";
 import { CautelaViatura, PedidoViatura, Viatura } from "../../../@types/types";
 import { convertDate } from "../../../utils/scripts";
 import { CautelaViaturaModal } from "../../../components/Modal/Viatura/ModalCautela";
@@ -54,6 +53,7 @@ import Head from "next/head";
 import { Input } from "../../../components/Form/Input";
 import { GiCheckMark } from "react-icons/gi";
 import { RxCross1 } from "react-icons/rx";
+import { useSession } from "../../../services/context/auth";
 
 const signInFormSchema = yup.object().shape({
     dataDesejada: yup.date().required("Campo obrigatório."),
@@ -66,14 +66,14 @@ const signInFormSchema = yup.object().shape({
 });
 
 export default function CautelaViaturaPage() {
-    const { data: session } = useSession();
+    const { user: session, status } = useSession();
     const toast = useToast();
     const initRef = React.useRef()
     const [search, setSearch] = useState("")
     const [searchCia, setSearchCia] = useState("")
 
     useEffect(() => {
-        if (!session?.militar.Funcao.find((func) => func.funcao === "enc pmt")) {
+        if (!session?.Funcao.find((func) => func.funcao === "enc pmt")) {
             Router.push("/");
             toast({
                 title: "Acesso não autorizado.",

@@ -40,11 +40,12 @@ import { Input } from "../../../components/Form/Input";
 
 import { SlRefresh } from "react-icons/sl";
 import { TiInfoLarge } from "react-icons/ti";
-import { useSession } from "next-auth/react";
+
 import { Cautela, CautelaArray, Material, MaterialArray } from "../../../@types/types";
 import Head from "next/head";
 import { NotData } from "../../../components/NotData";
 import { EditarMaterial } from "../../../components/Material/EditarMaterial";
+import { useSession } from "../../../services/context/auth";
 
 // interface MaterialDataProps extends Material {
 //   cautelas?: CautelaArray;
@@ -61,7 +62,7 @@ const signInFormSchema = yup.object().shape({
 });
 
 export default function Cadastro() {
-  const { data: session } = useSession();
+  const { user: session, status } = useSession();
   const toast = useToast();
 
   const { isLoading, error, data, isFetching, refetch } = useQuery(
@@ -70,8 +71,8 @@ export default function Cadastro() {
       const result = await api.get<MaterialArray>("/material");
       const filterData = result.data.filter(
         (result: Material) =>
-          result.sub_unidade === session.militar.companhia &&
-          result.dependencia === session.militar.pelotao
+          result.sub_unidade === session.companhia &&
+          result.dependencia === session.pelotao
       );
       return filterData;
     }
@@ -196,7 +197,7 @@ export default function Cadastro() {
                 </FormControl>
                 <FormControl>
                   <Input
-                    value={session.militar.companhia}
+                    value={session?.companhia}
                     isReadOnly
                     size="sm"
                     rounded="md"
@@ -207,7 +208,7 @@ export default function Cadastro() {
                 </FormControl>
                 <FormControl>
                   <Input
-                    value={session.militar.pelotao}
+                    value={session?.pelotao}
                     isReadOnly
                     size="sm"
                     rounded="md"
