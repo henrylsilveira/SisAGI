@@ -5,10 +5,8 @@ import { api } from "../../../services/api";
 import Router, { useRouter } from "next/router";
 import { convertDate, generateNowISOTime } from "../../../utils/scripts";
 import { MdBlock, MdCheck } from "react-icons/md";
-import { FaRegTrashCan } from "react-icons/fa6";
 import { IoIosTrash } from "react-icons/io";
 import { useSession } from "../../../services/context/auth";
-
 export function ListarFuncao(props) {
   const mil = props.militar as Militar;
   const { user: session, status } = useSession();
@@ -135,8 +133,10 @@ export function ListarFuncao(props) {
 
 
               : null}
+
             {session?.Funcao.find((func) => func.funcao == "super admin") && asPath == "/superAdmin" ?
               <IoIosTrash color="red.500" onClick={() => handleDeleteFuncao(func.id)} />
+
               : null}
           </Tag>
         ))}
@@ -198,6 +198,7 @@ export function ListarFuncao(props) {
 
 
               : null}
+
             {session?.Funcao.find((func) => func.funcao == "super admin") && asPath == "/superAdmin" ?
               <IoIosTrash color="red.500" onClick={() => handleDeleteFuncao(func.id)} />
               : null}
