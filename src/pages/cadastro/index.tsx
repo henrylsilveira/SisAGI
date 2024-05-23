@@ -20,6 +20,7 @@ import Router from "next/router";
 import Link from "next/link";
 import { verificaSenha } from '../../utils/scripts';
 import { useState } from "react";
+import Head from "next/head";
 
 
 // CODIGO PARA SIMULAR MILITARES NO BANCO DE DADOS
@@ -116,6 +117,10 @@ export default function Cadastro() {
   };
 
   return (
+    <>
+    <Head>
+        <title>SisAGI | Cadastro de usuário</title>
+      </Head>
     <Flex w="100vw" flexDir="row" align="center" justify="center" my={4}>
       <Grid
         gridTemplateColumns={["1fr", "1fr", "1fr 1fr"]}
@@ -313,6 +318,7 @@ export default function Cadastro() {
         </Flex>
       </Grid>
     </Flex>
+    </>
   );
 }
 // REGEX PARA NAO USAR SENHAS FÁCEIS

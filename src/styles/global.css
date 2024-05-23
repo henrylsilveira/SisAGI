@@ -37,3 +37,7 @@
   float: right;
   visibility: hidden;
 }
+
+select option{
+  background: #1B1B1B;
+}
