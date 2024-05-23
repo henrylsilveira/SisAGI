@@ -19,7 +19,7 @@ import Router from "next/router";
 
 import Head from "next/head";
 import { getUserIP } from "../utils/scripts";
-import AuthContext from "../services/context/AuthContext";
+
 import { useSession } from "../services/context/auth";
 
 type SignInFormData = {
@@ -43,19 +43,18 @@ export default function Home() {
   } = useForm({
     resolver: yupResolver(signInFormSchema),
   });
-  // const { data: session, status } = useSession();
   const toast = useToast();
 
-  const { signed, Login } = useSession();
+  const { user: session, signed, Login } = useSession();
 
-  // useEffect(() => {
-  //   if (session && status === "authenticated") {
-  //     Router.push("/dashboard");
-  //   } else {
-  //     Router.push("/");
-  //     return;
-  //   }
-  // }, [session, status]);
+  useEffect(() => {
+    if (session) {
+      Router.push("/dashboard");
+    } else {
+      Router.push("/");
+      return;
+    }
+  }, [session]);
 
   const handleSignIn: SubmitHandler<SignInFormData> = async (values) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));

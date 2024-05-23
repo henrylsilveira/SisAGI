@@ -36,7 +36,7 @@ import { SlRefresh } from "react-icons/sl";
 import { Viatura } from "../../../@types/types";
 import { FaTools } from "react-icons/fa";
 import Router from "next/router";
-import Head from "next/Head";
+import Head from "next/head";
 import { TbShoppingCartPlus } from "react-icons/tb";
 import { useSession } from "../../../services/context/auth";
 

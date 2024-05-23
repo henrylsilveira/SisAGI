@@ -13,7 +13,7 @@ import { Header } from "../components/Header";
 import '../styles/global.css'
 import { NotLoaded } from "../components/NotLoaded";
 import { Logo } from "../components/Header/Logo";
-import AuthContext from "../services/context/AuthContext";
+
 import { AuthProvider, useSession } from "../services/context/auth";
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const router = useRouter();

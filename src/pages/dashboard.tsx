@@ -13,36 +13,35 @@ import { NotLoaded } from "../components/NotLoaded";
 export default function Dashboard() {
   // const { data: session, status } = useSession();
   const { user: session, status } = useSession();
-
   const toast = useToast();
   const idLogado = "toastNaoLogado";
   const id = "toastLogin";
-  // useEffect(() => {
-  //   if (session) {
-  //     if (!toast.isActive(id)) {
-  //       toast({
-  //         id,
-  //         title: "Autenticação válida.",
-  //         description: `Seu token de acesso é válido até dia . `,
-  //         status: "info",
-  //         duration: 2000,
-  //         isClosable: true,
-  //       });
-  //     }
-  //   } else {
-  //     Router.push("/");
-  //     if (!toast.isActive(idLogado)) {
-  //       toast({
-  //         id: idLogado,
-  //         title: "Autenticação inválida.",
-  //         description: `Seu token de acesso venceu, realize o login novamente. `,
-  //         status: "warning",
-  //         duration: 1000,
-  //         isClosable: true,
-  //       });
-  //     }
-  //   }
-  // }, [session, toast]);
+  useEffect(() => {
+    if (session) {
+      if (!toast.isActive(id)) {
+        toast({
+          id,
+          title: "Autenticação válida.",
+          description: `Seu token de acesso tem validade de 24horas . `,
+          status: "info",
+          duration: 2000,
+          isClosable: true,
+        });
+      }
+    } else {
+      Router.push("/");
+      if (!toast.isActive(idLogado)) {
+        toast({
+          id: idLogado,
+          title: "Autenticação inválida.",
+          description: `Seu token de acesso venceu, realize o login novamente. `,
+          status: "warning",
+          duration: 1000,
+          isClosable: true,
+        });
+      }
+    }
+  }, [session, toast]);
 
   return (
     <>
