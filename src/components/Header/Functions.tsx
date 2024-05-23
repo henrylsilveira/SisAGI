@@ -4,16 +4,16 @@ import {
   Badge,
   Grid,
 } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import { FuncaoMilitar, FuncaoMilitarArray } from "../../@types/types";
+import { useSession } from "../../services/context/auth";
 
 interface ProfileProps {
   showProfileData?: boolean;
 }
 
 export function Functions({ showProfileData = true }: ProfileProps) {
-  const { data: session } = useSession();
-  const Funcao: FuncaoMilitarArray = session?.militar.Funcao
+  const { user: session } = useSession();
+  const Funcao: FuncaoMilitarArray = session?.Funcao
   const colors = ['green', 'yellow', 'blue', 'red', 'orange', 'gray', 'green', 'purple'];
   // console.log(colors[Math.floor(Math.random() * colors.length)])
   return (

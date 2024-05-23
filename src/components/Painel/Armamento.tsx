@@ -14,7 +14,7 @@ import {
   Tfoot,
 } from "@chakra-ui/react";
 import { api } from "../../services/api";
-import { useSession } from "next-auth/react";
+// import { useSession } from "next-auth/react";
 import {
   CautelaArmamentoArray,
   VinculoArmamentoMilitarArray,
@@ -22,15 +22,16 @@ import {
 import { useQuery } from "react-query";
 import { convertDate } from "../../utils/scripts";
 import { NotData } from "../NotData";
+import { useSession } from "../../services/context/auth";
 
 export function ArmamentoComponentPainel() {
-  const { data: session } = useSession();
+  const { user: session } = useSession(); 
 
   const { data } = useQuery(
     ["vinculoArmamentoMilitar"],
     async () => {
       const result = await api.get<VinculoArmamentoMilitarArray>(
-        `/armamentos/viculados/${session.militar.id}`
+        `/armamentos/viculados/${session.id}`
       );
       return result;
     }
@@ -40,7 +41,7 @@ export function ArmamentoComponentPainel() {
     ["cautelaArmamentoMilitar"],
     async () => {
       const result = await api.get<CautelaArmamentoArray>(
-        `/armamento/cautela/${session.militar.id}`
+        `/armamento/cautela/${session.id}`
       );
       return result.data;
     }

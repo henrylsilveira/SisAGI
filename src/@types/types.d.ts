@@ -55,7 +55,7 @@ export interface Militar {
   _count?: Object;
   PedidoViatura?: PedidoViatura[];
   //SESSION
-  token?: string;
+  token: string;
 }
 
 export interface ControleGuardaRegistros {

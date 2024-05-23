@@ -46,11 +46,11 @@ import {
 import { ModalValidate } from "../../../components/Modal/Armamento/ModalValidate";
 import { ModalEncerrarCautela } from "../../../components/Modal/Armamento/ModalEncerrarCautela";
 import Head from "next/head";
-import { useSession } from "next-auth/react";
 import { Input } from "../../../components/Form/Input";
+import { useSession } from "../../../services/context/auth";
 
 export default function BuscaArmamento() {
-  const { data: session } = useSession();
+  const { user: session, status } = useSession();
 
   const [result, setResult] = useState([]);
   const [nomeArmamentos, setNomeArmamentos] = useState([]);
@@ -66,7 +66,7 @@ export default function BuscaArmamento() {
       var data = []; // CONJUNTO DE INSTRUCAO FILTRA OS NOME DE TODOS ARMAMENTOS NO BANCO E TIRA OS REPETIDOS
       result.data.map((el: CautelaArmamento) => {
         return data.push(
-          el.companhia === session.militar.companhia ? el.armamento.nome : null
+          el.companhia === session.companhia ? el.armamento.nome : null
         );
       });
       const filtered = Array.from(new Set(data)).filter(function (res) {
@@ -203,7 +203,7 @@ export default function BuscaArmamento() {
                           return el.status === "ativo";
                         })
                         .filter((el: CautelaArmamento) => {
-                          return el.companhia === session.militar.companhia;
+                          return el.companhia === session.companhia;
                         })
                         .filter((elem: CautelaArmamento) => {
                           return elem.armamento.nome === arm;

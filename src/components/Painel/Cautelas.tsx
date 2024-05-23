@@ -8,24 +8,25 @@ import {
   Tag,
   HStack,
 } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
+// import { useSession } from "next-auth/react";
 import { useQuery } from "react-query";
 import { api } from "../../services/api";
 import { CautelaArray } from "../../@types/types";
 import { NotData } from "../NotData";
 import { NotLoaded } from "../NotLoaded";
 import { useState } from "react";
+import { useSession } from "../../services/context/auth";
 
 export function CautelasComponentPainel() {
-  const { data: session } = useSession();
+  const { user: session } = useSession();
   const [first, setfirst] = useState()
 
-  const { data, isLoading } = useQuery(["todasCautelas"], async () => {
-    const result = await api.get<CautelaArray>(
-      `/cautela/${session.militar.id}`
-    );
-    return result;
-  });
+    const { data, isLoading } = useQuery(["todasCautelas"], async () => {
+      const result = await api.get<CautelaArray>(
+        `/cautela/${session.id}`
+      );
+      return result;
+    });
   return (
     <Flex
       bgGradient="linear(to-tr, gray.990, gray.990, green.900)"
@@ -106,7 +107,7 @@ export function CautelasComponentPainel() {
       ) : data?.data.filter(
           (cautela) =>
           cautela.status === 'ativo' &&
-            cautela.cautelou.nome_guerra === session.militar.nome_guerra
+            cautela.cautelou.nome_guerra === session.nome_guerra
         ).length !== 0 ? (
         <Grid gridTemplateColumns={["1fr","1fr", "1fr 1fr"]} mb={4} pb={4} mx={4}>
           {/* UMA OBRA DE ARTE ESSE CODIGO ABAIXO */}

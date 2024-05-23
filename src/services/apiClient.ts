@@ -3,11 +3,11 @@ import axios from 'axios';
 export function setupAPIClient() {
 
   const api = axios.create({
-    baseURL: "http://10.35.88.12:3333/"
+    //Colocar endereço com barra no final para nao quebrar a rota dos avatares
+    baseURL: process.env.NODE_ENV === "development"
+        ? "http://localhost:3333/"
+        : 'http://10.35.88.12:3333/',
 
-      // process.env.NODE_ENV === "development"
-      //   ? "http://localhost:3333/"
-      //   : 'https://sisagiserver.rj.r.appspot.com/',
     // headers: {
     //     Authorization: `Bearer ${cookies['nextauth.token']}`, 
     // }

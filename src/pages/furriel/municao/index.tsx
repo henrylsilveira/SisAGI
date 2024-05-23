@@ -32,12 +32,12 @@ import { SubmitHandler } from "react-hook-form/dist/types";
 import { Input } from "../../../components/Form/Input";
 
 import { SlRefresh } from "react-icons/sl";
-import { useSession } from "next-auth/react";
 import { Municao } from "../../../@types/types";
 import { convertDate, generateNowISOTime } from "../../../utils/scripts";
 import { DrawerFurriel } from '../../../components/Drawer/Furriel/index';
 import Head from "next/head";
 import Router from "next/router";
+import { useSession } from "../../../services/context/auth";
 
 const signInFormSchema = yup.object().shape({
   nrPedido: yup.string().required("Obrigatório."),
@@ -50,12 +50,12 @@ const signInFormSchema = yup.object().shape({
 });
 
 export default function FurrielMunicao() {
-  const { data: session } = useSession()
+  const { user: session, status } = useSession();
   const toast = useToast();
 
   useEffect(() => {
-    if (!session?.militar.Funcao.find((func) => func.funcao === "furriel")) {
-      Router.push("/");
+    if (!session?.Funcao.find((func) => func.funcao === "furriel")) {
+      Router.push("/dashboard");
       toast({
         title: "Acesso não autorizado.",
         description: 'Você não tem autorização para acessar essa área.',
@@ -85,7 +85,7 @@ export default function FurrielMunicao() {
   const handleSignIn: SubmitHandler<Municao> = async (values) => {
     values = {
       ...values,
-      militarId: session?.militar.id
+      militarId: session?.id
     }
     try {
       const result = await api.post("/furriel/municao/create", values);
@@ -219,7 +219,7 @@ export default function FurrielMunicao() {
                     type="text"
                     name="companhia"
                     isReadOnly
-                    value={session.militar.companhia}
+                    value={session?.companhia}
                     error={errors.companhia}
                     {...register("companhia")}
                   />

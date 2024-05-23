@@ -11,7 +11,6 @@ import {
   Badge,
   Grid,
 } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import { memo, FormEvent, useState } from "react";
 import { FcAcceptDatabase } from "react-icons/fc";
 import { Militar } from "../../../@types/types";
@@ -22,9 +21,10 @@ import {
 import { Input } from "../../Form/Input";
 import { api } from "../../../services/api";
 import { useRouter } from "next/router";
+import { useSession } from "../../../services/context/auth";
 
 export function DadosPessoaisComponent(props) {
-  const { data: session } = useSession();
+  const { user: session, status } = useSession();
   const mil = props.militar as Militar;
   const toast = useToast();
   const { asPath } = useRouter();
@@ -179,7 +179,7 @@ export function DadosPessoaisComponent(props) {
                 type="file"
                 onChange={handleFileInputChange}
                 isDisabled={
-                  session?.militar.Funcao.find(
+                  session?.Funcao.find(
                     (func) => func.funcao == "super admin" || func.funcao == "sgte"
                   ) &&
                   (asPath == "/superAdmin/usuarios" ||
@@ -189,7 +189,7 @@ export function DadosPessoaisComponent(props) {
                 }
               />
               <Button variant="outline" w="full" mx="auto" mt={8} _hover={{ bgColor: "green.800" }} isDisabled={
-                session?.militar.Funcao.find(
+                session?.Funcao.find(
                   (func) => func.funcao == "super admin" || func.funcao == "sgte"
                 ) &&
                 (asPath == "/superAdmin/usuarios" ||
@@ -211,7 +211,7 @@ export function DadosPessoaisComponent(props) {
             borderColor="gray.700"
             _hover={{ bgColor: "gray.990" }}
             isDisabled={
-              session?.militar.Funcao.find(
+              session?.Funcao.find(
                 (func) => func.funcao == "super admin" || func.funcao == "sgte"
               ) &&
               (asPath == "/superAdmin/usuarios" ||
@@ -245,7 +245,7 @@ export function DadosPessoaisComponent(props) {
         <FormControl>
           <Input
             isDisabled={
-              session?.militar.Funcao.find(
+              session?.Funcao.find(
                 (func) => func.funcao == "super admin" || func.funcao == "sgte"
               ) &&
               (asPath == "/superAdmin/usuarios" ||
@@ -273,7 +273,7 @@ export function DadosPessoaisComponent(props) {
         <FormControl>
           <Input
             isDisabled={
-              session?.militar.Funcao.find(
+              session?.Funcao.find(
                 (func) => func.funcao == "super admin" || func.funcao == "sgte"
               ) &&
               (asPath == "/superAdmin/usuarios" ||
@@ -301,7 +301,7 @@ export function DadosPessoaisComponent(props) {
         <FormControl>
           <Input
             isDisabled={
-              session?.militar.Funcao.find(
+              session?.Funcao.find(
                 (func) => func.funcao == "super admin" || func.funcao == "sgte"
               ) &&
               (asPath == "/superAdmin/usuarios" ||
@@ -329,7 +329,7 @@ export function DadosPessoaisComponent(props) {
         <FormControl>
           <Input
             isDisabled={
-              session?.militar.Funcao.find(
+              session?.Funcao.find(
                 (func) => func.funcao == "super admin" || func.funcao == "sgte"
               ) &&
               (asPath == "/superAdmin/usuarios" ||
@@ -357,7 +357,7 @@ export function DadosPessoaisComponent(props) {
         <FormControl>
           <Input
             isDisabled={
-              session?.militar.Funcao.find(
+              session?.Funcao.find(
                 (func) => func.funcao == "super admin" || func.funcao == "sgte"
               ) &&
               (asPath == "/superAdmin/usuarios" ||
@@ -385,7 +385,7 @@ export function DadosPessoaisComponent(props) {
         <FormControl>
           <Input
             isDisabled={
-              session?.militar.Funcao.find(
+              session?.Funcao.find(
                 (func) => func.funcao == "super admin" || func.funcao == "sgte"
               ) &&
               (asPath == "/superAdmin/usuarios" ||
@@ -413,7 +413,7 @@ export function DadosPessoaisComponent(props) {
         <FormControl>
           <Input
             isDisabled={
-              session?.militar.Funcao.find(
+              session?.Funcao.find(
                 (func) => func.funcao == "super admin" || func.funcao == "sgte"
               ) &&
               (asPath == "/superAdmin/usuarios" ||
@@ -442,7 +442,7 @@ export function DadosPessoaisComponent(props) {
         <FormControl>
           <Input
             isDisabled={
-              session?.militar.Funcao.find(
+              session?.Funcao.find(
                 (func) => func.funcao == "super admin" || func.funcao == "sgte"
               ) &&
               (asPath == "/superAdmin/usuarios" ||
@@ -470,7 +470,7 @@ export function DadosPessoaisComponent(props) {
         <FormControl>
           <Input
             isDisabled={
-              session?.militar.Funcao.find(
+              session?.Funcao.find(
                 (func) => func.funcao == "super admin" || func.funcao == "sgte"
               ) &&
               (asPath == "/superAdmin/usuarios" ||
@@ -498,7 +498,7 @@ export function DadosPessoaisComponent(props) {
         <FormControl>
           <Input
             isDisabled={
-              session?.militar.Funcao.find(
+              session?.Funcao.find(
                 (func) => func.funcao == "super admin" || func.funcao == "sgte"
               ) &&
               (asPath == "/superAdmin/usuarios" ||
@@ -529,7 +529,7 @@ export function DadosPessoaisComponent(props) {
         <FormControl>
           <Input
             isDisabled={
-              session?.militar.Funcao.find(
+              session?.Funcao.find(
                 (func) => func.funcao == "super admin" || func.funcao == "sgte"
               ) &&
               (asPath == "/superAdmin/usuarios" ||
@@ -558,7 +558,7 @@ export function DadosPessoaisComponent(props) {
         <FormControl>
           <Input
             isDisabled={
-              session?.militar.Funcao.find(
+              session?.Funcao.find(
                 (func) => func.funcao == "super admin" || func.funcao == "sgte"
               ) &&
               (asPath == "/superAdmin/usuarios" ||
@@ -586,7 +586,7 @@ export function DadosPessoaisComponent(props) {
         <FormControl>
           <Input
             isDisabled={
-              session?.militar.Funcao.find(
+              session?.Funcao.find(
                 (func) => func.funcao == "super admin" || func.funcao == "sgte"
               ) &&
               (asPath == "/superAdmin/usuarios" ||

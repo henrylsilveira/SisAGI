@@ -41,7 +41,7 @@ import { SubmitHandler } from "react-hook-form/dist/types";
 import { Input } from "../../../components/Form/Input";
 
 import { SlRefresh } from "react-icons/sl";
-import { useSession } from "next-auth/react";
+
 import { CautelaViatura, PedidoViatura } from "../../../@types/types";
 import { convertDate } from "../../../utils/scripts";
 import { NotLoaded } from "../../../components/NotLoaded";
@@ -53,6 +53,7 @@ import Head from "next/head";
 import { MdSearch } from "react-icons/md";
 import { TbShoppingCartPlus } from "react-icons/tb";
 import { GiTruck } from "react-icons/gi";
+import { useSession } from "../../../services/context/auth";
 
 const signInFormSchema = yup.object().shape({
   dataDesejada: yup.date().required("Campo obrigatório."),
@@ -67,14 +68,14 @@ const signInFormSchema = yup.object().shape({
 });
 
 export default function FurrielPedidoViatura() {
-  const { data: session } = useSession();
+  const { user: session, status } = useSession();
   const [search, setSearch] = useState("");
   const [createPedido, setCreatePedido] = useState(false);
   const toast = useToast();
   const initRef = React.useRef()
 
   useEffect(() => {
-    if (!session?.militar.Funcao.find((func) => func.funcao === "furriel")) {
+    if (!session?.Funcao.find((func) => func.funcao === "furriel")) {
       Router.push("/");
       toast({
         title: "Acesso não autorizado.",
@@ -89,7 +90,7 @@ export default function FurrielPedidoViatura() {
   const { isLoading, error, data: dataPedidoViatura, isFetching, refetch } = useQuery(
     ["pedidosViatura"],
     async () => {
-      const result = await api.get<PedidoViatura[]>(`/veiculos/pedidos/furriel/${session.militar.companhia}`);
+      const result = await api.get<PedidoViatura[]>(`/veiculos/pedidos/furriel/${session.companhia}`);
       console.log(result);
       return result;
       
@@ -108,8 +109,8 @@ export default function FurrielPedidoViatura() {
   const handleSignIn: SubmitHandler<PedidoViatura> = async (values) => {
     values = {
       ...values,
-      militarId: session.militar.id,
-      companhia: session.militar.companhia
+      militarId: session.id,
+      companhia: session.companhia
     }
     try {
       const result = await api.post("/veiculo/pedido/create", values);

@@ -37,20 +37,20 @@ import { useEffect, useState } from "react";
 
 import { SlRefresh } from "react-icons/sl";
 import { TiInfoLarge } from "react-icons/ti";
-import { useSession } from "next-auth/react";
+
 import Head from "next/head";
 import { Cautela, CautelaArray } from "../../../@types/types";
 import { convertDate } from "../../../utils/scripts";
 import { BiLock } from "react-icons/bi";
 import { ModalValidate } from "../../../components/Modal/Material/ModalValidate";
-import dynamic from "next/dynamic";
-import { ApexOptions } from "apexcharts";
+
 import { ArmamentoComponentPainel } from "../../../components/Painel/Armamento";
 import { CautelasComponentPainel } from "../../../components/Painel/Cautelas";
 import { NotData } from '../../../components/NotData/index';
+import { useSession } from "../../../services/context/auth";
 
 export default function MinhasCautelas() {
-  const { data: session } = useSession();
+  const { user: session, status } = useSession();
 
   const [cautelaFechada, setCautelaFechada] = useState(Boolean);
   const [search, setSearch] = useState([]);
@@ -58,7 +58,7 @@ export default function MinhasCautelas() {
   const { isLoading, error, data, isFetching, refetch } = useQuery(
     ["todasCautelasDoMilitar"],
     async () => {
-      const result = await api.get(`/cautela/${session?.militar.id}`);
+      const result = await api.get(`/cautela/${session?.id}`);
       setSearch(result.data)
       return result;
     }

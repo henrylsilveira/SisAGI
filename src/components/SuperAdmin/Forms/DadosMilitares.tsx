@@ -1,5 +1,4 @@
 import { Flex, Heading, Button, FormControl, FormHelperText, Box, useToast, Grid } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import { FcAcceptDatabase } from "react-icons/fc";
 import { AtribuirFuncao } from "./AtribuirFuncao";
 import { Militar } from "../../../@types/types";
@@ -9,9 +8,10 @@ import { Input } from "../../Form/Input";
 import { api } from "../../../services/api";
 import { FormEvent } from "react";
 import { useRouter } from "next/router";
+import { useSession } from "../../../services/context/auth";
 
 export function DadosMilitares(props) {
-  const { data: session } = useSession();
+  const { user: session, status } = useSession();
   const { asPath } = useRouter();
     const mil = props.militar as Militar;
     const toast = useToast()
@@ -75,7 +75,7 @@ export function DadosMilitares(props) {
         <Grid gridTemplateColumns={['1fr','1fr','1fr 1fr']} gap={2} px={4} pb={4}>
           <FormControl>
             <Input
-            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
+            isDisabled={session?.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
               type="date"
               label="Data de praça"
               name="data_praca"
@@ -90,7 +90,7 @@ export function DadosMilitares(props) {
           </FormControl>
           <FormControl>
             <Input
-            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
+            isDisabled={session?.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
               as="select"
               label="Companhia"
               name="companhia"
@@ -110,7 +110,7 @@ export function DadosMilitares(props) {
           </FormControl>
           <FormControl>
             <Input
-            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
+            isDisabled={session?.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
               as="select"
               label="Pelotao"
               name="pelotao"
@@ -131,7 +131,7 @@ export function DadosMilitares(props) {
           </FormControl>
           <FormControl>
             <Input
-            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
+            isDisabled={session?.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
               as="select"
               label="Fração"
               name="fracao"
@@ -153,7 +153,7 @@ export function DadosMilitares(props) {
           </FormControl>
           <FormControl>
             <Input
-            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
+            isDisabled={session?.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
               as="select"
               label="Função dentro da fração"
               name="funcao_fracao"
@@ -182,7 +182,7 @@ export function DadosMilitares(props) {
           </FormControl>
           <FormControl>
             <Input
-            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
+            isDisabled={session?.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
               as="select"
               label="Status"
               name="status"
@@ -200,7 +200,7 @@ export function DadosMilitares(props) {
           </FormControl>
           <FormControl>
             <Input
-            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
+            isDisabled={session?.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
               as="select"
               label="Situação médica"
               name="situacao_med"
@@ -223,7 +223,7 @@ export function DadosMilitares(props) {
           </FormControl>
           <FormControl>
             <Input
-            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
+            isDisabled={session?.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
               label="QMG/QMP"
               name="qmg_qmp"
               bgColor="gray.990"
@@ -237,7 +237,7 @@ export function DadosMilitares(props) {
           </FormControl>
           <FormControl>
             <Input
-            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
+            isDisabled={session?.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
               label="Cargo no QCP"
               name="cargo_qcp"
               defaultValue={mil.cargo_qcp}
@@ -251,7 +251,7 @@ export function DadosMilitares(props) {
           </FormControl>
           <FormControl>
             <Input
-            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
+            isDisabled={session?.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
               label="Lugar que cumpre expediente"
               name="local_cumpre_expediente"
               defaultValue={mil.local_cumpre_expediente}
@@ -265,7 +265,7 @@ export function DadosMilitares(props) {
           </FormControl>
           <FormControl>
             <Input
-            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
+            isDisabled={session?.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
               label="Indígena"
               name="indigena"
               defaultValue={mil.indigena}
@@ -279,7 +279,7 @@ export function DadosMilitares(props) {
           </FormControl>
           <FormControl>
             <Input
-            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
+            isDisabled={session?.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
               as="select"
               label="Motocarro"
               name="motocarro"
@@ -296,7 +296,7 @@ export function DadosMilitares(props) {
           </FormControl>
           <FormControl>
             <Input
-            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
+            isDisabled={session?.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
               as="select"
               label="Habilitação Militar"
               name="hab_militar"
@@ -314,7 +314,7 @@ export function DadosMilitares(props) {
         </Grid>
           <Flex flexDirection="column">
           <ListarFuncao militar={mil} />
-          {session?.militar.Funcao.some((func) => (func.funcao === "super admin" || func.funcao === "sgte"))  && (asPath === "/superAdmin/usuarios" || asPath === "/pessoal/gerenciamento") ? (
+          {session?.Funcao.some((func) => (func.funcao === "super admin" || func.funcao === "sgte"))  && (asPath === "/superAdmin/usuarios" || asPath === "/pessoal/gerenciamento") ? (
             <>
               <AtribuirFuncao militar={mil} />
             </>

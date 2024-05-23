@@ -17,11 +17,12 @@ import {
   import { Input } from "../../../Form/Input";
   import { api } from "../../../../services/api";
   import { BiX } from 'react-icons/bi'
-import { useSession } from "next-auth/react";
+import { useSession } from "../../../../services/context/auth";
+
 
   
   export function ModalEncerrarCautela({ data }) {
-    const { data: session } = useSession()
+    const { user: session, status } = useSession();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const toast = useToast()
     const [ senha, setSenha ] = useState('')
@@ -44,7 +45,7 @@ import { useSession } from "next-auth/react";
       }
   
       const values = {
-        militarId: session.militar.id,
+        militarId: session.id,
         senha,
         cautelaId: data.id
       }

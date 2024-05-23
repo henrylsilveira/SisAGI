@@ -12,7 +12,7 @@ export function ComumComponentDashboard() {
         transition="ease-in-out"
         w="100%"
         flexDirection="column"
-        mt={4}
+
       >
         <Flex
           bg="gray.990"

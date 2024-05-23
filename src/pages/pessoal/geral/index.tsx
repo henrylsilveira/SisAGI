@@ -41,14 +41,15 @@ import { useState } from "react";
 import Head from "next/head";
 import { FuncaoMilitar, MilitarArray } from "../../../@types/types";
 import { RxUpdate } from "react-icons/rx";
-import { useSession } from "next-auth/react";
+
 import { TiInfoLarge } from "react-icons/ti";
 import { NotLoaded } from "../../../components/NotLoaded";
 import { returnAvatarImage } from "../../../utils/scripts";
 import { PostoGraduacaoArray } from "../../../utils/staticArray";
+import { useSession } from "../../../services/context/auth";
 
 export default function GerenciamentoPessoal() {
-  const { data: session } = useSession();
+  const { user: session, status } = useSession();
   const [result, setResult] = useState<MilitarArray>([]);
   const [militarPostGrad, setMilitarPostGrad] = useState<MilitarArray>([]);
 
@@ -57,10 +58,10 @@ export default function GerenciamentoPessoal() {
     async () => {
       const result = await api.get<MilitarArray>("/militar");
       setResult(result.data.filter(
-        (mil) => mil.companhia === session.militar.companhia
+        (mil) => mil.companhia === session.companhia
       ))
       return result.data.filter(
-        (mil) => mil.companhia === session.militar.companhia
+        (mil) => mil.companhia === session.companhia
       );
     }
   );
@@ -79,7 +80,7 @@ export default function GerenciamentoPessoal() {
     <>
       <Head>
         <title>
-          SisAGI | Gerencimento Pessoal - {session?.militar.companhia}
+          SisAGI | Gerencimento Pessoal - {session?.companhia}
         </title>
       </Head>
       <Flex direction="column" flex="1" gap={4}>
@@ -106,7 +107,7 @@ export default function GerenciamentoPessoal() {
                 justifyContent="space-between"
               >
                 <Heading size="md" p={2}>
-                  MILITARES - {session?.militar.companhia}
+                  MILITARES - {session?.companhia}
                 </Heading>
                 <Button
                   boxShadow="buttonShadow"

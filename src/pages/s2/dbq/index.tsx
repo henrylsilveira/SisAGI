@@ -28,9 +28,10 @@ import { PesquisarCivil } from "../../../components/Drawer/s2";
 
 import { Civil, Dbq, DbqArray } from '../../../@types/types';
 import { FiAlertTriangle, FiUserPlus } from "react-icons/fi";
-import { useSession } from "next-auth/react";
+
 
 import { BsEyeSlashFill, BsFillPeopleFill } from "react-icons/bs";
+import { useSession } from "../../../services/context/auth";
 
 
 type DbqFormData = {
@@ -72,7 +73,7 @@ export default function DbqPage() {
   const [previewUrlFotoDoc, setPreviewUrlFotoDoc] = useState(null);
   const [previewUrlDbq, setPreviewUrlDbq] = useState(null);
   const [previewUrlDbqDoc, setPreviewUrlDbqDoc] = useState(null);
-  const { data: session } = useSession()
+  const { user: session, status } = useSession();
   const toast = useToast()
 
   const {
@@ -87,7 +88,7 @@ export default function DbqPage() {
 
   async function handleGetDbq() {
     try {
-      const result = await api.get<DbqArray>(`/civil/dbq/${session?.militar.id}`);
+      const result = await api.get<DbqArray>(`/civil/dbq/${session?.id}`);
       return setDbqRecentes(result.data)
     } catch (error) {
       throw (error)
@@ -172,7 +173,7 @@ export default function DbqPage() {
 
   const handleSubmitForm: SubmitHandler<DbqFormData> = async (values) => {
     try {
-      const result = await api.post("/civil/dbq/create", { ...values, militarId: session?.militar.id });
+      const result = await api.post("/civil/dbq/create", { ...values, militarId: session?.id });
       if (result.status == 201) {
         toast({
           title: "DBQ.",

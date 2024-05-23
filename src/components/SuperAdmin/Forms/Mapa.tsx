@@ -5,8 +5,9 @@ import { Militar } from "../../../@types/types";
 import { Input } from "../../Form/Input";
 import { useState, FormEvent } from 'react';
 import { api } from "../../../services/api";
-import { useSession } from "next-auth/react";
+
 import { useRouter } from "next/router";
+import { useSession } from "../../../services/context/auth";
 
 //Dynamic permite carregar o componente somente quando for necessario, exemplo quando for clicar em um botao
 const MapWithNoSSR = dynamic(() => import("../../Map"), {
@@ -16,7 +17,7 @@ const MapWithNoSSR = dynamic(() => import("../../Map"), {
 
 export function Mapa(props) {
   const mil = props.militar as Militar;
-  const { data: session } = useSession();
+  const { user: session, status } = useSession();
   const { asPath } = useRouter();
   const toast = useToast();
 
@@ -101,7 +102,7 @@ export function Mapa(props) {
             border="1px"
             borderColor="gray.700"
             _hover={{ bgColor: "gray.990" }}
-            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
+            isDisabled={session?.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
             onChange={(e) => setLongitude({name: e.target.name,value: e.target.value})}
           />
           <FormHelperText>
@@ -118,7 +119,7 @@ export function Mapa(props) {
             border="1px"
             borderColor="gray.700"
             _hover={{ bgColor: "gray.990" }}
-            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
+            isDisabled={session?.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
             onChange={(e) => setLatitude({name: e.target.name,value: e.target.value})}
           />
           <FormHelperText>

@@ -5,7 +5,7 @@ import { SidebarDrawerProvider } from "../contexts/SidebarDrawerContext";
 import { QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { queryClient } from "../services/queryClient";
-import { SessionProvider, useSession } from "next-auth/react";
+
 import { DotLoader } from "react-spinners";
 import { Sidebar } from "../components/Sidebar";
 import { useRouter } from "next/router";
@@ -13,13 +13,16 @@ import { Header } from "../components/Header";
 import '../styles/global.css'
 import { NotLoaded } from "../components/NotLoaded";
 import { Logo } from "../components/Header/Logo";
+
+import { AuthProvider, useSession } from "../services/context/auth";
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const router = useRouter();
   
   return (
     <QueryClientProvider client={queryClient}>
       <ChakraProvider theme={theme}>
-        <SessionProvider session={session}>
+        {/* <SessionProvider session={session}> */}
+        <AuthProvider>
           <Auth>
             <SidebarDrawerProvider>
               {router.asPath == "/" || router.asPath == "/cadastro" ? (
@@ -35,7 +38,8 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
               )}
             </SidebarDrawerProvider>
           </Auth>
-        </SessionProvider>
+          </AuthProvider>
+        {/* </SessionProvider> */}
       </ChakraProvider>
       <ReactQueryDevtools />
     </QueryClientProvider>
@@ -44,16 +48,15 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
 
 function Auth({ children }) {
   // if `{ required: true }` is supplied, `status` can only be "loading" or "authenticated"
-  const { status } = useSession();
-
-  if (status === "loading") {
-    return (
-      <Center flexDirection="column" h="100vh">
-        <Image w="56" src="./img/logo3.png" alt="SisAGI" />
-        <NotLoaded />
-      </Center>
-    );
-  }
+  const { user: session } = useSession();
+  // if (session) {
+  //   return (
+  //     <Center flexDirection="column" h="100vh">
+  //       <Image w="56" src="./img/logo3.png" alt="SisAGI" />
+  //       <NotLoaded />
+  //     </Center>
+  //   );
+  // }
   return children;
 }
 

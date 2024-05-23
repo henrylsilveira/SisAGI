@@ -41,7 +41,7 @@ import { SubmitHandler } from "react-hook-form/dist/types";
 import { Input } from "../../../components/Form/Input";
 
 import { SlRefresh } from "react-icons/sl";
-import { useSession } from "next-auth/react";
+
 import { CautelaViatura, PedidoViatura, Viatura } from "../../../@types/types";
 import { convertDate } from "../../../utils/scripts";
 import { NotLoaded } from "../../../components/NotLoaded";
@@ -58,10 +58,11 @@ import { DescautelaModal } from "../../../components/Modal/Viatura/ModalDescaute
 import { ModalRecusa } from "../../../components/Modal/Viatura/ModalRecusa";
 import { AutorizaViaturaModal } from "../../../components/Modal/Viatura/ModalAutoriza";
 import { RxCross1 } from "react-icons/rx";
+import { useSession } from "../../../services/context/auth";
 
 
 export default function Viaturas() {
-  const { data: session } = useSession();
+  const { user: session } = useSession();
   const [search, setSearch] = useState("");
   const [searchPedidos, setSearchPedidos] = useState("");
   const [searchCia, setSearchCia] = useState("")
@@ -69,7 +70,7 @@ export default function Viaturas() {
   const initRef = React.useRef()
 
   useEffect(() => {
-    if (!session?.militar.Funcao.find((func) => func.funcao === "s4")) {
+    if (!session?.Funcao.find((func) => func.funcao === "s4")) {
       Router.push("/");
       toast({
         title: "Acesso não autorizado.",

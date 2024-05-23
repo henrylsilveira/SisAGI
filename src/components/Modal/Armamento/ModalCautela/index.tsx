@@ -25,7 +25,8 @@ import { Input } from "../../../Form/Input";
 import { api } from "../../../../services/api";
 import { BsBoxArrowRight, BsBoxArrowUp } from "react-icons/bs";
 import { Militar, Armamento, MilitarArray } from '../../../../@types/types';
-import { useSession } from 'next-auth/react';
+import { useSession } from "../../../../services/context/auth";
+
 
 interface ModalCautelaProps {
   data: any;
@@ -36,7 +37,7 @@ interface ModalCautelaProps {
 
 export function ModalCautela({ data: militares,  dataArmamento: armamento, adapter, refresh }: ModalCautelaProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { data: session } = useSession()
+  const { user: session, status } = useSession();
   const toast = useToast();
   const [senha, setSenha] = useState("");
   const [observacao, setObservacao] = useState("");
@@ -47,7 +48,7 @@ export function ModalCautela({ data: militares,  dataArmamento: armamento, adapt
     e.preventDefault();
 
     const values = {
-    militarNome: session.militar.post_grad+' '+session.militar.nome_guerra, //NOME DO MILITAR COM A SESSÃO
+    militarNome: session.post_grad+' '+session.nome_guerra, //NOME DO MILITAR COM A SESSÃO
     armamentoId: armamento.id,
     cautelouId: militar,
     observacao,

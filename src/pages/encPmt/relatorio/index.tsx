@@ -6,17 +6,18 @@ import {
     useToast,
   } from "@chakra-ui/react";
   
-  import { useSession } from "next-auth/react";
+
 import Head from "next/head";
 import Router from "next/router";
 import { useEffect } from "react";
+import { useSession } from "../../../services/context/auth";
   
   export default function RelatorioPmt() {
-    const { data: session } = useSession();
+    const { user: session, status } = useSession();
    
     const toast = useToast();
     useEffect(() => {
-      if (!session?.militar.Funcao.find((func) => func.funcao === "enc pmt")) {
+      if (!session?.Funcao.find((func) => func.funcao === "enc pmt")) {
         Router.push("/");
         toast({
           title: "Acesso não autorizado.",

@@ -12,7 +12,7 @@ import {
 import { MilitarArray } from "../../@types/types";
 import { api } from "../../services/api";
 import { returnAvatarImage } from "../../utils/scripts";
-import { useSession } from "next-auth/react";
+
 import { useQuery } from "react-query";
 import {
   OrganogramGCArray,
@@ -22,9 +22,10 @@ import {
 import { useState } from "react";
 import { SlRefresh } from "react-icons/sl";
 import { NotLoaded } from "../NotLoaded";
+import { useSession } from "../../services/context/auth";
 
 export function Organogram() {
-  const { data: session } = useSession();
+  const { user: session, status } = useSession();
   const [mil, setMil] = useState<MilitarArray>();
 
   const { isLoading, refetch } = useQuery(["todosMilitares"], async () => {
@@ -32,8 +33,8 @@ export function Organogram() {
     setMil(
       result.data.filter(
         (mil) =>
-          mil.companhia === session?.militar.companhia &&
-          mil.pelotao === session?.militar.pelotao
+          mil.companhia === session?.companhia &&
+          mil.pelotao === session?.pelotao
       )
     );
   });

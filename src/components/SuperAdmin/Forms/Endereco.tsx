@@ -6,7 +6,7 @@ import {
   Heading,
   useToast,
 } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
+
 import { FormEvent, memo } from "react";
 import { FcAcceptDatabase } from "react-icons/fc";
 import { Militar } from "../../../@types/types";
@@ -14,9 +14,10 @@ import { Input } from "../../Form/Input";
 import { Mapa } from "./Mapa";
 import { api } from "../../../services/api";
 import { useRouter } from "next/router";
+import { useSession } from "../../../services/context/auth";
 
 function EnderecoComponent(props) {
-  const { data: session } = useSession();
+  const { user: session, status } = useSession();
   const { asPath } = useRouter();
   const mil = props.militar as Militar;
 
@@ -90,7 +91,7 @@ function EnderecoComponent(props) {
             borderColor="gray.700"
             _hover={{ bgColor: "gray.990" }}
             defaultValue={mil.cidade}
-            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
+            isDisabled={session?.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
             onBlur={(e) =>
               handleSubmitForm(
                 { name: e.target.name, value: e.target.value },
@@ -102,7 +103,7 @@ function EnderecoComponent(props) {
         </FormControl>
         <FormControl>
           <Input
-            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
+            isDisabled={session?.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
             label="Estado"
             name="estado"
             defaultValue={mil.estado}
@@ -122,7 +123,7 @@ function EnderecoComponent(props) {
         </FormControl>
         <FormControl>
           <Input
-            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
+            isDisabled={session?.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
             label="Bairro"
             name="bairro"
             defaultValue={mil.bairro}
@@ -142,7 +143,7 @@ function EnderecoComponent(props) {
         </FormControl>
         <FormControl>
           <Input
-            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
+            isDisabled={session?.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
             label="Nr Rua"
             name="nr_rua"
             defaultValue={mil.nr_rua}
@@ -162,7 +163,7 @@ function EnderecoComponent(props) {
         </FormControl>
         <FormControl>
           <Input
-            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
+            isDisabled={session?.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
             label="Complemento"
             name="complemento"
             defaultValue={mil.complemento}
@@ -182,7 +183,7 @@ function EnderecoComponent(props) {
         </FormControl>
         <FormControl>
           <Input
-            isDisabled={session?.militar.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
+            isDisabled={session?.Funcao.find((func) => func.funcao == "super admin" || func.funcao == "sgte") && (asPath == "/superAdmin/usuarios" || asPath == "/pessoal/gerenciamento") ? false : true}
             label="CEP"
             name="cep"
             defaultValue={mil.cep}

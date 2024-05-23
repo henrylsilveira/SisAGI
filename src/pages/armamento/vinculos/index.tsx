@@ -49,13 +49,14 @@ import {
   VinculoArmamentoMilitarArray,
   VinculoArmamentoMilitar,
 } from "../../../@types/types";
-import { useSession } from "next-auth/react";
+
 import { GiBreakingChain } from "react-icons/gi";
 import { Input } from "../../../components/Form/Input";
 import { MdOutlineDangerous } from "react-icons/md";
+import { useSession } from "../../../services/context/auth";
 
 export default function ArmamentoViculados() {
-  const { data: session } = useSession();
+  const { user: session, status } = useSession();
   const [nomeArmamentos, setNomeArmamentos] = useState([]);
   const [vinculosArmamento, setVinculosArmamento] =
     useState<VinculoArmamentoMilitarArray>([]);
@@ -87,7 +88,7 @@ export default function ArmamentoViculados() {
       var data = []; // CONJUNTO DE INSTRUCAO FILTRA OS NOME DE TODOS ARMAMENTOS NO BANCO E TIRA OS REPETIDOS
       result.data.map((el: Armamento) => {
         return data.push(
-          el.companhia === session.militar.companhia ? el.nome : null
+          el.companhia === session.companhia ? el.nome : null
         );
       });
       const filtered = Array.from(new Set(data)).filter(function (res) {
@@ -244,7 +245,7 @@ export default function ArmamentoViculados() {
                           data.data.filter(
                             (arma: Armamento) =>
                               arma.nome === arm &&
-                              arma.companhia === session.militar.companhia
+                              arma.companhia === session.companhia
                           ).length
                         }
                       </Tag>
@@ -263,7 +264,7 @@ export default function ArmamentoViculados() {
                   >
                     {data?.data
                       .filter((el) => {
-                        return el.companhia === session.militar.companhia;
+                        return el.companhia === session.companhia;
                       })
                       .filter((elem) => {
                         return elem.nome === arm;
@@ -419,7 +420,7 @@ export default function ArmamentoViculados() {
                       {vinculosArmamento
                         ?.filter((el) => {
                           return (
-                            el.armamento.companhia === session.militar.companhia
+                            el.armamento.companhia === session.companhia
                           );
                         })
                         .sort((a, b) => {

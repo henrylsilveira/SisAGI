@@ -8,15 +8,16 @@ import { SearchBox } from "./SearchBox";
 import { Functions } from "./Functions";
 import Router from "next/router";
 import { useEffect } from "react";
-import { useSession } from "next-auth/react";
+import { useSession } from "../../services/context/auth";
+
 
 export function Header() {
   const { onOpen } = useSidebarDrawer();
-  const { data: session, status } = useSession()
+  const { user: session } = useSession();
   const toast = useToast()
 
   useEffect(() => {
-    if(!session || status !== 'authenticated') {
+    if(!session) {
         toast({
           title: 'Autenticação inválida.',
           description: `Seu token de acesso venceu, realize o login novamente. `,
@@ -26,7 +27,7 @@ export function Header() {
         })
         Router.push('/')
       }
-}, [session, status])
+}, [session, toast])
 
   const isWideVersion = useBreakpointValue({
     base: false,

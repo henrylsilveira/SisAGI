@@ -27,13 +27,14 @@ import { api } from "../../../services/api";
 import { Armamento, Manutencao } from "../../../@types/types";
 import { Header } from "../../../components/Header";
 import { Sidebar } from "../../../components/Sidebar";
-import { useSession } from "next-auth/react";
+
 import { useState } from "react";
 import { useQuery } from "react-query";
 import { SlRefresh } from "react-icons/sl";
 import { convertDate } from "../../../utils/scripts";
 import Head from "next/head";
 import { NotData } from "../../../components/NotData";
+import { useSession } from "../../../services/context/auth";
 
 const signInFormSchema = yup.object().shape({
   tipoManutencao: yup.string().required("Obrigatório."),
@@ -42,7 +43,7 @@ const signInFormSchema = yup.object().shape({
 });
 
 export default function ManutencaoArmamento() {
-  const { data: session } = useSession();
+  const { user: session, status } = useSession();
   const [nomeArmamentos, setNomeArmamentos] = useState([]);
   const [armamento, setArmamento] = useState("");
   const toast = useToast();
@@ -52,7 +53,7 @@ export default function ManutencaoArmamento() {
     var data = []; // CONJUNTO DE INSTRUCAO FILTRA OS NOME DE TODOS ARMAMENTOS NO BANCO E TIRA OS REPETIDOS
     result.data.map((el: Armamento) => {
       return data.push(
-        el.companhia === session.militar.companhia ? el.nome : null
+        el.companhia === session.companhia ? el.nome : null
       );
     });
     const filtered = Array.from(new Set(data)).filter(function (res) {

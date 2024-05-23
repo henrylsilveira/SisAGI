@@ -1,16 +1,15 @@
 import { Button, ButtonGroup, Flex, Text, Grid, Heading, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger, Tag, TagLabel, Tooltip, useToast } from "@chakra-ui/react";
 import { FuncaoMilitar, Militar } from "../../../@types/types";
 import { api } from "../../../services/api";
-import { useSession } from "next-auth/react";
+
 import Router, { useRouter } from "next/router";
 import { convertDate, generateNowISOTime } from "../../../utils/scripts";
 import { MdBlock, MdCheck } from "react-icons/md";
-import { CiTrash } from "react-icons/ci";
-
-
+import { IoIosTrash } from "react-icons/io";
+import { useSession } from "../../../services/context/auth";
 export function ListarFuncao(props) {
   const mil = props.militar as Militar;
-  const { data: session } = useSession();
+  const { user: session, status } = useSession();
   const { asPath } = useRouter();
   const toast = useToast();
 
@@ -101,7 +100,7 @@ export function ListarFuncao(props) {
             m={2}
           >
             <TagLabel>{func.funcao.toUpperCase()}</TagLabel>
-            {session?.militar.Funcao.find((func) => func.funcao == "sgte") && asPath == "/pessoal/gerenciamento" ?
+            {session?.Funcao.find((func) => func.funcao == "sgte") && asPath == "/pessoal/gerenciamento" ?
               <Popover>
                 <PopoverTrigger>
                   <Button size="xs" rounded="full" bg="transparent" _hover={{ boxShadow: "buttonShadow", bg: "red.900" }}><MdBlock color="red" cursor="pointer" /></Button>
@@ -134,8 +133,10 @@ export function ListarFuncao(props) {
 
 
               : null}
-            {session?.militar.Funcao.find((func) => func.funcao == "super admin") && asPath == "/superAdmin" ?
-              <CiTrash color="red.500" onClick={() => handleDeleteFuncao(func.id)} />
+
+            {session?.Funcao.find((func) => func.funcao == "super admin") && asPath == "/superAdmin" ?
+              <IoIosTrash color="red.500" onClick={() => handleDeleteFuncao(func.id)} />
+
               : null}
           </Tag>
         ))}
@@ -164,7 +165,7 @@ export function ListarFuncao(props) {
             m={2}
           >
             <TagLabel>{func.funcao.toUpperCase()}</TagLabel>
-            {session?.militar.Funcao.find((func) => func.funcao == "sgte") && asPath == "/pessoal/gerenciamento" ?
+            {session?.Funcao.find((func) => func.funcao == "sgte") && asPath == "/pessoal/gerenciamento" ?
               <Popover>
                 <PopoverTrigger>
                   <Button size="xs" rounded="full" bg="transparent" _hover={{ boxShadow: "buttonShadow", bg: "green.900" }}><MdCheck color="green" cursor="pointer" /></Button>
@@ -197,8 +198,9 @@ export function ListarFuncao(props) {
 
 
               : null}
-            {session?.militar.Funcao.find((func) => func.funcao == "super admin") && asPath == "/superAdmin" ?
-              <CiTrash color="red.500" onClick={() => handleDeleteFuncao(func.id)} />
+
+            {session?.Funcao.find((func) => func.funcao == "super admin") && asPath == "/superAdmin" ?
+              <IoIosTrash color="red.500" onClick={() => handleDeleteFuncao(func.id)} />
               : null}
           </Tag>
         ))}
