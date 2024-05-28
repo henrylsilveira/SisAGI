@@ -20,7 +20,7 @@ import { Input } from "../../../Form/Input";
 import { BiLock } from "react-icons/bi";
 import { api } from "../../../../services/api";
 
-export function ModalValidate({ data, refetch }) {
+export function ModalValidate({ data, refetch }: { data: any, refetch?: () => void  }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const [senha, setSenha] = useState("");

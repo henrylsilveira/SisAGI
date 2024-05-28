@@ -33,7 +33,7 @@ interface CautelaModalProps {
     pedido: PedidoViatura,
     viaturas: Viatura[]
     atualizar: () => void
-    atualizarCautela: () => void
+    atualizarCautela?: () => void
 }
 
 const signInFormSchema = yup.object().shape({
