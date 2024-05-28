@@ -22,7 +22,7 @@ import { useSession } from "../../../../services/context/auth";
 
 
   
-  export function ModalEncerrarCautela({ data }) {
+  export function ModalEncerrarCautela({ data, refetch }) {
     const { user: session, status } = useSession();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const toast = useToast()
@@ -63,6 +63,7 @@ import { useSession } from "../../../../services/context/auth";
           });
           setSenha('')
           onClose()
+          refetch()
         } else {
           toast({
             title: "Validação",
@@ -92,8 +93,9 @@ import { useSession } from "../../../../services/context/auth";
         _hover={{ bgColor: "red.800" }}
         onClick={onOpen}
         py="1"
+        color="white"
       >
-        <Icon as={BiX} boxSize={5} pr={1} />
+        <Icon as={BiX} boxSize={5} pr={1} color="white" />
         Encerrar
       </Button>
         <Modal finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose}>
@@ -113,7 +115,7 @@ import { useSession } from "../../../../services/context/auth";
               <Divider borderColor="green.700" />
             </ModalBody>
             <ModalFooter roundedBottom={4}>
-              <Button boxShadow="buttonShadow" colorScheme="yellow" mr={3} onClick={(e) => handleSubmit(e)}>
+              <Button boxShadow="buttonShadow" colorScheme="yellow" mr={3} onClick={(e) => handleSubmit(e)} color="white">
                 Fechar
               </Button>
             </ModalFooter>

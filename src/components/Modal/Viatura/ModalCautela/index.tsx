@@ -33,6 +33,7 @@ interface CautelaModalProps {
     pedido: PedidoViatura,
     viaturas: Viatura[]
     atualizar: () => void
+    atualizarCautela?: () => void
 }
 
 const signInFormSchema = yup.object().shape({
@@ -43,7 +44,7 @@ const signInFormSchema = yup.object().shape({
 });
 
 
-export function CautelaViaturaModal({ pedido, viaturas, atualizar }: CautelaModalProps) {
+export function CautelaViaturaModal({ pedido, viaturas, atualizar, atualizarCautela }: CautelaModalProps) {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const toast = useToast();
 
@@ -75,6 +76,7 @@ export function CautelaViaturaModal({ pedido, viaturas, atualizar }: CautelaModa
                 });
                 onClose()
                 atualizar();
+                atualizarCautela()
             }
         } catch (error) {
             toast({

@@ -32,6 +32,7 @@ function EditarMaterialComponent(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const material = props.material;
   const type = props.type;
+  const refetch = props.refetch
   const toast = useToast();
 
   async function handleSubmitForm(
@@ -52,6 +53,7 @@ function EditarMaterialComponent(props) {
           duration: 2000,
           isClosable: true,
         });
+        refetch()
       }
     } catch (error) {
       toast({
@@ -78,6 +80,7 @@ function EditarMaterialComponent(props) {
           isClosable: true,
         });
         onClose()
+        refetch()
       }
     } catch (error) {
       toast({
@@ -102,7 +105,7 @@ function EditarMaterialComponent(props) {
           _hover={{ bg: "blue.600" }}
           onClick={onOpen}
         >
-          <Icon as={BiEdit} />
+          <Icon as={BiEdit} color="white" />
         </Button>
       ) : (
         <Button
@@ -113,7 +116,7 @@ function EditarMaterialComponent(props) {
           _hover={{ bg: "red.600"}}
           onClick={onOpen}
         >
-          <Icon as={RiDeleteBin2Line} />
+          <Icon as={RiDeleteBin2Line} color="white" />
         </Button>
       )}
 
@@ -233,6 +236,7 @@ function EditarMaterialComponent(props) {
                       _hover={{ bg: "red.600" }}
                       onClick={(e) => handleDeleteMaterial(e)}
                       m={4}
+                       color="white"
                     >
                       Excluir
                     </Button>

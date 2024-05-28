@@ -28,26 +28,25 @@ export function AuthProvider({ children }) {
 
     useEffect(() => {
         const { 'nextauth.token': token } = parseCookies()
-        // if (token && user === undefined) {
-        //     const userId = localStorage.getItem('@App:userId');
-        //     async () => {
-        //          await api.get<Militar>(`/me/${userId}`, {
-        //             headers: {
-        //                 Authorization: `Bearer ${token}`,
-        //             }
-        //         }).then(response => {
-        //             setUser(response.data)
-        //         }).catch(() => logout);
-        //     }
-            
-        //     console.log(user)
-        // }else(
-        //     logout
-        // )
+        if (token && user === undefined) {
+            const userId = localStorage.getItem('@App:userId');
+            async () => {
+                 await api.get<Militar>(`/me/${userId}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    }
+                }).then(response => {
+                    setUser(response.data)
+                }).catch(() => logout);
+            }
+        
+        }else(
+            logout()
+        )
         const storagedUser =JSON.parse(localStorage.getItem('@App:user'));
         // const storagedToken = localStorage.getItem('@App:token');
 
-        if (token && storagedUser.id) {
+        if (token && storagedUser?.id) {
             setUser(storagedUser);
             api.defaults.headers.Authorization = `Bearer ${token}`;
         }else{

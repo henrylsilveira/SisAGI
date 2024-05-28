@@ -59,7 +59,6 @@ export default function GerenciamentoPessoal() {
   });
 
   async function handleGetMilitar(id: string) {
-    console.log(id)
     const res = await api.get<Militar>(`/militar/${id}`);
     setMilitar(res.data);
   }
