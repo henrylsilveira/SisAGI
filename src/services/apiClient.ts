@@ -7,6 +7,7 @@ export function setupAPIClient() {
     baseURL: process.env.NODE_ENV === "development"
         ? "http://localhost:3333/"
         : 'http://10.35.88.12:3333/',
+
     // headers: {
     //     Authorization: `Bearer ${cookies['nextauth.token']}`, 
     // }
