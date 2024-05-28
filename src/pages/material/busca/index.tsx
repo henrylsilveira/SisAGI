@@ -233,12 +233,12 @@ export default function Busca() {
                                 <BiLock size={24} color="#00AA00" />
                               </Circle>
                             ) : (
-                              <ModalValidate data={res} />
+                              <ModalValidate data={res} refetch={refetch} />
                             )}
                           </Td>
                           <Td justifyItems="center">
                             {res.status === "ativo" ? (
-                              <ModalEncerrarCautela data={res} />
+                              <ModalEncerrarCautela data={res} refetch={refetch} />
                             ) : (
                               <Badge
                                 as="span"

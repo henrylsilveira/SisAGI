@@ -152,7 +152,7 @@ export default function Cautela() {
                                 py="1"
                                 boxShadow="buttonShadow"
                               >
-                                <Icon boxSize={6} as={TiInfoLarge} />
+                                <Icon boxSize={6} as={TiInfoLarge}  color="white" />
                               </Button>
                             </PopoverTrigger>
                             <PopoverContent bg="gray.990"
@@ -221,7 +221,7 @@ export default function Cautela() {
                                 return total + cautela.quantidade;
                               }, 0) !==
                           0 ? (
-                            <ModalCautela data={militares} dataMaterial={res} />
+                            <ModalCautela data={militares} dataMaterial={res} refetch={refetch} />
                           ) : (
                             <Badge
                               as="span"

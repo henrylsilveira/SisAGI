@@ -105,10 +105,6 @@ export default function Viaturas() {
     }
   );
 
-
-
-
-
   return (
     <>
       <Head>
@@ -186,7 +182,7 @@ export default function Viaturas() {
                   float="right"
                   color="white"
                   _hover={{ bgColor: "blue.900" }}
-                  onClick={() => refetchPedidos()}
+                  onClick={() => refetchPedidos}
                   aria-label="Atualizar tabela"
                   icon={<SlRefresh />}
                 />
@@ -442,7 +438,7 @@ export default function Viaturas() {
                                 )}
                               </Popover> : (res.status === "autorizado" || res.status === "finalizado" || res.status === "recusado") && res.observacao === "" ? "-" :
                                 <Flex gap={2}>
-                                  <CautelaViaturaModal pedido={res} viaturas={viaturas.data} atualizar={refetchPedidos} />
+                                  <CautelaViaturaModal pedido={res} viaturas={viaturas.data} atualizar={refetchPedidos} atualizarCautela={refetch} />
                                   <ModalRecusa pedido={res} atualizar={refetchPedidos} />
 
                                 </Flex>
@@ -495,7 +491,7 @@ export default function Viaturas() {
                   float="right"
                   color="white"
                   _hover={{ bgColor: "blue.900" }}
-                  onClick={() => refetchPedidos()}
+                  onClick={() => refetch()}
                   aria-label="Atualizar tabela"
                   icon={<SlRefresh />}
                 />

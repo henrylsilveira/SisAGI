@@ -91,7 +91,6 @@ export default function Cadastro() {
     try {
       const result = await api.post("/material/create", values);
       if (result.status == 201) {
-        refetch;
         toast({
           title: "Material cadastrado.",
           description: "Os dados do material foram cadastrados no sistema.",
@@ -100,6 +99,7 @@ export default function Cadastro() {
           isClosable: true,
         });
         
+        refetch();
       }
     } catch (error) {
       toast({
@@ -345,10 +345,10 @@ export default function Cadastro() {
                             )}
                           </Td>
                           <Td>
-                            <EditarMaterial material={res} type="edit" />
+                            <EditarMaterial material={res} type="edit" refetch={refetch} />
                           </Td>
                           <Td>
-                            <EditarMaterial material={res} type="delete" />
+                            <EditarMaterial material={res} type="delete" refetch={refetch} />
                           </Td>
                         </Tr>
                       ))}

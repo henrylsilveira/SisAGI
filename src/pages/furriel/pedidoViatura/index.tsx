@@ -91,9 +91,7 @@ export default function FurrielPedidoViatura() {
     ["pedidosViatura"],
     async () => {
       const result = await api.get<PedidoViatura[]>(`/veiculos/pedidos/furriel/${session.companhia}`);
-      console.log(result);
       return result;
-      
     }
   );
 
@@ -210,11 +208,13 @@ export default function FurrielPedidoViatura() {
                         size="sm"
                         rounded="lg"
                         label="Missão"
+                        placeholder="Descrever a missão"
                         name="missao"
                         type="text"
                         error={errors.missao}
                         {...register("missao")}
                       />
+                      <FormHelperText>Ex: Transporte de tropa, transporte de munição, transporte de material</FormHelperText>
                     </FormControl>
 
 

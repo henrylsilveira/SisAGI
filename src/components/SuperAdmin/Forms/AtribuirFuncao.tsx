@@ -25,7 +25,6 @@ function AtribuirFuncaoComponent(props) {
   const { user: session, status } = useSession();
 
   const mil = props.militar as Militar;
-  console.log(mil)
   const { asPath } = useRouter();
   const toast = useToast();
 

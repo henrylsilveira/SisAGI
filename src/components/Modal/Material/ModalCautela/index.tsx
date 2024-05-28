@@ -32,7 +32,7 @@ import { Militar } from "../../../../@types/types";
 import { useSession } from "../../../../services/context/auth";
 
 
-export function ModalCautela({ data: militares, dataMaterial: material }) {
+export function ModalCautela({ data: militares, dataMaterial: material, refetch }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { user: session, status } = useSession();
   const toast = useToast();
@@ -72,6 +72,7 @@ export function ModalCautela({ data: militares, dataMaterial: material }) {
         setSenha("");
         setMilitar("");
         onClose();
+        refetch()
       } else {
         toast({
           title: "Cautela",
@@ -100,21 +101,22 @@ export function ModalCautela({ data: militares, dataMaterial: material }) {
         _hover={{ bgColor: "green.600" }}
         onClick={onOpen}
         py="1"
+        color="white"
         boxShadow="buttonShadow"
       >
-        <Icon boxSize={4} as={BsBoxArrowRight} pr={1} />
+        <Icon boxSize={4} as={BsBoxArrowRight} pr={1}  color="white" />
         Cautelar
       </Button>
-      <Modal finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose}>
+      <Modal finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose} >
         <ModalOverlay />
-        <ModalContent>
-          <ModalHeader roundedTop={4} bg="gray.800">
+        <ModalContent >
+          <ModalHeader roundedTop={4} bg="gray.990" >
             <Heading textAlign="center" size="lg">
               Criar cautela
             </Heading>
           </ModalHeader>
           <ModalCloseButton />
-          <ModalBody bg="gray.800">
+          <ModalBody bg="gray.990" border={1} borderColor="green.600">
             <Stack pb={4}>
               <Flex justifyContent="space-between">
                 <Text>Nome: {material.nome}</Text>
@@ -219,7 +221,8 @@ export function ModalCautela({ data: militares, dataMaterial: material }) {
                 onChange={(e) => setSenha(e.target.value)}
               />
               <FormHelperText color="yellow.700">
-                *Deixe o campo vazio para cautelar sem validação.
+                *Deixe o campo vazio para cautelar sem validação.<br/>
+                *O militar consegue validar a cautela pelo seu perfil.
               </FormHelperText>
               <FormHelperText>
                 Senha do militar que está cautelando
@@ -230,7 +233,7 @@ export function ModalCautela({ data: militares, dataMaterial: material }) {
           <ModalFooter
             justifyContent="space-evenly"
             roundedBottom={4}
-            bg="gray.800"
+            bg="gray.990"
           >
             <Button
               boxShadow="buttonShadow"
@@ -238,6 +241,7 @@ export function ModalCautela({ data: militares, dataMaterial: material }) {
               mr={3}
               onClick={(e) => handleSubmit(e)}
               disabled={militar && !senha ? false : true}
+              color="white"
             >
               Sem Validar
             </Button>

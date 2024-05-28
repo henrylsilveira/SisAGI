@@ -12,7 +12,7 @@ import { NotLoaded } from "../components/NotLoaded";
 
 export default function Dashboard() {
   // const { data: session, status } = useSession();
-  const { user: session, status } = useSession();
+  const { user: session, status, logout } = useSession();
   const toast = useToast();
   const idLogado = "toastNaoLogado";
   const id = "toastLogin";
@@ -39,6 +39,7 @@ export default function Dashboard() {
           duration: 1000,
           isClosable: true,
         });
+        logout()
       }
     }
   }, [session, toast]);
