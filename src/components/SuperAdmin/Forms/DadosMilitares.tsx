@@ -9,6 +9,7 @@ import { api } from "../../../services/api";
 import { FormEvent } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "../../../services/context/auth";
+import { CompanhiasArray, PelotoesArray } from "../../../utils/staticArray";
 
 export function DadosMilitares(props) {
   const { user: session, status } = useSession();
@@ -101,11 +102,9 @@ export function DadosMilitares(props) {
               defaultValue={mil.companhia}
               onBlur={(e) => handleSubmitForm({name: e.target.name,value: e.target.value}, mil.id, e)}
             >
-              <option value="1 CIA">1 CIA</option>
-              <option value="2 CIA">2 CIA</option>
-              <option value="3 CIA">3 CIA</option>
-              <option value="CCAp">CCAp</option>
-              <option value="EM">EM</option>
+              {CompanhiasArray.map((option , index) => (
+                <option key={option + index} value={option}>{option}</option>
+              ))}
             </Input>
           </FormControl>
           <FormControl>
@@ -121,12 +120,9 @@ export function DadosMilitares(props) {
               defaultValue={mil.pelotao}
               onBlur={(e) => handleSubmitForm({name: e.target.name,value: e.target.value}, mil.id, e)}
             >
-              <option value="Nenhum">Nenhum</option>
-              <option value="1 PEL">1 PEL</option>
-              <option value="2 PEL">2 PEL</option>
-              <option value="3 PEL">3 PEL</option>
-              <option value="PEL Ap">PEL Ap</option>
-              <option value="SEC CMDO">SEC CMDO</option>
+              {PelotoesArray.map((option , index) => (
+                <option key={option + index} value={option}>{option}</option>
+              ))}
             </Input>
           </FormControl>
           <FormControl>

@@ -42,7 +42,7 @@ import { Input } from "../../../components/Form/Input";
 
 import { SlRefresh } from "react-icons/sl";
 
-import { CautelaViatura, PedidoViatura } from "../../../@types/types";
+import { CautelaViatura, PedidoViatura, Viatura } from "../../../@types/types";
 import { convertDate } from "../../../utils/scripts";
 import { NotLoaded } from "../../../components/NotLoaded";
 import { NotData } from "../../../components/NotData";
@@ -86,6 +86,14 @@ export default function FurrielPedidoViatura() {
       });
     }
   }, [session, toast]);
+
+  const { data: dataViaturas } = useQuery(
+    ["todasViaturas"],
+    async () => {
+      const result = await api.get<Viatura[]>("/veiculos");
+      return result.data;
+    }
+  );
 
   const { isLoading, error, data: dataPedidoViatura, isFetching, refetch } = useQuery(
     ["pedidosViatura"],
@@ -169,10 +177,42 @@ export default function FurrielPedidoViatura() {
                 <Heading fontSize="2xl" p={2}>
                   Cadastro de pedido
                 </Heading>
+                <Flex>
+                  <Popover closeOnBlur={false} placement='left' initialFocusRef={initRef}>
+                    {() => (
+                      <>
+                        <PopoverTrigger>
+                          <Button display="flex" boxShadow="buttonShadow" mr={2} colorScheme='facebook' size='sm'>
+                            <Icon as={GiTruck} w={6} h={6} pr={2} /> Viaturas
+                          </Button>
+                        </PopoverTrigger>
+                        <Portal>
+                          <PopoverContent bg="gray.990" border="1px" borderColor="green.700">
+                            <PopoverHeader>Viaturas Disponíveis</PopoverHeader>
+                            <PopoverCloseButton />
+                            <PopoverBody>
+                              
+                              <VStack overflowY="auto" maxH="300px">
+                              {dataViaturas ? dataViaturas?.filter(viatura => viatura.situacao === "disponivel").map((viatura, index) => (
+                                <Flex flex={1} w="100%" h={20} key={viatura.id} boxShadow="buttonShadow" p={2} bg="gray.990" rounded="base" alignItems="center" justifyContent="space-between" _hover={{ bg: "gray.800" }}>
+                                  <Icon as={GiTruck} w={6} h={6} />
+                                  <Text fontSize={"sm"}>{viatura.tipo}</Text>
+                                  <Text boxShadow="buttonShadow" bg="green.900" rounded="base" fontSize={"sm"} px={1}>{viatura.tipoTransporte.toUpperCase()}</Text>
+                                </Flex>
+                              )): <NotData textoComponent="Não existem viaturas disponíveis" />}
+                              </VStack>
+                            </PopoverBody>
+                          </PopoverContent>
+                        </Portal>
+                      </>
+                    )}
+                  </Popover>
 
                   <Button display="flex" boxShadow="buttonShadow" mr={2} colorScheme='whatsapp' size='sm' onClick={() => (createPedido ? setCreatePedido(false) : setCreatePedido(true))}>
                     <Icon as={TbShoppingCartPlus} w={6} h={6} pr={2} /> Criar pedido
                   </Button>
+
+                </Flex>
               </Flex>
               {createPedido ?
                 <>
@@ -311,32 +351,32 @@ export default function FurrielPedidoViatura() {
                   justifyContent="space-between"
                   w="auto"
                 >
-                    <Flex p={2} alignItems="center" gap={2}>
-                      <MdSearch fontSize={30} />
-                      <FormControl>
-                        <Input
-                          as="select"
-                          rounded="base"
-                          focusBorderColor="green.500"
-                          name="search"
-                          bgColor="gray.990"
-                          textColor="gray.200"
-                          variant="filled"
-                          _hover={{ bgColor: "gray.900" }}
-                          size="sm"
-                          placeholder="Selecione"
-                          onChange={e => setSearch(e.target.value)}
-                          w={200}
-                          h={10}
-                        >
-                          <option value="">Todos - {dataPedidoViatura?.data.length}</option>
-                          <option value="finalizado">Finalizado - {dataPedidoViatura?.data.filter(res => res.status === "finalizado").length}</option>
-                          <option value="aguardando">Aguardando - {dataPedidoViatura?.data.filter(res => res.status === "aguardando").length}</option>
-                          <option value="recusado">Recusado - {dataPedidoViatura?.data.filter(res => res.status === "recusado").length}</option>
-                          <option value="autorizado">Autorizado - {dataPedidoViatura?.data.filter(res => res.status === "autorizado").length}</option>
-                        </Input>
-                      </FormControl>
-                    </Flex>
+                  <Flex p={2} alignItems="center" gap={2}>
+                    <MdSearch fontSize={30} />
+                    <FormControl>
+                      <Input
+                        as="select"
+                        rounded="base"
+                        focusBorderColor="green.500"
+                        name="search"
+                        bgColor="gray.990"
+                        textColor="gray.200"
+                        variant="filled"
+                        _hover={{ bgColor: "gray.900" }}
+                        size="sm"
+                        placeholder="Selecione"
+                        onChange={e => setSearch(e.target.value)}
+                        w={200}
+                        h={10}
+                      >
+                        <option value="">Todos - {dataPedidoViatura?.data.length}</option>
+                        <option value="finalizado">Finalizado - {dataPedidoViatura?.data.filter(res => res.status === "finalizado").length}</option>
+                        <option value="aguardando">Aguardando - {dataPedidoViatura?.data.filter(res => res.status === "aguardando").length}</option>
+                        <option value="recusado">Recusado - {dataPedidoViatura?.data.filter(res => res.status === "recusado").length}</option>
+                        <option value="autorizado">Autorizado - {dataPedidoViatura?.data.filter(res => res.status === "autorizado").length}</option>
+                      </Input>
+                    </FormControl>
+                  </Flex>
                 </Flex>
                 <IconButton
                   bg="blue.700"

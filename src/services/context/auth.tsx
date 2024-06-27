@@ -13,6 +13,7 @@ interface AuthContextData {
 }
 
 interface ResponseAuth {
+    // message(message: any): unknown;
     status: number;
     data: {
         token: string;
@@ -62,13 +63,16 @@ export function AuthProvider({ children }) {
             localStorage.setItem('@App:userId', JSON.stringify(militar.data.id));
             localStorage.setItem('@App:user', JSON.stringify(militar.data));
             // localStorage.setItem('@App:token', response.data.token);
-            setUser(militar.data as Militar)
-            setStatus("authenticated")
-            setCookie(null, 'nextauth.token', response.data.token, {
-                maxAge: 60 * 60 * 24,
-                path: '/',
-            })
-            Router.push("/dashboard");
+            if(militar.data){
+                setUser(militar.data as Militar)
+                setStatus("authenticated")
+                setCookie(null, 'nextauth.token', response.data.token, {
+                    maxAge: 60 * 60 * 24,
+                    path: '/',
+                })
+                Router.push("/dashboard");
+            }
+            
             return response
         } catch (error) {
             console.error('Falha ao logar', error);
