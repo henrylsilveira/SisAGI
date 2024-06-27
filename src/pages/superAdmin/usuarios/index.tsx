@@ -35,12 +35,14 @@ import { NotLoaded } from "../../../components/NotLoaded";
 import ReactPaginate from "react-paginate";
 import { Input } from "../../../components/Form/Input";
 import { PostoGraduacaoArray } from '../../../utils/staticArray';
+import { useEffect } from 'react';
 
 export default function SuperAdmin() {
   const [result, setResult] = useState<MilitarArray>([]);
   const [militar, setMilitar] = useState<Militar>();
   const [militarNome, setMilitarNome] = useState("");
   const [militarPostGrad, setMilitarPostGrad] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const { refetch, isLoading } = useQuery(["todosMilitares"], async () => {
     const result = await api.get<MilitarArray>("/militar");
@@ -53,16 +55,13 @@ export default function SuperAdmin() {
     );
     return result;
   });
-  async function handleGetMilitar(id: string) {
-    const res = await api.get<Militar>(`/militar/${id}`);
-    setMilitar(res.data);
-  }
 
-  const itemsPerPage = 15;
+  const itemsPerPage = 20;
   const [itemOffset, setItemOffset] = useState(0);
   const endOffset = itemOffset + itemsPerPage;
+  console.log(militarNome)
   const resultPaginated = result
-    .filter((mil) => (militarNome ? mil.nome_guerra == militarNome : mil))
+    .filter((mil) => (militarNome ? mil.nome_completo.toLowerCase().includes(militarNome.toLowerCase()) : mil))
     .filter((mil) => (militarPostGrad ? mil.post_grad == militarPostGrad : mil))
     .slice(itemOffset, endOffset);
   const pageCount = Math.ceil(result.length / itemsPerPage);
@@ -70,7 +69,17 @@ export default function SuperAdmin() {
     const newOffset = (event.selected * itemsPerPage) % result.length;
     setItemOffset(newOffset);
   };
+  
+  async function handleGetMilitar(id: string) {
+    if (militar?.id !== id) {
+      setLoading(true);
+      const res = await api.get<Militar>(`/militar/${id}`);
+      setMilitar(res.data);
+    }
+    setLoading(false);
+  }
 
+  
   return (
     <>
       <Head>
@@ -143,7 +152,7 @@ export default function SuperAdmin() {
                       )}
                     </Input>
                     <Input
-                      label="Filtrar por militar"
+                      label="Nome"
                       name="nomeMilitar"
                       type="text"
                       px="8"
@@ -160,23 +169,23 @@ export default function SuperAdmin() {
                         <Thead>
                           <Tr>
                             {PostoGraduacaoArray?.map((postGrad, index) => (
-                                <Th key={postGrad + index} textAlign="center">
-                                  {postGrad}
-                                </Th>
-                              ))}
+                              <Th key={postGrad + index} textAlign="center">
+                                {postGrad}
+                              </Th>
+                            ))}
                           </Tr>
                         </Thead>
                         <Tbody>
                           <Tr>
                             {PostoGraduacaoArray?.map((postGrad, index) => (
-                                <Td key={postGrad + index} textAlign="center">
-                                  {
-                                    result?.filter(
-                                      (mil) => mil.post_grad === postGrad
-                                    ).length
-                                  }
-                                </Td>
-                              ))}
+                              <Td key={postGrad + index} textAlign="center">
+                                {
+                                  result?.filter(
+                                    (mil) => mil.post_grad === postGrad
+                                  ).length
+                                }
+                              </Td>
+                            ))}
                           </Tr>
                         </Tbody>
                       </>
@@ -192,6 +201,7 @@ export default function SuperAdmin() {
                             key={index}
                             onClick={() => handleGetMilitar(mil.id)}
                           >
+
                             <h2>
                               <AccordionButton
                                 boxShadow="buttonShadow"
@@ -230,20 +240,26 @@ export default function SuperAdmin() {
                               bgColor="gray.990"
                               boxShadow="innerShadow"
                             >
-                              <Flex
-                                flexDirection="row"
-                                gap={4}
-                                justifyContent="space-between"
-                              >
-                                <DadosPessoais
-                                  militar={{ ...mil, ...militar }}
-                                />
-                                <DadosMilitares
-                                  militar={{ ...mil, ...militar }}
-                                />
-                              </Flex>
-                              <Endereco militar={{ ...mil, ...militar }} />
+                              {!loading ? (
+                                <>
+                                  <Flex
+                                    flexDirection="row"
+                                    gap={4}
+                                    justifyContent="space-between"
+                                  >
+                                    <DadosPessoais
+                                      militar={{ ...mil, ...militar }}
+                                    />
+                                    <DadosMilitares
+                                      militar={{ ...mil, ...militar }}
+                                    />
+                                  </Flex>
+                                  <Endereco militar={{ ...mil, ...militar }} />
+                                </>
+                              ) : <NotLoaded />}
+
                             </AccordionPanel>
+
                           </AccordionItem>
                         ))
                       )}

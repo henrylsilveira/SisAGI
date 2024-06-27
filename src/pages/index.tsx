@@ -64,15 +64,23 @@ export default function Home() {
         senha: values.senha,
         ip: await getUserIP(),
       })
-      if (res.status !== 200) {
+      if (res.status != 200) {
         toast({
           title: "Login",
-          description: "Algo de arrado aconteceu.",
+          description: "Algo de errado aconteceu.",
           status: "error",
           duration: 3000,
           isClosable: true,
         });
-        return ;
+        
+      }else{
+        toast({
+          title: "Login",
+          description: "Algo de errado aconteceu.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
       }
     } catch (error) {
       console.error(error);

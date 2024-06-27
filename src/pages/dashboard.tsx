@@ -39,7 +39,7 @@ export default function Dashboard() {
           duration: 1000,
           isClosable: true,
         });
-        logout()
+        // logout()
       }
     }
   }, [session, toast]);

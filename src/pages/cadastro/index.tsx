@@ -21,6 +21,7 @@ import Link from "next/link";
 import { verificaSenha } from '../../utils/scripts';
 import { useState } from "react";
 import Head from "next/head";
+import { CompanhiasArray, PelotoesArray } from "../../utils/staticArray";
 
 
 // CODIGO PARA SIMULAR MILITARES NO BANCO DE DADOS
@@ -228,12 +229,9 @@ export default function Cadastro() {
               error={errors.companhia}
               {...register("companhia")}
             >
-              <option value="1 CIA">1 CIA</option>
-              <option value="2 CIA">2 CIA</option>
-              <option value="3 CIA">3 CIA</option>
-              <option value="CCAp">CCAp</option>
-              <option value="EM">EM</option>
-              <option value="BANDA">BANDA</option>
+              {CompanhiasArray.map((option , index) => (
+                <option key={option + index} value={option}>{option}</option>
+              ))}
             </Input>
             <Input
               name="local"
@@ -243,13 +241,9 @@ export default function Cadastro() {
               error={errors.pelotao}
               {...register("pelotao")}
             >
-              <option value="Nenhum">Nenhum</option>
-              <option value="1 PEL">1 PEL</option>
-              <option value="2 PEL">2 PEL</option>
-              <option value="3 PEL">3 PEL</option>
-              <option value="PEL Ap">PEL Ap</option>
-              <option value="SEC CMDO">SEC CMDO</option>
-              <option value="MUSICA">MUSICA</option>
+              {PelotoesArray.map((option , index) => (
+                <option key={option + index} value={option}>{option}</option>
+              ))}
             </Input>
             <FormControl>
               <Input
