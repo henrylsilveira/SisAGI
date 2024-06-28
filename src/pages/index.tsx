@@ -67,20 +67,12 @@ export default function Home() {
       if (res.status != 200) {
         toast({
           title: "Login",
-          description: "Algo de errado aconteceu.",
+          description: res.data.message,
           status: "error",
           duration: 3000,
           isClosable: true,
         });
         
-      }else{
-        toast({
-          title: "Login",
-          description: "Algo de errado aconteceu.",
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-        });
       }
     } catch (error) {
       console.error(error);

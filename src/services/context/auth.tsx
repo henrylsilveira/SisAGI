@@ -18,6 +18,7 @@ interface ResponseAuth {
     data: {
         token: string;
         user: object;
+        message?: string;
     }
 }
 
@@ -40,7 +41,6 @@ export function AuthProvider({ children }) {
                     setUser(response.data)
                 }).catch(() => logout);
             }
-        
         }else(
             logout()
         )
@@ -57,8 +57,8 @@ export function AuthProvider({ children }) {
 
     async function Login(credentials: object) {
         try {
-            const response = await api.post('/auth', credentials);
-            const militar = await api.get<Militar>(`/me/${response.data.id}`);
+            const response = await api.post('/auth', credentials)
+            const militar = await api.get<Militar>(`/me/${response.data.id}`)
             api.defaults.headers.Authorization = `Bearer ${response.data.token}`
             localStorage.setItem('@App:userId', JSON.stringify(militar.data.id));
             localStorage.setItem('@App:user', JSON.stringify(militar.data));
@@ -72,10 +72,9 @@ export function AuthProvider({ children }) {
                 })
                 Router.push("/dashboard");
             }
-            
             return response
         } catch (error) {
-            console.error('Falha ao logar', error);
+            return error.response
         }
     };
 
