@@ -91,7 +91,7 @@ export default function FurrielPedidoViatura() {
     ["todasViaturas"],
     async () => {
       const result = await api.get<Viatura[]>("/veiculos");
-      return result.data;
+      return result;
     }
   );
 
@@ -193,7 +193,7 @@ export default function FurrielPedidoViatura() {
                             <PopoverBody>
                               
                               <VStack overflowY="auto" maxH="300px">
-                              {dataViaturas ? dataViaturas?.filter(viatura => viatura.situacao === "disponivel").map((viatura, index) => (
+                              {dataViaturas ? dataViaturas?.data.filter(viatura => viatura.situacao === "disponivel").map((viatura, index) => (
                                 <Flex flex={1} w="100%" h={20} key={viatura.id} boxShadow="buttonShadow" p={2} bg="gray.990" rounded="base" alignItems="center" justifyContent="space-between" _hover={{ bg: "gray.800" }}>
                                   <Icon as={GiTruck} w={6} h={6} />
                                   <Text fontSize={"sm"}>{viatura.tipo}</Text>
