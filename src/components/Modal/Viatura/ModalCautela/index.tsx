@@ -27,7 +27,7 @@ import { Input } from "../../../Form/Input";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { convertDate, convertISODateToInputValue } from "../../../../utils/scripts";
+import { convertDate, convertDateAndTime, convertISODateAndTimeToInputValue, convertISODateToInputValue } from "../../../../utils/scripts";
 
 interface CautelaModalProps {
     pedido: PedidoViatura,
@@ -175,10 +175,10 @@ export function CautelaViaturaModal({ pedido, viaturas, atualizar, atualizarCaut
                                 </Flex>
                                 <Flex gap={2}>
                                     <Text>
-                                        Data desejada
+                                        Data/Hora desejada
                                     </Text>
                                     <Text color="gray.500">
-                                        {convertDate(pedido.dataDesejada)}
+                                        {convertDateAndTime(pedido.dataDesejada)}
                                     </Text>
                                 </Flex>
                                 <Flex gap={2}>
@@ -223,6 +223,14 @@ export function CautelaViaturaModal({ pedido, viaturas, atualizar, atualizarCaut
                                 </Flex>
                                 <Flex gap={2}>
                                     <Text>
+                                        Tipo de viatura
+                                    </Text>
+                                    <Text color="gray.500">
+                                        {pedido.tipoViatura.toUpperCase()}
+                                    </Text>
+                                </Flex>
+                                <Flex gap={2}>
+                                    <Text>
                                         Apresentar para
                                     </Text>
                                     <Text color="gray.500">
@@ -233,8 +241,8 @@ export function CautelaViaturaModal({ pedido, viaturas, atualizar, atualizarCaut
                                     <Text>
                                         Situação do pedido
                                     </Text>
-                                    <Text color="gray.500">
-                                        {pedido.status}
+                                    <Text color={pedido.status === "aguardando" ? "red.500" : pedido.status === "autorizado" ? "yellow.500" : "green.500"}>
+                                        {pedido.status.toUpperCase()}
                                     </Text>
                                 </Flex>
                             </Flex>
@@ -254,10 +262,10 @@ export function CautelaViaturaModal({ pedido, viaturas, atualizar, atualizarCaut
                                 <Input
                                     size="sm"
                                     rounded="lg"
-                                    label="Data Cautela"
+                                    label="Data/Hora Cautela"
                                     name="dataCautela"
-                                    type="date"
-                                    defaultValue={convertISODateToInputValue(pedido.dataDesejada)}
+                                    type="datetime-local"
+                                    defaultValue={convertISODateAndTimeToInputValue(pedido.dataDesejada)}
                                     error={errors.dataCautela}
                                     {...register("dataCautela")}
                                 />

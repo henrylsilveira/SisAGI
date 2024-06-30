@@ -4,9 +4,6 @@ import {
   Button,
   Flex,
   FormControl,
-  FormHelperText,
-  Grid,
-  HStack,
   Heading,
   IconButton,
   Popover,
@@ -28,30 +25,34 @@ import {
   Tr,
   useToast,
   Text,
-  VStack,
-  Icon
+  Tooltip,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Accordion
 } from "@chakra-ui/react";
 import { useQuery } from "react-query";
 import { api } from "../../../services/api";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { SubmitHandler } from "react-hook-form/dist/types";
 import { Input } from "../../../components/Form/Input";
 
 import { SlRefresh } from "react-icons/sl";
 
-import { CautelaViatura, PedidoViatura, Viatura } from "../../../@types/types";
-import { convertDate } from "../../../utils/scripts";
+import { CautelaViatura, PedidosVariasViaturasProps, PedidoViatura, Viatura } from "../../../@types/types";
+import { convertDate, convertDateAndTime, returnComboios } from "../../../utils/scripts";
 import { NotLoaded } from "../../../components/NotLoaded";
 import { NotData } from "../../../components/NotData";
 import { HiOutlineInformationCircle } from "react-icons/hi";
 import React from "react";
 import Router from "next/router";
 import Head from "next/head";
-import { MdSearch } from "react-icons/md";
-import { TbShoppingCartPlus } from "react-icons/tb";
+import { MdDoubleArrow, MdSearch } from "react-icons/md";
 import { GiCheckMark, GiTruck } from "react-icons/gi";
 import { CautelaViaturaModal } from "../../../components/Modal/Viatura/ModalCautela";
 import { DescautelaModal } from "../../../components/Modal/Viatura/ModalDescautela";
@@ -59,6 +60,7 @@ import { ModalRecusa } from "../../../components/Modal/Viatura/ModalRecusa";
 import { AutorizaViaturaModal } from "../../../components/Modal/Viatura/ModalAutoriza";
 import { RxCross1 } from "react-icons/rx";
 import { useSession } from "../../../services/context/auth";
+import { BsInfoCircle } from "react-icons/bs";
 
 
 export default function Viaturas() {
@@ -66,6 +68,7 @@ export default function Viaturas() {
   const [search, setSearch] = useState("");
   const [searchPedidos, setSearchPedidos] = useState("");
   const [searchCia, setSearchCia] = useState("")
+  const [pedidosVariasViaturas, setPedidosVariasViaturas] = useState([])
   const toast = useToast();
   const initRef = React.useRef()
 
@@ -82,10 +85,12 @@ export default function Viaturas() {
     }
   }, [session, toast]);
 
+
   const { isLoading, error, data: pedidosViatura, refetch: refetchPedidos } = useQuery(
     ["todosPedidosViaturas"],
     async () => {
       const result = await api.get<PedidoViatura[]>("/veiculos/pedidos");
+      setPedidosVariasViaturas(returnComboios(result.data))
       return result;
     }
   );
@@ -127,175 +132,196 @@ export default function Viaturas() {
               p={4}
               direction="column"
             >
-              <Flex
-                bg="gray.990"
-                boxShadow="buttonShadow"
-                px={2}
-                my={4}
-                gap={2}
-                rounded="base"
-                alignItems="center"
-                justifyContent="space-between"
-              >
-                <Heading fontSize="2xl" my="4">
-                  Pedidos ( FURRIEL )
-                </Heading>
-                <Flex bg="gray.990"
+
+              <Tabs isFitted variant='enclosed'>
+                <TabList mb='1em'>
+                  <Tab>Pedidos Viaturas</Tab>
+                  <Tab>Pedidos Comboios</Tab>
+                </TabList>
+                <TabPanels>
+                  <TabPanel>
+                    {/* Tabela Pedidos Viaturas */}
+                    <>
+                <Flex
+                  bg="gray.990"
                   boxShadow="buttonShadow"
-                  px={1}
-                  my={1}
-                  ml="auto"
+                  px={2}
+                  my={4}
+                  gap={2}
                   rounded="base"
                   alignItems="center"
                   justifyContent="space-between"
-                  w="auto"
                 >
-                  <Flex p={2} alignItems="center" gap={2}>
-                    <MdSearch fontSize={30} />
-                    <FormControl>
-                      <Input
-                        as="select"
-                        rounded="base"
-                        focusBorderColor="green.500"
-                        name="search"
-                        bgColor="gray.990"
-                        textColor="gray.200"
-                        variant="filled"
-                        _hover={{ bgColor: "gray.900" }}
-                        size="sm"
-                        placeholder="Selecione"
-                        onChange={e => setSearch(e.target.value)}
-                        w={200}
-                        h={10}
-                      >
-                        <option value="">Todos - {pedidosViatura?.data.length}</option>
-                        <option value="finalizado">Finalizado - {pedidosViatura?.data.filter(res => res.status === "finalizado").length}</option>
-                        <option value="aguardando">Aguardando - {pedidosViatura?.data.filter(res => res.status === "aguardando").length}</option>
-                        <option value="recusado">Recusado - {pedidosViatura?.data.filter(res => res.status === "recusado").length}</option>
-                        <option value="autorizado">Autorizado - {pedidosViatura?.data.filter(res => res.status === "autorizado").length}</option>
-                      </Input>
-                    </FormControl>
+                  <Heading fontSize="2xl" my="4">
+                    Pedidos ( FURRIEL )
+                  </Heading>
+                  <Flex bg="gray.990"
+                    boxShadow="buttonShadow"
+                    px={1}
+                    my={1}
+                    ml="auto"
+                    rounded="base"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    w="auto"
+                  >
+                    <Flex p={2} alignItems="center" gap={2}>
+                      <MdSearch fontSize={30} />
+                      <FormControl>
+                        <Input
+                          as="select"
+                          rounded="base"
+                          focusBorderColor="green.500"
+                          name="search"
+                          bgColor="gray.990"
+                          textColor="gray.200"
+                          variant="filled"
+                          _hover={{ bgColor: "gray.900" }}
+                          size="sm"
+                          placeholder="Selecione"
+                          onChange={e => setSearch(e.target.value)}
+                          w={200}
+                          h={10}
+                        >
+                          <option value="">Todos - {pedidosViatura?.data.length}</option>
+                          <option value="finalizado">Finalizado - {pedidosViatura?.data.filter(res => res.status === "finalizado").length}</option>
+                          <option value="aguardando">Aguardando - {pedidosViatura?.data.filter(res => res.status === "aguardando").length}</option>
+                          <option value="recusado">Recusado - {pedidosViatura?.data.filter(res => res.status === "recusado").length}</option>
+                          <option value="autorizado">Autorizado - {pedidosViatura?.data.filter(res => res.status === "autorizado").length}</option>
+                        </Input>
+                      </FormControl>
+                    </Flex>
                   </Flex>
+                  <IconButton
+                    bg="blue.700"
+                    float="right"
+                    color="white"
+                    _hover={{ bgColor: "blue.900" }}
+                    onClick={() => refetchPedidos}
+                    aria-label="Atualizar tabela"
+                    icon={<SlRefresh />}
+                  />
                 </Flex>
-                <IconButton
-                  bg="blue.700"
-                  float="right"
-                  color="white"
-                  _hover={{ bgColor: "blue.900" }}
-                  onClick={() => refetchPedidos}
-                  aria-label="Atualizar tabela"
-                  icon={<SlRefresh />}
-                />
-              </Flex>
 
-              {isLoading ? <NotLoaded /> : pedidosViatura?.data.length === 0 ? <NotData textoComponent="Não existe dados" /> :
-                <TableContainer maxH="50vh" overflowY="scroll" py={4}>
-                  <Table size="sm" colorScheme="whiteAlpha">
-                    <Thead>
-                      <Tr>
-                        <Th textAlign="center">Data do Pedido</Th>
-                        <Th textAlign="center">Data Desejada</Th>
-                        <Th textAlign="center">Data Devolução</Th>
-                        <Th textAlign="center">Missão</Th>
-                        <Th textAlign="center">Itinerário</Th>
-                        <Th textAlign="center">Chefe Viatura</Th>
-                        <Th textAlign="center">Motorista</Th>
-                        <Th textAlign="center">Apresentar para</Th>
-                        <Th textAlign="center">Furriel</Th>
-                        <Th textAlign="center">Situação</Th>
-                        <Th textAlign="center"></Th>
-                        <Th textAlign="center"></Th>
-                      </Tr>
-                    </Thead>
-                    <Tbody>
-
-                      {pedidosViatura?.data.filter(res => search ? res.status === search : res.status).map((res) => (
-                        <Tr key={res.id} _hover={{ shadow: "innerShadow", bg: "gray.990", border: "2px", borderColor: "green.900", rounded: "lg" }}>
-                          <Td textAlign="center">{convertDate(res.created_at)}</Td>
-                          <Td textAlign="center">{convertDate(res.dataDesejada)}</Td>
-                          <Td textAlign="center">{convertDate(res.dataDevolucao)}</Td>
-                          <Td textAlign="center">{res.missao}</Td>
-                          <Td textAlign="center">{res.intinerario}</Td>
-                          <Td textAlign="center">{res.chefeViatura}</Td>
-                          <Td textAlign="center">{res.motorista}</Td>
-                          <Td textAlign="center">{res.apresentar}</Td>
-                          <Td textAlign="center">{res.militar.post_grad + " " + res.militar.nome_guerra}</Td>
-                          <Td textAlign="center" fontSize="small" color={res.status === "aguardando" ? "orange.500" : res.status === "recusado" ? "red.500" : res.status === "autorizado" ? "blue.500" : "green.500"}>{res?.status?.toUpperCase()}</Td>
-                          <Td textAlign="center">
-                            {res?.status === "recusado" && res.observacao !== "" ?
-                              <Popover closeOnBlur={false} placement='left' initialFocusRef={initRef}>
-                                {({ isOpen }) => (
-                                  <>
-                                    <PopoverTrigger>
-                                      <Button _hover={{ bgColor: "rgba(0, 0, 0, 0.3)" }} size="xs" bgColor={isOpen ? 'yellow.500' : 'green.500'}><HiOutlineInformationCircle color="white" size={18} /></Button>
-                                    </PopoverTrigger>
-                                    <Portal>
-                                      <PopoverContent bg="gray.990" border="1px" borderColor="green.700">
-                                        <PopoverHeader>Observação do pedido</PopoverHeader>
-                                        <PopoverCloseButton />
-                                        <PopoverBody>
-                                          <Box>
-                                            {res.observacao}
-                                          </Box>
-                                        </PopoverBody>
-                                      </PopoverContent>
-                                    </Portal>
-                                  </>
-                                )}
-                              </Popover> : (res?.status === "finalizado" && (res?.CautelaViatura?.length !== 0)) ?
-                              <Popover closeOnBlur={false} placement='left' initialFocusRef={initRef}>
-                                {({ isOpen }) => (
-                                  <>
-                                    <PopoverTrigger>
-                                      <Button _hover={{ bgColor: "rgba(0, 0, 0, 0.3)" }} size="xs" bgColor={isOpen ? 'yellow.500' : 'blue.500'}>
-                                        <GiTruck color="white" size={18} />
-                                      </Button>
-                                    </PopoverTrigger>
-                                    <Portal>
-                                      <PopoverContent bg="gray.990" border="1px" borderColor="green.700">
-                                        <PopoverHeader>Observação da descautela</PopoverHeader>
-                                        <PopoverCloseButton />
-                                        <PopoverBody>
-                                          <Box>
-                                            {res?.CautelaViatura[0].observacao}
-                                          </Box>
-                                        </PopoverBody>
-                                      </PopoverContent>
-                                    </Portal>
-                                  </>
-                                )}
-                              </Popover> : "-"}
-                          </Td>
-                          <Td textAlign="center">
-                          { res.status === "aguardando" && res.autorizado === false ? (
-                              <AutorizaViaturaModal pedido={res} atualizar={refetchPedidos}  />
-                          ) :  res.autorizado === true ? 
-                            <GiCheckMark color="green.600" />
-                           : null}
-                          </Td>
+                {isLoading ? <NotLoaded /> : pedidosViatura?.data.length === 0 ? <NotData textoComponent="Não existe dados" /> :
+                  <TableContainer maxH="50vh" overflowY="scroll" py={4}>
+                    <Table size="sm" colorScheme="whiteAlpha">
+                      <Thead>
+                        <Tr>
+                          <Th textAlign="center">Data do Pedido</Th>
+                          <Th textAlign="center">Data Desejada</Th>
+                          <Th textAlign="center">Data Devolução</Th>
+                          <Th textAlign="center">Missão</Th>
+                          <Th textAlign="center">Itinerário</Th>
+                          <Th textAlign="center">Chefe Viatura</Th>
+                          <Th textAlign="center">Motorista</Th>
+                          <Th textAlign="center">Tipo Viatura</Th>
+                          <Th textAlign="center">Apresentar para</Th>
+                          <Th textAlign="center">Furriel</Th>
+                          <Th textAlign="center">Situação</Th>
+                          <Th textAlign="center"></Th>
+                          <Th textAlign="center"></Th>
                         </Tr>
-                      ))}
-                    </Tbody>
-                    <Tfoot>
-                      <Tr>
-                        <Th textAlign="center">Data do Pedido</Th>
-                        <Th textAlign="center">Data Desejada</Th>
-                        <Th textAlign="center">Data Devolução</Th>
-                        <Th textAlign="center">Missão</Th>
-                        <Th textAlign="center">Itinerário</Th>
-                        <Th textAlign="center">Chefe Viatura</Th>
-                        <Th textAlign="center">Motorista</Th>
-                        <Th textAlign="center">Apresentar para</Th>
-                        <Th textAlign="center">Furriel</Th>
-                        <Th textAlign="center">Situação</Th>
-                        <Th textAlign="center"></Th>
-                        <Th textAlign="center"></Th>
-                      </Tr>
-                    </Tfoot>
-                  </Table>
-                </TableContainer>
-              }
-            </Flex>
+                      </Thead>
+                      <Tbody>
+
+                        {pedidosViatura?.data.filter(res => search ? res.status === search : res.status).map((res) => (
+                          <Tr key={res.id} _hover={{ shadow: "innerShadow", bg: "gray.990", border: "2px", borderColor: "green.900", rounded: "lg" }}>
+                            <Td textAlign="center">{convertDate(res.created_at)}</Td>
+                            <Td textAlign="center">{convertDateAndTime(res.dataDesejada)}</Td>
+                            <Td textAlign="center">{convertDate(res.dataDevolucao)}</Td>
+                            <Td textAlign="center">
+                              <Tooltip label={res.missao} placement='right-end' bg={"gray.900"} border={"1px"} borderColor={"green.900"}>
+                                <Button bg={"blue.600"} _hover={{ bgColor: "rgba(0, 0, 0, 0.3)" }} size="xs"><BsInfoCircle color="white" /></Button>
+                              </Tooltip>
+                            </Td>
+                            <Td textAlign="center">
+                              <Tooltip label={res.intinerario} placement='right-end' bg={"gray.900"} border={"1px"} borderColor={"green.900"}>
+                                <Button bg={"transparent"} border={"1px"} borderColor={"green.600"} _hover={{ bgColor: "rgba(0, 0, 0, 0.3)" }} size="xs"><GiTruck color="white" /><MdDoubleArrow color="white" /><GiTruck color="white" /></Button>
+                              </Tooltip>
+                            </Td>
+                            <Td textAlign="center">{res.chefeViatura}</Td>
+                            <Td textAlign="center">{res.motorista}</Td>
+                            <Td textAlign="center">{res.tipoViatura}</Td>
+                            <Td textAlign="center">{res.apresentar}</Td>
+                            <Td textAlign="center">{res.militar.post_grad + " " + res.militar.nome_guerra}</Td>
+                            <Td textAlign="center" fontSize="small" color={res.status === "aguardando" ? "orange.500" : res.status === "recusado" ? "red.500" : res.status === "autorizado" ? "blue.500" : "green.500"}>{res?.status?.toUpperCase()}</Td>
+                            <Td textAlign="center">
+                              {res?.status === "recusado" && res.observacao !== "" ?
+                                <Popover closeOnBlur={false} placement='left' initialFocusRef={initRef}>
+                                  {({ isOpen }) => (
+                                    <>
+                                      <PopoverTrigger>
+                                        <Button _hover={{ bgColor: "rgba(0, 0, 0, 0.3)" }} size="xs" bgColor={isOpen ? 'yellow.500' : 'green.500'}><HiOutlineInformationCircle color="white" size={18} /></Button>
+                                      </PopoverTrigger>
+                                      <Portal>
+                                        <PopoverContent bg="gray.990" border="1px" borderColor="green.700">
+                                          <PopoverHeader>Observação do pedido</PopoverHeader>
+                                          <PopoverCloseButton />
+                                          <PopoverBody>
+                                            <Box>
+                                              {res.observacao}
+                                            </Box>
+                                          </PopoverBody>
+                                        </PopoverContent>
+                                      </Portal>
+                                    </>
+                                  )}
+                                </Popover> : (res?.status === "finalizado" && (res?.CautelaViatura?.length !== 0)) ?
+                                  <Popover closeOnBlur={false} placement='left' initialFocusRef={initRef}>
+                                    {({ isOpen }) => (
+                                      <>
+                                        <PopoverTrigger>
+                                          <Button _hover={{ bgColor: "rgba(0, 0, 0, 0.3)" }} size="xs" bgColor={isOpen ? 'yellow.500' : 'blue.500'}>
+                                            <GiTruck color="white" size={18} />
+                                          </Button>
+                                        </PopoverTrigger>
+                                        <Portal>
+                                          <PopoverContent bg="gray.990" border="1px" borderColor="green.700">
+                                            <PopoverHeader>Observação da descautela</PopoverHeader>
+                                            <PopoverCloseButton />
+                                            <PopoverBody>
+                                              <Box>
+                                                {res?.CautelaViatura[0].observacao}
+                                              </Box>
+                                            </PopoverBody>
+                                          </PopoverContent>
+                                        </Portal>
+                                      </>
+                                    )}
+                                  </Popover> : "-"}
+                            </Td>
+                            <Td textAlign="center">
+                              {res.status === "aguardando" && res.autorizado === false ? (
+                                <AutorizaViaturaModal pedido={res} atualizar={refetchPedidos} />
+                              ) : res.autorizado === true ?
+                                <GiCheckMark color="green.600" />
+                                : null}
+                            </Td>
+                          </Tr>
+                        ))}
+                      </Tbody>
+                      <Tfoot>
+                        <Tr>
+                          <Th textAlign="center">Data do Pedido</Th>
+                          <Th textAlign="center">Data Desejada</Th>
+                          <Th textAlign="center">Data Devolução</Th>
+                          <Th textAlign="center">Missão</Th>
+                          <Th textAlign="center">Itinerário</Th>
+                          <Th textAlign="center">Chefe Viatura</Th>
+                          <Th textAlign="center">Motorista</Th>
+                          <Th textAlign="center">Tipo viatura</Th>
+                          <Th textAlign="center">Apresentar para</Th>
+                          <Th textAlign="center">Furriel</Th>
+                          <Th textAlign="center">Situação</Th>
+                          <Th textAlign="center"></Th>
+                          <Th textAlign="center"></Th>
+                        </Tr>
+                      </Tfoot>
+                    </Table>
+                  </TableContainer>
+                }
+              </>
             <Flex bgGradient="linear(to-tr, gray.990, gray.990, green.900)" rounded="base"
               boxShadow="buttonShadow" flexDir="column" my={2} px={4}>
               <Flex
@@ -398,23 +424,33 @@ export default function Viaturas() {
                         <Th textAlign="center">Situação</Th>
                         <Th textAlign="center">S/4</Th>
                         <Th></Th>
+                        <Th></Th>
                       </Tr>
                     </Thead>
                     <Tbody>
                       {pedidosViatura?.data.filter(res => searchPedidos ? res.status === searchPedidos : res.status).filter(res => searchCia ? res.companhia === searchCia : res.companhia).map((res) => (
                         <Tr key={res.id} _hover={{ shadow: "innerShadow", bg: "gray.990", border: "2px", borderColor: "green.900", rounded: "lg" }}>
-                          <Td textAlign="center">{convertDate(res.dataDesejada)}</Td>
+                          <Td textAlign="center">{convertDateAndTime(res.dataDesejada)}</Td>
                           <Td textAlign="center">{convertDate(res.dataDevolucao)}</Td>
-                          <Td textAlign="center">{res.missao}</Td>
-                          <Td textAlign="center">{res.intinerario}</Td>
+                          <Td textAlign="center">
+                            <Tooltip label={res.missao} placement='right-end' bg={"gray.900"} border={"1px"} borderColor={"green.900"}>
+                              <Button bg={"blue.600"} _hover={{ bgColor: "rgba(0, 0, 0, 0.3)" }} size="xs"><BsInfoCircle color="white" /></Button>
+                            </Tooltip>
+                          </Td>
+                          <Td textAlign="center">
+                            <Tooltip label={res.intinerario} placement='right-end' bg={"gray.900"} border={"1px"} borderColor={"green.900"}>
+                              <Button bg={"transparent"} border={"1px"} borderColor={"green.600"} _hover={{ bgColor: "rgba(0, 0, 0, 0.3)" }} size="xs"><GiTruck color="white" /><MdDoubleArrow color="white" /><GiTruck color="white" /></Button>
+                            </Tooltip>
+                          </Td>
                           <Td textAlign="center">{res.chefeViatura}</Td>
                           <Td textAlign="center">{res.motorista}</Td>
+                          <Td textAlign="center">{res.tipoViatura}</Td>
                           <Td textAlign="center">{res.apresentar}</Td>
                           <Td textAlign="center" fontSize="small" fontWeight="bold" color={res.status === "aguardando" ? "orange.500" : res.status === "autorizado" ? "blue.500" : res.status === "recusado" ? "red.500" : "green.500"}>{res.status.toUpperCase()}</Td>
-                          { res.status === "aguardando" ? (
+                          {res.status === "aguardando" ? (
                             <Td textAlign="center" bg={res.autorizado ? "green.800" : "red.800"} shadow="buttonShadow">{res.autorizado ? <GiCheckMark /> : <RxCross1 />}</Td>
-                          ) : <Td> - </Td>}
-                          <Td textAlign="center" flex={1} display="flex">
+                          ) : <Td textAlign="center"> - </Td>}
+                          <Td textAlign="center">
 
                             {(res.status === "autorizado" || res.status === "finalizado" || res.status === "recusado") && res.observacao !== "" ?
                               <Popover closeOnBlur={false} placement='left' initialFocusRef={initRef}>
@@ -456,6 +492,7 @@ export default function Viaturas() {
                         <Th textAlign="center">Itinerário</Th>
                         <Th textAlign="center">Chefe Viatura</Th>
                         <Th textAlign="center">Motorista</Th>
+                        <Th textAlign="center">Tipo Viatura</Th>
                         <Th textAlign="center">Apresentar para</Th>
                         <Th textAlign="center">Situação</Th>
                         <Th textAlign="center">S/4</Th>
@@ -480,12 +517,12 @@ export default function Viaturas() {
               >
                 <Flex align="center">
                   <Heading fontSize="2xl" my="4" flex={1}>
-                  Viaturas cauteladas {isLoading ? <Spinner ml={8} /> : ""}{" "} -
-                </Heading>
-                 <Text fontSize="2xl" pl={2} color="red.600">{viaturasCauteladas?.data.filter(viatura => viatura.status === "autorizado").length}</Text>
+                    Viaturas cauteladas {isLoading ? <Spinner ml={8} /> : ""}{" "} -
+                  </Heading>
+                  <Text fontSize="2xl" pl={2} color="red.600">{viaturasCauteladas?.data.filter(viatura => viatura.status === "autorizado").length}</Text>
                 </Flex>
-                
-                
+
+
                 <IconButton
                   bg="blue.700"
                   float="right"
@@ -508,6 +545,7 @@ export default function Viaturas() {
                           <Th textAlign="center">Itinerário</Th>
                           <Th textAlign="center">Chefe Viatura</Th>
                           <Th textAlign="center">Motorista</Th>
+                          <Th textAlign="center">Tipo Viatura</Th>
                           <Th textAlign="center">Apresentar para</Th>
                           <Th textAlign="center">Situação</Th>
                           <Th></Th>
@@ -516,12 +554,21 @@ export default function Viaturas() {
                       <Tbody>
                         {viaturasCauteladas?.data.filter(viatura => viatura.status === "autorizado").map((res) => (
                           <Tr key={res.id} _hover={{ shadow: "innerShadow", bg: "gray.990", border: "2px", borderColor: "green.900", rounded: "lg" }}>
-                            <Td textAlign="center">{convertDate(res.pedido?.dataDesejada)}</Td>
+                            <Td textAlign="center">{convertDateAndTime(res.pedido?.dataDesejada)}</Td>
                             <Td textAlign="center">{convertDate(res.pedido?.dataDevolucao)}</Td>
-                            <Td textAlign="center">{res.pedido?.missao}</Td>
-                            <Td textAlign="center">{res.pedido?.intinerario}</Td>
+                            <Td textAlign="center">
+                              <Tooltip label={res.pedido?.missao} placement='right-end' bg={"gray.900"} border={"1px"} borderColor={"green.900"}>
+                                <Button bg={"blue.600"} _hover={{ bgColor: "rgba(0, 0, 0, 0.3)" }} size="xs"><BsInfoCircle color="white" /></Button>
+                              </Tooltip>
+                            </Td>
+                            <Td textAlign="center">
+                              <Tooltip label={res.pedido?.intinerario} placement='right-end' bg={"gray.900"} border={"1px"} borderColor={"green.900"}>
+                                <Button bg={"transparent"} border={"1px"} borderColor={"green.600"} _hover={{ bgColor: "rgba(0, 0, 0, 0.3)" }} size="xs"><GiTruck color="white" /><MdDoubleArrow color="white" /><GiTruck color="white" /></Button>
+                              </Tooltip>
+                            </Td>
                             <Td textAlign="center">{res.pedido?.chefeViatura}</Td>
                             <Td textAlign="center">{res.pedido?.motorista}</Td>
+                            <Td textAlign="center">{res.pedido?.tipoViatura}</Td>
                             <Td textAlign="center">{res.pedido?.apresentar}</Td>
                             <Td textAlign="center" fontSize="small" color={res.pedido?.status === "aguardando" ? "red.500" : res.pedido?.status === "autorizado" ? "yellow.500" : "green.500"}>{res.status.toUpperCase()}</Td>
                             <Td textAlign="center" flex={1} display="flex">
@@ -559,6 +606,7 @@ export default function Viaturas() {
                           <Th textAlign="center">Itinerário</Th>
                           <Th textAlign="center">Chefe Viatura</Th>
                           <Th textAlign="center">Motorista</Th>
+                          <Th textAlign="center">Tipo Viatura</Th>
                           <Th textAlign="center">Apresentar para</Th>
                           <Th textAlign="center">Situação</Th>
                           <Th></Th>
@@ -571,6 +619,145 @@ export default function Viaturas() {
                 </TableContainer>
               }
             </Flex>
+                  </TabPanel>
+                  <TabPanel>
+                    {/* Pedidos Viaturas Comboios */}
+                    <Flex
+                      bg="gray.990"
+                      boxShadow="buttonShadow"
+                      px={2}
+                      my={4}
+                      rounded="base"
+                      alignItems="center"
+                      justifyContent="space-between"
+                    >
+                      <Heading fontSize="2xl" my="4">
+                        Comboios
+                      </Heading>
+                    </Flex>
+                    <Accordion>
+                      {pedidosVariasViaturas.filter((pedidos: PedidosVariasViaturasProps) => pedidos.count > 1).map((pedidos: PedidosVariasViaturasProps) => (
+                        <AccordionItem key={pedidos.horaDesejada} border={0}>
+                          <h2>
+                            <AccordionButton shadow="buttonShadow" rounded="base" bg={"gray.990"} _hover={{ bgColor: "rgba(0, 0, 0, 0.3)" }} borderTop={"transparent"}>
+                              <Box as='span' flex='1' textAlign='left'>
+                                <Flex gap={2}>
+                                  <Text color="green.500">Missão: </Text>
+                                  <Text color="gray.500">{pedidos.missao}</Text>
+                                </Flex>
+                                <Flex gap={2}>
+                                  <Flex gap={2}>
+                                    <Text color="green.500">Itinerário: </Text>
+                                    <Text>
+                                      <Tooltip label={pedidos.itinerario} placement='right-end' bg={"gray.900"} border={"1px"} borderColor={"green.900"}>
+                                        <Button bg={"transparent"} border={"1px"} borderColor={"green.600"} _hover={{ bgColor: "rgba(0, 0, 0, 0.3)" }} size="xs"><GiTruck color="white" /><MdDoubleArrow color="white" /><GiTruck color="white" /></Button>
+                                      </Tooltip>
+                                    </Text>
+                                  </Flex>
+                                  <Flex gap={2}>
+                                    <Text color="green.500"> Data/Hora Desejada: </Text>
+                                    <Text color="gray.500">{convertDateAndTime(pedidos.horaDesejada)}</Text>
+                                  </Flex>
+
+                                </Flex>
+                              </Box>
+                              <AccordionIcon />
+                            </AccordionButton>
+                          </h2>
+
+                          <AccordionPanel pb={4}>
+                            <TableContainer maxH="50vh" overflowY="scroll" py={4}>
+                              <Table size="sm" colorScheme="whiteAlpha">
+                                <Thead>
+                                  <Tr>
+                                    <Th textAlign="center">Data Desejada</Th>
+                                    <Th textAlign="center">Data Devolução</Th>
+                                    <Th textAlign="center">Chefe Viatura</Th>
+                                    <Th textAlign="center">Motorista</Th>
+                                    <Th textAlign="center">Tipo Viatura</Th>
+                                    <Th textAlign="center">Apresentar para</Th>
+                                    <Th textAlign="center">Situação</Th>
+                                    <Th></Th>
+                                    <Th></Th>
+                                  </Tr>
+                                </Thead>
+                                <Tbody>
+                                  {pedidos.pedidos.map((pedido) => (
+                                    <Tr key={pedido.id} _hover={{ shadow: "innerShadow", bg: "gray.990", border: "2px", borderColor: "green.900", rounded: "lg" }}>
+                                      <Td textAlign="center">{convertDateAndTime(pedido.dataDesejada)}</Td>
+                                      <Td textAlign="center">{convertDate(pedido.dataDevolucao)}</Td>
+                                      <Td textAlign="center">{pedido.chefeViatura}</Td>
+                                      <Td textAlign="center">{pedido.motorista}</Td>
+                                      <Td textAlign="center">{pedido.tipoViatura}</Td>
+                                      <Td textAlign="center">{pedido.apresentar}</Td>
+                                      <Td textAlign="center" fontSize="small" fontWeight="bold" color={pedido.status === "aguardando" ? "orange.500" : pedido.status === "autorizado" ? "blue.500" : pedido.status === "recusado" ? "red.500" : "green.500"}>{pedido.status.toUpperCase()}</Td>
+                                      {pedido.status === "aguardando" ? (
+                                        <Td textAlign="center" bg={pedido.autorizado ? "green.800" : "red.800"} shadow="buttonShadow">{pedido.autorizado ? <GiCheckMark /> : <RxCross1 />}</Td>
+                                      ) : <Td textAlign="center"> - </Td>}
+                                      <Td textAlign="center">
+
+                                        {(pedido.status === "autorizado" || pedido.status === "finalizado" || pedido.status === "recusado") && pedido.observacao !== "" ?
+                                          <Popover closeOnBlur={false} placement='left' initialFocusRef={initRef}>
+                                            {({ isOpen }) => (
+                                              <>
+                                                <PopoverTrigger>
+                                                  <Button _hover={{ bgColor: "rgba(0, 0, 0, 0.3)" }} size="xs" bgColor={isOpen ? 'yellow.500' : 'green.500'}><HiOutlineInformationCircle color="white" size={18} /></Button>
+                                                </PopoverTrigger>
+                                                <Portal>
+                                                  <PopoverContent bg="gray.990" border="1px" borderColor="green.700">
+                                                    <PopoverHeader>Observação</PopoverHeader>
+                                                    <PopoverCloseButton />
+                                                    <PopoverBody>
+                                                      <Box>
+                                                        {pedido.observacao}
+                                                      </Box>
+                                                    </PopoverBody>
+                                                  </PopoverContent>
+                                                </Portal>
+                                              </>
+                                            )}
+                                          </Popover> : (pedido.status === "autorizado" || pedido.status === "finalizado" || pedido.status === "recusado") && pedido.observacao === "" ? "-" :
+                                            <Flex gap={2}>
+                                              <CautelaViaturaModal pedido={pedido} viaturas={viaturas.data} atualizar={refetchPedidos} atualizarCautela={refetch} />
+                                              <ModalRecusa pedido={pedido} atualizar={refetchPedidos} />
+
+                                            </Flex>
+                                        }
+
+                                      </Td>
+                                    </Tr>
+                                  ))}
+
+
+                                </Tbody>
+                                <Tfoot>
+                                  <Tr>
+                                    <Th textAlign="center">Data Desejada</Th>
+                                    <Th textAlign="center">Data Devolução</Th>
+
+                                    <Th textAlign="center">Chefe Viatura</Th>
+                                    <Th textAlign="center">Motorista</Th>
+                                    <Th textAlign="center">Tipo Viatura</Th>
+                                    <Th textAlign="center">Apresentar para</Th>
+                                    <Th textAlign="center">Situação</Th>
+                                    <Th></Th>
+                                  </Tr>
+                                </Tfoot>
+                              </Table>
+                            </TableContainer>
+                          </AccordionPanel>
+
+
+                        </AccordionItem>
+                      ))}
+
+                    </Accordion>
+
+                  </TabPanel>
+                </TabPanels>
+              </Tabs>
+            </Flex>
+              
           </Box>
         </SimpleGrid>
       </Flex >

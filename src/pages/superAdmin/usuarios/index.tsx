@@ -59,7 +59,7 @@ export default function SuperAdmin() {
   const itemsPerPage = 20;
   const [itemOffset, setItemOffset] = useState(0);
   const endOffset = itemOffset + itemsPerPage;
-  console.log(militarNome)
+  
   const resultPaginated = result
     .filter((mil) => (militarNome ? mil.nome_completo.toLowerCase().includes(militarNome.toLowerCase()) : mil))
     .filter((mil) => (militarPostGrad ? mil.post_grad == militarPostGrad : mil))

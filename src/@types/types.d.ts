@@ -14,28 +14,28 @@ export interface Militar {
   funcao_fracao?: string;
   funcao_local: string;
   status: 'ativo' | 'inativo' | 'transferido';
-  situacao_med: 'apto' | 'apto A' | 'incapaz B1'| 'incapaz B2'| 'incapaz C'| 'encostado'| 'reintegrado'| 'adido'
+  situacao_med: 'apto' | 'apto A' | 'incapaz B1' | 'incapaz B2' | 'incapaz C' | 'encostado' | 'reintegrado' | 'adido'
   //DADOS COMPLEMENTARES
-  cpf?: string; 
+  cpf?: string;
   nome_pai?: string;
   nome_mae?: string;
   naturalidade?: string;
-  data_nascimento?: Date;	
-  data_praca?: Date;	
-  qmg_qmp?: string;	
+  data_nascimento?: Date;
+  data_praca?: Date;
+  qmg_qmp?: string;
   sexo?: string;
   cidade?: string;
   estado?: string;
   bairro?: string;
-  nr_rua?: string;	
+  nr_rua?: string;
   complemento?: string;
   cep?: string;
   telefone?: string;
   email?: string;
-  cargo_qcp?: string;	
+  cargo_qcp?: string;
   tipo_sanguineo?: string;
   prec_cp?: string;
-  local_cumpre_expediente?: string;	
+  local_cumpre_expediente?: string;
   motocarro?: string;
   hab_militar?: string;
   indigena?: string;
@@ -93,16 +93,16 @@ export interface Civil {
 export type CivilArray = Civil[];
 
 export interface Dbq {
-id: string;
-fotoDbq: string;
-fotoDocDbq: string;
-origem?: string;
-destino?: string;
-motivo?: string;
-observacao?: string;
-civilId?: string;
-created_at?: DateTime;
-civil: Civil
+  id: string;
+  fotoDbq: string;
+  fotoDocDbq: string;
+  origem?: string;
+  destino?: string;
+  motivo?: string;
+  observacao?: string;
+  civilId?: string;
+  created_at?: DateTime;
+  civil: Civil
 }
 
 export type DbqArray = Dbq[];
@@ -241,7 +241,7 @@ export type FuncaoMilitar = {
   id: string;
   funcao: 'sgte' | 'super admin' | 'cmt cia' | 'enc mat' | 'armeiro' | 'cmt pel' | 'cmt gda' | 'furriel' | 'comum' | 's2' | 'enc pmt' | 's4';
   created_at: Date;
-  data_inicio:  Date;
+  data_inicio: Date;
   data_termino: Date;
   status: 'ativo' | 'inativo'
   militarId: Militar
@@ -257,7 +257,7 @@ export type Session = {
   militar: Militar;
 }
 
-export type SessionArray = Session[]; 
+export type SessionArray = Session[];
 
 
 
@@ -269,7 +269,7 @@ export interface Feedback {
   militarId: string;
 }
 
-export type FeedbackArray = Feedback[]; 
+export type FeedbackArray = Feedback[];
 
 export interface Missao {
   id?: string;
@@ -282,7 +282,7 @@ export interface Missao {
   militar?: Militar;
 }
 
-export type MissaoArray = Missao[]; 
+export type MissaoArray = Missao[];
 
 export type Viatura = {
   id?: string;
@@ -300,6 +300,7 @@ export type PedidoViatura = {
   intinerario?: string
   chefeViatura?: string
   motorista?: string
+  tipoViatura?: string
   dataDevolucao?: DateTime
   apresentar?: string
   observacao?: string
@@ -311,6 +312,14 @@ export type PedidoViatura = {
   CautelaViatura?: CautelaViatura[] | undefined
 }
 
+export type PedidosVariasViaturasProps = {
+  horaDesejada: string
+  itinerario: string
+  missao: string
+  pedidos: PedidoViatura[]
+  count: number
+}
+
 export type CautelaViatura = {
   id?: string
   dataCautela?: Date
@@ -320,7 +329,7 @@ export type CautelaViatura = {
   viaturaId?: string
   pedidoViaturaId?: string
   observacao?: string
-  
+
   viatura: Viatura
   pedido: PedidoViatura
 }

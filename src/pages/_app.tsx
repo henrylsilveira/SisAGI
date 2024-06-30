@@ -30,7 +30,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
               ) : (
                   <Flex direction="column" h="100vh" mx="auto">
                     <Header />
-                    <Flex w="100%" my={6} maxWidth={1480} mx="auto" px="6">
+                    <Flex w="100%" my={6} mx="auto" px="4">
                       <Sidebar />
                       <Component {...pageProps} />
                     </Flex>

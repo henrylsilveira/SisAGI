@@ -71,7 +71,7 @@ export default function Sessoes() {
                 <Flex mx={4}>
                     <Input label="Filtrar por militar" name="nomeMilitar" type="text" px="8" mb={4} onChange={(e) => setMilitarNome(e.target.value)}/>
                 </Flex>
-                <TableContainer px={4} mb={4}>
+                <TableContainer px={4} mb={4} h={"100vh"} overflowY={"auto"}>
                   <Table size="sm" colorScheme="whiteAlpha">
                     <Thead>
                       <Tr>
@@ -81,8 +81,8 @@ export default function Sessoes() {
                         <Th textAlign="center">Militar</Th>
                       </Tr>
                     </Thead>
-                    <Tbody>
-                      {isLoading ? <NotLoaded /> : data?.filter(s => militarNome !== "" ? s.militar.nome_guerra == militarNome : s).map((res) => (
+                    <Tbody >
+                      {isLoading ? <NotLoaded /> : data?.filter((mil) => (militarNome ? mil.militar.nome_completo.toLowerCase().includes(militarNome.toLowerCase()) : mil)).map((res) => (
                         <Tr key={res.id}>
                           <Td textAlign="center">{formatarDataHora(res.access)}</Td>
                           <Td textAlign="center">{formatarDataHora(res.expires)}</Td>
