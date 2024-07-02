@@ -19,7 +19,7 @@ import { CautelaViatura, PedidoViatura } from "../../../../@types/types";
 import { MdCheck } from "react-icons/md";
 import { api } from "../../../../services/api";
 import { SubmitHandler } from "react-hook-form";
-import { convertDate } from "../../../../utils/scripts";
+import { convertDate, convertDateAndTime } from "../../../../utils/scripts";
 
 interface CautelaModalProps {
     pedido: PedidoViatura,
@@ -102,10 +102,10 @@ export function AutorizaViaturaModal({ pedido, atualizar }: CautelaModalProps) {
                                 </Flex>
                                 <Flex gap={2}>
                                     <Text>
-                                        Data desejada
+                                        Data/Hora desejada
                                     </Text>
                                     <Text color="gray.500">
-                                        {convertDate(pedido.dataDesejada)}
+                                        {convertDateAndTime(pedido.dataDesejada)}
                                     </Text>
                                 </Flex>
                                 <Flex gap={2}>
@@ -150,6 +150,14 @@ export function AutorizaViaturaModal({ pedido, atualizar }: CautelaModalProps) {
                                 </Flex>
                                 <Flex gap={2}>
                                     <Text>
+                                        Tipo de Viatura
+                                    </Text>
+                                    <Text color="gray.500">
+                                        {pedido.tipoViatura.toUpperCase()}
+                                    </Text>
+                                </Flex>
+                                <Flex gap={2}>
+                                    <Text>
                                         Apresentar para
                                     </Text>
                                     <Text color="gray.500">
@@ -160,8 +168,8 @@ export function AutorizaViaturaModal({ pedido, atualizar }: CautelaModalProps) {
                                     <Text>
                                         Situação do pedido
                                     </Text>
-                                    <Text color="gray.500">
-                                        {pedido.status}
+                                    <Text color={pedido.status === "aguardando" ? "red.500" : pedido.status === "autorizado" ? "yellow.500" : "green.500"}>
+                                        {pedido.status.toUpperCase()}
                                     </Text>
                                 </Flex>
                             </Flex>

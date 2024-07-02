@@ -29,7 +29,8 @@ import {
   useToast,
   Text,
   VStack,
-  Icon
+  Icon,
+  Tooltip
 } from "@chakra-ui/react";
 import { useQuery } from "react-query";
 import { api } from "../../../services/api";
@@ -43,23 +44,25 @@ import { Input } from "../../../components/Form/Input";
 import { SlRefresh } from "react-icons/sl";
 
 import { CautelaViatura, PedidoViatura, Viatura } from "../../../@types/types";
-import { convertDate } from "../../../utils/scripts";
+import { convertDate, convertDateAndTime } from "../../../utils/scripts";
 import { NotLoaded } from "../../../components/NotLoaded";
 import { NotData } from "../../../components/NotData";
 import { HiOutlineInformationCircle } from "react-icons/hi";
 import React from "react";
 import Router from "next/router";
 import Head from "next/head";
-import { MdSearch } from "react-icons/md";
+import { MdDoubleArrow, MdSearch } from "react-icons/md";
 import { TbShoppingCartPlus } from "react-icons/tb";
 import { GiTruck } from "react-icons/gi";
 import { useSession } from "../../../services/context/auth";
+import { BsInfoCircle } from "react-icons/bs";
 
 const signInFormSchema = yup.object().shape({
   dataDesejada: yup.date().required("Campo obrigatório."),
   dataDevolucao: yup.date().required("Campo obrigatório."),
   missao: yup.string().required("Campo obrigatório."),
   intinerario: yup.string().required("Campo obrigatório."),
+  tipoViatura: yup.string().required("Campo obrigatório."),
   chefeViatura: yup.string().required("Campo obrigatório."),
   motorista: yup.string().required("Campo obrigatório."),
   apresentar: yup.string().required("Campo obrigatório."),
@@ -191,15 +194,19 @@ export default function FurrielPedidoViatura() {
                             <PopoverHeader>Viaturas Disponíveis</PopoverHeader>
                             <PopoverCloseButton />
                             <PopoverBody>
-                              
+
                               <VStack overflowY="auto" maxH="300px">
-                              {dataViaturas ? dataViaturas?.data.filter(viatura => viatura.situacao === "disponivel").map((viatura, index) => (
-                                <Flex flex={1} w="100%" h={20} key={viatura.id} boxShadow="buttonShadow" p={2} bg="gray.990" rounded="base" alignItems="center" justifyContent="space-between" _hover={{ bg: "gray.800" }}>
-                                  <Icon as={GiTruck} w={6} h={6} />
-                                  <Text fontSize={"sm"}>{viatura.tipo}</Text>
-                                  <Text boxShadow="buttonShadow" bg="green.900" rounded="base" fontSize={"sm"} px={1}>{viatura.tipoTransporte.toUpperCase()}</Text>
-                                </Flex>
-                              )): <NotData textoComponent="Não existem viaturas disponíveis" />}
+                                {dataViaturas ? dataViaturas?.data.filter(viatura => viatura.situacao === "disponivel").sort((x, y) => {
+                                  let a = x.tipo.toUpperCase(),
+                                    b = y.tipo.toUpperCase();
+                                  return a == b ? 0 : a > b ? 1 : -1;
+                                }).map((viatura, index) => (
+                                  <Flex flex={1} w="100%" h={20} key={viatura.id} boxShadow="buttonShadow" p={2} bg="gray.990" rounded="base" alignItems="center" justifyContent="space-between" _hover={{ bg: "gray.800" }}>
+                                    <Icon as={GiTruck} w={6} h={6} />
+                                    <Text fontSize={"sm"}>{viatura.tipo}</Text>
+                                    <Text boxShadow="buttonShadow" bg="green.900" rounded="base" fontSize={"sm"} px={1}>{viatura.tipoTransporte.toUpperCase()}</Text>
+                                  </Flex>
+                                )) : <NotData textoComponent="Não existem viaturas disponíveis" />}
                               </VStack>
                             </PopoverBody>
                           </PopoverContent>
@@ -216,8 +223,23 @@ export default function FurrielPedidoViatura() {
               </Flex>
               {createPedido ?
                 <>
+                  <Flex
+
+                    borderBottom={"1px"}
+                    borderBottomColor={"green.600"}
+                    px={2}
+                    mb={4}
+                    rounded="base"
+                    alignItems="center"
+                    justifyContent="space-between"
+                  >
+                    <Heading fontSize="xl" p={2}>
+                      Dados do Pedido
+                    </Heading>
+
+                  </Flex>
                   <Grid
-                    gridTemplateColumns={["1fr", "1fr 1fr", "1fr 1fr 1fr"]}
+                    gridTemplateColumns={["1fr 1fr", "1fr 1fr 1fr", "1fr 1fr 1fr 1fr"]}
                     gap={4}
                     mb={2}
                   >
@@ -225,9 +247,9 @@ export default function FurrielPedidoViatura() {
                       <Input
                         size="sm"
                         rounded="lg"
-                        label="Data desejada"
+                        label="Data/Hora desejada"
                         name="dataDesejada"
-                        type="date"
+                        type="datetime-local"
                         error={errors.dataDesejada}
                         {...register("dataDesejada")}
                       />
@@ -245,6 +267,7 @@ export default function FurrielPedidoViatura() {
                     </FormControl>
                     <FormControl>
                       <Input
+                      as={"textarea"}
                         size="sm"
                         rounded="lg"
                         label="Missão"
@@ -256,13 +279,6 @@ export default function FurrielPedidoViatura() {
                       />
                       <FormHelperText>Ex: Transporte de tropa, transporte de munição, transporte de material</FormHelperText>
                     </FormControl>
-
-
-                  </Grid>
-                  <Grid
-                    gridTemplateColumns={["1fr", "1fr 1fr", "1fr 1fr 1fr 1fr"]}
-                    gap={4}
-                  >
                     <FormControl>
                       <Input
                         size="sm"
@@ -275,6 +291,30 @@ export default function FurrielPedidoViatura() {
                       />
                       <FormHelperText>Ex: 13BIB-CIGC-13BIB</FormHelperText>
                     </FormControl>
+
+                  </Grid>
+                  <Flex
+
+                    borderBottom={"1px"}
+                    borderBottomColor={"green.600"}
+                    px={2}
+                    mb={4}
+                    rounded="base"
+                    alignItems="center"
+                  >
+                    <Heading fontSize="xl" p={2} gap={2}>
+                      Viatura
+                    </Heading>
+                      <Tooltip label="Caso precise fazer o pedido de mais de uma viatura apenas troque os dados abaixo e envie o pedido novamente." placement='right-end' bg={"gray.900"} border={"1px"} borderColor={"green.900"}>
+                        <Button bg={"yellow.600"} _hover={{ bgColor: "rgba(0, 0, 0, 0)" }} rounded={"full"} size="xs"><BsInfoCircle color="white" /></Button>
+                      </Tooltip>
+
+                  </Flex>
+                  <Grid
+                    gridTemplateColumns={["1fr 1fr", "1fr 1fr 1fr", "1fr 1fr 1fr 1fr 1fr"]}
+                    gap={4}
+                  >
+
                     <FormControl>
                       <Input
                         size="sm"
@@ -299,6 +339,28 @@ export default function FurrielPedidoViatura() {
                     </FormControl>
                     <FormControl>
                       <Input
+                        as="select"
+                        size="sm"
+                        rounded="lg"
+                        label="Tipo de Viatura"
+                        name="tipoViatura"
+                        type="text"
+                        error={errors.tipoViatura}
+                        {...register("tipoViatura")}
+                      >
+                        {Array.from(new Set(dataViaturas?.data.map((item) => item.tipo))).map(
+                          (func, index) => (
+                            <option
+                              key={func + index}
+                              value={func}
+                            >
+                              {func}
+                            </option>
+                          ))}
+                      </Input>
+                    </FormControl>
+                    <FormControl>
+                      <Input
                         size="sm"
                         rounded="lg"
                         label="Apresentar-se-a"
@@ -313,16 +375,15 @@ export default function FurrielPedidoViatura() {
                   <Button
                     bg="green.800"
                     _hover={{ bg: "green.900" }}
-                    size="sm"
+                    size="md"
                     type="submit"
                     isLoading={formState.isSubmitting}
-                    w="24"
                     mt={4}
                     ml="auto"
                     textColor="white"
                     boxShadow="buttonShadow"
                   >
-                    OK
+                    Enviar pedido
                   </Button>
                 </>
                 : null}
@@ -401,6 +462,7 @@ export default function FurrielPedidoViatura() {
                         <Th textAlign="center">Itinerário</Th>
                         <Th textAlign="center">Chefe Viatura</Th>
                         <Th textAlign="center">Motorista</Th>
+                        <Th textAlign="center">Tipo de Viatura</Th>
                         <Th textAlign="center">Apresentar para</Th>
                         <Th textAlign="center">Situação</Th>
                         <Th textAlign="center"></Th>
@@ -409,15 +471,28 @@ export default function FurrielPedidoViatura() {
                     </Thead>
                     <Tbody>
 
-                      {dataPedidoViatura?.data.filter(res => search ? res.status === search : res.status).map((res) => (
+                      {dataPedidoViatura?.data.filter(res => search ? res.status === search : res.status).sort((x, y) => {
+                        let a = x.created_at,
+                          b = y.created_at;
+                        return a == b ? 0 : a > b ? 1 : -1;
+                      }).map((res) => (
                         <Tr key={res.id} _hover={{ shadow: "innerShadow", bg: "gray.990", border: "2px", borderColor: "green.900", rounded: "lg" }}>
                           <Td textAlign="center">{convertDate(res.created_at)}</Td>
-                          <Td textAlign="center">{convertDate(res.dataDesejada)}</Td>
+                          <Td textAlign="center">{convertDateAndTime(res.dataDesejada)}</Td>
                           <Td textAlign="center">{convertDate(res.dataDevolucao)}</Td>
-                          <Td textAlign="center">{res.missao}</Td>
-                          <Td textAlign="center">{res.intinerario}</Td>
+                          <Td textAlign="center">
+                            <Tooltip label={res.missao} placement='right-end' bg={"gray.900"} border={"1px"} borderColor={"green.900"}>
+                              <Button bg={"blue.600"} _hover={{ bgColor: "rgba(0, 0, 0, 0.3)" }} size="xs"><BsInfoCircle color="white" /></Button>
+                            </Tooltip>
+                          </Td>
+                          <Td textAlign="center">
+                          <Tooltip label={res.intinerario} placement='right-end' bg={"gray.900"} border={"1px"} borderColor={"green.900"}>
+                              <Button bg={"transparent"} border={"1px"} borderColor={"green.600"} _hover={{ bgColor: "rgba(0, 0, 0, 0.3)" }} size="xs"><GiTruck color="white" /><MdDoubleArrow color="white" /><GiTruck color="white" /></Button>
+                            </Tooltip>
+                          </Td>
                           <Td textAlign="center">{res.chefeViatura}</Td>
                           <Td textAlign="center">{res.motorista}</Td>
+                          <Td textAlign="center">{res.tipoViatura}</Td>
                           <Td textAlign="center">{res.apresentar}</Td>
                           <Td textAlign="center" fontSize="small" color={res.status === "aguardando" ? "orange.500" : res.status === "recusado" ? "red.500" : res.status === "autorizado" ? "blue.500" : "green.500"}>{res?.status?.toUpperCase()}</Td>
                           <Td textAlign="center">
@@ -480,6 +555,7 @@ export default function FurrielPedidoViatura() {
                         <Th textAlign="center">Itinerário</Th>
                         <Th textAlign="center">Chefe Viatura</Th>
                         <Th textAlign="center">Motorista</Th>
+                        <Th textAlign="center">Tipo de Viatura</Th>
                         <Th textAlign="center">Apresentar para</Th>
                         <Th textAlign="center">Situação</Th>
                         <Th textAlign="center"></Th>

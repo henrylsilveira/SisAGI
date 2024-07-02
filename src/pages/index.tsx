@@ -59,7 +59,7 @@ export default function Home() {
   const handleSignIn: SubmitHandler<SignInFormData> = async (values) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     try {
-        const res = await Login({
+      const res = await Login({
         identidade: values.identidade,
         senha: values.senha,
         ip: await getUserIP(),
@@ -72,12 +72,12 @@ export default function Home() {
           duration: 3000,
           isClosable: true,
         });
-        
+
       }
     } catch (error) {
       console.error(error);
     }
-    
+
 
     // const res = await signIn("credentials", {
     //   redirect: false,
@@ -86,8 +86,8 @@ export default function Home() {
     //   ip: await getUserIP(),
     //   callbackUrl: "/dashboard"      
     // });
-    
-   
+
+
     return Router.push("/");
   };
 
@@ -97,8 +97,8 @@ export default function Home() {
         <title>SisAGI | Sistema de Apoio a Gestão Interna</title>
       </Head>
       <Flex w="100vw" h="100vh" flexDir="row" align="center" justify="center">
-        <Grid gridTemplateColumns={["1fr","1fr 1fr"]} bg="#1b1b1b44" backdropFilter="blur(5px)" boxShadow="buttonShadow" rounded="2xl" px={8}>
-          <Flex w={["25","30"]} mx="auto" align="center" justify="center">
+        <Grid gridTemplateColumns={["1fr", "1fr 1fr"]} bg="#1b1b1b44" backdropFilter="blur(5px)" boxShadow="buttonShadow" rounded="2xl" px={8}>
+          <Flex w={["25", "30"]} mx="auto" align="center" justify="center">
             <Image w={480} src="./img/logo13bib.png" alt="brasão 13 BIB" />
           </Flex>
           <Flex
@@ -121,23 +121,10 @@ export default function Home() {
               px={6}
             >
               <Flex align="center" justify="center" flexDir="column">
-                <Heading
-                  fontWeight="bold"
-                  letterSpacing="tight"
-                  bgGradient="linear(to-tr, green.300, gray.600, green.300 )"
-                  bgClip="text"
-                  size="2xl"
-                  mt={2}
-                  p={4}
-                >
-                  SisAGI
-                </Heading>
-                <Text fontSize={["sm", "md", "lg"]}>
-                  Sistema de Apoio a Gestão Interna
-                </Text>
-                <Heading as="h2" size="md">
-                  13º BIB
-                </Heading>
+
+                <Image w="12rem" src="./img/logo3.png" alt="SisAGI" />
+
+
               </Flex>
 
               <Input
@@ -157,38 +144,38 @@ export default function Home() {
                 {...register("senha")}
               />
               <Flex flexDir="row" justifyContent="space-between">
-              <Button
-                boxShadow="buttonShadow"
-                variant="ghost"
-                w="100%"
-                transition="0.3s"
-                _hover={{ border: "1px" , borderColor: "green.700" }}
-                type="submit"
-                mt="6"
-                mr={4}
-                colorScheme="green"
-                size="lg"
-                isLoading={formState.isSubmitting}
-              >
-                Entrar
-              </Button>
-              <Link href="/cadastro">
                 <Button
                   boxShadow="buttonShadow"
-                  mt="6"
-                  w="100%"
                   variant="ghost"
+                  w="100%"
                   transition="0.3s"
-                  _hover={{ border: "1px" , borderColor: "blue.700" }}
-                  colorScheme="blue"
+                  _hover={{ border: "1px", borderColor: "green.700" }}
+                  type="submit"
+                  mt="6"
+                  mr={4}
+                  colorScheme="green"
                   size="lg"
+                  isLoading={formState.isSubmitting}
                 >
-                  Cadastrar
+                  Entrar
                 </Button>
-              </Link>
-            </Flex>
+                <Link href="/cadastro">
+                  <Button
+                    boxShadow="buttonShadow"
+                    mt="6"
+                    w="100%"
+                    variant="ghost"
+                    transition="0.3s"
+                    _hover={{ border: "1px", borderColor: "blue.700" }}
+                    colorScheme="blue"
+                    size="lg"
+                  >
+                    Cadastrar
+                  </Button>
+                </Link>
+              </Flex>
             </Stack>
-            
+
             <Flex
               textAlign="center"
               boxShadow="buttonShadow"

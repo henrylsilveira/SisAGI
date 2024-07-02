@@ -43,6 +43,7 @@ export function Profile({ showProfileData = true }: ProfileProps) {
       )}
       <Flex flexDirection='column' alignItems='center'>
       <Avatar
+            boxShadow="buttonShadow"
             size="lg"
             name={session?.nome_completo}
             bg='green.700'

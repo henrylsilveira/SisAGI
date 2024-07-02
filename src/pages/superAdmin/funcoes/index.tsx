@@ -41,6 +41,7 @@ import {
   convertISODateToInputValue,
   convertDateFuncaoMilitar,
   returnAvatarImage,
+  formatarDataHora,
 } from "../../../utils/scripts";
 import { NotLoaded } from "../../../components/NotLoaded";
 
@@ -273,9 +274,8 @@ export default function SuperAdminFuncoes() {
                                         fontWeight="bold"
                                       >
                                         <Text>Data de Início</Text>
-                                        <Text></Text>
                                       </Flex>
-                                      {/* {militar.Funcao.find(fun => fun.funcao === func.toLowerCase()).data_inicio} */}
+                                        <Text>{militar.Funcao.map(fun => fun.funcao === func.toLowerCase() ? formatarDataHora(fun.data_inicio).slice(0, 10) : null)}</Text>
                                     </Flex>
                                     <Flex
                                       boxShadow="buttonShadow"
@@ -293,9 +293,8 @@ export default function SuperAdminFuncoes() {
                                         fontWeight="bold"
                                       >
                                         <Text>Data de Termino</Text>
-                                        <Text></Text>
                                       </Flex>
-                                      {/* {convertDateFuncaoMilitar(militar, func)} */}
+                                      <Text>{militar.Funcao.map(fun => fun.funcao === func.toLowerCase() ? formatarDataHora(fun.data_termino).slice(0, 10) : null)}</Text>
                                     </Flex>
                                   </PopoverBody>
                                 </PopoverContent>

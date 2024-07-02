@@ -9,9 +9,10 @@ export function Logo() {
         letterSpacing="tight"
         w="64"
         bgGradient="linear(to-tr, green.300, gray.600, green.300 )"
+        
         bgClip="text"
       >
-        <Link href="/dashboard">
+        <Link href="/dashboard" >
           SisAGI - Sistemas de Apoio a Gestão Interna
         </Link>
       </Text>

@@ -172,9 +172,9 @@ export function SidebarNav() {
           <NavLink href="/encPmt/cautela" icon={BiNotepad}>
             Pedidos
           </NavLink>
-          {/* <NavLink href="/encPmt/relatorio" icon={MdOutlinePersonSearch}>
+          <NavLink href="/encPmt/relatorio" icon={MdOutlinePersonSearch}>
             Relatorio
-          </NavLink> */}
+          </NavLink>
         </NavSection>
       ) : null}
 
