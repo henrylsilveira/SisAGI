@@ -56,11 +56,11 @@ export default function Dashboard() {
         p={4}
       >
         <Tabs isFitted variant='enclosed' w="100%" mt={6}>
-          <TabList>
-            <Tab bgGradient="linear(to-tr, gray.990, gray.990, green.900)"
-                 color="white" border={0}>AVISOS</Tab>
-            <Tab bgGradient="linear(to-tr, gray.990, gray.990, green.900)"
-                 color="white" border={0}>PAINEL</Tab>
+          <TabList borderBottom={0} mb={1}>
+            <Tab border={0} bg={"gray.990"} _selected={{ bgGradient: "linear(to-tr, gray.990, gray.990, green.900)", fontWeight: "bold", boxShadow: "buttonShadow" }}
+              boxShadow="buttonShadow">AVISOS</Tab>
+            <Tab border={0} bg={"gray.990"} _selected={{ bgGradient: "linear(to-tr, gray.990, gray.990, green.900)", fontWeight: "bold", boxShadow: "buttonShadow" }}
+              boxShadow="buttonShadow">PAINEL</Tab>
           </TabList>
           <TabPanels>
             <TabPanel>
@@ -71,7 +71,7 @@ export default function Dashboard() {
                 transition="ease-in-out"
                 w="100%"
                 flexDirection="column"
-                
+
               >
                 <Flex
                   bg="gray.990"
@@ -85,20 +85,20 @@ export default function Dashboard() {
                   </Heading>
                 </Flex>
                 <Flex flexDirection="column">
-                    <Heading size="xl" mx="auto" p={2}>
+                  <Heading size="xl" mx="auto" p={2}>
                     SisAGI
-                    </Heading>
-                    <Text m={6}>
+                  </Heading>
+                  <Text m={6}>
                     Gostaríamos de informá-lo que nosso sistema está atualmente em fase de construção e aprimoramento. Durante este período, você pode encontrar algumas falhas ou instabilidades.
-                    </Text>
-                
+                  </Text>
+
                 </Flex>
               </Flex>
             </TabPanel>
             <TabPanel>
               {session ? <ComumComponentDashboard />
-              : <NotLoaded />}
-              
+                : <NotLoaded />}
+
             </TabPanel>
           </TabPanels>
         </Tabs>

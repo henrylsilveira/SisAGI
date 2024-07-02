@@ -314,6 +314,7 @@ export type PedidoViatura = {
 
 export type PedidosVariasViaturasProps = {
   horaDesejada: string
+  companhia: string
   itinerario: string
   missao: string
   pedidos: PedidoViatura[]

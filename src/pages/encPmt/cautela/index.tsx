@@ -4,9 +4,7 @@ import {
     Button,
     Flex,
     FormControl,
-    Grid,
     Heading,
-    Icon,
     IconButton,
     SimpleGrid,
     Spinner,
@@ -26,7 +24,6 @@ import {
     PopoverBody,
     PopoverCloseButton,
     PopoverContent,
-    PopoverFooter,
     PopoverHeader,
     Tooltip,
     Tabs,
@@ -48,11 +45,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { SubmitHandler } from "react-hook-form/dist/types";
 
-import { CiInboxIn } from "react-icons/ci";
 import { CautelaViatura, PedidosVariasViaturasProps, PedidoViatura, Viatura } from '../../../@types/types';
-import { convertDate, convertDateAndTime, formataArrayEmObjetosIguais, returnComboios } from '../../../utils/scripts';
+import { convertDate, convertDateAndTime, returnComboios } from '../../../utils/scripts';
 import { CautelaViaturaModal } from "../../../components/Modal/Viatura/ModalCautela";
-import { MdDoubleArrow, MdHighlightOff, MdSearch } from "react-icons/md";
+import { MdDoubleArrow, MdSearch } from "react-icons/md";
 import { SlRefresh } from "react-icons/sl";
 import { DescautelaModal } from "../../../components/Modal/Viatura/ModalDescautela";
 import { NotLoaded } from "../../../components/NotLoaded";
@@ -67,7 +63,6 @@ import { GiCheckMark, GiTruck } from "react-icons/gi";
 import { RxCross1 } from "react-icons/rx";
 import { useSession } from "../../../services/context/auth";
 import { BsInfoCircle } from "react-icons/bs";
-import { ActiveLink } from '../../../components/ActiveLink';
 
 const signInFormSchema = yup.object().shape({
     dataDesejada: yup.date().required("Campo obrigatório."),
@@ -182,9 +177,11 @@ export default function CautelaViaturaPage() {
                         >
 
                             <Tabs isFitted variant='enclosed'>
-                                <TabList mb='1em'>
-                                    <Tab>Pedidos Viaturas</Tab>
-                                    <Tab>Pedidos Comboios</Tab>
+                                <TabList borderBottom={0} mb={1}>
+                                    <Tab border={0} bg={"gray.990"} _selected={{ bgGradient: "linear(to-tr, gray.990, gray.990, green.900)", fontWeight: "bold", boxShadow: "buttonShadow" }}
+                                        boxShadow="buttonShadow">Pedidos Viaturas</Tab>
+                                    <Tab border={0} bg={"gray.990"} _selected={{ bgGradient: "linear(to-tr, gray.990, gray.990, green.900)", fontWeight: "bold", boxShadow: "buttonShadow" }}
+                                        boxShadow="buttonShadow">Pedidos Comboios</Tab>
                                 </TabList>
                                 <TabPanels>
                                     <TabPanel>
@@ -314,10 +311,9 @@ export default function CautelaViaturaPage() {
                                                                     <Td textAlign="center">{res.apresentar}</Td>
                                                                     <Td textAlign="center" fontSize="small" fontWeight="bold" color={res.status === "aguardando" ? "orange.500" : res.status === "autorizado" ? "blue.500" : res.status === "recusado" ? "red.500" : "green.500"}>{res.status.toUpperCase()}</Td>
                                                                     {res.status === "aguardando" ? (
-                                                                        <Td textAlign="center" bg={res.autorizado ? "green.800" : "red.800"} shadow="buttonShadow">{res.autorizado ? <GiCheckMark /> : <RxCross1 />}</Td>
-                                                                    ) : <Td> - </Td>}
+                                                                        <Td textAlign="center" bg={res.autorizado ? "green.800" : "red.800"} shadow="buttonShadow"><Flex justifyContent="center">{res.autorizado ? <GiCheckMark /> : <RxCross1 />}</Flex></Td>
+                                                                    ) : <Td textAlign="center"> - </Td>}
                                                                     <Td textAlign="center">
-
                                                                         {(res.status === "autorizado" || res.status === "finalizado" || res.status === "recusado") && res.observacao !== "" ?
                                                                             <Popover closeOnBlur={false} placement='left' initialFocusRef={initRef}>
                                                                                 {({ isOpen }) => (
@@ -339,7 +335,7 @@ export default function CautelaViaturaPage() {
                                                                                     </>
                                                                                 )}
                                                                             </Popover> : (res.status === "autorizado" || res.status === "finalizado" || res.status === "recusado") && res.observacao === "" ? "-" :
-                                                                                <Flex gap={2}>
+                                                                                <Flex gap={2} justifyContent="center">
                                                                                     <CautelaViaturaModal pedido={res} viaturas={viaturas.data} atualizar={refetchPedidos} />
                                                                                     <ModalRecusa pedido={res} atualizar={refetchPedidos} />
 
@@ -385,124 +381,135 @@ export default function CautelaViaturaPage() {
                                                 Comboios
                                             </Heading>
                                         </Flex>
-                                        <Accordion>
-                                            {pedidosVariasViaturas.filter((pedidos: PedidosVariasViaturasProps) => pedidos.count > 1).map((pedidos: PedidosVariasViaturasProps) => (
-                                                <AccordionItem key={pedidos.horaDesejada} border={0}>
-                                                    <h2>
-                                                        <AccordionButton shadow="buttonShadow" rounded="base" bg={"gray.990"} _hover={{ bgColor: "rgba(0, 0, 0, 0.3)" }} borderTop={"transparent"}>
-                                                            <Box as='span' flex='1' textAlign='left'>
-                                                                <Flex gap={2}>
-                                                                    <Text color="green.500">Missão: </Text>
-                                                                    <Text color="gray.500">{pedidos.missao}</Text>
-                                                                </Flex>
-                                                                <Flex gap={2}>
-                                                                    <Flex gap={2}>
-                                                                        <Text color="green.500">Itinerário: </Text>
-                                                                        <Text>
-                                                                            <Tooltip label={pedidos.itinerario} placement='right-end' bg={"gray.900"} border={"1px"} borderColor={"green.900"}>
-                                                                                <Button bg={"transparent"} border={"1px"} borderColor={"green.600"} _hover={{ bgColor: "rgba(0, 0, 0, 0.3)" }} size="xs"><GiTruck color="white" /><MdDoubleArrow color="white" /><GiTruck color="white" /></Button>
-                                                                            </Tooltip>
-                                                                        </Text>
+                                        {pedidosVariasViaturas.length > 0 ?
+                                            <Accordion>
+                                                {pedidosVariasViaturas.filter((pedidos: PedidosVariasViaturasProps) => pedidos.count > 1).map((pedidos: PedidosVariasViaturasProps) => (
+                                                    <AccordionItem key={pedidos.horaDesejada} border={0}>
+                                                        <h2>
+                                                            <AccordionButton shadow="buttonShadow" rounded="base" bg={"gray.990"} _hover={{ bgColor: "rgba(0, 0, 0, 0.3)" }} borderTop={"transparent"}>
+                                                                <Box as='span' flex='1' textAlign='left' position={"relative"}>
+                                                                    <Flex gap={2} alignItems={"center"}>
+
+                                                                        <Flex bg={{bgGradient: "linear(to-tr, gray.990, gray.990, green.900)"}} border={"1px"} borderColor={"green.900"} p={2} fontSize={"sm"} boxShadow={"buttonShadow"} color="white" rounded="base" gap={2}>
+                                                                            {pedidos.companhia}
+                                                                        </Flex>
+                                                                        <Flex flexDirection={"column"}>
+                                                                            <Flex gap={2}>
+                                                                                <Text color="green.500">Missão: </Text>
+                                                                                <Text color="gray.500">{pedidos.missao}</Text>
+                                                                            </Flex>
+                                                                            <Flex gap={2}>
+                                                                                <Flex gap={2}>
+                                                                                    <Text color="green.500">Itinerário: </Text>
+                                                                                    <Text>
+                                                                                        <Tooltip label={pedidos.itinerario} placement='right-end' bg={"gray.900"} border={"1px"} borderColor={"green.900"}>
+                                                                                            <Button bg={"transparent"} border={"1px"} borderColor={"green.600"} _hover={{ bgColor: "rgba(0, 0, 0, 0.3)" }} size="xs"><GiTruck color="white" /><MdDoubleArrow color="white" /><GiTruck color="white" /></Button>
+                                                                                        </Tooltip>
+                                                                                    </Text>
+                                                                                </Flex>
+                                                                                <Flex gap={2}>
+                                                                                    <Text color="green.500"> Data/Hora Desejada: </Text>
+                                                                                    <Text color="gray.500">{convertDateAndTime(pedidos.horaDesejada)}</Text>
+                                                                                </Flex>
+
+                                                                            </Flex>
+                                                                        </Flex>
                                                                     </Flex>
-                                                                    <Flex gap={2}>
-                                                                        <Text color="green.500"> Data/Hora Desejada: </Text>
-                                                                        <Text color="gray.500">{convertDateAndTime(pedidos.horaDesejada)}</Text>
-                                                                    </Flex>
 
-                                                                </Flex>
-                                                            </Box>
-                                                            <AccordionIcon />
-                                                        </AccordionButton>
-                                                    </h2>
 
-                                                    <AccordionPanel pb={4}>
-                                                        <TableContainer maxH="50vh" overflowY="scroll" py={4}>
-                                                            <Table size="sm" colorScheme="whiteAlpha">
-                                                                <Thead>
-                                                                    <Tr>
-                                                                        <Th textAlign="center">Data Desejada</Th>
-                                                                        <Th textAlign="center">Data Devolução</Th>
-                                                                        <Th textAlign="center">Chefe Viatura</Th>
-                                                                        <Th textAlign="center">Motorista</Th>
-                                                                        <Th textAlign="center">Tipo Viatura</Th>
-                                                                        <Th textAlign="center">Apresentar para</Th>
-                                                                        <Th textAlign="center">Situação</Th>
-                                                                        <Th></Th>
-                                                                        <Th></Th>
-                                                                    </Tr>
-                                                                </Thead>
-                                                                <Tbody>
-                                                                    {pedidos.pedidos.map((pedido) => (
-                                                                        <Tr key={pedido.id} _hover={{ shadow: "innerShadow", bg: "gray.990", border: "2px", borderColor: "green.900", rounded: "lg" }}>
-                                                                            <Td textAlign="center">{convertDateAndTime(pedido.dataDesejada)}</Td>
-                                                                            <Td textAlign="center">{convertDate(pedido.dataDevolucao)}</Td>
-                                                                            <Td textAlign="center">{pedido.chefeViatura}</Td>
-                                                                            <Td textAlign="center">{pedido.motorista}</Td>
-                                                                            <Td textAlign="center">{pedido.tipoViatura}</Td>
-                                                                            <Td textAlign="center">{pedido.apresentar}</Td>
-                                                                            <Td textAlign="center" fontSize="small" fontWeight="bold" color={pedido.status === "aguardando" ? "orange.500" : pedido.status === "autorizado" ? "blue.500" : pedido.status === "recusado" ? "red.500" : "green.500"}>{pedido.status.toUpperCase()}</Td>
-                                                                            {pedido.status === "aguardando" ? (
-                                                                                <Td textAlign="center" bg={pedido.autorizado ? "green.800" : "red.800"} shadow="buttonShadow">{pedido.autorizado ? <GiCheckMark /> : <RxCross1 />}</Td>
-                                                                            ) : <Td textAlign="center"> - </Td>}
-                                                                            <Td textAlign="center">
+                                                                </Box>
+                                                                <AccordionIcon />
+                                                            </AccordionButton>
+                                                        </h2>
 
-                                                                                {(pedido.status === "autorizado" || pedido.status === "finalizado" || pedido.status === "recusado") && pedido.observacao !== "" ?
-                                                                                    <Popover closeOnBlur={false} placement='left' initialFocusRef={initRef}>
-                                                                                        {({ isOpen }) => (
-                                                                                            <>
-                                                                                                <PopoverTrigger>
-                                                                                                    <Button _hover={{ bgColor: "rgba(0, 0, 0, 0.3)" }} size="xs" bgColor={isOpen ? 'yellow.500' : 'green.500'}><HiOutlineInformationCircle color="white" size={18} /></Button>
-                                                                                                </PopoverTrigger>
-                                                                                                <Portal>
-                                                                                                    <PopoverContent bg="gray.990" border="1px" borderColor="green.700">
-                                                                                                        <PopoverHeader>Observação</PopoverHeader>
-                                                                                                        <PopoverCloseButton />
-                                                                                                        <PopoverBody>
-                                                                                                            <Box>
-                                                                                                                {pedido.observacao}
-                                                                                                            </Box>
-                                                                                                        </PopoverBody>
-                                                                                                    </PopoverContent>
-                                                                                                </Portal>
-                                                                                            </>
-                                                                                        )}
-                                                                                    </Popover> : (pedido.status === "autorizado" || pedido.status === "finalizado" || pedido.status === "recusado") && pedido.observacao === "" ? "-" :
-                                                                                        <Flex gap={2}>
-                                                                                            <CautelaViaturaModal pedido={pedido} viaturas={viaturas.data} atualizar={refetchPedidos} atualizarCautela={refetch} />
-                                                                                            <ModalRecusa pedido={pedido} atualizar={refetchPedidos} />
-
-                                                                                        </Flex>
-                                                                                }
-
-                                                                            </Td>
+                                                        <AccordionPanel pb={4}>
+                                                            <TableContainer maxH="50vh" overflowY="scroll" py={4}>
+                                                                <Table size="sm" colorScheme="whiteAlpha">
+                                                                    <Thead>
+                                                                        <Tr>
+                                                                            <Th textAlign="center">Data Desejada</Th>
+                                                                            <Th textAlign="center">Data Devolução</Th>
+                                                                            <Th textAlign="center">Chefe Viatura</Th>
+                                                                            <Th textAlign="center">Motorista</Th>
+                                                                            <Th textAlign="center">Tipo Viatura</Th>
+                                                                            <Th textAlign="center">Apresentar para</Th>
+                                                                            <Th textAlign="center">Situação</Th>
+                                                                            <Th></Th>
+                                                                            <Th></Th>
                                                                         </Tr>
-                                                                    ))}
+                                                                    </Thead>
+                                                                    <Tbody>
+                                                                        {pedidos.pedidos.map((pedido) => (
+                                                                            <Tr key={pedido.id} _hover={{ shadow: "innerShadow", bg: "gray.990", border: "2px", borderColor: "green.900", rounded: "lg" }}>
+                                                                                <Td textAlign="center">{convertDateAndTime(pedido.dataDesejada)}</Td>
+                                                                                <Td textAlign="center">{convertDate(pedido.dataDevolucao)}</Td>
+                                                                                <Td textAlign="center">{pedido.chefeViatura}</Td>
+                                                                                <Td textAlign="center">{pedido.motorista}</Td>
+                                                                                <Td textAlign="center">{pedido.tipoViatura}</Td>
+                                                                                <Td textAlign="center">{pedido.apresentar}</Td>
+                                                                                <Td textAlign="center" fontSize="small" fontWeight="bold" color={pedido.status === "aguardando" ? "orange.500" : pedido.status === "autorizado" ? "blue.500" : pedido.status === "recusado" ? "red.500" : "green.500"}>{pedido.status.toUpperCase()}</Td>
+                                                                                {pedido.status === "aguardando" ? (
+                                                                                    <Td textAlign="center" bg={pedido.autorizado ? "green.800" : "red.800"} shadow="buttonShadow"><Flex justifyContent="center">{pedido.autorizado ? <GiCheckMark /> : <RxCross1 />}</Flex></Td>
+                                                                                ) : <Td textAlign="center"> - </Td>}
+                                                                                <Td textAlign="center">
+
+                                                                                    {(pedido.status === "autorizado" || pedido.status === "finalizado" || pedido.status === "recusado") && pedido.observacao !== "" ?
+                                                                                        <Popover closeOnBlur={false} placement='left' initialFocusRef={initRef}>
+                                                                                            {({ isOpen }) => (
+                                                                                                <>
+                                                                                                    <PopoverTrigger>
+                                                                                                        <Button _hover={{ bgColor: "rgba(0, 0, 0, 0.3)" }} size="xs" bgColor={isOpen ? 'yellow.500' : 'green.500'}><HiOutlineInformationCircle color="white" size={18} /></Button>
+                                                                                                    </PopoverTrigger>
+                                                                                                    <Portal>
+                                                                                                        <PopoverContent bg="gray.990" border="1px" borderColor="green.700">
+                                                                                                            <PopoverHeader>Observação</PopoverHeader>
+                                                                                                            <PopoverCloseButton />
+                                                                                                            <PopoverBody>
+                                                                                                                <Box>
+                                                                                                                    {pedido.observacao}
+                                                                                                                </Box>
+                                                                                                            </PopoverBody>
+                                                                                                        </PopoverContent>
+                                                                                                    </Portal>
+                                                                                                </>
+                                                                                            )}
+                                                                                        </Popover> : (pedido.status === "autorizado" || pedido.status === "finalizado" || pedido.status === "recusado") && pedido.observacao === "" ? "-" :
+                                                                                            <Flex gap={2}>
+                                                                                                <CautelaViaturaModal pedido={pedido} viaturas={viaturas.data} atualizar={refetchPedidos} atualizarCautela={refetch} />
+                                                                                                <ModalRecusa pedido={pedido} atualizar={refetchPedidos} />
+
+                                                                                            </Flex>
+                                                                                    }
+
+                                                                                </Td>
+                                                                            </Tr>
+                                                                        ))}
 
 
-                                                                </Tbody>
-                                                                <Tfoot>
-                                                                    <Tr>
-                                                                        <Th textAlign="center">Data Desejada</Th>
-                                                                        <Th textAlign="center">Data Devolução</Th>
+                                                                    </Tbody>
+                                                                    <Tfoot>
+                                                                        <Tr>
+                                                                            <Th textAlign="center">Data Desejada</Th>
+                                                                            <Th textAlign="center">Data Devolução</Th>
 
-                                                                        <Th textAlign="center">Chefe Viatura</Th>
-                                                                        <Th textAlign="center">Motorista</Th>
-                                                                        <Th textAlign="center">Tipo Viatura</Th>
-                                                                        <Th textAlign="center">Apresentar para</Th>
-                                                                        <Th textAlign="center">Situação</Th>
-                                                                        <Th></Th>
-                                                                    </Tr>
-                                                                </Tfoot>
-                                                            </Table>
-                                                        </TableContainer>
-                                                    </AccordionPanel>
+                                                                            <Th textAlign="center">Chefe Viatura</Th>
+                                                                            <Th textAlign="center">Motorista</Th>
+                                                                            <Th textAlign="center">Tipo Viatura</Th>
+                                                                            <Th textAlign="center">Apresentar para</Th>
+                                                                            <Th textAlign="center">Situação</Th>
+                                                                            <Th></Th>
+                                                                        </Tr>
+                                                                    </Tfoot>
+                                                                </Table>
+                                                            </TableContainer>
+                                                        </AccordionPanel>
 
 
-                                                </AccordionItem>
-                                            ))}
+                                                    </AccordionItem>
+                                                ))}
 
-                                        </Accordion>
-
+                                            </Accordion>
+                                            : <NotData textoComponent={"Nenhum comboio formado"} />}
                                     </TabPanel>
                                 </TabPanels>
                             </Tabs>

@@ -22,7 +22,6 @@ export default NextAuth({
             senha: credentials?.senha,
             ip: credentials?.ip
           });
-          console.log(res)
           if (res.status === 200) {
             const user = await res.data as Militar
             return user

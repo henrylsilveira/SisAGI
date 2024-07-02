@@ -8,6 +8,21 @@ export function convertDate(iso: string | number | Date) {
   return convertDate;
 }
 
+export function converterDataISOparaSchedule(dataISO: string | Date) {
+  // Converter a string ISO em um objeto Date
+  const dataObj = new Date(dataISO);
+  
+  // Obter o ano, mês e dia
+  const ano = dataObj.getFullYear();
+  const mes = String(dataObj.getMonth() + 1).padStart(2, '0'); // Meses começam em 0
+  const dia = String(dataObj.getDate()).padStart(2, '0');
+  
+  // Formatar a data no formato "ano-mês-dia"
+  const dataFormatada = `${ano}-${mes}-${dia}`;
+  
+  return dataFormatada;
+}
+
 export function convertDateAndTime(iso: string | number | Date) {
   const d = new Date(iso);
   const convertDate = d.toLocaleDateString("pt-BR");
@@ -164,6 +179,7 @@ export function returnComboios(pedidos : PedidoViatura[]){
   return arrayHoraDesejadaComboio.map(hora => {
       return {
           horaDesejada: hora,
+          companhia: pedidos.filter(comboio => comboio.dataDesejada === hora).map(comboio => comboio.companhia)[0],
           itinerario: pedidos.filter(comboio => comboio.dataDesejada === hora).map(comboio => comboio.intinerario)[0],
           missao: pedidos.filter(comboio => comboio.dataDesejada === hora).map(comboio => comboio.missao)[0],
           pedidos: pedidos.filter(comboio => comboio.dataDesejada === hora).length > 1 ? pedidos.filter(comboio => comboio.dataDesejada === hora) : null,
