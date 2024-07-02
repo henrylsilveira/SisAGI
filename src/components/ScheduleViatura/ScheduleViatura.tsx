@@ -15,6 +15,7 @@ export default function ScheduleViatura({pedidosViatura}: {pedidosViatura: Pedid
       })
     return (
         <FullCalendar
+        locale={"pt-br"}
             plugins={[dayGridPlugin,timeGridPlugin]}
             initialView="dayGridMonth"
             headerToolbar={{
