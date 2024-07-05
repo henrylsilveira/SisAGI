@@ -14,13 +14,14 @@ import { SubmitHandler } from "react-hook-form/dist/types";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import Router from "next/router";
 
 import Head from "next/head";
 import { getUserIP } from "../utils/scripts";
 
 import { useSession } from "../services/context/auth";
+import { NotLoaded } from "../components/NotLoaded";
 
 type SignInFormData = {
   identidade: string;
@@ -35,7 +36,8 @@ const signInFormSchema = yup.object().shape({
 });
 
 export default function Home() {
-  const {
+  const [loading, setLoading] = useState(false);
+const {
     register,
     handleSubmit,
     formState,
@@ -57,6 +59,7 @@ export default function Home() {
   }, [session]);
 
   const handleSignIn: SubmitHandler<SignInFormData> = async (values) => {
+    setLoading(true)
     await new Promise((resolve) => setTimeout(resolve, 1000));
     try {
       const res = await Login({
@@ -77,6 +80,7 @@ export default function Home() {
     } catch (error) {
       console.error(error);
     }
+    setLoading(false)
 
 
     // const res = await signIn("credentials", {
@@ -155,9 +159,9 @@ export default function Home() {
                   mr={4}
                   colorScheme="green"
                   size="lg"
-                  isLoading={formState.isSubmitting}
                 >
-                  Entrar
+                  {loading === true ? <NotLoaded compact /> : "Entrar"}
+                  
                 </Button>
                 <Link href="/cadastro">
                   <Button

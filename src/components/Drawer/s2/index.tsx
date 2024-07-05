@@ -31,6 +31,7 @@ export function PesquisarCivil(props: any) {
     }, [result, search])
 
     function selectCivil(civil: Civil, onClose: () => void) {
+        console.log(civil)
         setCivil(civil)
         onClose()
     }

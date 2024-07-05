@@ -69,6 +69,7 @@ export default function CadastroViatura() {
     async () => {
       const result = await api.get<Viatura[]>("/veiculos");
       setResult(result);
+      console.log(result.data);
       return result;
     }
   );
@@ -84,6 +85,8 @@ export default function CadastroViatura() {
 
   const handleSignIn: SubmitHandler<Viatura> = async (values) => {
     try {
+    console.log(values)
+
       const result = await api.post("/veiculo/create", values);
       if (result.status == 201) {
         toast({

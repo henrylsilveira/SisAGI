@@ -83,6 +83,9 @@ export function SidebarNav() {
           <NavLink href="/s4/mi" icon={RiShieldKeyholeLine}>
             MI
           </NavLink> */}
+          <NavLink href="/s4/relatorio" icon={MdOutlinePersonSearch}>
+            Relatório
+          </NavLink>
         </NavSection>
       ) : null}
 
@@ -173,7 +176,7 @@ export function SidebarNav() {
             Pedidos
           </NavLink>
           <NavLink href="/encPmt/relatorio" icon={MdOutlinePersonSearch}>
-            Relatorio
+            Relatório
           </NavLink>
         </NavSection>
       ) : null}
@@ -186,9 +189,9 @@ export function SidebarNav() {
           <NavLink href="/cmtGda/cadastro" icon={BsPersonPlus}>
             Cadastro
           </NavLink>
-          <NavLink href="/cmtGda/civil" icon={BsFillPersonLinesFill}>
+          {/* <NavLink href="/cmtGda/civil" icon={BsFillPersonLinesFill}>
             Civil
-          </NavLink>
+          </NavLink> */}
           <NavLink href="/cmtGda/viatura" icon={GiTruck}>
             Viatura
           </NavLink>

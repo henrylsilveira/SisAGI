@@ -1,4 +1,4 @@
-import { useDisclosure, Button, Drawer, DrawerOverlay, DrawerContent, Text, DrawerCloseButton, DrawerHeader, DrawerBody, DrawerFooter, Flex, VStack, HStack, useToast } from "@chakra-ui/react"
+import { useDisclosure, Button, Drawer, DrawerOverlay, DrawerContent, Text, DrawerCloseButton, DrawerHeader, DrawerBody, DrawerFooter, Flex, VStack, HStack, useToast, Grid } from "@chakra-ui/react"
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { MdOutlinePersonSearch } from "react-icons/md"
 import { GoSignOut, GoSignIn } from "react-icons/go";
@@ -18,17 +18,28 @@ export function PesquisarMilitarCivil(props: any) {
   const [result, setResult] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [search, setSearch] = useState("");
+  const [searchCategory, setSearchCategory] = useState("militar");
   const { user: session, status } = useSession();
   const toast = useToast()
-  useQuery(
+
+ 
+  const { refetch } = useQuery(
     ["todosCivis e todosMilitares"],
     async () => {
-      const resultC = await api.get<CivilArray>("/civil");
-      const resultM = await api.get<MilitarArray>("/militar");
-      setResult([...resultC.data, ...resultM.data]);
+      if (searchCategory == "militar") {
+        const result = await api.get<MilitarArray>("/militar");
+        setResult(result.data);
+        return
+      }else{
+        const result = await api.get<CivilArray>("/civil");
+        setResult(result.data);
+      }
       return
     }
   );
+  useEffect(() => {
+    refetch()
+   }, [refetch, searchCategory])
 
   useEffect(() => {
     setFiltered(result.filter((res) =>
@@ -124,10 +135,19 @@ export function PesquisarMilitarCivil(props: any) {
           </DrawerHeader>
 
           <DrawerBody>
-            <Flex flexDir="column" borderBottom="1px solid" borderColor="green.600">
-              <Input label="Pesquisar" name="pesquisar" mb={2} onChange={(e) => setSearch(e.target.value)} _placeholder={{ fontSize: "sm" }} placeholder='Pesquise por Cpf, Identidade ou nome' />
-              <Text fontSize="xs" color="gray.400">Resultados: {filtered?.length}</Text>
-            </Flex>
+            <Grid gridTemplateColumns={["2fr 1fr"]} borderBottom="1px solid" borderColor="green.600" gap={2}>
+              <Flex flexDir="column" >
+                <Input label="Pesquisar" name="pesquisar" mb={2} onChange={(e) => setSearch(e.target.value)} _placeholder={{ fontSize: "sm" }} placeholder='Pesquise por Cpf, Identidade ou nome' />
+                <Text fontSize="xs" color="gray.400">Resultados: {filtered?.filter(pessoa => pessoa.identidade !== "0000000000").length}</Text>
+              </Flex>
+              <Flex flexDir="column" >
+                <Input as="select" label="Buscar" name="buscar" mb={2} onChange={(e) => setSearchCategory(e.target.value)} _placeholder={{ fontSize: "sm" }}>
+                  <option value="militar">Militar</option>
+                  <option value="civil">Civil</option>
+                </Input>
+              </Flex>
+            </Grid>
+
             <VStack mt={2}>
               {filtered.sort((x, y) => {
                 let a = x.nomeCompleto ? x.nomeCompleto.toUpperCase() : x.nome_guerra.toUpperCase(),
