@@ -14,7 +14,7 @@ export default function ViewTable({ data, handleSubmitForm, finalizados }: { dat
 
     return (
 
-        data.filter(item => item.status === "ativo").length !== 0 ?
+        data?.filter(item => item.status === "ativo").length !== 0 ?
             <TableContainer maxH="50vh" overflowY="scroll" py={4}>
                 <Table size="sm" colorScheme="whiteAlpha">
                     <Thead>

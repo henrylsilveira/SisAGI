@@ -1,11 +1,8 @@
-/* eslint-disable react/no-unescaped-entities */
 import {
     Box,
     Flex,
     Heading,
     SimpleGrid,
-    Grid,
-    Avatar,
     Button,
     useToast,
     Text,
@@ -14,18 +11,13 @@ import {
 } from "@chakra-ui/react";
 
 import Head from "next/head";
-import { returnAvatarImage, convertDateAndTime } from '../../../utils/scripts';
 import { api } from "../../../services/api";
 import { CgLayoutList } from "react-icons/cg";
-import { TfiLayoutListThumb, TfiLayoutListThumbAlt } from "react-icons/tfi";
+import { TfiLayoutListThumb } from "react-icons/tfi";
 import { ControleGuardaRegistros } from '../../../@types/types';
 import { PesquisarMilitarCivil } from "../../../components/Drawer/CmtGda";
 import { useQuery } from "react-query";
-import { GoSignIn, GoSignOut, GoX } from "react-icons/go";
 import { useState } from "react";
-import { MdCheck } from "react-icons/md";
-import { NotData } from "../../../components/NotData";
-import ViewGrid from "../../../components/ViewData/ViewGrid";
 import ViewTable from "../../../components/ViewData/ViewTable";
 
 export default function ControleGuarda() {
