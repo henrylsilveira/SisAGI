@@ -7,7 +7,7 @@ import { converterDataISOparaSchedule } from '../../utils/scripts';
 export default function ScheduleViatura({pedidosViatura}: {pedidosViatura: PedidoViatura[]}) {
     const formatPedidos = pedidosViatura?.map((item) => {
         return {
-          title: `${item.tipoViatura} - ${item.motorista} / ${item.companhia}`,
+          title: `${item.motorista} / ${item.companhia}`,
           start: converterDataISOparaSchedule(item.dataDesejada),
           end: converterDataISOparaSchedule(item.dataDevolucao),
           backgroundColor: `rgba(${Math.floor(Math.random() * 256)},${Math.floor(Math.random() * 256)},${Math.floor(Math.random() * 256)},1)`,

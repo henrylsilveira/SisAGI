@@ -301,7 +301,6 @@ export type PedidoViatura = {
   intinerario?: string
   chefeViatura?: string
   motorista?: string
-  tipoViatura?: string
   dataDevolucao?: DateTime
   apresentar?: string
   observacao?: string

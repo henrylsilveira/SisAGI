@@ -221,14 +221,7 @@ export function CautelaViaturaModal({ pedido, viaturas, atualizar, atualizarCaut
                                         {pedido.motorista}
                                     </Text>
                                 </Flex>
-                                <Flex gap={2}>
-                                    <Text>
-                                        Tipo de viatura
-                                    </Text>
-                                    <Text color="gray.500">
-                                        {pedido.tipoViatura.toUpperCase()}
-                                    </Text>
-                                </Flex>
+                                
                                 <Flex gap={2}>
                                     <Text>
                                         Apresentar para
