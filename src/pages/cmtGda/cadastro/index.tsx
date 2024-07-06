@@ -49,6 +49,7 @@ const signInFormSchema = yup.object().shape({
     identidade: yup.string(),
     dataNascimento: yup.string(),
     cpf: yup.string(),
+    categoria: yup.string(),
     nomePai: yup.string(),
     nomeMae: yup.string(),
     origem: yup.string(),
@@ -64,6 +65,8 @@ export default function CadastroCivil() {
     const [civil, setCivil] = useState<Civil>();
     const [previewUrlFoto, setPreviewUrlFoto] = useState(null);
     const [previewUrlFotoDoc, setPreviewUrlFotoDoc] = useState(null);
+    const [fotoRosto, setFotoRosto] = useState(true);
+    const [fotoDoc, setFotoDoc] = useState(false);
     const toast = useToast()
 
     const {
@@ -126,7 +129,8 @@ export default function CadastroCivil() {
                     duration: 1000,
                     isClosable: true,
                 });
-
+                setFotoRosto(false)
+                setFotoDoc(true)
             } else {
                 toast({
                     title: "Foto Civil",
@@ -139,7 +143,7 @@ export default function CadastroCivil() {
         } catch (error) {
             toast({
                 title: "Foto Civil",
-                description: "Erro interno",
+                description: error.response.data.code === "LIMIT_FILE_SIZE" ? "O tamanho do arquivo ultrapassa o limite de 2MB." : "Erro desconhecido.",
                 status: "error",
                 duration: 2000,
                 isClosable: true,
@@ -296,9 +300,25 @@ export default function CadastroCivil() {
                                     name="profissao"
                                     label="Profissão"
                                     type="text"
+                                    defaultValue={civil?.profissao}
                                     error={errors.profissao}
                                     {...register("profissao")}
                                 />
+                                <Input
+                                    as="select"
+                                    name="categoria"
+                                    label="Categoria"
+                                    type="text"
+                                    defaultValue={civil?.categoria}
+                                    error={errors.categoria}
+                                    {...register("categoria")}
+                                >
+                                    <option value="civil">Civil</option>
+                                    <option value="militar outra OM">Militar Ativa outra OM</option>
+                                    <option value="pensionista">Pensionista</option>
+                                    <option value="reservista">Reservista</option>
+                                    <option value="militar inativo">Militar Inativo</option>
+                                </Input>
 
 
                                 <Button
@@ -346,53 +366,57 @@ export default function CadastroCivil() {
                                     </Flex>
                                     {civil?.id ? (
                                         <>
-                                            <Flex flexDir={"row"} mb={2} gap={4} px={4} justifyItems="center" alignItems="center">
-                                                <Avatar
-                                                    size="xl"
-                                                    bg="green.700"
-                                                    border="5px"
-                                                    borderColor="gray.400"
-                                                    boxShadow="buttonShadow"
-                                                    src={previewUrlFoto ? previewUrlFoto : returnAvatarImage(civil.foto)}
-                                                />
-                                                <Input
-                                                    name="fotoCivil"
-                                                    label="Foto 3x4"
-                                                    className="uploadInput"
-                                                    accept="image/png, image/jpeg"
-                                                    type="file"
-                                                    h={8}
-                                                    onChange={(e) => handleFileInputChange(e, "foto")}
-                                                />
-                                                <Button variant="outline" size="lg" ml={2} mt={8} color="white" _hover={{ bgColor: "green.800" }}
-                                                    borderColor="green.800" onClick={(e) => handleSubmitImage(e, civil.id, "fotoCivil")}>Upload</Button>
+                                            {fotoRosto ? (
+                                                <Flex flexDir={"row"} mb={2} gap={4} px={4} justifyItems="center" alignItems="center">
+                                                    <Avatar
+                                                        size="xl"
+                                                        bg="green.700"
+                                                        border="5px"
+                                                        borderColor="gray.400"
+                                                        boxShadow="buttonShadow"
+                                                        src={previewUrlFoto ? previewUrlFoto : returnAvatarImage(civil.foto)}
+                                                    />
+                                                    <Input
+                                                        name="fotoCivil"
+                                                        label="Foto 3x4"
+                                                        className="uploadInput"
+                                                        accept="image/png, image/jpeg"
+                                                        type="file"
+                                                        h={8}
+                                                        onChange={(e) => handleFileInputChange(e, "foto")}
+                                                    />
+                                                    <Button variant="outline" size="lg" ml={2} mt={8} color="white" _hover={{ bgColor: "green.800" }}
+                                                        borderColor="green.800" onClick={(e) => handleSubmitImage(e, civil.id, "fotoCivil")}>Upload</Button>
 
-                                            </Flex>
-                                            <Flex flexDir={"row"} gap={4} px={4} justifyItems="center" alignItems="center">
-                                                <Avatar
-                                                    size="xl"
-                                                    bg="green.700"
-                                                    border="5px"
-                                                    borderColor="gray.400"
-                                                    boxShadow="buttonShadow"
-                                                    icon={<HiOutlineIdentification fontSize='xl' />}
-                                                    src={previewUrlFotoDoc ? previewUrlFotoDoc : returnAvatarImage(civil.fotoDoc)}
-                                                />
+                                                </Flex>
+                                            ) : null}
+                                            {fotoDoc ? (
+                                                <Flex flexDir={"row"} gap={4} px={4} justifyItems="center" alignItems="center">
+                                                    <Avatar
+                                                        size="xl"
+                                                        bg="green.700"
+                                                        border="5px"
+                                                        borderColor="gray.400"
+                                                        boxShadow="buttonShadow"
+                                                        icon={<HiOutlineIdentification fontSize='xl' />}
+                                                        src={previewUrlFotoDoc ? previewUrlFotoDoc : returnAvatarImage(civil.fotoDoc)}
+                                                    />
 
 
-                                                <Input
-                                                    name="fotoDoc"
-                                                    label="Foto do documento"
-                                                    className="uploadInput"
-                                                    accept="image/png, image/jpeg"
-                                                    h={8}
-                                                    type="file"
-                                                    onChange={(e) => handleFileInputChange(e, "fotoDoc")}
-                                                />
-                                                <Button variant="outline" size="lg" ml={2} mt={8} _hover={{ bgColor: "green.800" }}
-                                                    borderColor="green.800" color="white" onClick={(e) => handleSubmitImage(e, civil.id, "fotoDoc")}>Upload</Button>
+                                                    <Input
+                                                        name="fotoDoc"
+                                                        label="Foto do documento"
+                                                        className="uploadInput"
+                                                        accept="image/png, image/jpeg"
+                                                        h={8}
+                                                        type="file"
+                                                        onChange={(e) => handleFileInputChange(e, "fotoDoc")}
+                                                    />
+                                                    <Button variant="outline" size="lg" ml={2} mt={8} _hover={{ bgColor: "green.800" }}
+                                                        borderColor="green.800" color="white" onClick={(e) => handleSubmitImage(e, civil.id, "fotoDoc")}>Upload</Button>
 
-                                            </Flex>
+                                                </Flex>
+                                            ) : null}
                                         </>
                                     ) : (
                                         <Flex bg="blackAlpha.600" w="full" h="full" rounded="lg" border="1px solid" borderColor="red.600" justifyContent="center" alignItems={"center"}>

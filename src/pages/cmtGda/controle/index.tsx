@@ -16,16 +16,21 @@ import {
 import Head from "next/head";
 import { returnAvatarImage, convertDateAndTime } from '../../../utils/scripts';
 import { api } from "../../../services/api";
-
+import { CgLayoutList } from "react-icons/cg";
+import { TfiLayoutListThumb, TfiLayoutListThumbAlt } from "react-icons/tfi";
 import { ControleGuardaRegistros } from '../../../@types/types';
 import { PesquisarMilitarCivil } from "../../../components/Drawer/CmtGda";
 import { useQuery } from "react-query";
 import { GoSignIn, GoSignOut, GoX } from "react-icons/go";
 import { useState } from "react";
 import { MdCheck } from "react-icons/md";
+import { NotData } from "../../../components/NotData";
+import ViewGrid from "../../../components/ViewData/ViewGrid";
+import ViewTable from "../../../components/ViewData/ViewTable";
 
 export default function ControleGuarda() {
     const [finalizados, setFinalizados] = useState(false)
+    const [changeView, setChangeView] = useState(false)
     const toast = useToast()
 
     const { data, isLoading, refetch } = useQuery(["todosRegistros"], async () => {
@@ -40,7 +45,7 @@ export default function ControleGuarda() {
             const result = await api.put(`/controleGuarda/update/${id}/${tipo}`);
             if (result.status == 201) {
                 toast({
-                    title: "Controle Guarda",
+                    title: "Controle da Guarda",
                     description: `O dado de ${tipo} foi cadastrado no sistema.`,
                     status: "success",
                     duration: 2000,
@@ -49,7 +54,7 @@ export default function ControleGuarda() {
                 refetch()
             } else {
                 toast({
-                    title: "Controle Guarda",
+                    title: "Controle da Guarda",
                     description: "Não foi possível cadastrar no sitema",
                     status: "error",
                     duration: 2000,
@@ -58,7 +63,7 @@ export default function ControleGuarda() {
             }
         } catch (error) {
             toast({
-                title: "Controle Guarda",
+                title: "Controle da Guarda",
                 description: "Verifique os dados do civil.",
                 status: "error",
                 duration: 2000,
@@ -101,122 +106,26 @@ export default function ControleGuarda() {
                                 </Heading>
                                 <Flex bg="gray.990"
                                     boxShadow="buttonShadow"
-                                     p={2} gap={2}>
+                                    p={2} gap={2} alignItems={"center"}>
                                     <Stack direction='row'>
                                         <Switch onChange={(e) => setFinalizados(e.target.checked)} colorScheme='green' size='md' />
                                     </Stack>
                                     <Text fontSize="sm">Finalizados</Text>
+                                    <Flex shadow={"buttonShadow"} bg={"gray.990"} rounded={"base"}>
+                                        <Button bg={"transparent"} colorScheme={"green"}>
+                                            <TfiLayoutListThumb color="green.600" fontSize={"20"} />
+                                        </Button>
+                                        <Button bg={"transparent"} colorScheme={"green"}>
+                                            <CgLayoutList color="green.600" fontSize={"20"} />
+                                        </Button>
+                                    </Flex>
                                 </Flex>
                                 <PesquisarMilitarCivil refresh={refetch} />
                             </Flex>
-                            <Heading size="md" p={2} borderBottom="2px" borderColor="green.900">
-                                    Civis
-                                </Heading>
-                            <Grid templateColumns={["1fr", "1fr", "1fr 1fr", "1fr 1fr", "1fr 1fr 1fr"]}>
-                                {data?.data.filter(registro => finalizados ? registro : registro.status === "ativo" ).filter(registro => registro.civilId ? registro : null ).map(registro => (
-                                    <Flex
-                                    position="relative"
-                                        key={registro.id}
-                                        bg="gray.990"
-                                        boxShadow="buttonShadow"
-                                        m={4}
-                                        h="auto" alignItems="center" gap={2} p={2} justify="space-between"
-                                    >
-                                        {finalizados && registro.status === "finalizado" ? (
-                                            <Flex zIndex={10} w={10} h={10} justifyContent="center" borderBottomLeftRadius="full" shadow="buttonShadow" align="center" bgGradient="linear(to-tr, green.900, green.600, green.400)" position="absolute" right={0} top={0}>
-                                                <Flex position="absolute" right={2} top={2}>
-                                                   <MdCheck /> 
-                                                </Flex>
-                                                
-                                            </Flex>
-                                        ) : null}
-                                        <Avatar size='xl' name={registro.militar?.nome_guerra ? registro.militar?.nome_guerra : registro.civil?.nomeCompleto} src={registro.militar?.nome_guerra ? returnAvatarImage(registro.militar?.avatar_url) : returnAvatarImage(registro.civil?.foto)} />
-                                        <Flex flexDirection="column" gap={2}>
-                                            <Text>{registro.militar?.nome_guerra ? registro.militar?.post_grad + " " + registro.militar?.nome_guerra : registro.civil?.nomeCompleto}</Text>
-                                            <Flex alignItems="center" gap={2} bg="green.900" borderRadius={20} px={2}>
-                                                <GoSignIn color="white" />
-                                                <Text fontSize="sm" >{registro.entrada ? convertDateAndTime(registro.entrada) : "-"}</Text>
-                                            </Flex>
-                                            <Flex alignItems="center" gap={2} bg="red.900" borderRadius={20} px={2}>
-                                                <Flex alignItems="center" gap={2}>
-                                                    <GoSignOut color="white" />
-                                                    <Text fontSize="sm">{registro.saida ? convertDateAndTime(registro.saida) : "-"}</Text>
-                                                </Flex>
-                                            </Flex>
-                                        </Flex>
-                                            <Flex flexDirection="column" gap={1}>
-                                        {registro.status === "finalizado" ? null : (
-                                            <>
-                                                <Button onClick={() => handleSubmitForm(registro.id, "entrada")} isDisabled={registro.entrada ? true : false} size="xs" bg="green.600" borderRadius={4} boxShadow="buttonShadow" _hover={{ boxShadow: "innerShadow" }} w="full" gap={1} justifyContent="space-between">
-                                                    Entrada<GoSignIn color="white" />
-                                                </Button>
-                                                <Button onClick={() => handleSubmitForm(registro.id, "saida")} isDisabled={registro.saida ? true : false} size="xs" bg="orange.600" borderRadius={4} boxShadow="buttonShadow" _hover={{ boxShadow: "innerShadow" }} w="full" gap={1} justifyContent="space-between">
-                                                    Saida<GoSignOut color="white" />
-                                                </Button>
-                                                <Button onClick={() => handleSubmitForm(registro.id, "finalizar")} size="xs" bg="red.600" borderRadius={4} boxShadow="buttonShadow" _hover={{ boxShadow: "innerShadow" }} w="full" gap={1} justifyContent="space-between">
-                                                    Finalizar<GoX color="white" />
-                                                </Button>
-                                            </>
-                                        )}
-                                            </Flex>
+                            {/* CONTINUAR COM UM MODAL OU JANELA QUE SALVE O DESTINO DE QUEM ENTROU */}
+                            {/* <ViewGrid data={data?.data} handleSubmitForm={handleSubmitForm} finalizados={finalizados} /> */}
+                            <ViewTable data={data?.data} handleSubmitForm={handleSubmitForm} finalizados={finalizados} />
 
-                                    </Flex>
-                                ))}
-                            </Grid>
-                            <Heading size="md" p={2} borderBottom="2px" borderColor="green.900">
-                                    Militares
-                                </Heading>
-                            <Grid templateColumns={["1fr", "1fr", "1fr 1fr", "1fr 1fr", "1fr 1fr 1fr"]}>
-                                {data?.data.filter(registro => registro.militarId ? registro : null ).filter(registro => finalizados ? registro : registro.status === "ativo").map(registro => (
-                                    <Flex
-                                    position="relative"
-                                        key={registro.id}
-                                        bg="gray.990"
-                                        boxShadow="buttonShadow"
-                                        m={4}
-                                        h="auto" alignItems="center" gap={2} p={2} justify="space-between"
-                                    >
-                                        {finalizados && registro.status === "finalizado" ? (
-                                            <Flex zIndex={10} w={10} h={10} justifyContent="center" borderBottomLeftRadius="full" shadow="buttonShadow" align="center" bgGradient="linear(to-tr, green.900, green.600, green.400)" position="absolute" right={0} top={0}>
-                                                <Flex position="absolute" right={2} top={2}>
-                                                   <MdCheck /> 
-                                                </Flex>
-                                                
-                                            </Flex>
-                                        ) : null}
-                                        <Avatar size='xl' name={registro.militar?.nome_guerra ? registro.militar?.nome_guerra : registro.civil?.nomeCompleto} src={registro.militar?.nome_guerra ? returnAvatarImage(registro.militar?.avatar_url) : returnAvatarImage(registro.civil?.foto)} />
-                                        <Flex flexDirection="column" gap={2}>
-                                            <Text>{registro.militar?.nome_guerra ? registro.militar?.post_grad + " " + registro.militar?.nome_guerra : registro.civil?.nomeCompleto}</Text>
-                                            <Flex alignItems="center" gap={2} bg="green.900" borderRadius={20} px={2}>
-                                                <GoSignIn color="white" />
-                                                <Text fontSize="sm" >{registro.entrada ? convertDateAndTime(registro.entrada) : "-"}</Text>
-                                            </Flex>
-                                            <Flex alignItems="center" gap={2} bg="red.900" borderRadius={20} px={2}>
-                                                <Flex alignItems="center" gap={2}>
-                                                    <GoSignOut color="white" />
-                                                    <Text fontSize="sm">{registro.saida ? convertDateAndTime(registro.saida) : "-"}</Text>
-                                                </Flex>
-                                            </Flex>
-                                        </Flex>
-                                            <Flex flexDirection="column" gap={1}>
-                                        {registro.status === "finalizado" ? null : (
-                                            <>
-                                                <Button onClick={() => handleSubmitForm(registro.id, "entrada")} isDisabled={registro.entrada ? true : false} size="xs" bg="green.600" borderRadius={4} boxShadow="buttonShadow" _hover={{ boxShadow: "innerShadow" }} w="full" gap={1} justifyContent="space-between">
-                                                    Entrada<GoSignIn color="white" />
-                                                </Button>
-                                                <Button onClick={() => handleSubmitForm(registro.id, "saida")} isDisabled={registro.saida ? true : false} size="xs" bg="orange.600" borderRadius={4} boxShadow="buttonShadow" _hover={{ boxShadow: "innerShadow" }} w="full" gap={1} justifyContent="space-between">
-                                                    Saida<GoSignOut color="white" />
-                                                </Button>
-                                                <Button onClick={() => handleSubmitForm(registro.id, "finalizar")} size="xs" bg="red.600" borderRadius={4} boxShadow="buttonShadow" _hover={{ boxShadow: "innerShadow" }} w="full" gap={1} justifyContent="space-between">
-                                                    Finalizar<GoX color="white" />
-                                                </Button>
-                                            </>
-                                        )}
-                                            </Flex>
-
-                                    </Flex>
-                                ))}
-                            </Grid>
                         </Flex>
                     </Box>
                 </SimpleGrid>

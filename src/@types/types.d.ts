@@ -84,6 +84,7 @@ export interface Civil {
   dataNascimento: Date;
   identidade?: string;
   cpf?: string;
+  categoria: "militar outra OM" | "civil" | "pensionista" | "reservista" | "militar inativo";
   nomePai?: string;
   nomeMae?: string;
   profissao?: string;
