@@ -17,7 +17,7 @@ export default function ViewGrid({ data, handleSubmitForm, finalizados }: { data
 
             </Flex>
 
-            {data.length !== 0 ? (
+            {data?.length !== 0 ? (
                 <Grid templateColumns={["1fr", "1fr", "1fr 1fr", "1fr 1fr", "1fr 1fr 1fr"]}>
                     {data.filter(registro => finalizados ? registro : registro.status === "ativo").filter(registro => registro.civilId ? registro : null).map(registro => (
                         <Flex

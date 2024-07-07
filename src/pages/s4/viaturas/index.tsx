@@ -143,7 +143,8 @@ export default function Viaturas() {
                 <TabPanels>
                   <TabPanel>
                     {/* Tabela Pedidos Viaturas */}
-                    <>
+                    <Flex bgGradient="linear(to-tr, gray.990, gray.990, green.900)" rounded="base"
+                      boxShadow="buttonShadow" flexDir="column" my={2} px={4}>
                       <Flex
                         bg="gray.990"
                         boxShadow="buttonShadow"
@@ -155,8 +156,8 @@ export default function Viaturas() {
                         justifyContent="space-between"
                       >
                         <Heading fontSize="2xl" my="4">
-                          Pedidos ( FURRIEL )
-                        </Heading>
+                          AUTORIZAÇÃO - S/4
+                          </Heading>
                         <Flex bg="gray.990"
                           boxShadow="buttonShadow"
                           px={1}
@@ -323,7 +324,7 @@ export default function Viaturas() {
                           </Table>
                         </TableContainer>
                       }
-                    </>
+                    </Flex>
                     <Flex bgGradient="linear(to-tr, gray.990, gray.990, green.900)" rounded="base"
                       boxShadow="buttonShadow" flexDir="column" my={2} px={4}>
                       <Flex
@@ -336,7 +337,7 @@ export default function Viaturas() {
                         justifyContent="space-between"
                       >
                         <Heading fontSize="2xl" my="4">
-                          Pedidos ( PMT ) {isLoading ? <Spinner ml={8} /> : ""}{" "}
+                          CAUTELA - PMT
                         </Heading>
                         <Flex bg="gray.990"
                           boxShadow="buttonShadow"
@@ -450,7 +451,11 @@ export default function Viaturas() {
                                   <Td textAlign="center">{res.apresentar}</Td>
                                   <Td textAlign="center" fontSize="small" fontWeight="bold" color={res.status === "aguardando" ? "orange.500" : res.status === "autorizado" ? "blue.500" : res.status === "recusado" ? "red.500" : "green.500"}>{res.status.toUpperCase()}</Td>
                                   {res.status === "aguardando" ? (
-                                    <Td textAlign="center" bg={res.autorizado ? "green.800" : "red.800"} shadow="buttonShadow">{res.autorizado ? <GiCheckMark /> : <RxCross1 />}</Td>
+                                    <Td textAlign="center" bg={res.autorizado ? "green.800" : "red.800"} shadow="buttonShadow">
+                                      <Flex justifyContent="center">
+                                      {res.autorizado ? <GiCheckMark /> : <RxCross1 />}
+                                        </Flex>
+                                      </Td>
                                   ) : <Td textAlign="center"> - </Td>}
                                   <Td textAlign="center">
 
@@ -517,11 +522,11 @@ export default function Viaturas() {
                         alignItems="center"
                         justifyContent="space-between"
                       >
-                        <Flex align="center">
+                        <Flex align="center" gap={2}>
                           <Heading fontSize="2xl" my="4" flex={1}>
-                            Viaturas cauteladas {isLoading ? <Spinner ml={8} /> : ""}{" "} -
+                            CAUTELADAS
                           </Heading>
-                          <Text fontSize="2xl" pl={2} color="red.600">{viaturasCauteladas?.data.filter(viatura => viatura.status === "autorizado").length}</Text>
+                          <Text fontSize="2xl" fontWeight={"bold"} color="red.600" bg={"gray.900"} shadow={"buttonShadow"} rounded="full" px={2}>{viaturasCauteladas?.data.filter(viatura => viatura.status === "autorizado").length}</Text>
                         </Flex>
 
 
@@ -688,7 +693,7 @@ export default function Viaturas() {
                                     <Th textAlign="center">Motorista</Th>
                                     <Th textAlign="center">Tipo Viatura</Th>
                                     <Th textAlign="center">Apresentar para</Th>
-                                    <Th textAlign="center">Situação</Th>
+                                    <Th textAlign="center">S/4</Th>
                                     <Th></Th>
                                     <Th></Th>
                                   </Tr>
@@ -751,7 +756,7 @@ export default function Viaturas() {
                                     <Th textAlign="center">Motorista</Th>
                                     <Th textAlign="center">Tipo Viatura</Th>
                                     <Th textAlign="center">Apresentar para</Th>
-                                    <Th textAlign="center">Situação</Th>
+                                    <Th textAlign="center">S/4</Th>
                                     <Th></Th>
                                   </Tr>
                                 </Tfoot>
