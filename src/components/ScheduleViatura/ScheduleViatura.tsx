@@ -3,13 +3,13 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 
 import { PedidoViatura } from '../../@types/types'
-import { converterDataISOparaSchedule } from '../../utils/scripts';
+import { convertDateAndTime, converterDataISOparaSchedule } from '../../utils/scripts';
 export default function ScheduleViatura({pedidosViatura}: {pedidosViatura: PedidoViatura[]}) {
     const formatPedidos = pedidosViatura?.map((item) => {
         return {
-          title: `${item.tipoViatura} - ${item.motorista} / ${item.companhia}`,
-          start: converterDataISOparaSchedule(item.dataDesejada),
-          end: converterDataISOparaSchedule(item.dataDevolucao),
+          title: `${item.motorista} / ${item.companhia} - ${convertDateAndTime(item.dataDesejada)} - ${convertDateAndTime(item.dataDevolucao)}`,
+          start: item.dataDesejada,
+          end: item.dataDevolucao,
           backgroundColor: `rgba(${Math.floor(Math.random() * 256)},${Math.floor(Math.random() * 256)},${Math.floor(Math.random() * 256)},1)`,
         };
       })
@@ -28,6 +28,7 @@ export default function ScheduleViatura({pedidosViatura}: {pedidosViatura: Pedid
               selectable={true}
               selectMirror={true}
               events={formatPedidos}
+              
         />
     )
 }

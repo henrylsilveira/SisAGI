@@ -1,4 +1,4 @@
-/* eslint-disable react/no-unescaped-entities */
+
 import {
     Box,
     Button,
@@ -283,7 +283,7 @@ export default function CautelaViaturaPage() {
                                                                 <Th textAlign="center">Itinerário</Th>
                                                                 <Th textAlign="center">Chefe Viatura</Th>
                                                                 <Th textAlign="center">Motorista</Th>
-                                                                <Th textAlign="center">Tipo Viatura</Th>
+                                                                
                                                                 <Th textAlign="center">Apresentar para</Th>
                                                                 <Th textAlign="center">Situação</Th>
                                                                 <Th textAlign="center">S/4</Th>
@@ -307,7 +307,7 @@ export default function CautelaViaturaPage() {
                                                                     </Td>
                                                                     <Td textAlign="center">{res.chefeViatura}</Td>
                                                                     <Td textAlign="center">{res.motorista}</Td>
-                                                                    <Td textAlign="center">{res.tipoViatura}</Td>
+                                                                    
                                                                     <Td textAlign="center">{res.apresentar}</Td>
                                                                     <Td textAlign="center" fontSize="small" fontWeight="bold" color={res.status === "aguardando" ? "orange.500" : res.status === "autorizado" ? "blue.500" : res.status === "recusado" ? "red.500" : "green.500"}>{res.status.toUpperCase()}</Td>
                                                                     {res.status === "aguardando" ? (
@@ -354,7 +354,7 @@ export default function CautelaViaturaPage() {
                                                                 <Th textAlign="center">Itinerário</Th>
                                                                 <Th textAlign="center">Chefe Viatura</Th>
                                                                 <Th textAlign="center">Motorista</Th>
-                                                                <Th textAlign="center">Tipo Viatura</Th>
+                                                                
                                                                 <Th textAlign="center">Apresentar para</Th>
                                                                 <Th textAlign="center">Situação</Th>
                                                                 <Th textAlign="center">S/4</Th>
@@ -431,7 +431,7 @@ export default function CautelaViaturaPage() {
                                                                             <Th textAlign="center">Data Devolução</Th>
                                                                             <Th textAlign="center">Chefe Viatura</Th>
                                                                             <Th textAlign="center">Motorista</Th>
-                                                                            <Th textAlign="center">Tipo Viatura</Th>
+                                                                            
                                                                             <Th textAlign="center">Apresentar para</Th>
                                                                             <Th textAlign="center">Situação</Th>
                                                                             <Th></Th>
@@ -445,7 +445,7 @@ export default function CautelaViaturaPage() {
                                                                                 <Td textAlign="center">{convertDate(pedido.dataDevolucao)}</Td>
                                                                                 <Td textAlign="center">{pedido.chefeViatura}</Td>
                                                                                 <Td textAlign="center">{pedido.motorista}</Td>
-                                                                                <Td textAlign="center">{pedido.tipoViatura}</Td>
+                                                                                
                                                                                 <Td textAlign="center">{pedido.apresentar}</Td>
                                                                                 <Td textAlign="center" fontSize="small" fontWeight="bold" color={pedido.status === "aguardando" ? "orange.500" : pedido.status === "autorizado" ? "blue.500" : pedido.status === "recusado" ? "red.500" : "green.500"}>{pedido.status.toUpperCase()}</Td>
                                                                                 {pedido.status === "aguardando" ? (
@@ -494,7 +494,7 @@ export default function CautelaViaturaPage() {
 
                                                                             <Th textAlign="center">Chefe Viatura</Th>
                                                                             <Th textAlign="center">Motorista</Th>
-                                                                            <Th textAlign="center">Tipo Viatura</Th>
+                                                                            
                                                                             <Th textAlign="center">Apresentar para</Th>
                                                                             <Th textAlign="center">Situação</Th>
                                                                             <Th></Th>

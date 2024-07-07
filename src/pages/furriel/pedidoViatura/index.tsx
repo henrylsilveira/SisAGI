@@ -1,4 +1,4 @@
-/* eslint-disable react/no-unescaped-entities */
+
 import {
   Box,
   Button,
@@ -462,7 +462,7 @@ export default function FurrielPedidoViatura() {
                         <Th textAlign="center">Itinerário</Th>
                         <Th textAlign="center">Chefe Viatura</Th>
                         <Th textAlign="center">Motorista</Th>
-                        <Th textAlign="center">Tipo de Viatura</Th>
+                        
                         <Th textAlign="center">Apresentar para</Th>
                         <Th textAlign="center">Situação</Th>
                         <Th textAlign="center"></Th>
@@ -492,7 +492,7 @@ export default function FurrielPedidoViatura() {
                           </Td>
                           <Td textAlign="center">{res.chefeViatura}</Td>
                           <Td textAlign="center">{res.motorista}</Td>
-                          <Td textAlign="center">{res.tipoViatura}</Td>
+                          
                           <Td textAlign="center">{res.apresentar}</Td>
                           <Td textAlign="center" fontSize="small" color={res.status === "aguardando" ? "orange.500" : res.status === "recusado" ? "red.500" : res.status === "autorizado" ? "blue.500" : "green.500"}>{res?.status?.toUpperCase()}</Td>
                           <Td textAlign="center">
@@ -555,7 +555,7 @@ export default function FurrielPedidoViatura() {
                         <Th textAlign="center">Itinerário</Th>
                         <Th textAlign="center">Chefe Viatura</Th>
                         <Th textAlign="center">Motorista</Th>
-                        <Th textAlign="center">Tipo de Viatura</Th>
+                        
                         <Th textAlign="center">Apresentar para</Th>
                         <Th textAlign="center">Situação</Th>
                         <Th textAlign="center"></Th>

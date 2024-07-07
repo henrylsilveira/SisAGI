@@ -84,6 +84,7 @@ export interface Civil {
   dataNascimento: Date;
   identidade?: string;
   cpf?: string;
+  categoria: "militar outra OM" | "civil" | "pensionista" | "reservista" | "militar inativo";
   nomePai?: string;
   nomeMae?: string;
   profissao?: string;
@@ -300,7 +301,6 @@ export type PedidoViatura = {
   intinerario?: string
   chefeViatura?: string
   motorista?: string
-  tipoViatura?: string
   dataDevolucao?: DateTime
   apresentar?: string
   observacao?: string

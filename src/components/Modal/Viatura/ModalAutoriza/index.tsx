@@ -150,14 +150,6 @@ export function AutorizaViaturaModal({ pedido, atualizar }: CautelaModalProps) {
                                 </Flex>
                                 <Flex gap={2}>
                                     <Text>
-                                        Tipo de Viatura
-                                    </Text>
-                                    <Text color="gray.500">
-                                        {pedido.tipoViatura.toUpperCase()}
-                                    </Text>
-                                </Flex>
-                                <Flex gap={2}>
-                                    <Text>
                                         Apresentar para
                                     </Text>
                                     <Text color="gray.500">
