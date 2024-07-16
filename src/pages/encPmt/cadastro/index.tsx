@@ -13,6 +13,7 @@ import {
   Table,
   TableContainer,
   Tbody,
+  Text,
   Td,
   Tfoot,
   Th,
@@ -37,6 +38,10 @@ import Router from "next/router";
 import Head from "next/head";
 import { TbShoppingCartPlus } from "react-icons/tb";
 import { useSession } from "../../../services/context/auth";
+import { calculaDisponibilidade } from "../../../utils/scripts";
+import { GiNotebook } from "react-icons/gi";
+import PopoverManutencao from "../../../components/Pmt/PopoverManutencao";
+import { DrawerManutencao } from "../../../components/CmtGda/DrawerManutencao";
 
 
 const signInFormSchema = yup.object().shape({
@@ -69,7 +74,6 @@ export default function CadastroViatura() {
     async () => {
       const result = await api.get<Viatura[]>("/veiculos");
       setResult(result);
-      console.log(result.data);
       return result;
     }
   );
@@ -85,7 +89,6 @@ export default function CadastroViatura() {
 
   const handleSignIn: SubmitHandler<Viatura> = async (values) => {
     try {
-    console.log(values)
 
       const result = await api.post("/veiculo/create", values);
       if (result.status == 201) {
@@ -173,7 +176,7 @@ export default function CadastroViatura() {
                   <Icon as={TbShoppingCartPlus} w={6} h={6} pr={2} /> Cadastrar viatura
                 </Button>
               </Flex>
-              {createPedido ?
+              {createPedido &&
                 <>
                   <Grid
                     gridTemplateColumns={["1fr", "1fr 1fr", "1fr 1fr 1fr"]}
@@ -230,7 +233,7 @@ export default function CadastroViatura() {
                     OK
                   </Button>
                 </>
-                : null}
+              }
               <Flex
                 bg="gray.990"
                 boxShadow="buttonShadow"
@@ -243,14 +246,22 @@ export default function CadastroViatura() {
                 <Heading fontSize="2xl" my="4">
                   Viaturas {isLoading ? <Spinner ml={8} /> : ""}{" "}
                 </Heading>
-                <IconButton
-                  bg="blue.700"
-                  float="right"
-                  _hover={{ bgColor: "blue.900" }}
-                  onClick={() => refetch()}
-                  aria-label="Atualizar tabela"
-                  icon={<SlRefresh />}
-                />
+                <Flex gap={2} alignItems={"center"}>
+                  <Flex bg="gray.990"
+                    boxShadow="buttonShadow" gap={2} align={"center"} p={2} fontWeight={"bold"} >
+                    Disponibilidade: <Text w={"65px"} textAlign={"center"} boxShadow="buttonShadow" rounded={"full"} bg={Number(calculaDisponibilidade(data?.data)) > 60 ? "green.800" : Number(calculaDisponibilidade(data?.data)) < 60 && Number(calculaDisponibilidade(data?.data)) > 30 ? "yellow.800" : "red.800"} color={"white"} p={2}>{calculaDisponibilidade(data?.data)}%</Text>
+                  </Flex>
+                  <IconButton
+                    color={"white"}
+                    boxShadow="buttonShadow"
+                    bg="blue.700"
+                    float="right"
+                    _hover={{ bgColor: "blue.900" }}
+                    onClick={() => refetch()}
+                    aria-label="Atualizar tabela"
+                    icon={<SlRefresh />}
+                  />
+                </Flex>
               </Flex>
 
               <TableContainer>
@@ -268,8 +279,8 @@ export default function CadastroViatura() {
                     {data?.data.map((res) => (
                       <Tr key={res.id}>
                         <Td textAlign="center">{res.eb}</Td>
-                        <Td textAlign="center">{res.tipo}</Td>
-                        <Td textAlign="center">{res.tipoTransporte}</Td>
+                        <Td textAlign="center">{res.tipo.toUpperCase()}</Td>
+                        <Td textAlign="center">{res.tipoTransporte.toUpperCase()}</Td>
                         <Td textAlign="center" fontWeight="bold" color={res.situacao === "disponivel" ? "green.500" : res.situacao === "indisponivel" ? "red.500" : "yellow.500"}>{res.situacao?.toLocaleUpperCase()}</Td>
                         <Td>
                           {res.situacao === "disponivel" ?
@@ -284,16 +295,21 @@ export default function CadastroViatura() {
                               <Icon as={FaTools} color="white" size={20} />
                             </Button>
                             : res.situacao === "indisponivel" ?
-                              <Button
-                                bg="green.600"
-                                size="sm"
-                                _hover={{ backgroundColor: "green.800" }}
-                                onClick={() => handleUpdateStatus({ id: res.id, situacao: "disponivel" })}
-                                py="1"
-                                boxShadow="buttonShadow"
-                              >
-                                <Icon as={FaTools} color="white" size={20} />
-                              </Button>
+                              <Flex gap={2}>
+                                <Button
+                                  bg="green.600"
+                                  size="sm"
+                                  _hover={{ backgroundColor: "green.800" }}
+                                  onClick={() => handleUpdateStatus({ id: res.id, situacao: "disponivel" })}
+                                  py="1"
+                                  boxShadow="buttonShadow"
+                                >
+                                  <Icon as={FaTools} color="white" size={20} />
+                                </Button>
+                                <PopoverManutencao viaturaId={res.id} nomeViatura={res.tipo} refetch={refetch} />
+                                <DrawerManutencao viatura={res} />
+                              </Flex>
+
                               : null
                           }
 

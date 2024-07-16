@@ -181,6 +181,9 @@ export default function ManutencaoArmamento() {
                     value={armamento}
                     onChange={(e) => setArmamento(e.target.value)}
                   >
+                    <option>
+                        Selecione
+                      </option>
                     {nomeArmamentos.map((arm, index) => (
                       <option value={arm} key={index}>
                         {arm}
@@ -222,6 +225,7 @@ export default function ManutencaoArmamento() {
                 w="24"
                 mr={4}
                 ml="auto"
+                color={"white"}
               >
                 OK
               </Button>
@@ -243,10 +247,11 @@ export default function ManutencaoArmamento() {
                   _hover={{ bgColor: "blue.900" }}
                   onClick={() => refetch()}
                   aria-label="Atualizar tabela"
+                  color={"white"}
                   icon={<SlRefresh />}
                 />
               </Flex>
-                      {!manutencoes?.data ? (
+                      {manutencoes?.data ? (
                         <TableContainer>
                 <Table size="sm" colorScheme="whiteAlpha">
                   <Thead>

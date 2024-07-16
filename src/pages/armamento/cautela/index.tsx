@@ -184,6 +184,7 @@ export default function CautelaArmamento() {
                         })
                         .map((arma: Armamento, index) => (
                           <Tag
+                          mb={2}
                             boxShadow="buttonShadow"
                             size="lg"
                             key={index + arma.id}
@@ -254,15 +255,16 @@ export default function CautelaArmamento() {
                               <Popover placement="top-start">
                                 <PopoverTrigger>
                                   <Button
-                                    w={20}
-                                    rounded="base"
+                                    w={6}
+                                    h={5}
+                                    rounded="full"
                                     bg="green.900"
                                     _hover={{ bgColor: "green.800" }}
                                     boxShadow="buttonShadow"
                                     mx="auto"
                                   >
                                     <Icon
-                                      boxSize={5}
+                                      boxSize={4}
                                       color="green.400"
                                       as={TiInfoLarge}
                                     />

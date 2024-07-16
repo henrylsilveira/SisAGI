@@ -118,12 +118,12 @@ export function SidebarNav() {
           <NavLink href="/armamento/cadastro" icon={RiDraftLine}>
             Cadastrar
           </NavLink>
-          {/* <NavLink href="/armamento/manutencao" icon={FaTools}>
+          <NavLink href="/armamento/manutencao" icon={FaTools}>
             Manutenção
           </NavLink>
           <NavLink href="/armamento/vinculos" icon={FaPeopleCarry}>
             Vínculos
-          </NavLink> */}
+          </NavLink>
           <NavLink href="/armamento/cautela" icon={GiTrade}>
             Cautelar
           </NavLink>
@@ -192,9 +192,9 @@ export function SidebarNav() {
           {/* <NavLink href="/cmtGda/civil" icon={BsFillPersonLinesFill}>
             Civil
           </NavLink> */}
-          <NavLink href="/cmtGda/viatura" icon={GiTruck}>
+          {/* <NavLink href="/cmtGda/viatura" icon={GiTruck}>
             Viatura
-          </NavLink>
+          </NavLink> */}
         </NavSection>
       ) : null}
     </Stack>

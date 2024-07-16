@@ -23,6 +23,8 @@ import { useQuery } from "react-query";
 import { convertDate } from "../../utils/scripts";
 import { NotData } from "../NotData";
 import { useSession } from "../../services/context/auth";
+import { BiLock } from "react-icons/bi";
+import { ModalValidate } from "../Modal/Armamento/ModalValidate";
 
 export function ArmamentoComponentPainel() {
   const { user: session } = useSession(); 
@@ -122,6 +124,7 @@ export function ArmamentoComponentPainel() {
                 <Th textAlign="center">Armamento</Th>
                 <Th textAlign="center">Observação</Th>
                 <Th textAlign="center">Fechamento</Th>
+                <Th textAlign="center">Cautela</Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -139,6 +142,20 @@ export function ArmamentoComponentPainel() {
                       </Badge>
                     )}
                   </Td>
+                  <Td justifyItems="center">
+                          {arm.validado ? (
+                            <Circle
+                              mx="auto"
+                              size="40px"
+                              boxShadow="md"
+                              bg="gray.990"
+                            >
+                              <BiLock size={24} color="#00AA00" />
+                            </Circle>
+                          ) : (
+                            <ModalValidate data={arm} />
+                          )}
+                        </Td>
                 </Tr>
               ))}
             </Tbody>
@@ -148,6 +165,7 @@ export function ArmamentoComponentPainel() {
                 <Th textAlign="center">Armamento</Th>
                 <Th textAlign="center">Observação</Th>
                 <Th textAlign="center">Fechamento</Th>
+                <Th textAlign="center">Cautela</Th>
               </Tr>
             </Tfoot>
           </Table>

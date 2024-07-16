@@ -1,5 +1,5 @@
 
-import { Militar, PedidosVariasViaturasProps, PedidoViatura } from "../@types/types";
+import { Militar, PedidosVariasViaturasProps, PedidoViatura, Viatura } from "../@types/types";
 import { api } from "../services/api";
 
 export function convertDate(iso: string | number | Date) {
@@ -186,4 +186,8 @@ export function returnComboios(pedidos : PedidoViatura[]){
           count: pedidos.filter(comboio => comboio.dataDesejada === hora).length
       }
   })
+}
+
+export function calculaDisponibilidade(data: Viatura[]) {
+  return ((data?.filter(viatura => viatura.situacao !== 'indisponivel').length / data?.length) * 100).toFixed(0)
 }
