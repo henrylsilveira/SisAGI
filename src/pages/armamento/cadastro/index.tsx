@@ -1,5 +1,6 @@
 
 import {
+  Badge,
   Box,
   Button,
   Flex,
@@ -33,6 +34,9 @@ import { Input } from "../../../components/Form/Input";
 import { SlRefresh } from "react-icons/sl";
 import { Armamento } from "../../../@types/types";
 import { useSession } from "../../../services/context/auth";
+import { DrawerEditarArmamento } from "../../../components/Armeiro/DrawerEditarArmamento";
+import { returnNomesArmamentos } from "../../../utils/scripts";
+import { DrawerManutencaoArmamento } from "../../../components/Armeiro/DrawerManutencaoArmamento";
 
 const signInFormSchema = yup.object().shape({
   nome: yup.string().required("Nome do armamento obrigatório."),
@@ -48,17 +52,27 @@ const signInFormSchema = yup.object().shape({
 export default function Cadastro() {
   const { user: session, status } = useSession();
   const [result, setResult] = useState({});
+  const [nomesArmamentos, setNomesArmamentos] = useState([] as string[]);
   const toast = useToast();
 
   const { isLoading, error, data, isFetching, refetch } = useQuery(
-    ["todosArmamentos"],
+    ["todosArmamentosCia"],
     async () => {
-      const result = await api.get("/armamentos");
+      const result = await api.get(`/armamentos/${session?.companhia}`);
       setResult(result);
       return result;
     }
   );
 
+  useQuery(
+    ["todosNomesArmamentosCia"],
+    async () => {
+      const result = await api.get("/armamentos/nomes");
+      if (result.data) {
+        setNomesArmamentos(returnNomesArmamentos(result?.data as Armamento[]))
+      }
+    }
+  );
   const {
     register,
     handleSubmit,
@@ -131,6 +145,7 @@ export default function Cadastro() {
             >
               <FormControl>
                 <Input
+                  array={nomesArmamentos}
                   size="sm"
                   rounded="lg"
                   label="Nome"
@@ -139,6 +154,7 @@ export default function Cadastro() {
                   error={errors.nome}
                   {...register("nome")}
                 />
+
               </FormControl>
               <FormControl>
                 <Input
@@ -241,68 +257,86 @@ export default function Cadastro() {
               OK
             </Button>
             <Flex
-            bg="gray.990"
-            boxShadow="buttonShadow"
-            px={2}
-            my={4}
-            rounded="base"
-            alignItems="center"
-            justifyContent="space-between"
-          >
-            <Heading fontSize="2xl" my="4">
-              Armamentos {isLoading ? <Spinner ml={8} /> : ""}{" "}
-            </Heading>
-            <IconButton
-              bg="blue.700"
-              float="right"
-              _hover={{ bgColor: "blue.900" }}
-              onClick={() => refetch()}
-              aria-label="Atualizar tabela"
-              icon={<SlRefresh />}
-            />
+              bg="gray.990"
+              boxShadow="buttonShadow"
+              px={2}
+              my={4}
+              rounded="base"
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              <Heading fontSize="2xl" my="4">
+                Armamentos
+              </Heading>
+              <IconButton
+                bg="blue.700"
+                float="right"
+                color={"white"}
+                boxShadow="buttonShadow"
+                _hover={{ bgColor: "blue.900" }}
+                onClick={() => refetch()}
+                aria-label="Atualizar tabela"
+                icon={<SlRefresh />}
+              />
+            </Flex>
+
+            <TableContainer>
+              <Table size="sm" colorScheme="whiteAlpha">
+                <Thead>
+                  <Tr>
+                    <Th textAlign="center">Nome</Th>
+                    <Th textAlign="center">Nr Série</Th>
+                    <Th textAlign="center">Tipo</Th>
+                    <Th textAlign="center">Emprego</Th>
+                    <Th textAlign="center">Condições</Th>
+                    <Th textAlign="center">Companhia</Th>
+                    <Th textAlign="center">Status</Th>
+                    <Th textAlign="center">Ações</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {data?.data.map((res: Armamento) => (
+                    <Tr key={res.id}>
+                      <Td textAlign="center">{res.nome}</Td>
+                      <Td textAlign="center">{res.nr_serie}</Td>
+                      <Td textAlign="center">{res.tipo}</Td>
+                      <Td textAlign="center">{res.emprego}</Td>
+                      <Td textAlign="center">{res.condicoes}</Td>
+                      <Td textAlign="center">{res.companhia}</Td>
+                      <Td textAlign="center">
+                        {res.status !== "disponivel" ? (
+                          <Badge variant="outline" colorScheme="red">
+                            {res.status}
+                          </Badge>
+                        ) : (
+                          <Badge variant="outline" colorScheme="green">
+                            {res.status}
+                          </Badge>
+                        )}
+                      </Td>
+                      <Td textAlign="center">
+                        <DrawerEditarArmamento armamento={res} refetch={refetch} />
+                        <DrawerManutencaoArmamento armamento={res} />
+                      </Td>
+                    </Tr>
+                  ))}
+                </Tbody>
+                <Tfoot>
+                  <Tr>
+                    <Th textAlign="center">Nome</Th>
+                    <Th textAlign="center">Condições</Th>
+                    <Th textAlign="center">Quantidade</Th>
+                    <Th textAlign="center">Companhia</Th>
+                    <Th textAlign="center">Codigo</Th>
+                    <Th textAlign="center">Cauteladas</Th>
+                    <Th textAlign="center">Disponíveis</Th>
+                    <Th textAlign="center">Ações</Th>
+                  </Tr>
+                </Tfoot>
+              </Table>
+            </TableContainer>
           </Flex>
 
-          <TableContainer>
-            <Table size="sm" colorScheme="whiteAlpha">
-              <Thead>
-                <Tr>
-                  <Th textAlign="center">Nome</Th>
-                  <Th textAlign="center">Nr Série</Th>
-                  <Th textAlign="center">Tipo</Th>
-                  <Th textAlign="center">Emprego</Th>
-                  <Th textAlign="center">Condições</Th>
-                  <Th textAlign="center">Companhia</Th>
-                  <Th textAlign="center">Status</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {data?.data.map((res) => (
-                  <Tr key={res.id}>
-                    <Td textAlign="center">{res.nome}</Td>
-                    <Td textAlign="center">{res.nr_serie}</Td>
-                    <Td textAlign="center">{res.tipo}</Td>
-                    <Td textAlign="center">{res.emprego}</Td>
-                    <Td textAlign="center">{res.condicoes}</Td>
-                    <Td textAlign="center">{res.companhia}</Td>
-                    <Td textAlign="center">{res.status}</Td>
-                  </Tr>
-                ))}
-              </Tbody>
-              <Tfoot>
-                <Tr>
-                  <Th textAlign="center">Nome</Th>
-                  <Th textAlign="center">Condições</Th>
-                  <Th textAlign="center">Quantidade</Th>
-                  <Th textAlign="center">Companhia</Th>
-                  <Th textAlign="center">Codigo</Th>
-                  <Th textAlign="center">Cauteladas</Th>
-                  <Th textAlign="center">Disponíveis</Th>
-                </Tr>
-              </Tfoot>
-            </Table>
-          </TableContainer>
-          </Flex>
-          
         </Box>
       </SimpleGrid>
     </Flex>

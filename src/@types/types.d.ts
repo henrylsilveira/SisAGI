@@ -139,7 +139,7 @@ export interface Armamento {
   cabide?: string;
   cautelaArmamento?: CautelaArmamento[];
   ArmamentoMilitar?: ArmamentoMilitar;
-  Manutencao?: Manutencao;
+  Manutencao?: Manutencao[];
 }
 
 export type ArmamentoArray = Armamento[];

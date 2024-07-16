@@ -282,7 +282,7 @@ export default function CadastroViatura() {
                         <Td textAlign="center">{res.tipo.toUpperCase()}</Td>
                         <Td textAlign="center">{res.tipoTransporte.toUpperCase()}</Td>
                         <Td textAlign="center" fontWeight="bold" color={res.situacao === "disponivel" ? "green.500" : res.situacao === "indisponivel" ? "red.500" : "yellow.500"}>{res.situacao?.toLocaleUpperCase()}</Td>
-                        <Td>
+                        <Td w={"200px"}>
                           {res.situacao === "disponivel" ?
                             <Button
                               bg="yellow.600"
