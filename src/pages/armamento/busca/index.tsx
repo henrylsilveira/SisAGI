@@ -228,7 +228,7 @@ export default function BuscaArmamento() {
                                 ? " - " + cautela.armamento.cabide
                                 : ""}
                             </TagLabel>
-                            <BsBoxArrowUp />
+                            {/* <BsBoxArrowUp /> */}
                           </Tag>
                         ))}
                     </AccordionPanel>

@@ -35,7 +35,7 @@ interface ModalCautelaProps {
   refresh: () => {}
 }
 
-export function ModalCautela({ data: militares,  dataArmamento: armamento, adapter, refresh }: ModalCautelaProps) {
+export function ModalCautela({ data: militares, dataArmamento: armamento, adapter, refresh }: ModalCautelaProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { user: session, status } = useSession();
   const toast = useToast();
@@ -48,12 +48,12 @@ export function ModalCautela({ data: militares,  dataArmamento: armamento, adapt
     e.preventDefault();
 
     const values = {
-    militarNome: session.post_grad+' '+session.nome_guerra, //NOME DO MILITAR COM A SESSÃO
-    armamentoId: armamento.id,
-    cautelouId: militar,
-    observacao,
-    companhia: armamento.companhia,
-    senha
+      militarNome: session.post_grad + ' ' + session.nome_guerra, //NOME DO MILITAR COM A SESSÃO
+      armamentoId: armamento.id,
+      cautelouId: militar,
+      observacao,
+      companhia: armamento.companhia,
+      senha
     }
 
     try {
@@ -61,7 +61,7 @@ export function ModalCautela({ data: militares,  dataArmamento: armamento, adapt
       if (result.status === 201) {
         toast({
           title: "Cautela",
-          description: senha ? "A cautela foi criada e VALIDADA com sucesso." :  "A cautela foi criada com sucesso SEM VALIDAÇÃO.",
+          description: senha ? "A cautela foi criada e VALIDADA com sucesso." : "A cautela foi criada com sucesso SEM VALIDAÇÃO.",
           status: "success",
           duration: 2000,
           isClosable: true,
@@ -92,7 +92,7 @@ export function ModalCautela({ data: militares,  dataArmamento: armamento, adapt
 
   return (
     <>
-    {adapter ? (<Circle
+      {adapter ? (<Circle
         bg="green.800"
         size="28px"
         rounded='full'
@@ -107,59 +107,61 @@ export function ModalCautela({ data: militares,  dataArmamento: armamento, adapt
         size="xs"
         _hover={{ bgColor: "green.800" }}
         boxShadow='buttonShadow'
+        textColor={"white"}
         onClick={onOpen}
         py="1"
       >
         <Icon boxSize={4} as={BsBoxArrowRight} pr={1} />
         Cautelar
       </Button>)}
-      
+
       <Modal finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent>
-          <ModalHeader roundedTop={4} bg="gray.800">
+        <ModalContent bg="gray.990" border={"1px"} borderColor={"green.700"} >
+          <ModalHeader roundedTop={4} >
             <Heading textAlign='center' size='lg'>
-            Criar cautela
+              Criar cautela
 
             </Heading>
           </ModalHeader>
           <ModalCloseButton />
-          <ModalBody bg="gray.800">
+          <Divider borderColor={"green.700"} />
+          <ModalBody>
             <Stack pb={4}>
-                <Flex justifyContent='space-between'>
-                    <Text>Nome: {armamento.nome}</Text>
-                <Text>Nr de Série: {armamento.nr_serie}</Text>
-                </Flex>
-                <Flex justifyContent='space-between'>
-                    <Text>SU: {armamento.companhia}</Text>
-                    <Text>Situação: {armamento.status}</Text>
-                </Flex>
-                    <Text>Condição: {armamento.condicoes}</Text>
+              <Flex justifyContent='space-between'>
+                <Text display={"flex"} gap={2}>Nome: <Text color={"gray.400"}>{armamento.nome}</Text></Text>
+                <Text display={"flex"} gap={2}>Nr de Série: <Text color={"gray.400"}>{armamento.nr_serie}</Text></Text>
+              </Flex>
+              <Flex justifyContent='space-between'>
+                <Text display={"flex"} gap={2}>SU: <Text color={"gray.400"}>{armamento.companhia}</Text></Text>
+                <Text display={"flex"} gap={2}>Situação: <Text color={"gray.400"}>{armamento.status}</Text></Text>
+              </Flex>
+              <Text display={"flex"} gap={2}>Condição: <Text color={"gray.400"}>{armamento.condicoes}</Text></Text>
             </Stack>
-            <Divider />
+            <Divider borderColor={"green.700"} />
             <FormControl py={4}>
               <FormLabel htmlFor="postoGrad">Militar</FormLabel>
               <Input
                 as="select"
                 focusBorderColor="green.500"
                 name="militar"
-                bgColor="gray.900"
+                bgColor="gray.990"
                 textColor="gray.200"
                 variant="filled"
-                _hover={{ bgColor: "gray.900" }}
+                _hover={{ bgColor: "gray.990" }}
                 size="lg"
                 placeholder="Selecione"
                 onChange={(e) => setMilitar(e.target.value)}
               >
                 <option value=''>Selecione</option>
                 {militares?.data ? militares?.data.map((militar: Militar) => (
-                  <option key={militar.id} value={militar.id} >{militar.post_grad+' '+militar.nome_guerra}</option>
+                  <option key={militar.id} value={militar.id} >{militar.post_grad + ' ' + militar.nome_guerra}</option>
                 )) : null}
               </Input>
             </FormControl>
             <FormControl my={2}>
               <Input
-              as='textarea'
+                as='textarea'
                 name="observacao"
                 isRequired
                 value={observacao}
@@ -187,10 +189,11 @@ export function ModalCautela({ data: militares,  dataArmamento: armamento, adapt
               </FormHelperText>
             </FormControl>
           </ModalBody>
-          <ModalFooter justifyContent='space-evenly' roundedBottom={4} bg="gray.800">
+          <Divider borderColor={"green.700"} />
+          <ModalFooter justifyContent='space-evenly' roundedBottom={4}>
             <Button
-              boxShadow="md"
-              colorScheme="yellow"
+              boxShadow="buttonShadow"
+              colorScheme="blue"
               mr={3}
               onClick={(e) => handleSubmit(e)}
               disabled={militar && !senha ? false : true}
@@ -198,8 +201,8 @@ export function ModalCautela({ data: militares,  dataArmamento: armamento, adapt
               Sem Validar
             </Button>
             <Button
-              boxShadow="md"
-              colorScheme="blue"
+              boxShadow="buttonShadow"
+              colorScheme="green"
               mr={3}
               onClick={(e) => handleSubmit(e)}
               disabled={senha && militar ? false : true}

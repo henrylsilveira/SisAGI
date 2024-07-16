@@ -4,8 +4,9 @@ import { MdCheck } from "react-icons/md";
 import { ControleGuardaRegistros } from "../../@types/types";
 import { returnAvatarImage, convertDateAndTime } from "../../utils/scripts";
 import { NotData } from "../NotData";
+import PopoverDestino from "../CmtGda/PopoverDestino";
 
-export default function ViewGrid({ data, handleSubmitForm, finalizados }: { data: ControleGuardaRegistros[], handleSubmitForm: Function, finalizados: boolean }) {
+export default function ViewGrid({ data, handleSubmitForm, finalizados, refetch }: { data: ControleGuardaRegistros[], handleSubmitForm: Function, finalizados: boolean, refetch: () => void }) {
 
     return (
         <Flex flexDirection="column">
@@ -27,7 +28,10 @@ export default function ViewGrid({ data, handleSubmitForm, finalizados }: { data
                             boxShadow="buttonShadow"
                             m={4}
                             h="auto" alignItems="center" gap={2} p={2} justify="space-between"
+
                         >
+
+
                             {finalizados && registro.status === "finalizado" ? (
                                 <Flex zIndex={10} w={10} h={10} justifyContent="center" borderBottomLeftRadius="full" shadow="buttonShadow" align="center" bgGradient="linear(to-tr, green.900, green.600, green.400)" position="absolute" right={0} top={0}>
                                     <Flex position="absolute" right={2} top={2}>
@@ -38,7 +42,7 @@ export default function ViewGrid({ data, handleSubmitForm, finalizados }: { data
                             ) : null}
                             <Avatar size='xl' name={registro.militar?.nome_guerra ? registro.militar?.nome_guerra : registro.civil?.nomeCompleto} src={registro.militar?.nome_guerra ? returnAvatarImage(registro.militar?.avatar_url) : returnAvatarImage(registro.civil?.foto)} />
                             <Flex flexDirection="column" gap={2}>
-                                <Text>{registro.militar?.nome_guerra ? registro.militar?.post_grad + " " + registro.militar?.nome_guerra : registro.civil?.nomeCompleto}</Text>
+                                <Text textTransform={"uppercase"}>{registro.militar?.nome_guerra ? registro.militar?.post_grad + " " + registro.militar?.nome_guerra : registro.civil?.nomeCompleto}</Text>
                                 <Flex alignItems="center" gap={2} bg="green.900" borderRadius={20} px={2}>
                                     <GoSignIn color="white" />
                                     <Text fontSize="sm" >{registro.entrada ? convertDateAndTime(registro.entrada) : "-"}</Text>
@@ -48,6 +52,9 @@ export default function ViewGrid({ data, handleSubmitForm, finalizados }: { data
                                         <GoSignOut color="white" />
                                         <Text fontSize="sm">{registro.saida ? convertDateAndTime(registro.saida) : "-"}</Text>
                                     </Flex>
+                                </Flex>
+                                <Flex bg={"gray.990"} shadow={"buttonShadow"} align={"center"} px={2} py={1} >
+                                    Destino: {registro.destino ? registro.destino : <PopoverDestino small id={registro.id} nome={registro.militar?.nome_guerra ? registro.militar?.post_grad + " " + registro.militar?.nome_guerra : registro.civil?.nomeCompleto} refetch={refetch} />}
                                 </Flex>
                             </Flex>
                             <Flex flexDirection="column" gap={1}>
@@ -85,6 +92,7 @@ export default function ViewGrid({ data, handleSubmitForm, finalizados }: { data
                             m={4}
                             h="auto" alignItems="center" gap={2} p={2} justify="space-between"
                         >
+
                             {finalizados && registro.status === "finalizado" ? (
                                 <Flex zIndex={10} w={10} h={10} justifyContent="center" borderBottomLeftRadius="full" shadow="buttonShadow" align="center" bgGradient="linear(to-tr, green.900, green.600, green.400)" position="absolute" right={0} top={0}>
                                     <Flex position="absolute" right={2} top={2}>
@@ -95,7 +103,7 @@ export default function ViewGrid({ data, handleSubmitForm, finalizados }: { data
                             ) : null}
                             <Avatar size='xl' name={registro.militar?.nome_guerra ? registro.militar?.nome_guerra : registro.civil?.nomeCompleto} src={registro.militar?.nome_guerra ? returnAvatarImage(registro.militar?.avatar_url) : returnAvatarImage(registro.civil?.foto)} />
                             <Flex flexDirection="column" gap={2}>
-                                <Text>{registro.militar?.nome_guerra ? registro.militar?.post_grad + " " + registro.militar?.nome_guerra : registro.civil?.nomeCompleto}</Text>
+                                <Text  textTransform={"uppercase"}>{registro.militar?.nome_guerra ? registro.militar?.post_grad + " " + registro.militar?.nome_guerra : registro.civil?.nomeCompleto}</Text>
                                 <Flex alignItems="center" gap={2} bg="green.900" borderRadius={20} px={2}>
                                     <GoSignIn color="white" />
                                     <Text fontSize="sm" >{registro.entrada ? convertDateAndTime(registro.entrada) : "-"}</Text>
@@ -105,6 +113,9 @@ export default function ViewGrid({ data, handleSubmitForm, finalizados }: { data
                                         <GoSignOut color="white" />
                                         <Text fontSize="sm">{registro.saida ? convertDateAndTime(registro.saida) : "-"}</Text>
                                     </Flex>
+                                </Flex>
+                                <Flex bg={"gray.990"} shadow={"buttonShadow"} align={"center"} px={2} py={1} >
+                                    Destino: {registro.destino ? registro.destino : <PopoverDestino small id={registro.id} nome={registro.militar?.nome_guerra ? registro.militar?.post_grad + " " + registro.militar?.nome_guerra : registro.civil?.nomeCompleto} refetch={refetch} />}
                                 </Flex>
                             </Flex>
                             <Flex flexDirection="column" gap={1}>

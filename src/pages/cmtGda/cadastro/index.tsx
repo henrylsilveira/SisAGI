@@ -216,7 +216,7 @@ export default function CadastroCivil() {
                                     Dados Pessoais
                                 </Heading>
                                 <Flex>
-                                    <Button mr={2} colorScheme='facebook' size='sm' onClick={handleNovoCadastro}>
+                                    <Button mr={2} colorScheme='facebook' size='sm' shadow={"buttonShadow"} onClick={handleNovoCadastro}>
                                         <Icon as={FiUserPlus} w={4} h={4} />
                                     </Button>
                                     <PesquisarCivil civil={setCivil} />

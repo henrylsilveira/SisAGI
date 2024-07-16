@@ -19,6 +19,7 @@ import { PesquisarMilitarCivil } from "../../../components/Drawer/CmtGda";
 import { useQuery } from "react-query";
 import { useState } from "react";
 import ViewTable from "../../../components/ViewData/ViewTable";
+import ViewGrid from "../../../components/ViewData/ViewGrid";
 
 export default function ControleGuarda() {
     const [finalizados, setFinalizados] = useState(false)
@@ -104,10 +105,10 @@ export default function ControleGuarda() {
                                     </Stack>
                                     <Text fontSize="sm">Finalizados</Text>
                                     <Flex shadow={"buttonShadow"} bg={"gray.990"} rounded={"base"}>
-                                        <Button bg={"transparent"} colorScheme={"green"}>
+                                        <Button bg={"transparent"} colorScheme={"green"} onClick={() => setChangeView(true)}>
                                             <TfiLayoutListThumb color="green.600" fontSize={"20"} />
                                         </Button>
-                                        <Button bg={"transparent"} colorScheme={"green"}>
+                                        <Button bg={"transparent"} colorScheme={"green"} onClick={() => setChangeView(false)}>
                                             <CgLayoutList color="green.600" fontSize={"20"} />
                                         </Button>
                                     </Flex>
@@ -115,8 +116,11 @@ export default function ControleGuarda() {
                                 <PesquisarMilitarCivil refresh={refetch} />
                             </Flex>
                             {/* CONTINUAR COM UM MODAL OU JANELA QUE SALVE O DESTINO DE QUEM ENTROU */}
-                            {/* <ViewGrid data={data?.data} handleSubmitForm={handleSubmitForm} finalizados={finalizados} /> */}
-                            <ViewTable data={data?.data} handleSubmitForm={handleSubmitForm} finalizados={finalizados} />
+                            { changeView ? 
+                            <ViewGrid data={data?.data} handleSubmitForm={handleSubmitForm} finalizados={finalizados} refetch={refetch} />
+                        : <ViewTable data={data?.data} handleSubmitForm={handleSubmitForm} finalizados={finalizados} refetch={refetch} />}
+                            
+                            
 
                         </Flex>
                     </Box>

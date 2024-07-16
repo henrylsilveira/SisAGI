@@ -1,15 +1,14 @@
-import { useDisclosure, Button, Drawer, DrawerOverlay, DrawerContent, Text, DrawerCloseButton, DrawerHeader, DrawerBody, DrawerFooter, Flex, VStack, HStack, useToast, Grid } from "@chakra-ui/react"
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
-import { MdOutlinePersonSearch } from "react-icons/md"
-import { GoSignOut, GoSignIn } from "react-icons/go";
-import { Civil, CivilArray, MilitarArray } from "../../../@types/types"
-import { api } from "../../../services/api"
-import { useQuery } from "react-query"
-import { Input } from "../../Form/Input"
+import { Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerHeader, DrawerOverlay, Flex, Grid, HStack, Text, useDisclosure, useToast, VStack } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { GoSignIn, GoSignOut } from "react-icons/go";
+import { MdOutlinePersonSearch } from "react-icons/md";
+import { useQuery } from "react-query";
+import { CivilArray, MilitarArray } from "../../../@types/types";
+import { api } from "../../../services/api";
+import { Input } from "../../Form/Input";
 
-import { Router } from "next/router";
-import { convertDate, convertDateAndTime, generateNowISOTime } from "../../../utils/scripts";
 import { useSession } from "../../../services/context/auth";
+import { convertDateAndTime, generateNowISOTime } from "../../../utils/scripts";
 
 export function PesquisarMilitarCivil(props: any) {
   const { refresh } = props

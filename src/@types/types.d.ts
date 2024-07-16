@@ -291,7 +291,17 @@ export type Viatura = {
   tipo?: string;
   tipoTransporte?: string;
   situacao: "disponivel" | "indisponivel" | "cautelado"
+  ManutencaoViatura?: ManutencaoViatura[]
 }
+
+export type ManutencaoViatura = {
+  id: string
+  data: DateTime
+  motivo: string
+  viaturaId: string
+  viatura: Viatura
+}
+
 
 export type PedidoViatura = {
   id?: string

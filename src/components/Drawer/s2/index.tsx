@@ -31,14 +31,13 @@ export function PesquisarCivil(props: any) {
     }, [result, search])
 
     function selectCivil(civil: Civil, onClose: () => void) {
-        console.log(civil)
         setCivil(civil)
         onClose()
     }
 
     return (
         <>
-            <Button mr={2} ref={btnRef} leftIcon={<MdOutlinePersonSearch fontSize="20" />} colorScheme='whatsapp' size='sm' onClick={onOpen}>
+            <Button mr={2} shadow={"buttonShadow"} ref={btnRef} leftIcon={<MdOutlinePersonSearch fontSize="20" />} colorScheme='whatsapp' size='sm' onClick={onOpen}>
                 Pesquisar
             </Button>
             <Drawer

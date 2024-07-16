@@ -232,6 +232,7 @@ export default function Cadastro() {
               size="sm"
               type="submit"
               isLoading={formState.isSubmitting}
+              textColor={"white"}
               w="24"
               mt={4}
               ml="auto"

@@ -1,6 +1,5 @@
 import {
     useDisclosure,
-    Button,
     Modal,
     ModalOverlay,
     ModalContent,
@@ -11,7 +10,9 @@ import {
     useToast,
     Icon,
     FormHelperText,
-    FormControl
+    FormControl,
+    Divider,
+    Button
   } from "@chakra-ui/react";
   import React, { FormEvent, useState } from "react";
   import { Input } from "../../../Form/Input";
@@ -90,6 +91,7 @@ import { useSession } from "../../../../services/context/auth";
         size="xs"
         _hover={{ bgColor: "red.800" }}
         onClick={onOpen}
+        color={"white"}
         py="1"
       >
         <Icon as={BiX} boxSize={5} pr={1} />
@@ -97,10 +99,11 @@ import { useSession } from "../../../../services/context/auth";
       </Button>
         <Modal finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
-          <ModalContent>
-            <ModalHeader roundedTop={4} bg="gray.800">Encerrar cautela</ModalHeader>
+          <ModalContent bg={"gray.990"} border={"1px"} borderColor={"green.600"}>
+            <ModalHeader roundedTop={4}>Encerrar cautela</ModalHeader>
             <ModalCloseButton />
-            <ModalBody bg="gray.800">
+            <Divider borderColor={"green.700"} />
+            <ModalBody>
               <FormControl>
                 <Input name="senha" value={senha} label="Senha" type="password" onChange={(e) => setSenha(e.target.value)} />
                 <FormHelperText>
@@ -109,9 +112,10 @@ import { useSession } from "../../../../services/context/auth";
 
               </FormControl>
             </ModalBody>
-            <ModalFooter roundedBottom={4} bg="gray.800">
-              <Button boxShadow='md' colorScheme="blue" mr={3} onClick={(e) => handleSubmit(e)}>
-                Fechar
+            <Divider borderColor={"green.700"} />
+            <ModalFooter roundedBottom={4}>
+              <Button colorScheme="blue" mr={3} w={"full"} onClick={(e) => handleSubmit(e)} boxShadow="buttonShadow">
+                Encerrar
               </Button>
             </ModalFooter>
           </ModalContent>

@@ -35,7 +35,8 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  Accordion
+  Accordion,
+  Icon
 } from "@chakra-ui/react";
 import { useQuery } from "react-query";
 import { api } from "../../../services/api";
@@ -45,7 +46,7 @@ import { Input } from "../../../components/Form/Input";
 import { SlRefresh } from "react-icons/sl";
 
 import { CautelaViatura, PedidosVariasViaturasProps, PedidoViatura, Viatura } from "../../../@types/types";
-import { convertDate, convertDateAndTime, returnComboios } from "../../../utils/scripts";
+import { calculaDisponibilidade, convertDate, convertDateAndTime, returnComboios } from "../../../utils/scripts";
 import { NotLoaded } from "../../../components/NotLoaded";
 import { NotData } from "../../../components/NotData";
 import { HiOutlineInformationCircle } from "react-icons/hi";
@@ -61,6 +62,8 @@ import { AutorizaViaturaModal } from "../../../components/Modal/Viatura/ModalAut
 import { RxCross1 } from "react-icons/rx";
 import { useSession } from "../../../services/context/auth";
 import { BsInfoCircle } from "react-icons/bs";
+import { DrawerManutencao } from "../../../components/CmtGda/DrawerManutencao";
+import { CompanhiasArray } from "../../../utils/staticArray";
 
 
 export default function Viaturas() {
@@ -139,6 +142,8 @@ export default function Viaturas() {
                     boxShadow="buttonShadow">Pedidos Viaturas</Tab>
                   <Tab border={0} bg={"gray.990"} _selected={{ bgGradient: "linear(to-tr, gray.990, gray.990, green.900)", fontWeight: "bold", boxShadow: "buttonShadow" }}
                     boxShadow="buttonShadow">Pedidos Comboios</Tab>
+                  <Tab border={0} bg={"gray.990"} _selected={{ bgGradient: "linear(to-tr, gray.990, gray.990, green.900)", fontWeight: "bold", boxShadow: "buttonShadow" }}
+                    boxShadow="buttonShadow">Manutenção</Tab>
                 </TabList>
                 <TabPanels>
                   <TabPanel>
@@ -157,7 +162,7 @@ export default function Viaturas() {
                       >
                         <Heading fontSize="2xl" my="4">
                           AUTORIZAÇÃO - S/4
-                          </Heading>
+                        </Heading>
                         <Flex bg="gray.990"
                           boxShadow="buttonShadow"
                           px={1}
@@ -218,12 +223,11 @@ export default function Viaturas() {
                                 <Th textAlign="center">Itinerário</Th>
                                 <Th textAlign="center">Chefe Viatura</Th>
                                 <Th textAlign="center">Motorista</Th>
-
                                 <Th textAlign="center">Apresentar para</Th>
                                 <Th textAlign="center">Furriel</Th>
                                 <Th textAlign="center">Situação</Th>
                                 <Th textAlign="center"></Th>
-                                <Th textAlign="center"></Th>
+                                <Th textAlign="center">S/4</Th>
                               </Tr>
                             </Thead>
                             <Tbody>
@@ -298,7 +302,9 @@ export default function Viaturas() {
                                     {res.status === "aguardando" && res.autorizado === false ? (
                                       <AutorizaViaturaModal pedido={res} atualizar={refetchPedidos} />
                                     ) : res.autorizado === true ?
-                                      <GiCheckMark color="green.600" />
+                                      <Flex justifyContent="center" shadow={"shape"} p={2} color="green.400">
+                                        <GiCheckMark />
+                                      </Flex>
                                       : null}
                                   </Td>
                                 </Tr>
@@ -313,12 +319,11 @@ export default function Viaturas() {
                                 <Th textAlign="center">Itinerário</Th>
                                 <Th textAlign="center">Chefe Viatura</Th>
                                 <Th textAlign="center">Motorista</Th>
-
                                 <Th textAlign="center">Apresentar para</Th>
                                 <Th textAlign="center">Furriel</Th>
                                 <Th textAlign="center">Situação</Th>
                                 <Th textAlign="center"></Th>
-                                <Th textAlign="center"></Th>
+                                <Th textAlign="center">S/4</Th>
                               </Tr>
                             </Tfoot>
                           </Table>
@@ -391,12 +396,10 @@ export default function Viaturas() {
                                   w={120}
                                 >
                                   <option value="">Todos - {pedidosViatura?.data.filter(res => search ? res.status === search : res.status).length}</option>
-                                  <option value="1 CIA">1 CIA - {pedidosViatura?.data.filter(res => search ? res.status === search : res.status).filter(res => res.companhia === "1 CIA").length}</option>
-                                  <option value="2 CIA">2 CIA  - {pedidosViatura?.data.filter(res => search ? res.status === search : res.status).filter(res => res.companhia === "2 CIA").length}</option>
-                                  <option value="3 CIA">3 CIA  - {pedidosViatura?.data.filter(res => search ? res.status === search : res.status).filter(res => res.companhia === "3 CIA").length}</option>
-                                  <option value="CCAP">CCAP  - {pedidosViatura?.data.filter(res => search ? res.status === search : res.status).filter(res => res.companhia === "CCAP").length}</option>
-                                  <option value="EM">EM - {pedidosViatura?.data.filter(res => search ? res.status === search : res.status).filter(res => res.companhia === "EM").length}</option>
-                                  <option value="BANDA">BANDA - {pedidosViatura?.data.filter(res => search ? res.status === search : res.status).filter(res => res.companhia === "BANDA").length}</option>
+                                  {CompanhiasArray.map((option, index) => (
+                                    <option key={option + index} value={option}>{option + "-" + pedidosViatura?.data.filter(res => search ? res.status === search : res.status).filter(res => res.companhia === option).length}</option>
+                                  ))}
+                                
                                 </Input>
                               </FormControl>
                             </Flex>
@@ -453,9 +456,9 @@ export default function Viaturas() {
                                   {res.status === "aguardando" ? (
                                     <Td textAlign="center" bg={res.autorizado ? "green.800" : "red.800"} shadow="buttonShadow">
                                       <Flex justifyContent="center">
-                                      {res.autorizado ? <GiCheckMark /> : <RxCross1 />}
-                                        </Flex>
-                                      </Td>
+                                        {res.autorizado ? <GiCheckMark /> : <RxCross1 />}
+                                      </Flex>
+                                    </Td>
                                   ) : <Td textAlign="center"> - </Td>}
                                   <Td textAlign="center">
 
@@ -499,10 +502,10 @@ export default function Viaturas() {
                                 <Th textAlign="center">Itinerário</Th>
                                 <Th textAlign="center">Chefe Viatura</Th>
                                 <Th textAlign="center">Motorista</Th>
-                                <Th textAlign="center">Tipo Viatura</Th>
                                 <Th textAlign="center">Apresentar para</Th>
                                 <Th textAlign="center">Situação</Th>
                                 <Th textAlign="center">S/4</Th>
+                                <Th></Th>
                                 <Th></Th>
                               </Tr>
                             </Tfoot>
@@ -552,7 +555,6 @@ export default function Viaturas() {
                                   <Th textAlign="center">Itinerário</Th>
                                   <Th textAlign="center">Chefe Viatura</Th>
                                   <Th textAlign="center">Motorista</Th>
-                                  <Th textAlign="center">Tipo Viatura</Th>
                                   <Th textAlign="center">Apresentar para</Th>
                                   <Th textAlign="center">Situação</Th>
                                   <Th></Th>
@@ -613,7 +615,6 @@ export default function Viaturas() {
                                   <Th textAlign="center">Itinerário</Th>
                                   <Th textAlign="center">Chefe Viatura</Th>
                                   <Th textAlign="center">Motorista</Th>
-                                  <Th textAlign="center">Tipo Viatura</Th>
                                   <Th textAlign="center">Apresentar para</Th>
                                   <Th textAlign="center">Situação</Th>
                                   <Th></Th>
@@ -770,6 +771,75 @@ export default function Viaturas() {
 
                     </Accordion>
 
+                  </TabPanel>
+                  <TabPanel>
+                    <Flex
+                      bg="gray.990"
+                      boxShadow="buttonShadow"
+                      px={2}
+                      my={4}
+                      rounded="base"
+                      alignItems="center"
+                      justifyContent="space-between"
+                    >
+                      <Heading fontSize="2xl" my="4">
+                        Viaturas {isLoading ? <Spinner ml={8} /> : ""}{" "}
+                      </Heading>
+                      <Flex gap={2} alignItems={"center"}>
+                        <Flex bg="gray.990"
+                          boxShadow="buttonShadow" gap={2} align={"center"} p={2} fontWeight={"bold"} >
+                          Disponibilidade: <Text w={"65px"} textAlign={"center"} boxShadow="buttonShadow" rounded={"full"} bg={Number(calculaDisponibilidade(viaturas?.data)) > 60 ? "green.800" : Number(calculaDisponibilidade(viaturas?.data)) < 60 && Number(calculaDisponibilidade(viaturas?.data)) > 30 ? "yellow.800" : "red.800"} color={"white"} p={2}>{calculaDisponibilidade(viaturas?.data)}%</Text>
+                        </Flex>
+                        <IconButton
+                          color={"white"}
+                          boxShadow="buttonShadow"
+                          bg="blue.700"
+                          float="right"
+                          _hover={{ bgColor: "blue.900" }}
+                          onClick={() => refetch()}
+                          aria-label="Atualizar tabela"
+                          icon={<SlRefresh />}
+                        />
+                      </Flex>
+                    </Flex>
+
+                    <TableContainer>
+                      <Table size="sm" colorScheme="whiteAlpha">
+                        <Thead>
+                          <Tr>
+                            <Th textAlign="center">Eb</Th>
+                            <Th textAlign="center">Tipo</Th>
+                            <Th textAlign="center">Tipo de Transporte</Th>
+                            <Th textAlign="center">Situação</Th>
+                            <Th></Th>
+                          </Tr>
+                        </Thead>
+                        <Tbody>
+                          {viaturas?.data.map((res) => (
+                            <Tr key={res.id}>
+                              <Td textAlign="center">{res.eb}</Td>
+                              <Td textAlign="center">{res.tipo.toUpperCase()}</Td>
+                              <Td textAlign="center">{res.tipoTransporte.toUpperCase()}</Td>
+                              <Td textAlign="center" fontWeight="bold" color={res.situacao === "disponivel" ? "green.500" : res.situacao === "indisponivel" ? "red.500" : "yellow.500"}>{res.situacao?.toLocaleUpperCase()}</Td>
+                              <Td>
+                                <Flex gap={2}>
+                                  <DrawerManutencao viatura={res} />
+                                </Flex>
+                              </Td>
+                            </Tr>
+                          ))}
+                        </Tbody>
+                        <Tfoot>
+                          <Tr>
+                            <Th textAlign="center">Eb</Th>
+                            <Th textAlign="center">Tipo</Th>
+                            <Th textAlign="center">Tipo de Transporte</Th>
+                            <Th textAlign="center">Situação</Th>
+                            <Th></Th>
+                          </Tr>
+                        </Tfoot>
+                      </Table>
+                    </TableContainer>
                   </TabPanel>
                 </TabPanels>
               </Tabs>

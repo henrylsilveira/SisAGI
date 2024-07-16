@@ -63,6 +63,7 @@ import { GiCheckMark, GiTruck } from "react-icons/gi";
 import { RxCross1 } from "react-icons/rx";
 import { useSession } from "../../../services/context/auth";
 import { BsInfoCircle } from "react-icons/bs";
+import { CompanhiasArray } from "../../../utils/staticArray";
 
 const signInFormSchema = yup.object().shape({
     dataDesejada: yup.date().required("Campo obrigatório."),
@@ -251,12 +252,9 @@ export default function CautelaViaturaPage() {
                                                                     w={120}
                                                                 >
                                                                     <option value="">Todos - {pedidosViatura?.data.filter(res => search ? res.status === search : res.status).length}</option>
-                                                                    <option value="1 CIA">1 CIA - {pedidosViatura?.data.filter(res => search ? res.status === search : res.status).filter(res => res.companhia === "1 CIA").length}</option>
-                                                                    <option value="2 CIA">2 CIA  - {pedidosViatura?.data.filter(res => search ? res.status === search : res.status).filter(res => res.companhia === "2 CIA").length}</option>
-                                                                    <option value="3 CIA">3 CIA  - {pedidosViatura?.data.filter(res => search ? res.status === search : res.status).filter(res => res.companhia === "3 CIA").length}</option>
-                                                                    <option value="CCAP">CCAP  - {pedidosViatura?.data.filter(res => search ? res.status === search : res.status).filter(res => res.companhia === "CCAP").length}</option>
-                                                                    <option value="EM">EM - {pedidosViatura?.data.filter(res => search ? res.status === search : res.status).filter(res => res.companhia === "EM").length}</option>
-                                                                    <option value="BANDA">BANDA - {pedidosViatura?.data.filter(res => search ? res.status === search : res.status).filter(res => res.companhia === "BANDA").length}</option>
+                                                                    {CompanhiasArray.map((option, index) => (
+                                                                        <option key={option + index} value={option}>{option + "-" + pedidosViatura?.data.filter(res => search ? res.status === search : res.status).filter(res => res.companhia === option).length}</option>
+                                                                    ))}
                                                                 </Input>
                                                             </FormControl>
                                                         </Flex>
@@ -283,7 +281,7 @@ export default function CautelaViaturaPage() {
                                                                 <Th textAlign="center">Itinerário</Th>
                                                                 <Th textAlign="center">Chefe Viatura</Th>
                                                                 <Th textAlign="center">Motorista</Th>
-                                                                
+
                                                                 <Th textAlign="center">Apresentar para</Th>
                                                                 <Th textAlign="center">Situação</Th>
                                                                 <Th textAlign="center">S/4</Th>
@@ -307,7 +305,7 @@ export default function CautelaViaturaPage() {
                                                                     </Td>
                                                                     <Td textAlign="center">{res.chefeViatura}</Td>
                                                                     <Td textAlign="center">{res.motorista}</Td>
-                                                                    
+
                                                                     <Td textAlign="center">{res.apresentar}</Td>
                                                                     <Td textAlign="center" fontSize="small" fontWeight="bold" color={res.status === "aguardando" ? "orange.500" : res.status === "autorizado" ? "blue.500" : res.status === "recusado" ? "red.500" : "green.500"}>{res.status.toUpperCase()}</Td>
                                                                     {res.status === "aguardando" ? (
@@ -336,7 +334,7 @@ export default function CautelaViaturaPage() {
                                                                                 )}
                                                                             </Popover> : (res.status === "autorizado" || res.status === "finalizado" || res.status === "recusado") && res.observacao === "" ? "-" :
                                                                                 <Flex gap={2} justifyContent="center">
-                                                                                    <CautelaViaturaModal pedido={res} viaturas={viaturas.data} atualizar={refetchPedidos} />
+                                                                                    <CautelaViaturaModal pedido={res} viaturas={viaturas?.data} atualizar={refetchPedidos} />
                                                                                     <ModalRecusa pedido={res} atualizar={refetchPedidos} />
 
                                                                                 </Flex>
@@ -354,7 +352,7 @@ export default function CautelaViaturaPage() {
                                                                 <Th textAlign="center">Itinerário</Th>
                                                                 <Th textAlign="center">Chefe Viatura</Th>
                                                                 <Th textAlign="center">Motorista</Th>
-                                                                
+
                                                                 <Th textAlign="center">Apresentar para</Th>
                                                                 <Th textAlign="center">Situação</Th>
                                                                 <Th textAlign="center">S/4</Th>
@@ -390,7 +388,7 @@ export default function CautelaViaturaPage() {
                                                                 <Box as='span' flex='1' textAlign='left' position={"relative"}>
                                                                     <Flex gap={2} alignItems={"center"}>
 
-                                                                        <Flex bg={{bgGradient: "linear(to-tr, gray.990, gray.990, green.900)"}} border={"1px"} borderColor={"green.900"} p={2} fontSize={"sm"} boxShadow={"buttonShadow"} color="white" rounded="base" gap={2}>
+                                                                        <Flex bg={{ bgGradient: "linear(to-tr, gray.990, gray.990, green.900)" }} border={"1px"} borderColor={"green.900"} p={2} fontSize={"sm"} boxShadow={"buttonShadow"} color="white" rounded="base" gap={2}>
                                                                             {pedidos.companhia}
                                                                         </Flex>
                                                                         <Flex flexDirection={"column"}>
@@ -431,7 +429,7 @@ export default function CautelaViaturaPage() {
                                                                             <Th textAlign="center">Data Devolução</Th>
                                                                             <Th textAlign="center">Chefe Viatura</Th>
                                                                             <Th textAlign="center">Motorista</Th>
-                                                                            
+
                                                                             <Th textAlign="center">Apresentar para</Th>
                                                                             <Th textAlign="center">Situação</Th>
                                                                             <Th></Th>
@@ -445,7 +443,7 @@ export default function CautelaViaturaPage() {
                                                                                 <Td textAlign="center">{convertDate(pedido.dataDevolucao)}</Td>
                                                                                 <Td textAlign="center">{pedido.chefeViatura}</Td>
                                                                                 <Td textAlign="center">{pedido.motorista}</Td>
-                                                                                
+
                                                                                 <Td textAlign="center">{pedido.apresentar}</Td>
                                                                                 <Td textAlign="center" fontSize="small" fontWeight="bold" color={pedido.status === "aguardando" ? "orange.500" : pedido.status === "autorizado" ? "blue.500" : pedido.status === "recusado" ? "red.500" : "green.500"}>{pedido.status.toUpperCase()}</Td>
                                                                                 {pedido.status === "aguardando" ? (
@@ -494,7 +492,7 @@ export default function CautelaViaturaPage() {
 
                                                                             <Th textAlign="center">Chefe Viatura</Th>
                                                                             <Th textAlign="center">Motorista</Th>
-                                                                            
+
                                                                             <Th textAlign="center">Apresentar para</Th>
                                                                             <Th textAlign="center">Situação</Th>
                                                                             <Th></Th>
