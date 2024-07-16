@@ -16,6 +16,7 @@ export default function ScheduleViatura({ pedidosViatura }: { pedidosViatura: Pe
   return (
     <FullCalendar
       locale={"pt-br"}
+      themeSystem='standard'
       plugins={[dayGridPlugin, timeGridPlugin]}
       initialView="dayGridMonth"
       headerToolbar={{
@@ -28,7 +29,7 @@ export default function ScheduleViatura({ pedidosViatura }: { pedidosViatura: Pe
       selectable={true}
       selectMirror={true}
       events={formatPedidos}
-
+      
     />
   )
 }

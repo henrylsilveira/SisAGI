@@ -1,5 +1,5 @@
 
-import { Militar, PedidosVariasViaturasProps, PedidoViatura, Viatura } from "../@types/types";
+import { Armamento, Militar, PedidosVariasViaturasProps, PedidoViatura, Viatura } from "../@types/types";
 import { api } from "../services/api";
 
 export function convertDate(iso: string | number | Date) {
@@ -190,4 +190,12 @@ export function returnComboios(pedidos : PedidoViatura[]){
 
 export function calculaDisponibilidade(data: Viatura[]) {
   return ((data?.filter(viatura => viatura.situacao !== 'indisponivel').length / data?.length) * 100).toFixed(0)
+}
+
+export function returnNomesArmamentos(armamentos?: Armamento[]){
+  const arrayArmamentosNomes = armamentos?.map(arm => arm.nome)
+  return [...new Set(arrayArmamentosNomes)].sort((x, y) => {
+      let a = x,
+        b = y;
+      return a == b ? 0 : a > b ? 1 : -1;})
 }

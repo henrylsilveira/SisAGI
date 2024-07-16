@@ -201,11 +201,12 @@ export default function ArmamentoViculados() {
             >
               <Heading fontSize="2xl" my="4">
                 VINCULAR ARMAMENTOS
-                {isLoading ? <Spinner ml={8} /> : ""}{" "}
+                
               </Heading>
               <IconButton
                 bg="blue.700"
                 float="right"
+                color={"white"}
                 boxShadow="buttonShadow"
                 _hover={{ bgColor: "blue.900" }}
                 onClick={() => {
@@ -302,7 +303,8 @@ export default function ArmamentoViculados() {
                               ) : (
                                 <PopoverTrigger>
                                   <Circle
-                                    bg="green.900"
+                                    bg="green.800"
+                                    cursor={"pointer"}
                                     boxShadow="buttonShadow"
                                     _hover={{ bg: "green.900" }}
                                     size="26px"
@@ -352,7 +354,7 @@ export default function ArmamentoViculados() {
                                   <Input
                                     as="select"
                                     name="militar"
-                                    bg="gray.700"
+                                    bg="gray.990"
                                     label="Militar"
                                     onChange={(e) =>
                                       setMilitarVinculo(e.target.value)
@@ -373,6 +375,8 @@ export default function ArmamentoViculados() {
                                 <PopoverFooter>
                                   <Button
                                     float="right"
+                                    color={"white"}
+                                    w={"full"}
                                     bg="green.700"
                                     _hover={{ bg: "green.900" }}
                                     boxShadow="buttonShadow"
@@ -446,6 +450,8 @@ export default function ArmamentoViculados() {
                                 size="xs"
                                 _hover={{bg: "red.900"}}
                                 onClick={() => deleteVinculo(res.id)}
+                                color={"white"}
+                                boxShadow="buttonShadow"
                               >
                                 <Icon mr={1} as={RxCrossCircled} />
                                 Desvincular

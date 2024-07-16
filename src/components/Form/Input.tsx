@@ -11,23 +11,25 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
 interface InputProps extends ChakraInputProps {
+  array?: string[]
   name: string;
   label?: string;
   error?: FieldError | any;
 }
 
 const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
-  { name, label, error = null, ...rest },
+  { name, label, error = null, array, ...rest },
   ref
 ) => {
   return (
     <FormControl isInvalid={!!error}>
       {!!label && <FormLabel htmlFor={name}>{label}</FormLabel>}
       <ChakraInput
+        list={name}
         name={name}
         id={name}
         bgColor="gray.990"
-        _readOnly={{ color: 'gray.700'}}
+        _readOnly={{ color: 'gray.700' }}
         border="1px"
         borderColor="gray.700"
         _hover={{ bgColor: "gray.990" }}
@@ -37,12 +39,18 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
         ref={ref}
         {...rest}
       />
-      
+      {array && (
+        <datalist id={name}>
+          {array && array?.map((nome, key) => (
+            <option key={key} value={nome} />)
+          )}
+        </datalist>
+      )}
       {!!error && (
         <FormErrorMessage>{error.message}</FormErrorMessage>
       )}
     </FormControl>
-    
+
   );
 };
 

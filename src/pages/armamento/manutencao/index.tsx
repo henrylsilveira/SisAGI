@@ -182,9 +182,13 @@ export default function ManutencaoArmamento() {
                     onChange={(e) => setArmamento(e.target.value)}
                   >
                     <option>
-                        Selecione
-                      </option>
-                    {nomeArmamentos.map((arm, index) => (
+                      Selecione
+                    </option>
+                    {nomeArmamentos.sort((x, y) => {
+                      let a = x,
+                        b = y;
+                      return a == b ? 0 : a > b ? 1 : -1;
+                    }).map((arm, index) => (
                       <option value={arm} key={index}>
                         {arm}
                       </option>
@@ -205,6 +209,11 @@ export default function ManutencaoArmamento() {
                     {data?.data ? (
                       data?.data
                         .filter((el: Armamento) => el.nome === armamento)
+                        .sort((x, y) => {
+                          let a = x,
+                            b = y;
+                          return a == b ? 0 : a > b ? 1 : -1;
+                        })
                         .map((arm: Armamento, index) => (
                           <option value={arm.id} key={index}>
                             {arm.nr_serie}
@@ -251,41 +260,41 @@ export default function ManutencaoArmamento() {
                   icon={<SlRefresh />}
                 />
               </Flex>
-                      {manutencoes?.data ? (
-                        <TableContainer>
-                <Table size="sm" colorScheme="whiteAlpha">
-                  <Thead>
-                    <Tr>
-                      <Th textAlign="center">Data da Manutenção</Th>
-                      <Th textAlign="center">Tipo</Th>
-                      <Th textAlign="center">Armamento</Th>
-                      <Th textAlign="center">Nr Série</Th>
-                    </Tr>
-                  </Thead>
-                  <Tbody>
-                    {manutencoes?.data.map((res: Manutencao) => (
-                      <Tr key={res.id}>
-                        <Td textAlign="center">
-                          {convertDate(res.dataManutencao)}
-                        </Td>
-                        <Td textAlign="center">{res.tipoManutencao}</Td>
-                        <Td textAlign="center">{res.armamento.nome}</Td>
-                        <Td textAlign="center">{res.armamento.nr_serie}</Td>
+              {manutencoes?.data ? (
+                <TableContainer>
+                  <Table size="sm" colorScheme="whiteAlpha">
+                    <Thead>
+                      <Tr>
+                        <Th textAlign="center">Data da Manutenção</Th>
+                        <Th textAlign="center">Tipo</Th>
+                        <Th textAlign="center">Armamento</Th>
+                        <Th textAlign="center">Nr Série</Th>
                       </Tr>
-                    ))}
-                  </Tbody>
-                  <Tfoot>
-                    <Tr>
-                      <Th textAlign="center">Data da Manutenção</Th>
-                      <Th textAlign="center">Tipo</Th>
-                      <Th textAlign="center">Armamento</Th>
-                      <Th textAlign="center">Nr Série</Th>
-                    </Tr>
-                  </Tfoot>
-                </Table>
-              </TableContainer>
-                      ) : <NotData textoComponent="Nenhuma manutenção encontrada." />}
-              
+                    </Thead>
+                    <Tbody>
+                      {manutencoes?.data.map((res: Manutencao) => (
+                        <Tr key={res.id}>
+                          <Td textAlign="center">
+                            {convertDate(res.dataManutencao)}
+                          </Td>
+                          <Td textAlign="center">{res.tipoManutencao}</Td>
+                          <Td textAlign="center">{res.armamento.nome}</Td>
+                          <Td textAlign="center">{res.armamento.nr_serie}</Td>
+                        </Tr>
+                      ))}
+                    </Tbody>
+                    <Tfoot>
+                      <Tr>
+                        <Th textAlign="center">Data da Manutenção</Th>
+                        <Th textAlign="center">Tipo</Th>
+                        <Th textAlign="center">Armamento</Th>
+                        <Th textAlign="center">Nr Série</Th>
+                      </Tr>
+                    </Tfoot>
+                  </Table>
+                </TableContainer>
+              ) : <NotData textoComponent="Nenhuma manutenção encontrada." />}
+
             </Flex>
           </Box>
         </SimpleGrid>
