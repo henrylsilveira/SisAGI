@@ -3,7 +3,7 @@ import { ControleGuardaRegistros } from "../../@types/types";
 import { convertDateAndTime, returnAvatarImage } from "../../utils/scripts";
 import { NotData } from "../NotData";
 import { GoSignIn, GoSignOut, GoX } from "react-icons/go";
-import { FaPersonMilitaryRifle } from "react-icons/fa6";
+import { TbMilitaryRank } from "react-icons/tb";
 import { IoPersonSharp } from "react-icons/io5";
 import { GiCheckMark } from "react-icons/gi";
 import PopoverDestino from "../CmtGda/PopoverDestino";
@@ -31,7 +31,7 @@ export default function ViewTable({ data, handleSubmitForm, finalizados, refetch
                             <Tr key={registro.id} _hover={{ shadow: "innerShadow", bg: "gray.990", border: "2px", borderColor: "green.900", rounded: "lg" }}>
                                 <Td textAlign="center" bg={registro.civilId ? "green.900" : "blue.900"} shadow={"buttonShadow"} roundedRight={"full"} color="white">
                                     <Flex justifyContent="start">
-                                        {registro.civilId ? <Flex gap={2}><IoPersonSharp /> Civil</Flex> : <Flex gap={2}><FaPersonMilitaryRifle />Militar</Flex>}
+                                        {registro.civilId ? <Flex gap={2}><IoPersonSharp /> Civil</Flex> : <Flex gap={2}><TbMilitaryRank />Militar</Flex>}
                                     </Flex>
                                 </Td>
                                 <Td textAlign="center">
