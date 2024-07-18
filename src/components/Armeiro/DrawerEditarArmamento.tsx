@@ -1,6 +1,6 @@
 import { Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerHeader, DrawerOverlay, FormControl, Text, useDisclosure, useToast, VStack } from "@chakra-ui/react";
 import React, { FormEvent } from "react";
-import { PiNotePencilDuotone } from "react-icons/pi";
+import { FiEdit } from "react-icons/pi";
 import { Armamento } from "../../@types/types";
 import { api } from "../../services/api";
 import { Input } from "../Form/Input";
@@ -47,7 +47,7 @@ export function DrawerEditarArmamento({ armamento, refetch }: { armamento: Armam
     }
     return (
         <>
-            <Button mr={2} boxShadow="buttonShadow" ref={btnRef} leftIcon={<PiNotePencilDuotone fontSize="20" />} bg={"blue.700"} _hover={{ bg: "blue.800" }} size='sm' color={"white"} onClick={onOpen}>
+            <Button mr={2} boxShadow="buttonShadow" ref={btnRef} leftIcon={<FiEdit fontSize="20" />} bg={"blue.700"} _hover={{ bg: "blue.800" }} size='sm' color={"white"} onClick={onOpen}>
                 Editar
             </Button>
             <Drawer
