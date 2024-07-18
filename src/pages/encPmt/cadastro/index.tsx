@@ -306,8 +306,8 @@ export default function CadastroViatura() {
                                 >
                                   <Icon as={FaTools} color="white" size={20} />
                                 </Button>
-                                <PopoverManutencao viaturaId={res.id} nomeViatura={res.tipo} refetch={refetch} />
-                                <DrawerManutencao viatura={res} />
+                                //<PopoverManutencao viaturaId={res.id} nomeViatura={res.tipo} refetch={refetch} />
+                                //<DrawerManutencao viatura={res} />
                               </Flex>
 
                               : null
