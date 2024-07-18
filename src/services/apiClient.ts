@@ -4,10 +4,9 @@ export function setupAPIClient() {
 
   const api = axios.create({
     //Colocar endereço com barra no final para nao quebrar a rota dos avatares
-    baseURL: 
-    process.env.NODE_ENV === "development"
-        ? process.env.URL_API_DEV
-        : process.env.URL_API_PROD,
+    baseURL: process.env.NODE_ENV === "development"
+        ? "http://localhost:3333/"
+        : "http://10.35.88.12:3333/",
 
     // headers: {
     //     Authorization: `Bearer ${cookies['nextauth.token']}`, 
