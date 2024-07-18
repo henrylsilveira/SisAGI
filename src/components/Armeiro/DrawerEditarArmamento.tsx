@@ -1,6 +1,6 @@
 import { Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerHeader, DrawerOverlay, FormControl, Text, useDisclosure, useToast, VStack } from "@chakra-ui/react";
 import React, { FormEvent } from "react";
-import { FiEdit } from "react-icons/pi";
+import { FiEdit } from "react-icons/fi";
 import { Armamento } from "../../@types/types";
 import { api } from "../../services/api";
 import { Input } from "../Form/Input";
