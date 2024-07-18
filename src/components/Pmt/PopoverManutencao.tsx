@@ -1,7 +1,7 @@
 import { Popover, PopoverTrigger, Button, Portal, PopoverContent, PopoverHeader, Text, PopoverCloseButton, PopoverBody, Box, PopoverFooter, FormControl, FormHelperText, PopoverArrow, useToast, Icon } from "@chakra-ui/react"
 import { useRef, useState } from "react"
 import { Input } from "../Form/Input"
-import { PiNotePencilDuotone } from "react-icons/pi";
+import { FiEdit } from "react-icons/fi";
 import { api } from "../../services/api";
 import { GiNotebook } from "react-icons/gi";
 
