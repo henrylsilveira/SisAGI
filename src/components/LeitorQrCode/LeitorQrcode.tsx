@@ -14,10 +14,12 @@ import { convertDateAndTime, generateNowISOTime } from "../../utils/scripts";
 
 export default function LeitorDeQRCode({
   setMilitar,
-  refetch
+  session,
+  refetch,
 }: {
   setMilitar: Dispatch<SetStateAction<Militar>>;
-  refetch: () => void
+  session: Militar;
+  refetch: () => void;
 }) {
   const [qrCodeData, setQrCodeData] = useState("");
   const inputRef = useRef(null);
@@ -34,35 +36,73 @@ export default function LeitorDeQRCode({
     setMilitar(result.data);
     if (result.data) {
       try {
-        const response = await api.post<Militar>("/controleGuarda/registrar/entrada/militar", {
-          militarId: result.data.id,
-          militarServicoId: result.data.id,
-          status: "entrada",
-        });
-        setTimeout(async () => {
-          setQrCodeData("");
-          setMilitar(null);
-          inputRef.current.focus();
-        }, 2000);
-        if (response.status == 201) {
-          toast({
-            title: "Controle Guarda",
-            description: `Entrada do militar registrada ${convertDateAndTime(
-              generateNowISOTime()
-            )}`,
-            status: "success",
-            duration: 1000,
-            isClosable: true,
-          });
-          refetch()
+        const getRegistro = await api.get(
+          `/controGuarda/registros/${e.target.value}/militar`
+        );
+        console.log(getRegistro);
+        if (getRegistro.data[0] && !getRegistro.data[0].saida && getRegistro.data[0].entrada) {
+          const result = await api.put(
+            `/controleGuarda/update/${getRegistro.data[0].id}/saida`
+          );
+          setTimeout(async () => {
+            setQrCodeData("");
+            setMilitar(null);
+            inputRef.current.focus();
+          }, 2000);
+          if (result.status == 201) {
+            toast({
+              title: "Controle Guarda",
+              description: `Saida do militar registrada ${convertDateAndTime(
+                generateNowISOTime()
+              )}`,
+              status: "success",
+              duration: 1000,
+              isClosable: true,
+            });
+            refetch();
+          } else {
+            toast({
+              title: "Controle Guarda",
+              description: "Erro ao registrar a saida.",
+              status: "error",
+              duration: 1000,
+              isClosable: true,
+            });
+          }
         } else {
-          toast({
-            title: "Controle Guarda",
-            description: "Erro ao registrar a entrada.",
-            status: "error",
-            duration: 1000,
-            isClosable: true,
-          });
+          const response = await api.post<Militar>(
+            "/controleGuarda/registrar/entrada/militar",
+            {
+              militarId: result.data.id,
+              militarServicoId: session.id,
+              status: "entrada",
+            }
+          );
+          setTimeout(async () => {
+            setQrCodeData("");
+            setMilitar(null);
+            inputRef.current.focus();
+          }, 2000);
+          if (response.status == 201) {
+            toast({
+              title: "Controle Guarda",
+              description: `Entrada do militar registrada ${convertDateAndTime(
+                generateNowISOTime()
+              )}`,
+              status: "success",
+              duration: 1000,
+              isClosable: true,
+            });
+            refetch();
+          } else {
+            toast({
+              title: "Controle Guarda",
+              description: "Erro ao registrar a entrada.",
+              status: "error",
+              duration: 1000,
+              isClosable: true,
+            });
+          }
         }
       } catch (error) {
         console.error(error);

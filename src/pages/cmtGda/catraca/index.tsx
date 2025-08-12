@@ -22,17 +22,17 @@ import { ControleGuardaRegistros, Militar } from "../../../@types/types";
 import { PesquisarMilitarCivil } from "../../../components/Drawer/CmtGda";
 import { useQuery } from "react-query";
 import { SetStateAction, useState } from "react";
-import ViewTable from "../../../components/ViewData/ViewTable";
-import ViewGrid from "../../../components/ViewData/ViewGrid";
 import CatracaViewTable from "../../../components/ViewData/CatracaViewDataTable/CatracaViewDataTable";
 import { NotLoaded } from "../../../components/NotLoaded";
 import LeitorDeQRCode from "../../../components/LeitorQrCode/LeitorQrcode";
 import { returnAvatarImage } from "../../../utils/scripts";
+import { useSession } from "../../../services/context/auth";
 
 export default function CatracaGuarda() {
   const [militar, setMilitar] = useState<Militar>();
   const [toggle, setToggle] = useState(false);
   const toast = useToast();
+  const { user: session } = useSession();
 
   const { data, isLoading, refetch } = useQuery(
     ["todosRegistros"],
@@ -151,7 +151,7 @@ export default function CatracaGuarda() {
                   >
                     <Flex flexDirection={"column"} m={4} w={"full"}>
                       {militar ? (
-                        <Flex gap={4}>
+                        <Flex flexDirection={["column","row"]} gap={4}>
                           <Avatar
                             w={"200px"}
                             h={"200px"}
@@ -184,6 +184,7 @@ export default function CatracaGuarda() {
                       ) : (
                         <Flex
                           w={"full"}
+                          minH={"300px"}
                           flexDirection={"column"}
                           justifyContent={"center"}
                           alignItems={"center"}
@@ -203,6 +204,7 @@ export default function CatracaGuarda() {
                       >
                         <LeitorDeQRCode
                           setMilitar={setMilitar}
+                          session={session}
                           refetch={refetch}
                         />
                       </Box>
@@ -211,8 +213,6 @@ export default function CatracaGuarda() {
                 </Flex>
                 <CatracaViewTable
                   data={data?.data}
-                  handleSubmitForm={handleSubmitForm}
-                  refetch={refetch}
                 />
               </Grid>
             </Flex>

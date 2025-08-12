@@ -14,6 +14,7 @@ import {
 import { memo, FormEvent, useState } from "react";
 import { FcAcceptDatabase } from "react-icons/fc";
 import { Militar } from "../../../@types/types";
+import { QRCode } from "react-qrcode-logo";
 import {
   convertISODateToInputValue,
   returnAvatarImage,
@@ -22,6 +23,7 @@ import { Input } from "../../Form/Input";
 import { api } from "../../../services/api";
 import { useRouter } from "next/router";
 import { useSession } from "../../../services/context/auth";
+import { FiDownload } from "react-icons/fi";
 
 export function DadosPessoaisComponent(props) {
   const { user: session, status } = useSession();
@@ -49,12 +51,12 @@ export function DadosPessoaisComponent(props) {
     const formData = new FormData();
     formData.append("avatarMilitar", file);
     try {
-      const result = await api.post(`/avatarMilitar/upload/${id}`,
-        formData
-      , { headers: {
-        'content-type': 'multipart/form-data'
-      }})
-      
+      const result = await api.post(`/avatarMilitar/upload/${id}`, formData, {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      });
+
       if (result.status == 201) {
         toast({
           title: "Militar",
@@ -123,6 +125,22 @@ export function DadosPessoaisComponent(props) {
     }
   }
 
+  function downloadQrCode(name: string) {
+    const canvas: any = document.getElementById("qrcode");
+
+    if (canvas) {
+      const pngUrl = canvas
+        .toDataURL("image/png")
+        .replace("image/png", "image/octet-stream");
+      let downloadLink = document.createElement("a");
+      downloadLink.href = pngUrl;
+      downloadLink.download = `qrcode_${Date.now()}_${name}.png`;
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+    }
+  }
+
   return (
     <Flex
       bgGradient="linear(to-tr, gray.990, gray.990, green.900)"
@@ -142,65 +160,145 @@ export function DadosPessoaisComponent(props) {
           Dados Pessoais
         </Heading>
       </Flex>
-        <Flex alignItems="center" mx={4} justifyContent="space-evenly" mb={4} gap={6} pb={4} borderBottom="1px" borderStyle="solid" borderColor="green.600" style={{borderImage: 'linear-gradient(to bottom, rgba(0, 0, 0, 0), #00FF00, rgba(0, 0, 0, 0)) 1 100%;'}}>
-          <Flex flexDirection="column" alignItems="center">
-            <Avatar
-              size="2xl"
-              name={mil.nome_completo}
-              bg="green.700"
-              border="5px"
-              borderColor="gray.400"
-              boxShadow="buttonShadow"
-              src={previewUrl ? previewUrl : returnAvatarImage(mil.avatar_url)}
-            >
-              <AvatarBadge
-                borderColor="gray.990"
-                boxSize="1.1em"
-                bg="green.500"
-              />
-            </Avatar>
+      <Flex
+        alignItems="center"
+        mx={4}
+        justifyContent="space-evenly"
+        mb={4}
+        gap={6}
+        pb={4}
+        borderBottom="1px"
+        borderStyle="solid"
+        borderColor="green.600"
+        style={{
+          borderImage:
+            "linear-gradient(to bottom, rgba(0, 0, 0, 0), #00FF00, rgba(0, 0, 0, 0)) 1 100%;",
+        }}
+      >
+        <Flex flexDirection="column" alignItems="center">
+          <Avatar
+            size="2xl"
+            name={mil.nome_completo}
+            bg="green.700"
+            border="5px"
+            borderColor="gray.400"
+            boxShadow="buttonShadow"
+            src={previewUrl ? previewUrl : returnAvatarImage(mil.avatar_url)}
+          >
+            <AvatarBadge
+              borderColor="gray.990"
+              boxSize="1.1em"
+              bg="green.500"
+            />
+          </Avatar>
 
-            <Badge
-              variant="outline"
-              colorScheme="yellow"
-              mx="auto"
-              zIndex="toast"
-            >
-              {mil.companhia} / {mil.pelotao}
-            </Badge>
-            
-          </Flex>
-          <Flex flexDirection="column">
-              <Input
-               mx="auto"
-                name="avatarMilitar"
-                label="Selecione a imagem"
-                className="uploadInput"
-                type="file"
-                onChange={handleFileInputChange}
-                isDisabled={
-                  session?.Funcao.find(
-                    (func) => func.funcao == "super admin" || func.funcao == "sgte"
-                  ) &&
-                  (asPath == "/superAdmin/usuarios" ||
-                    asPath == "/pessoal/gerenciamento")
-                    ? false
-                    : true
-                }
-              />
-              <Button variant="outline" w="full" mx="auto" mt={8} _hover={{ bgColor: "green.800" }} isDisabled={
-                session?.Funcao.find(
-                  (func) => func.funcao == "super admin" || func.funcao == "sgte"
-                ) &&
-                (asPath == "/superAdmin/usuarios" ||
-                  asPath == "/pessoal/gerenciamento")
-                  ? false
-                  : true
-              }
-              borderColor="green.800" onClick={(e) => handleSubmitImage(e, mil.id)}>Upload</Button>
-            </Flex>
+          <Badge
+            variant="outline"
+            colorScheme="yellow"
+            mx="auto"
+            zIndex="toast"
+          >
+            {mil.companhia} / {mil.pelotao}
+          </Badge>
         </Flex>
-      <Grid gridTemplateColumns={['1fr','1fr','1fr 1fr']} gap={2} px={4} pb={4}>
+        <Flex flexDirection="column">
+          <Input
+            mx="auto"
+            name="avatarMilitar"
+            label="Selecione a imagem"
+            className="uploadInput"
+            type="file"
+            onChange={handleFileInputChange}
+            isDisabled={
+              session?.Funcao.find(
+                (func) => func.funcao == "super admin" || func.funcao == "sgte"
+              ) &&
+              (asPath == "/superAdmin/usuarios" ||
+                asPath == "/pessoal/gerenciamento")
+                ? false
+                : true
+            }
+          />
+          <Button
+            variant="outline"
+            w="full"
+            mx="auto"
+            mt={8}
+            _hover={{ bgColor: "green.800" }}
+            isDisabled={
+              session?.Funcao.find(
+                (func) => func.funcao == "super admin" || func.funcao == "sgte"
+              ) &&
+              (asPath == "/superAdmin/usuarios" ||
+                asPath == "/pessoal/gerenciamento")
+                ? false
+                : true
+            }
+            borderColor="green.800"
+            onClick={(e) => handleSubmitImage(e, mil.id)}
+          >
+            Upload
+          </Button>
+        </Flex>
+      </Flex>
+      <Flex
+        bg="gray.990"
+        boxShadow="buttonShadow"
+        m={4}
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        <Heading size="md" p={2}>
+          QRCode
+        </Heading>
+      </Flex>
+      <Flex
+        alignItems="center"
+        pb={4}
+        mb={4}
+        justifyContent="center"
+        borderBottom="1px"
+        borderStyle="solid"
+        borderColor="green.600"
+        style={{
+          borderImage:
+            "linear-gradient(to bottom, rgba(0, 0, 0, 0), #00FF00, rgba(0, 0, 0, 0)) 1 100%;",
+        }}
+      >
+        
+        <Box position={"relative"}>
+          <QRCode
+            fgColor="#067c33"
+            bgColor="#ffffff0f"
+            qrStyle="dots"
+            size={180}
+            quietZone={14}
+            ecLevel="M"
+            id="qrcode"
+            value={mil.id}
+          />
+          <Button
+            onClick={() => downloadQrCode(mil.post_grad + "_" + mil.nome_guerra)}
+            colorScheme={"green"}
+            position={"absolute"}
+            right={-4}
+            bottom={0}
+            w={6}
+            h={10}
+            boxShadow={"buttonShadow"}
+            rounded={"full"}
+            p={1}
+          >
+            <FiDownload size={14} />
+          </Button>
+        </Box>
+      </Flex>
+      <Grid
+        gridTemplateColumns={["1fr", "1fr", "1fr 1fr"]}
+        gap={2}
+        px={4}
+        pb={4}
+      >
         <FormControl>
           <Input
             as="select"

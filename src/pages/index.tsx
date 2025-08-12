@@ -198,7 +198,7 @@ const {
                 p={2}
                 w="full"
               >
-                Desenvolvido e projetado pelo 3ªSgt Henry - 2016
+                Desenvolvido e projetado pelo 2ºSgt Henry - 2016
               </Text>
             </Flex>
           </Flex>

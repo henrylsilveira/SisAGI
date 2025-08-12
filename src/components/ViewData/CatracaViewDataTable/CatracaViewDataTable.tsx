@@ -22,13 +22,9 @@ import PopoverDestino from "../../CmtGda/PopoverDestino";
 import { NotData } from "../../NotData";
 
 export default function CatracaViewTable({
-  data,
-  handleSubmitForm,
-  refetch,
+  data
 }: {
   data: ControleGuardaRegistros[];
-  handleSubmitForm: Function;
-  refetch: () => void;
 }) {
   return data?.filter((item) => item.status === "ativo").length !== 0 ? (
     <TableContainer overflowY="scroll" zIndex={0}>
