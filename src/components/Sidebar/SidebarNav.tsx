@@ -7,7 +7,7 @@ import {
   RiBook2Line,
   RiShieldKeyholeLine,
 } from "react-icons/ri";
-import { GiTrade, GiAmmoBox, GiOilDrum } from "react-icons/gi";
+import { GiTrade, GiAmmoBox, GiOilDrum, GiTurnstile } from "react-icons/gi";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { MdOutlinePersonSearch } from "react-icons/md";
 import { FaTools } from "react-icons/fa";
@@ -188,6 +188,9 @@ export function SidebarNav() {
           </NavLink>
           <NavLink href="/cmtGda/cadastro" icon={BsPersonPlus}>
             Cadastro
+          </NavLink>
+          <NavLink href="/cmtGda/catraca" icon={GiTurnstile}>
+            Catraca
           </NavLink>
           {/* <NavLink href="/cmtGda/civil" icon={BsFillPersonLinesFill}>
             Civil

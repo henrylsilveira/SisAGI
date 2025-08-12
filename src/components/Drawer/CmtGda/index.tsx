@@ -52,6 +52,7 @@ export function PesquisarMilitarCivil(props: any) {
     try {
       const result = await api.post('/controleGuarda/registrar/entrada/militar', { militarId, militarServicoId: session.id, status });
       if (result.status == 201) {
+        
         toast({
           title: "Controle Guarda",
           description: `Entrada do militar registrada ${convertDateAndTime(generateNowISOTime())}`,

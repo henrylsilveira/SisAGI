@@ -1,7 +1,7 @@
 import { Popover, PopoverTrigger, Button, Portal, PopoverContent, PopoverHeader, Text, PopoverCloseButton, PopoverBody, Box, PopoverFooter, FormControl, FormHelperText, PopoverArrow, useToast } from "@chakra-ui/react"
 import { useRef, useState } from "react"
 import { Input } from "../Form/Input"
-import { PiNotePencilDuotone } from "react-icons/pi";
+import { FiEdit } from "react-icons/fi";
 import { api } from "../../services/api";
 
 export default function PopoverDestino({ id, nome, refetch, small }: { id: string, nome: string, refetch: () => void, small?: boolean }) {
@@ -44,7 +44,7 @@ export default function PopoverDestino({ id, nome, refetch, small }: { id: strin
             {({ isOpen, onClose }) => (
                 <>
                     <PopoverTrigger>
-                        <Button _hover={{ bgColor: "rgba(0, 0, 0, 0.001)" }} shadow={"buttonShadow"} size={small ? "xs" : "md"} rounded={"full"} textColor={"white"} bgColor={isOpen ? 'yellow.500' : 'green.500'}><PiNotePencilDuotone /></Button>
+                        <Button _hover={{ bgColor: "rgba(0, 0, 0, 0.001)" }} shadow={"buttonShadow"} size={small ? "xs" : "md"} rounded={"full"} textColor={"white"} bgColor={isOpen ? 'yellow.500' : 'green.500'}><FiEdit /></Button>
                     </PopoverTrigger>
                     <Portal>
                         <PopoverContent bgGradient="linear(to-tr, gray.990, gray.990, green.900)" border="1px" borderColor="green.700">

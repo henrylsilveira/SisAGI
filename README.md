@@ -19,3 +19,8 @@
 - Armazenar no banco latitude e longitude da residencia dos militares
 - Atraves da aplicação apresentar todos no mapa
 - Fornecer a distancia de cada militar para o batalhão
+
+
+## Futuras implementações
+[ ] Gerador de QR Code para colar em um cartão de visitante, onde o numero do QR Code seja localizado quando aberto para algum visitante, ficar registrado a abertura do numero do cartão até o encerramento.
+[ ] Adicionar uma tabela de carros para registrar carros civis e militares
