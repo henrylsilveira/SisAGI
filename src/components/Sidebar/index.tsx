@@ -83,7 +83,7 @@ export function Sidebar() {
           <SidebarNav />
           <Flex boxShadow='buttonShadow' my={4} alignItems='center' w='full' bg='blackAlpha.500' rounded='lg'>
             <Text fontSize='xs' fontWeight="bold" letterSpacing="tight" bgGradient="linear(to-tr, green.300, gray.600, green.300 )" bgClip='text' p={2} w='full'>
-              Desenvolvido e projetado pelo 3ªSgt Henry - 2016
+              Desenvolvido e projetado pelo 2ªSgt Henry - 2016
             </Text>
           </Flex>
 
@@ -93,7 +93,7 @@ export function Sidebar() {
       {stateBar ? (
         <Flex position="fixed" zIndex={100} bottom={0} left={5} boxShadow='buttonShadow' my={4} mx="auto" alignItems='center' bg='blackAlpha.400' rounded='lg'>
           <Text fontSize='xs' align="center" fontWeight="bold" letterSpacing="tight" bgGradient="linear(to-tr, green.300, gray.600, green.300 )" bgClip='text' p={2} w='full'>
-            SisAGI - Desenvolvido e projetado pelo 3ªSgt Henry - 2016
+            SisAGI - Desenvolvido e projetado pelo 2ªSgt Henry - 2016
           </Text>
         </Flex>
       ) : null}
