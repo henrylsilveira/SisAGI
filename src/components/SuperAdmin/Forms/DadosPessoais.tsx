@@ -36,6 +36,16 @@ export function DadosPessoaisComponent(props) {
 
   function handleFileInputChange(event) {
     const newFile = event.target.files[0];
+    if(newFile.size > 2*1024*1024){
+      toast({
+        title: "Militar",
+        description: "A imagem deve ter menos de 2MB.",
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
+      return;
+    }
     setFile(newFile);
 
     const reader = new FileReader();
@@ -47,9 +57,18 @@ export function DadosPessoaisComponent(props) {
 
   async function handleSubmitImage(event: FormEvent, id: string) {
     event.preventDefault();
-
     const formData = new FormData();
     formData.append("avatarMilitar", file);
+     if(file.size > 2*1024*1024){
+      toast({
+        title: "Militar",
+        description: "A imagem deve ter menos de 2MB.",
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
+      return;
+    }
     try {
       const result = await api.post(`/avatarMilitar/upload/${id}`, formData, {
         headers: {

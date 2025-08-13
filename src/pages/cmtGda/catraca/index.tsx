@@ -44,37 +44,37 @@ export default function CatracaGuarda() {
     }
   );
 
-  const handleSubmitForm = async (id: string, tipo: string) => {
-    try {
-      const result = await api.put(`/controleGuarda/update/${id}/${tipo}`);
-      if (result.status == 201) {
-        toast({
-          title: "Controle da Guarda",
-          description: `O dado de ${tipo} foi cadastrado no sistema.`,
-          status: "success",
-          duration: 2000,
-          isClosable: true,
-        });
-        refetch();
-      } else {
-        toast({
-          title: "Controle da Guarda",
-          description: "Não foi possível cadastrar no sitema",
-          status: "error",
-          duration: 2000,
-          isClosable: true,
-        });
-      }
-    } catch (error) {
-      toast({
-        title: "Controle da Guarda",
-        description: "Verifique os dados do civil.",
-        status: "error",
-        duration: 2000,
-        isClosable: true,
-      });
-    }
-  };
+  // const handleSubmitForm = async (id: string, tipo: string) => {
+  //   try {
+  //     const result = await api.put(`/controleGuarda/update/${id}/${tipo}`);
+  //     if (result.status == 201) {
+  //       toast({
+  //         title: "Controle da Guarda",
+  //         description: `O dado de ${tipo} foi cadastrado no sistema.`,
+  //         status: "success",
+  //         duration: 2000,
+  //         isClosable: true,
+  //       });
+  //       refetch();
+  //     } else {
+  //       toast({
+  //         title: "Controle da Guarda",
+  //         description: "Não foi possível cadastrar no sitema",
+  //         status: "error",
+  //         duration: 2000,
+  //         isClosable: true,
+  //       });
+  //     }
+  //   } catch (error) {
+  //     toast({
+  //       title: "Controle da Guarda",
+  //       description: "Verifique os dados do civil.",
+  //       status: "error",
+  //       duration: 2000,
+  //       isClosable: true,
+  //     });
+  //   }
+  // };
 
   return (
     <>
@@ -89,7 +89,7 @@ export default function CatracaGuarda() {
           alignItems="flex-start"
           
         >
-          <Box p={["6", "8"]} bg="gray.800" borderRadius={8} pb="4"  w={toggle && "full"} h={toggle && "full"}>
+          <Box p={["6", "8"]} bg="gray.800" borderRadius={8} pb="4"  w={toggle && "full"} h={toggle && "full"} >
             <Flex
               bgGradient="linear(to-tr, gray.990, gray.990, green.900)"
               boxShadow="innerShadow"
@@ -123,7 +123,7 @@ export default function CatracaGuarda() {
                 </Flex>
                 
               </Flex>
-              <Grid templateColumns="repeat(2, 1fr)"  w={toggle && "full"} h={toggle && "full"}>
+              <Grid templateColumns="repeat(2, 1fr)"  w={toggle && "full"} h={toggle && "full"} maxH={"100vh"}>
                 <Flex
                   flexDirection={"column"}
                   bg="gray.990"
@@ -149,7 +149,7 @@ export default function CatracaGuarda() {
                     position={"relative"}
                     w={"full"}
                   >
-                    <Flex flexDirection={"column"} m={4} w={"full"}>
+                    <Flex flexDirection={"column"} alignItems={"center"} justifyContent={"center"} m={4} w={"full"} h={"100%"} minH={"60vh"}>
                       {militar ? (
                         <Flex flexDirection={["column","row"]} gap={4}>
                           <Avatar
@@ -185,6 +185,7 @@ export default function CatracaGuarda() {
                         <Flex
                           w={"full"}
                           minH={"300px"}
+                          
                           flexDirection={"column"}
                           justifyContent={"center"}
                           alignItems={"center"}

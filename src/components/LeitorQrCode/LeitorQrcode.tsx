@@ -39,8 +39,11 @@ export default function LeitorDeQRCode({
         const getRegistro = await api.get(
           `/controGuarda/registros/${e.target.value}/militar`
         );
-        console.log(getRegistro);
-        if (getRegistro.data[0] && !getRegistro.data[0].saida && getRegistro.data[0].entrada) {
+        if (
+          getRegistro.data[0] &&
+          !getRegistro.data[0].saida &&
+          getRegistro.data[0].entrada
+        ) {
           const result = await api.put(
             `/controleGuarda/update/${getRegistro.data[0].id}/saida`
           );
@@ -52,11 +55,11 @@ export default function LeitorDeQRCode({
           if (result.status == 201) {
             toast({
               title: "Controle Guarda",
-              description: `Saida do militar registrada ${convertDateAndTime(
+              description: `SAIDA do militar registrada ${convertDateAndTime(
                 generateNowISOTime()
               )}`,
-              status: "success",
-              duration: 1000,
+              status: "warning",
+              duration: 2000,
               isClosable: true,
             });
             refetch();
@@ -86,11 +89,11 @@ export default function LeitorDeQRCode({
           if (response.status == 201) {
             toast({
               title: "Controle Guarda",
-              description: `Entrada do militar registrada ${convertDateAndTime(
+              description: `ENTRADA do militar registrada ${convertDateAndTime(
                 generateNowISOTime()
               )}`,
               status: "success",
-              duration: 1000,
+              duration: 2000,
               isClosable: true,
             });
             refetch();
@@ -114,6 +117,19 @@ export default function LeitorDeQRCode({
           isClosable: true,
         });
       }
+    } else {
+      toast({
+        title: "Controle Guarda",
+        description: "Nenhum militar encontrado.",
+        status: "error",
+        duration: 500,
+        isClosable: true,
+      });
+      setTimeout(async () => {
+        setQrCodeData("");
+        setMilitar(null);
+        inputRef.current.focus();
+      }, 2000);
     }
   };
 

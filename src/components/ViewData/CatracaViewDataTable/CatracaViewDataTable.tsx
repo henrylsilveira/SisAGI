@@ -27,7 +27,7 @@ export default function CatracaViewTable({
   data: ControleGuardaRegistros[];
 }) {
   return data?.filter((item) => item.status === "ativo").length !== 0 ? (
-    <TableContainer overflowY="scroll" zIndex={0}>
+    <TableContainer overflowY="scroll" zIndex={0}  maxH={"90vh"} minH={"60vh"}>
       <Table size="sm" colorScheme="whiteAlpha">
         <Thead>
           <Tr>
@@ -64,7 +64,7 @@ export default function CatracaViewTable({
                 >
                   <Flex justifyContent="start" alignItems={"center"} gap={2}>
                     <Avatar
-                      size="sm"
+                      size="md"
                       name={
                         registro.militar?.nome_guerra
                           ? registro.militar?.nome_guerra
@@ -114,6 +114,6 @@ export default function CatracaViewTable({
       </Table>
     </TableContainer>
   ) : (
-    <NotData textoComponent={"Não existem registros."} />
+    <NotData textoComponent={"Não existem registros para exibir."} />
   );
 }
