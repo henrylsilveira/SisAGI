@@ -75,6 +75,8 @@ const signInFormSchema = yup.object().shape({
 export default function Cadastro() {
   const toast = useToast();
   const [senha, setSenha] = useState("")
+  const [inputSenha, setInputSenha] = useState("")
+  const [inputSenhaConfirm, setInputSenhaConfirm] = useState("")
 
   const {
     register,
@@ -85,7 +87,12 @@ export default function Cadastro() {
     resolver: yupResolver(signInFormSchema),
   });
 
+  function handleGetInputSenha(senha: string){
+    setInputSenha(senha)
+    setSenha(verificaSenha(senha))
+  }
   const handleSignIn: SubmitHandler<SignInFormData> = async (values) => {
+   
     try {
       const result = await api.post("/militar/create", values);
       if (result.status == 201) {
@@ -251,13 +258,23 @@ export default function Cadastro() {
                 label="Senha"
                 type="password"
                 error={errors.senha}
-                onFocus={(e) => setSenha(verificaSenha(e.target.value))}
+                onFocus={(e) => handleGetInputSenha(e.target.value)}
                 {...register("senha")}
               />
               <FormHelperText color="red.600">{senha}</FormHelperText>
             </FormControl>
+            <FormControl>
+              <Input
+                name="csenha"
+                label="Confirmar senha"
+                type="password"
+                onChange={(e) => setInputSenhaConfirm(e.target.value)}
+              />
+              <FormHelperText color="red.600">{inputSenha + "=" + inputSenhaConfirm}{inputSenha !== inputSenhaConfirm && "Senhas devem ser iguals"}</FormHelperText>
+            </FormControl>
             <Flex flexDir="row" justifyContent="space-between">
               <Button
+              disabled={inputSenha !== inputSenhaConfirm}
                 type="submit"
                 mt="6"
                 mr={4}
