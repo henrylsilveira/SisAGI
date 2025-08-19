@@ -22,11 +22,12 @@ import { ControleGuardaRegistros, Militar } from "../../../@types/types";
 import { PesquisarMilitarCivil } from "../../../components/Drawer/CmtGda";
 import { useQuery } from "react-query";
 import { SetStateAction, useState } from "react";
-import CatracaViewTable from "../../../components/ViewData/CatracaViewDataTable/CatracaViewDataTable";
+
 import { NotLoaded } from "../../../components/NotLoaded";
 import LeitorDeQRCode from "../../../components/LeitorQrCode/LeitorQrcode";
-import { returnAvatarImage } from "../../../utils/scripts";
+import { convertDateAndTime, returnAvatarImage } from "../../../utils/scripts";
 import { useSession } from "../../../services/context/auth";
+import CatracaViewTable from "../../../components/CmtGda/CatracaViewDataTable/CatracaViewDataTable";
 
 export default function CatracaGuarda() {
   const [militar, setMilitar] = useState<Militar>();
@@ -43,6 +44,8 @@ export default function CatracaGuarda() {
       return result;
     }
   );
+
+ 
 
   // const handleSubmitForm = async (id: string, tipo: string) => {
   //   try {
@@ -220,6 +223,8 @@ export default function CatracaGuarda() {
           </Box>
         </SimpleGrid>
       </Flex>
+      
+      
     </>
   );
 }

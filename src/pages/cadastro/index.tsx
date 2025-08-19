@@ -18,11 +18,11 @@ import { Input } from "../../components/Form/Input";
 import { api } from "../../services/api";
 import Router from "next/router";
 import Link from "next/link";
-import { verificaSenha } from '../../utils/scripts';
+import { verificaSenha } from "../../utils/scripts";
 import { useState } from "react";
 import Head from "next/head";
 import { CompanhiasArray, PelotoesArray } from "../../utils/staticArray";
-
+import { BsEye } from "react-icons/bs";
 
 // CODIGO PARA SIMULAR MILITARES NO BANCO DE DADOS
 
@@ -49,14 +49,12 @@ import { CompanhiasArray, PelotoesArray } from "../../utils/staticArray";
 //   }
 // }
 
-
-
-
 type SignInFormData = {
   nomeCompleto: string;
   nomeGuerra: string;
   identidade: string;
   senha: string;
+  confirmSenha: string;
   postoGrad: string;
   companhia: string;
   pelotao: string;
@@ -68,15 +66,17 @@ const signInFormSchema = yup.object().shape({
   identidade: yup.string().required("Identidade obrigatória."),
   postoGrad: yup.string().required("Obrigatório."),
   senha: yup.string().required("Senha obrigatória."),
+  confirmSenha: yup
+    .string()
+    .oneOf([yup.ref("senha"), null], "Senhas devem ser iguais."),
   companhia: yup.string(),
   pelotao: yup.string(),
 });
 
 export default function Cadastro() {
   const toast = useToast();
-  const [senha, setSenha] = useState("")
-  const [inputSenha, setInputSenha] = useState("")
-  const [inputSenhaConfirm, setInputSenhaConfirm] = useState("")
+  const [senha, setSenha] = useState("");
+  const [togglePassword, setTogglePassword] = useState(false);
 
   const {
     register,
@@ -87,12 +87,10 @@ export default function Cadastro() {
     resolver: yupResolver(signInFormSchema),
   });
 
-  function handleGetInputSenha(senha: string){
-    setInputSenha(senha)
-    setSenha(verificaSenha(senha))
+  function handleGetInputSenha(senha: string) {
+    setSenha(verificaSenha(senha));
   }
   const handleSignIn: SubmitHandler<SignInFormData> = async (values) => {
-   
     try {
       const result = await api.post("/militar/create", values);
       if (result.status == 201) {
@@ -126,209 +124,234 @@ export default function Cadastro() {
 
   return (
     <>
-    <Head>
+      <Head>
         <title>SisAGI | Cadastro de usuário</title>
       </Head>
-    <Flex w="100vw" flexDir="row" align="center" justify="center" my={4}>
-      <Grid
-        gridTemplateColumns={["1fr", "1fr", "1fr 1fr"]}
-        boxShadow="buttonShadow"
-        bg="#1b1b1b44" backdropFilter="blur(5px)"
-        rounded="2xl"
-        px={8}
-      >
-        <Flex w={["200px", "300px", "300px"]} mx="auto" align="center" justify="center">
-          <Image src="./img/logo13bib.png" alt="brasão Cmdo Fron RN / 5 BIS" />
-        </Flex>
-        <Flex
-          as="form"
-          w="100%"
-          flexDir="column"
-          maxWidth={420}
-          p="8"
-          borderRadius={8}
-          onSubmit={handleSubmit(handleSignIn)}
+      <Flex w="100vw" flexDir="row" align="center" justify="center" my={4}>
+        <Grid
+          gridTemplateColumns={["1fr", "1fr", "1fr 1fr"]}
+          boxShadow="buttonShadow"
+          bg="#1b1b1b44"
+          backdropFilter="blur(5px)"
+          rounded="2xl"
+          px={8}
         >
-          <Stack
-            spacing={2}
-            border="1px"
-            boxShadow="buttonShadow"
-            borderColor="green.800"
-            bg="gray.990"
-            rounded="2xl"
-            pb={4}
-            px={6}
+          <Flex
+            w={["200px", "300px", "300px"]}
+            mx="auto"
+            align="center"
+            justify="center"
           >
-            <Flex align="center" justify="center" flexDir="column">
-              <Heading
+            <Image
+              src="./img/logo13bib.png"
+              alt="brasão Cmdo Fron RN / 5 BIS"
+            />
+          </Flex>
+          <Flex
+            as="form"
+            w="100%"
+            flexDir="column"
+            maxWidth={420}
+            p="8"
+            borderRadius={8}
+            onSubmit={handleSubmit(handleSignIn)}
+          >
+            <Stack
+              spacing={2}
+              border="1px"
+              boxShadow="buttonShadow"
+              borderColor="green.800"
+              bg="gray.990"
+              rounded="2xl"
+              pb={4}
+              px={6}
+            >
+              <Flex align="center" justify="center" flexDir="column">
+                <Heading
+                  fontWeight="bold"
+                  letterSpacing="tight"
+                  bgGradient="linear(to-tr, green.300, gray.600, green.300 )"
+                  bgClip="text"
+                  size="2xl"
+                  mt={2}
+                  p={4}
+                >
+                  SisAGI
+                </Heading>
+                <Text fontSize={["sm", "md", "lg"]}>
+                  Sistema de Apoio a Gestão Interna
+                </Text>
+                <Heading as="h2" size="md">
+                  13º BIB
+                </Heading>
+              </Flex>
+              <Input
+                name="nomeCompleto"
+                label="Nome Completo"
+                type="text"
+                error={errors.nomeCompleto}
+                {...register("nomeCompleto")}
+              />
+              <FormControl>
+                <Input
+                  as="select"
+                  label="P/G"
+                  focusBorderColor="green.500"
+                  name="postoGrad"
+                  bgColor="gray.990"
+                  textColor="gray.200"
+                  variant="filled"
+                  _hover={{ bgColor: "gray.900" }}
+                  size="lg"
+                  placeholder="Selecione"
+                  {...register("postoGrad")}
+                >
+                  <option value="SD">SD</option>
+                  <option value="CB">CB</option>
+                  <option value="3 SGT">3 SGT</option>
+                  <option value="2 SGT">2 SGT</option>
+                  <option value="1 SGT">1 SGT</option>
+                  <option value="SUB TEN">SUB TEN</option>
+                  <option value="2 TEN">2 TEN</option>
+                  <option value="1 TEN">1 TEN</option>
+                  <option value="CAP">CAP</option>
+                  <option value="MAJ">MAJ</option>
+                  <option value="TEN CEL">TEN CEL</option>
+                  <option value="CEL">CEL</option>
+                </Input>
+              </FormControl>
+              <Input
+                name="nomeGuerra"
+                label="Nome de Guerra"
+                placeholder="Fulano (nome de guerra)"
+                type="text"
+                error={errors.nomeGuerra}
+                {...register("nomeGuerra")}
+              />
+              <Input
+                name="identidade"
+                label="Nrº Identidade"
+                type="text"
+                error={errors.identidade}
+                {...register("identidade")}
+              />
+              <Input
+                name="local"
+                label="Companhia"
+                type="text"
+                as="select"
+                error={errors.companhia}
+                {...register("companhia")}
+              >
+                {CompanhiasArray.map((option, index) => (
+                  <option key={option + index} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </Input>
+              <Input
+                name="local"
+                label="Pelotão"
+                type="text"
+                as="select"
+                error={errors.pelotao}
+                {...register("pelotao")}
+              >
+                {PelotoesArray.map((option, index) => (
+                  <option key={option + index} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </Input>
+              <FormControl position={"relative"}>
+                <Button
+                  position={"absolute"}
+                  zIndex={4}
+                  left={12}
+                  p={0}
+                  w={6}
+                  h={6}
+                  colorScheme={"blue"}
+                  onClick={() => setTogglePassword(!togglePassword)}
+                >
+                  <BsEye color="white" />
+                </Button>
+                <Input
+                  name="senha"
+                  label="Senha"
+                  type={togglePassword ? "text" : "password"}
+                  error={errors.senha}
+                  onFocus={(e) => handleGetInputSenha(e.target.value)}
+                  {...register("senha")}
+                />
+                <FormHelperText color="red.600">{senha}</FormHelperText>
+              </FormControl>
+              <FormControl>
+                <Input
+                  name="confirmSenha"
+                  label="Confirme a senha"
+                  type={togglePassword ? "text" : "password"}
+                  error={errors.confirmSenha}
+                  onFocus={(e) => handleGetInputSenha(e.target.value)}
+                  {...register("confirmSenha")}
+                />
+              </FormControl>
+              <Flex flexDir="row" justifyContent="space-between">
+                <Button
+                  type="submit"
+                  mt="6"
+                  mr={4}
+                  w="100%"
+                  colorScheme="blue"
+                  size="lg"
+                  boxShadow="buttonShadow"
+                  variant="ghost"
+                  transition="0.3s"
+                  _hover={{ border: "1px", borderColor: "blue.700" }}
+                  isLoading={formState.isSubmitting}
+                >
+                  Cadastrar
+                </Button>
+
+                <Button
+                  boxShadow="buttonShadow"
+                  variant="ghost"
+                  w="100%"
+                  transition="0.3s"
+                  _hover={{ border: "1px", borderColor: "yellow.700" }}
+                  mt="6"
+                  colorScheme="yellow"
+                  size="lg"
+                >
+                  <Link href="/">Voltar</Link>
+                </Button>
+              </Flex>
+            </Stack>
+
+            <Flex
+              textAlign="center"
+              boxShadow="buttonShadow"
+              my={4}
+              alignItems="center"
+              w="full"
+              bg="blackAlpha.500"
+              rounded="lg"
+            >
+              <Text
+                fontSize="xs"
                 fontWeight="bold"
                 letterSpacing="tight"
                 bgGradient="linear(to-tr, green.300, gray.600, green.300 )"
                 bgClip="text"
-                size="2xl"
-                mt={2}
-                p={4}
+                p={2}
+                w="full"
               >
-                SisAGI
-              </Heading>
-              <Text fontSize={["sm", "md", "lg"]}>
-                Sistema de Apoio a Gestão Interna
+                Desenvolvido pelo 2º Sgt Henry - 2016
               </Text>
-              <Heading as="h2" size="md">
-                13º BIB
-              </Heading>
             </Flex>
-            <Input
-              name="nomeCompleto"
-              label="Nome Completo"
-              type="text"
-              error={errors.nomeCompleto}
-              {...register("nomeCompleto")}
-            />
-            <FormControl>
-              <Input
-                as="select"
-                label="P/G"
-                focusBorderColor="green.500"
-                name="postoGrad"
-                bgColor="gray.990"
-                textColor="gray.200"
-                variant="filled"
-                _hover={{ bgColor: "gray.900" }}
-                size="lg"
-                placeholder="Selecione"
-                {...register("postoGrad")}
-              >
-                <option value="SD">SD</option>
-                <option value="CB">CB</option>
-                <option value="3 SGT">3 SGT</option>
-                <option value="2 SGT">2 SGT</option>
-                <option value="1 SGT">1 SGT</option>
-                <option value="SUB TEN">SUB TEN</option>
-                <option value="2 TEN">2 TEN</option>
-                <option value="1 TEN">1 TEN</option>
-                <option value="CAP">CAP</option>
-                <option value="MAJ">MAJ</option>
-                <option value="TEN CEL">TEN CEL</option>
-                <option value="CEL">CEL</option>
-              </Input>
-            </FormControl>
-            <Input
-              name="nomeGuerra"
-              label="Nome de Guerra"
-              placeholder="Fulano (nome de guerra)"
-              type="text"
-              error={errors.nomeGuerra}
-              {...register("nomeGuerra")}
-            />
-            <Input
-              name="identidade"
-              label="Nrº Identidade"
-              type="text"
-              error={errors.identidade}
-              {...register("identidade")}
-            />
-            <Input
-              name="local"
-              label="Companhia"
-              type="text"
-              as="select"
-              error={errors.companhia}
-              {...register("companhia")}
-            >
-              {CompanhiasArray.map((option , index) => (
-                <option key={option + index} value={option}>{option}</option>
-              ))}
-            </Input>
-            <Input
-              name="local"
-              label="Pelotão"
-              type="text"
-              as="select"
-              error={errors.pelotao}
-              {...register("pelotao")}
-            >
-              {PelotoesArray.map((option , index) => (
-                <option key={option + index} value={option}>{option}</option>
-              ))}
-            </Input>
-            <FormControl>
-              <Input
-                name="senha"
-                label="Senha"
-                type="password"
-                error={errors.senha}
-                onFocus={(e) => handleGetInputSenha(e.target.value)}
-                {...register("senha")}
-              />
-              <FormHelperText color="red.600">{senha}</FormHelperText>
-            </FormControl>
-            <FormControl>
-              <Input
-                name="csenha"
-                label="Confirmar senha"
-                type="password"
-                onChange={(e) => setInputSenhaConfirm(e.target.value)}
-              />
-              <FormHelperText color="red.600">{inputSenha + "=" + inputSenhaConfirm}{inputSenha !== inputSenhaConfirm && "Senhas devem ser iguals"}</FormHelperText>
-            </FormControl>
-            <Flex flexDir="row" justifyContent="space-between">
-              <Button
-              disabled={inputSenha !== inputSenhaConfirm}
-                type="submit"
-                mt="6"
-                mr={4}
-                w="100%"
-                colorScheme="blue"
-                size="lg"
-                boxShadow="buttonShadow"
-                variant="ghost"
-                transition="0.3s"
-                _hover={{ border: "1px", borderColor: "blue.700" }}
-                isLoading={formState.isSubmitting}
-              >
-                Cadastrar
-              </Button>
-
-              <Button
-                boxShadow="buttonShadow"
-                variant="ghost"
-                w="100%"
-                transition="0.3s"
-                _hover={{ border: "1px", borderColor: "yellow.700" }}
-                mt="6"
-                colorScheme="yellow"
-                size="lg"
-              >
-                <Link href="/">Voltar</Link>
-              </Button>
-            </Flex>
-          </Stack>
-
-          <Flex
-            textAlign="center"
-            boxShadow="buttonShadow"
-            my={4}
-            alignItems="center"
-            w="full"
-            bg="blackAlpha.500"
-            rounded="lg"
-          >
-            <Text
-              fontSize="xs"
-              fontWeight="bold"
-              letterSpacing="tight"
-              bgGradient="linear(to-tr, green.300, gray.600, green.300 )"
-              bgClip="text"
-              p={2}
-              w="full"
-            >
-              Desenvolvido pelo 3ªSgt Henry - 2016
-            </Text>
           </Flex>
-        </Flex>
-      </Grid>
-    </Flex>
+        </Grid>
+      </Flex>
     </>
   );
 }

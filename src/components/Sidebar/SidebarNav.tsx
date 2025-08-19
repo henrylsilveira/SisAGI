@@ -9,7 +9,7 @@ import {
 } from "react-icons/ri";
 import { GiTrade, GiAmmoBox, GiOilDrum, GiTurnstile } from "react-icons/gi";
 import { HiOutlineUserGroup } from "react-icons/hi";
-import { MdOutlinePersonSearch } from "react-icons/md";
+import { MdOutlinePersonSearch, MdReport } from "react-icons/md";
 import { FaTools } from "react-icons/fa";
 import { FaPeopleCarry } from "react-icons/fa";
 import { IoIosPeople } from "react-icons/io";
@@ -188,6 +188,9 @@ export function SidebarNav() {
           </NavLink>
           <NavLink href="/cmtGda/cadastro" icon={BsPersonPlus}>
             Cadastro
+          </NavLink>
+          <NavLink href="/cmtGda/relatorio" icon={MdReport}>
+            Relatorio
           </NavLink>
           <NavLink href="/cmtGda/catraca" icon={GiTurnstile}>
             Catraca
