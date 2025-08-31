@@ -21,43 +21,50 @@ import { ControleGuardaRegistros } from "../../../@types/types";
 import { useQuery } from "react-query";
 import ViewTable from "../../../components/ViewData/ViewTable";
 import { NotData } from "../../../components/NotData";
-import { GiCheckMark } from "react-icons/gi";
+import { GiCheckMark, GiMagnifyingGlass } from "react-icons/gi";
 import { GoSignIn, GoSignOut, GoX } from "react-icons/go";
 import { IoPersonSharp } from "react-icons/io5";
 import { TbMilitaryRank } from "react-icons/tb";
 import PopoverDestino from "../../../components/CmtGda/PopoverDestino";
-import { returnAvatarImage, convertDateAndTime } from "../../../utils/scripts";
+import { returnAvatarImage, convertDateAndTime, convertDate, getFullRank } from "../../../utils/scripts";
 import { Input } from "../../../components/Form/Input";
+import GerarRelatorioRegistros from "../../../components/CmtGda/relatorio/Relatorio";
+import { useSession } from "../../../services/context/auth";
 
 export default function ReportPage() {
+  const { user: session } = useSession();
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
+  const [oficialDia, setOficialDia] = useState("");
+  const [recordData, setRecordData] = useState<ControleGuardaRegistros[]>([]);
+  // const { data, isLoading, refetch } = useQuery(
+  //   ["todosRegistros"],
+  //   async () => {
+  //     const result = await api.get<ControleGuardaRegistros[]>(
+  //       `/controGuarda/registros`
+  //     );
+  //   }
+  // );
+  async function handleGetFilterRercord() {
+    const newStart = new Date(start);
+    const newEnd = new Date(end);
+    if (start && end) {
+      const result = await api.get<ControleGuardaRegistros[]>(
+        `/controGuarda/registros/relatorio/${newStart.getTime()}/${newEnd.getTime()}`
+      );
 
-  const { data, isLoading, refetch } = useQuery(
-    ["todosRegistros"],
-    async () => {
-      const now = new Date();
-      const newStart = new Date(start);
-      const newEnd = new Date(end);
-      if (start && end) {
-        const result = await api.get<ControleGuardaRegistros[]>(
-          `/controGuarda/registros/relatorio/${newStart.getTime()}/${newEnd.getTime()}`
-        );
-        return result;
-      } else {
-        const result = await api.get<ControleGuardaRegistros[]>(
-          `/controGuarda/registros/relatorio/${now.toISOString()}/${
-            now.getTime() + 86400000
-          }`
-        );
-        return result;
-      }
+      setRecordData(result.data);
+      return result;
     }
-  );
+    return;
+  }
+
+  
+
   return (
     <>
       <Head>
-        <title>SisAGI | Controle Guarda</title>
+        <title>SisAGI | Relatório de Entradas / Saídas</title>
       </Head>
       <Flex
         direction="column"
@@ -93,28 +100,64 @@ export default function ReportPage() {
                 </Heading>
                 <Flex gap={2} alignContent={"center"} mr={2}>
                   <Input
-                  h={"30px"}
+                    h={"30px"}
                     type="datetime-local"
                     name="start"
                     onChange={(e) => setStart(e.target.value)}
                   />
                   <Input
-                  h={"30px"}
+                    h={"30px"}
                     type="datetime-local"
                     name="end"
                     onChange={(e) => setEnd(e.target.value)}
                   />
+                  <Button
+                    onClick={handleGetFilterRercord}
+                    h={"30px"}
+                    colorScheme="green"
+                    size="md"
+                    px={8}
+                    leftIcon={<GiMagnifyingGlass />}
+                    shadow={"buttonShadow"}
+                  >
+                    Buscar
+                  </Button>
                 </Flex>
               </Flex>
               <Flex
                 bg="gray.990"
                 boxShadow="buttonShadow"
                 m={4}
+                py={2}
                 justifyContent="space-between"
                 alignItems="center"
+                flexDirection={"column"}
               >
-                {data?.data.filter((item) => item.status === "ativo").length !==
-                0 ? (
+                <Flex w={"100%"} p={2}>
+                  {recordData?.length !== 0 && (
+                    <Flex
+                      ml={"auto"}
+                      mr={2}
+                      borderBottom={"1px"}
+                      borderColor={"green.900"}
+                      p={2}
+                      justifyContent={"space-between"}
+                      w={"100%"}
+                    >
+                      <Input
+                        w={"360px"}
+                        h={"30px"}
+                        type="text"
+                        name="oficialDia"
+                        placeholder="Posto/Graduação e nome"
+                        label="Oficial de dia"
+                        onChange={(e) => setOficialDia(e.target.value)}
+                      />
+                      <GerarRelatorioRegistros optionsRecord={{start, end, oficialDia, cmtGda: session.post_grad + " " + session.nome_completo}} data={recordData} />
+                    </Flex>
+                  )}
+                </Flex>
+                {recordData?.length !== 0 ? (
                   <TableContainer w={"100%"} overflowY="scroll" py={4}>
                     <Table size="sm" colorScheme="whiteAlpha">
                       <Thead>
@@ -130,26 +173,26 @@ export default function ReportPage() {
                         </Tr>
                       </Thead>
                       <Tbody>
-                        {data?.data.map((registro) => (
+                        {recordData?.map((registro) => (
                           <Tr key={registro.id}>
                             <Td textAlign="center">
-                              {registro.militar.post_grad}
+                              {getFullRank(registro.militar?.post_grad)}
                             </Td>
                             <Td textAlign="center">
-                              {registro.militar.nome_guerra}
+                              {registro.militar?.nome_guerra}
                             </Td>
                             <Td textAlign="center">
-                              {registro.militar.nome_completo}
+                              {registro.militar?.nome_completo}
                             </Td>
                             <Td textAlign="center">
-                              {registro.militar.companhia}
+                              {registro.militar?.companhia}
                             </Td>
                             <Td textAlign="center">
-                              {registro.militar.pelotao}
+                              {registro.militar?.pelotao}
                             </Td>
                             <Td textAlign="center">
-                              {registro.militar.local_cumpre_expediente
-                                ? registro.militar.local_cumpre_expediente
+                              {registro.militar?.local_cumpre_expediente
+                                ? registro.militar?.local_cumpre_expediente
                                 : "-"}
                             </Td>
                             <Td textAlign="center">

@@ -10,8 +10,9 @@ import {
   AvatarBadge,
   Badge,
   Grid,
+  VStack,
 } from "@chakra-ui/react";
-import { memo, FormEvent, useState } from "react";
+import { memo, FormEvent, useState, useEffect } from "react";
 import { FcAcceptDatabase } from "react-icons/fc";
 import { Militar } from "../../../@types/types";
 import { QRCode } from "react-qrcode-logo";
@@ -24,6 +25,7 @@ import { api } from "../../../services/api";
 import { useRouter } from "next/router";
 import { useSession } from "../../../services/context/auth";
 import { FiDownload } from "react-icons/fi";
+import { BiLock, BiLockOpen } from "react-icons/bi";
 
 export function DadosPessoaisComponent(props) {
   const { user: session, status } = useSession();
@@ -34,9 +36,25 @@ export function DadosPessoaisComponent(props) {
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
 
+  const [passwordValid, setPasswordValid] = useState(false);
+  const [password, setPassword] = useState("");
+  const [newPassword, setNewPassword] = useState({
+    senha: "",
+    confirmaSenha: "",
+  });
+
+  useEffect(() => {
+    if (
+      asPath === "/superAdmin/usuarios" &&
+      session.Funcao.find((func) => func.funcao === "super admin")
+    ) {
+      setPasswordValid(true);
+    }
+  }, [asPath, session.Funcao]);
+
   function handleFileInputChange(event) {
     const newFile = event.target.files[0];
-    if(newFile.size > 2*1024*1024){
+    if (newFile.size > 2 * 1024 * 1024) {
       toast({
         title: "Militar",
         description: "A imagem deve ter menos de 2MB.",
@@ -59,7 +77,7 @@ export function DadosPessoaisComponent(props) {
     event.preventDefault();
     const formData = new FormData();
     formData.append("avatarMilitar", file);
-     if(file.size > 2*1024*1024){
+    if (file.size > 2 * 1024 * 1024) {
       toast({
         title: "Militar",
         description: "A imagem deve ter menos de 2MB.",
@@ -157,6 +175,90 @@ export function DadosPessoaisComponent(props) {
       document.body.appendChild(downloadLink);
       downloadLink.click();
       document.body.removeChild(downloadLink);
+    }
+  }
+
+  async function checkPassword() {
+    try {
+      const result = await api.post("/valid/password", {
+        id: session.id,
+        senha: password,
+      });
+      console.log(result);
+      if (result.status == 200 && result.data) {
+        toast({
+          title: "Senha",
+          description: "Resetar senha liberado.",
+          status: "success",
+          duration: 1000,
+          isClosable: true,
+        });
+        setPasswordValid(true);
+      } else {
+        toast({
+          title: "Senha",
+          description: "Senha incorreta.",
+          status: "error",
+          duration: 1000,
+          isClosable: true,
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Senha",
+        description:
+          "Erro interno. Entre em contato com o administrador do sistema.",
+        status: "error",
+        duration: 1000,
+        isClosable: true,
+      });
+    }
+  }
+
+  async function handleSubmitNewPassword(id: string) {
+    if (newPassword.senha !== newPassword.confirmaSenha) {
+      toast({
+        title: "Senha",
+        description: "As senhas devem ser iguais.",
+        status: "error",
+        duration: 1000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    try {
+      const result = await api.patch(`/militar/${id}`, {
+        senha: newPassword.senha,
+      });
+      if (result.status == 201) {
+        toast({
+          title: "Senha",
+          description: "Senha alterada com sucesso.",
+          status: "success",
+          duration: 1000,
+          isClosable: true,
+        });
+        setPasswordValid(false);
+        setNewPassword({ senha: "", confirmaSenha: "" });
+      } else {
+        toast({
+          title: "Senha",
+          description: "Problema ao resetar a senha.",
+          status: "error",
+          duration: 1000,
+          isClosable: true,
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Senha",
+        description:
+          "Erro interno. Entre em contato com o administrador do sistema.",
+        status: "error",
+        duration: 1000,
+        isClosable: true,
+      });
     }
   }
 
@@ -284,7 +386,6 @@ export function DadosPessoaisComponent(props) {
             "linear-gradient(to bottom, rgba(0, 0, 0, 0), #00FF00, rgba(0, 0, 0, 0)) 1 100%;",
         }}
       >
-        
         <Box position={"relative"}>
           <QRCode
             fgColor="#067c33"
@@ -297,7 +398,9 @@ export function DadosPessoaisComponent(props) {
             value={mil.id}
           />
           <Button
-            onClick={() => downloadQrCode(mil.post_grad + "_" + mil.nome_guerra)}
+            onClick={() =>
+              downloadQrCode(mil.post_grad + "_" + mil.nome_guerra)
+            }
             colorScheme={"green"}
             position={"absolute"}
             right={-4}
@@ -312,6 +415,107 @@ export function DadosPessoaisComponent(props) {
           </Button>
         </Box>
       </Flex>
+      {asPath == "/superAdmin/usuarios" ||
+        (asPath == "/pessoal/gerenciamento" && (
+          <>
+            <Flex
+              bg="gray.990"
+              boxShadow="buttonShadow"
+              m={4}
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Heading size="md" p={2}>
+                Resetar senha
+              </Heading>
+            </Flex>
+            <Flex
+              alignItems="center"
+              pb={4}
+              mb={4}
+              position={"relative"}
+              justifyContent="center"
+              borderBottom="1px"
+              borderStyle="solid"
+              borderColor="green.600"
+              style={{
+                borderImage:
+                  "linear-gradient(to bottom, rgba(0, 0, 0, 0), #00FF00, rgba(0, 0, 0, 0)) 1 100%;",
+              }}
+            >
+              <VStack
+                filter={passwordValid ? "none" : "blur(2px)"}
+                spacing={4}
+                p={4}
+              >
+                <Input
+                  type="password"
+                  name="password"
+                  label="Nova senha"
+                  placeholder="Nova senha"
+                  onChange={(e) =>
+                    setNewPassword({ ...newPassword, senha: e.target.value })
+                  }
+                />
+                <Input
+                  type="password"
+                  name="password"
+                  label="Confirmar senha"
+                  placeholder="Confirmar senha"
+                  onChange={(e) =>
+                    setNewPassword({
+                      ...newPassword,
+                      confirmaSenha: e.target.value,
+                    })
+                  }
+                />
+                <Button
+                  onClick={() => handleSubmitNewPassword(mil.id)}
+                  colorScheme={"green"}
+                  w={"full"}
+                  h={10}
+                  boxShadow={"buttonShadow"}
+                  p={1}
+                >
+                  Salvar
+                </Button>
+              </VStack>
+
+              <Flex
+                justifyContent={"center"}
+                alignItems={"center"}
+                pos={"absolute"}
+                h={"100%"}
+                w={"100%"}
+                display={passwordValid ? "none" : "flex"}
+              >
+                <Flex>
+                  <Input
+                    w={"180px"}
+                    type="password"
+                    name="password"
+                    label="Senha do sargenteante"
+                    placeholder="Senha"
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <Button
+                    onClick={() => checkPassword()}
+                    colorScheme={"green"}
+                    w={6}
+                    h={10}
+                    boxShadow={"buttonShadow"}
+                    top={9}
+                    left={2}
+                    p={1}
+                  >
+                    <BiLockOpen size={14} />
+                  </Button>
+                </Flex>
+              </Flex>
+            </Flex>
+          </>
+        ))}
+
       <Grid
         gridTemplateColumns={["1fr", "1fr", "1fr 1fr"]}
         gap={2}

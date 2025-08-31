@@ -199,3 +199,23 @@ export function returnNomesArmamentos(armamentos?: Armamento[]){
         b = y;
       return a == b ? 0 : a > b ? 1 : -1;})
 }
+
+export function getFullRank(abbrev: string): string {
+  const rankMap: Record<string, string> = {
+    "SD": "Soldado",
+    "CB": "Cabo",
+    "3 SGT": "Terceiro Sargento",
+    "2 SGT": "Segundo Sargento",
+    "1 SGT": "Primeiro Sargento",
+    "SUB TEN": "Subtenente",
+    "ASP": "Aspirante",
+    "2 TEN": "Segundo Tenente",
+    "1 TEN": "Primeiro Tenente",
+    "CAP": "Capitão",
+    "MAJ": "Major",
+    "TEN CEL": "Tenente-Coronel",
+    "CEL": "Coronel"
+  };
+
+  return rankMap[abbrev] ?? "Posto/Graduação desconhecido";
+}

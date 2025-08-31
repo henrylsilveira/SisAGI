@@ -3,7 +3,7 @@ import { BsClipboardData } from "react-icons/bs";
 
 export function NotData({textoComponent}){
     return (
-        <Flex textAlign="center" alignItems="center" justifyContent="center" bgColor="#55000033" mx={4} my={4} p={4} rounded="base" border="1px" borderColor="red.900">
+        <Flex textAlign="center" alignItems="center" justifyContent="center" w="100%" bgColor="#55000033" mx={4} my={4} p={4} rounded="base" border="1px" borderColor="red.900">
             <Icon as={BsClipboardData} color="red.800" mx={4}/>{textoComponent}
         </Flex>
     )

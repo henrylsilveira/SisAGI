@@ -23,8 +23,6 @@
     "axios": "^1.2.1",
     "bcrypt": "^5.1.0",
     "framer-motion": "^8.0.2",
-    "html-to-image": "^1.11.13",
-    "jspdf": "^3.0.1",
     "leaflet": "^1.9.3",
     "leaflet-defaulticon-compatibility": "^0.1.1",
     "leaflet-geosearch": "^3.7.0",
@@ -41,6 +39,7 @@
     "react-qrcode-logo": "^3.0.0",
     "react-query": "^3.39.2",
     "react-spinners": "^0.13.7",
+    "react-to-pdf": "^2.0.1",
     "yup": "^0.32.11"
   },
   "devDependencies": {
