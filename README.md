@@ -1,8 +1,245 @@
+<div align="center">
+
 # 🪖 SisAGI — Sistema de Apoio à Gestão Interna
 
-> Aplicação web desenvolvida por um militar desenvolvedor com o objetivo de aperfeiçoar a administração interna de uma Organização Militar (OM), centralizando o controle de armamento, material, pessoal, veículos e muito mais.
+[![Português](https://img.shields.io/badge/lang-PT--BR-009c3b?style=for-the-badge)](https://github.com/henrylsilveira/SisAGI#-versão-em-português)
+[![English](https://img.shields.io/badge/lang-EN-002776?style=for-the-badge)](https://github.com/henrylsilveira/SisAGI#-english-version)
+
+</div>
+
+
+
+# 🇺🇸 English Version
+
+> Web application developed by a soldier-developer with the goal of improving internal administration within a Military Organization (MO), centralizing the control of weapons, supplies, personnel, vehicles, and more.
+
+## ⚠️ Project Status
+
+![Status](https://img.shields.io/badge/status-discontinued-red)
+![Contributions](https://img.shields.io/badge/contributions-welcome-brightgreen)
+
+**This project is discontinued.** Development started in **2021** and was halted after being submitted to **PREMIA 2024** (Brazilian Army Innovation and Administrative Improvement Award). The code remains open for anyone who wants to pick it up, fix bugs, refactor, or implement the pending features.
+
+Since this is a large-scope project built during the author's early stages as a developer, there may be **bugs, flaws, and room for improvement** — any contribution is very welcome!
+
+> 🏆 This project was **submitted to PREMIA 2024**, recognizing its potential contribution to modernizing Brazilian military administration.
+
+## 📋 Table of Contents
+
+- [About the Project](#about-the-project)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Prerequisites](#prerequisites)
+- [Getting Started](#getting-started)
+- [Project Structure](#project-structure)
+- [Roadmap](#roadmap-1)
+- [Contributing](#contributing)
+- [About the Author](#about-the-author)
+
+## About the Project
+
+**SisAGI** (**Sistema de Apoio à Gestão Interna** / Internal Management Support System) is a web application started in **2021** by a soldier with a developer mindset, aimed at digitalizing and improving the internal administrative processes of a Military Organization (MO).
+
+**This is not an official Brazilian Army project.** It is an individual initiative born from the desire to modernize the unit's internal management and ease the daily work of military personnel in administrative roles — such as the General Aide, Supply Sergeant, Armorer, and other departments.
+
+The system consists of **two repositories**:
+
+- **Frontend** (this repository): web application built with **Next.js 13 + TypeScript**
+- **Backend**: **Node.js** server responsible for the API and business logic → [henrylsilveira/SisAGIServer](https://github.com/henrylsilveira/SisAGIServer)
+
+The system provides weapon custody control, supply management, personnel registration with geolocation, visitor QR Code generation, and much more.
+
+## ⚙️ Features
+
+### 🔫 Weapons
+- Weapon custody and return tracking
+- Real-time status of each weapon (checked out or available)
+- Purpose logging per custody (Mission, Duty, etc.)
+- Maintenance history (date and type)
+
+### 📦 Supplies
+- Supply inventory control
+- Automatic block on custody when stock is depleted
+
+### 👤 Personnel
+- Full registration of military and civilian staff
+- Geographic location storage (latitude/longitude) of residence
+- Interactive map with all personnel plotted
+- Distance calculation from each person to the battalion
+
+### ⛽ Supply Sergeant (Furriel)
+- Fuel consumption tracking
+- Ammunition control
+
+### 📅 Calendar
+- Events and duty schedule with calendar view (FullCalendar)
+
+### 📊 Dashboards
+- Charts and reports powered by ApexCharts
+
+### 🔐 Authentication
+- Login with access control via NextAuth
+
+### 🔲 QR Code
+- QR Code generation for visitor cards
+- Access open/close event logging
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+| Category | Technology |
+|---|---|
+| Framework | [Next.js 13](https://nextjs.org/) |
+| Language | [TypeScript](https://www.typescriptlang.org/) |
+| UI | [Chakra UI](https://chakra-ui.com/) + [Framer Motion](https://www.framer.com/motion/) |
+| Authentication | [NextAuth.js](https://next-auth.js.org/) |
+| HTTP Requests | [Axios](https://axios-http.com/) + [React Query](https://tanstack.com/query/v3) |
+| Forms | [React Hook Form](https://react-hook-form.com/) + [Yup](https://github.com/jquense/yup) |
+| Maps | [Leaflet](https://leafletjs.com/) + [React Leaflet](https://react-leaflet.js.org/) |
+| Calendar | [FullCalendar](https://fullcalendar.io/) |
+| Charts | [ApexCharts](https://apexcharts.com/) |
+| QR Code | [react-qrcode-logo](https://github.com/gcoro/react-qrcode-logo) |
+| Cryptography | [bcrypt](https://github.com/kelektiv/node.bcrypt.js) |
+| Icons | [React Icons](https://react-icons.github.io/react-icons/) |
+| PDF | [react-to-pdf](https://github.com/ivmarcos/react-to-pdf) |
+
+### Backend
+
+| Category | Technology |
+|---|---|
+| Runtime | [Node.js](https://nodejs.org/) |
+| Language | JavaScript / TypeScript |
+
+> 🔗 Backend repository: [henrylsilveira/SisAGIServer](https://github.com/henrylsilveira/SisAGIServer)
+
+## 📦 Prerequisites
+
+- [Node.js](https://nodejs.org/) >= 16.x
+- [pnpm](https://pnpm.io/) (recommended) or npm/yarn
+- Database configured (check environment variables)
+
+## 🚀 Getting Started
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/henrylsilveira/SisAGI.git
+cd SisAGI
+```
+
+### 2. Install dependencies
+
+```bash
+pnpm install
+# or
+npm install
+```
+
+### 3. Set up environment variables
+
+Create a `.env.local` file at the project root:
+
+```env
+# Database
+DATABASE_URL="your_connection_string"
+
+# NextAuth
+NEXTAUTH_SECRET="your_secret_key"
+NEXTAUTH_URL="http://localhost:3000"
+```
+
+### 4. Run the project
+
+```bash
+# Development
+pnpm dev
+
+# Production
+pnpm build
+pnpm start
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## 📁 Project Structure
+
+```
+SisAGI/
+├── public/
+│   └── img/             # Static images
+├── src/
+│   ├── pages/           # Next.js pages (routing)
+│   ├── components/      # Reusable components
+│   ├── styles/          # Global styles
+│   └── ...
+├── .eslintrc.json
+├── next.config.js
+├── tsconfig.json
+└── package.json
+```
+
+## 🗺️ Roadmap
+
+### 🔧 Pending Fixes
+
+- [ ] Show current weapon status on the custody screen (checked out / available)
+- [ ] Block supply custody when stock is empty
+- [ ] Persist custody purpose in the database
+- [ ] Fix bug showing only document photo instead of civilian's profile photo
+
+### 🚀 Upcoming Features
+
+- [ ] Fuel consumption control by the Supply Sergeant
+- [ ] Ammunition control by the Supply Sergeant
+- [ ] Weapon maintenance log (date, type, and ID)
+- [ ] Interactive map with personnel geolocation and distance to the battalion
+- [ ] QR Code generator for visitor cards with open/close event tracking
+- [ ] Vehicle table (civilian and military)
+
+## 🤝 Contributing
+
+This project is **open to anyone who wants to contribute** — whether to fix bugs, refactor code, update dependencies, or implement any of the pending features listed in the roadmap.
+
+If you are a soldier, a developer, or both — your help is especially welcome so this tool can one day be useful to other units.
+
+1. **Fork** the repository
+2. Create your branch: `git checkout -b feature/my-feature`
+3. Commit your changes: `git commit -m 'feat: my contribution'`
+4. Push: `git push origin feature/my-feature`
+5. Open a **Pull Request**
+
+Questions? Open an [issue](https://github.com/henrylsilveira/SisAGI/issues).
+
+## 👨‍💻 About the Author
+
+**Henry Leão** is a Brazilian Army soldier who taught himself software development to solve real problems he faced in his daily military duties. Over time, his side projects grew from internal tools into public platforms used by soldiers across Brazil.
+
+His work sits at the intersection of **software engineering** and **military operations** — building tools that modernize administrative processes and improve the day-to-day lives of military personnel. Beyond web development, he also studies **offensive security and Red Team** techniques.
+
+**Stack:** TypeScript · JavaScript · React · Next.js · Node.js · Prisma · PostgreSQL · React Native · Tailwind CSS
+
+**Other projects:**
+- 🧮 [ebcalc.net](https://ebcalc.net) — Military pay calculator platform for Brazilian Army soldiers
+
+[![Portfolio](https://img.shields.io/badge/Portfolio-000?style=for-the-badge&logo=vercel&logoColor=white)](https://hleao.dev)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/henryleao)
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/henrylsilveira)
+[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:henrylsilveira@gmail.com)
+
+## ⚖️ Disclaimer
+
+This is a **personal and independent project**, developed by a soldier with a developer mindset. It has **no official affiliation with the Brazilian Army** or any Military Organization. The code is freely available for study, improvement, and eventual use by anyone interested.
 
 ---
+
+Built with 🖥️ + 🪖 by [henrylsilveira](https://github.com/henrylsilveira)
+
+---
+
+# 🇧🇷 Versão em Português
+
+> Aplicação web desenvolvida por um militar desenvolvedor com o objetivo de aperfeiçoar a administração interna de uma Organização Militar (OM), centralizando o controle de armamento, material, pessoal, veículos e muito mais.
 
 ## ⚠️ Status do Projeto
 
@@ -15,8 +252,6 @@ Por se tratar de um projeto de grande escopo desenvolvido durante as fases inici
 
 > 🏆 Este projeto foi **submetido ao PREMIA 2024**, reconhecendo o seu potencial de contribuição para a modernização da administração militar brasileira.
 
----
-
 ## 📋 Sumário
 
 - [Sobre o Projeto](#sobre-o-projeto)
@@ -27,8 +262,7 @@ Por se tratar de um projeto de grande escopo desenvolvido durante as fases inici
 - [Estrutura do Projeto](#estrutura-do-projeto)
 - [Roadmap](#roadmap)
 - [Contribuição](#contribuição)
-
----
+- [Sobre o Autor](#sobre-o-autor)
 
 ## Sobre o Projeto
 
@@ -43,9 +277,7 @@ O sistema é composto por **dois repositórios**:
 
 O sistema oferece controle de cautelas de armamento, gerenciamento de materiais, cadastro e localização geográfica de militares, geração de QR Codes para visitantes e muito mais.
 
----
-
-## Funcionalidades
+## ⚙️ Funcionalidades
 
 ### 🔫 Armamento
 - Cautela e devolução de armamento
@@ -80,9 +312,7 @@ O sistema oferece controle de cautelas de armamento, gerenciamento de materiais,
 - Geração de QR Code para cartões de visitante
 - Registro de abertura e encerramento do acesso
 
----
-
-## Tecnologias
+## 🛠️ Tecnologias
 
 ### Frontend
 
@@ -111,19 +341,13 @@ O sistema oferece controle de cautelas de armamento, gerenciamento de materiais,
 
 > 🔗 Repositório do servidor (backend): [henrylsilveira/SisAGIServer](https://github.com/henrylsilveira/SisAGIServer)
 
----
-
-## Pré-requisitos
-
-Antes de começar, certifique-se de ter instalado:
+## 📦 Pré-requisitos
 
 - [Node.js](https://nodejs.org/) >= 16.x
 - [pnpm](https://pnpm.io/) (recomendado) ou npm/yarn
 - Banco de dados configurado (verifique as variáveis de ambiente)
 
----
-
-## Instalação e Execução
+## 🚀 Instalação e Execução
 
 ### 1. Clone o repositório
 
@@ -142,7 +366,7 @@ npm install
 
 ### 3. Configure as variáveis de ambiente
 
-Crie um arquivo `.env.local` na raiz do projeto com as seguintes variáveis:
+Crie um arquivo `.env.local` na raiz do projeto:
 
 ```env
 # Banco de dados
@@ -156,19 +380,17 @@ NEXTAUTH_URL="http://localhost:3000"
 ### 4. Execute o projeto
 
 ```bash
-# Ambiente de desenvolvimento
+# Desenvolvimento
 pnpm dev
 
-# Build de produção
+# Produção
 pnpm build
 pnpm start
 ```
 
-Acesse [http://localhost:3000](http://localhost:3000) no seu navegador.
+Acesse [http://localhost:3000](http://localhost:3000) no navegador.
 
----
-
-## Estrutura do Projeto
+## 📁 Estrutura do Projeto
 
 ```
 SisAGI/
@@ -185,9 +407,7 @@ SisAGI/
 └── package.json
 ```
 
----
-
-## Roadmap
+## 🗺️ Roadmap
 
 ### 🔧 Ajustes Pendentes
 
@@ -205,30 +425,39 @@ SisAGI/
 - [ ] Gerador de QR Code para cartões de visitante com registro de abertura/encerramento
 - [ ] Tabela de veículos (civis e militares)
 
----
-
-## Contribuição
+## 🤝 Contribuição
 
 O projeto está **aberto para qualquer pessoa que queira contribuir**, seja para corrigir bugs, refatorar o código, atualizar dependências ou implementar as funcionalidades ainda pendentes listadas no roadmap.
 
 Se você é militar, desenvolvedor, ou os dois — sua ajuda é especialmente bem-vinda para que essa ferramenta possa um dia ser útil a outras unidades.
 
-### Como contribuir
-
 1. Faça um **fork** do projeto
-2. Crie uma branch para sua feature ou correção: `git checkout -b feature/minha-feature`
-3. Commit suas mudanças: `git commit -m 'feat: adiciona minha feature'`
-4. Faça o push para a branch: `git push origin feature/minha-feature`
-5. Abra um **Pull Request** descrevendo o que foi feito
+2. Crie uma branch: `git checkout -b feature/minha-feature`
+3. Commit: `git commit -m 'feat: minha contribuição'`
+4. Push: `git push origin feature/minha-feature`
+5. Abra um **Pull Request**
 
-Dúvidas ou sugestões? Abra uma [issue](https://github.com/henrylsilveira/SisAGI/issues) ou entre em contato diretamente pelo GitHub.
+Dúvidas? Abra uma [issue](https://github.com/henrylsilveira/SisAGI/issues).
 
----
+## 👨‍💻 Sobre o Autor
 
-## Aviso
+**Henry Leão** é um militar do Exército Brasileiro que aprendeu desenvolvimento de software para resolver problemas reais do serviço. Com o tempo, seus projetos pessoais cresceram de ferramentas internas para plataformas públicas utilizadas por militares em todo o Brasil.
+
+Seu trabalho está na interseção entre **engenharia de software** e **operações militares** — construindo ferramentas que modernizam processos administrativos e facilitam o dia a dia do serviço militar. Além do desenvolvimento web, também estuda **segurança ofensiva e Red Team**.
+
+**Stack:** TypeScript · JavaScript · React · Next.js · Node.js · Prisma · PostgreSQL · React Native · Tailwind CSS
+
+**Outros projetos:**
+- 🧮 [ebcalc.net](https://ebcalc.net) — Plataforma de cálculo de proventos para militares do EB
+
+[![Portfólio](https://img.shields.io/badge/Portfólio-000?style=for-the-badge&logo=vercel&logoColor=white)](https://hleao.dev)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/henryleao)
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/henrylsilveira)
+[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:henrylsilveira@gmail.com)
+
+## ⚖️ Aviso
 
 Este é um projeto **pessoal e independente**, desenvolvido por um militar com perfil de desenvolvedor. **Não possui vínculo oficial com o Exército Brasileiro** nem com qualquer Organização Militar. O código é disponibilizado livremente para fins de estudo, melhoria e eventual uso por quem se interessar.
 
 ---
-
-Desenvolvido por [henrylsilveira](https://github.com/henrylsilveira) - Portfolio: https://hleao.dev
+---
